@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    [FriendClass(typeof(DBManagerComponent))]
+    [FriendClass(typeof (DBManagerComponent))]
     public static class DBManagerComponentSystem
     {
         [ObjectSystem]
@@ -22,7 +22,7 @@ namespace ET
                 DBManagerComponent.Instance = null;
             }
         }
-        
+
         public static DBComponent GetZoneDB(this DBManagerComponent self, int zone)
         {
             DBComponent dbComponent = self.DBComponents[zone];
