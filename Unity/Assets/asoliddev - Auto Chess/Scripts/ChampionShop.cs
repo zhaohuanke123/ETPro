@@ -5,96 +5,86 @@ using UnityEngine;
 /// <summary>
 /// Creates and stores champions available, XP and LVL purchase
 /// </summary>
-public class ChampionShop : MonoBehaviour
+public class ChampionShop: MonoBehaviour
 {
-    public UIController uIController;
-    public GamePlayController gamePlayController;
-    public GameData gameData;
+	// public UIController uIController;
+	public GamePlayController gamePlayController;
+	public GameData gameData;
 
-    ///Array to store available champions to purchase
-    private Champion[] availableChampionArray;
+	///Array to store available champions to purchase
+	private Champion[] availableChampionArray;
 
+	/// Start is called before the first frame update
+	void Start()
+	{
+		RefreshShop(true);
+	}
 
-    /// Start is called before the first frame update
-    void Start()
-    {
-        RefreshShop(true);
-    }
+	/// <summary>
+	/// Gives a level up the player
+	/// </summary>
+	public void BuyLvl()
+	{
+		gamePlayController.Buylvl();
+	}
 
-    /// Update is called once per frame
-    void Update()
-    {
-        
-    }
+	/// <summary>
+	/// Refreshes shop with new random champions
+	/// </summary>
+	public void RefreshShop(bool isFree)
+	{
+		//return if we dont have enough gold
+		if (gamePlayController.currentGold < 2 && isFree == false)
+			return;
 
-    /// <summary>
-    /// Gives a level up the player
-    /// </summary>
-    public void BuyLvl()
-    {
-        gamePlayController.Buylvl();
-    }
+		//init array
+		availableChampionArray = new Champion[5];
 
-    /// <summary>
-    /// Refreshes shop with new random champions
-    /// </summary>
-    public void RefreshShop(bool isFree)
-    {
-        //return if we dont have enough gold
-        if (gamePlayController.currentGold < 2 && isFree == false)
-            return;
+		//fill up shop
+		for (int i = 0; i < availableChampionArray.Length; i++)
+		{
+			//get a random champion
+			Champion champion = GetRandomChampionInfo();
 
+			//store champion in array
+			availableChampionArray[i] = champion;
 
-        //init array
-        availableChampionArray = new Champion[5];
+			//load champion to ui
+			// uIController.LoadShopItem(champion, i);
 
-        //fill up shop
-        for (int i = 0; i < availableChampionArray.Length; i++)
-        {
-            //get a random champion
-            Champion champion = GetRandomChampionInfo();
+			//show shop items
+			// uIController.ShowShopItems();
+		}
 
-            //store champion in array
-            availableChampionArray[i] = champion;
+		//decrase gold
+		if (isFree == false)
+			gamePlayController.currentGold -= 2;
 
-            //load champion to ui
-            uIController.LoadShopItem(champion, i);
+		//update ui
+		// uIController.UpdateUI();
+	}
 
-            //show shop items
-            uIController.ShowShopItems();
-        }
+	/// <summary>
+	/// Called when ui champion frame clicked
+	/// </summary>
+	/// <param name="index"></param>
+	public void OnChampionFrameClicked(int index)
+	{
+		bool isSucces = gamePlayController.BuyChampionFromShop(availableChampionArray[index]);
 
-        //decrase gold
-        if(isFree == false)
-            gamePlayController.currentGold -= 2;
+		// if(isSucces)
+		//     uIController.HideChampionFrame(index);
+	}
 
-        //update ui
-        uIController.UpdateUI();
-    }
+	/// <summary>
+	/// Returns a random champion
+	/// </summary>
+	public Champion GetRandomChampionInfo()
+	{
+		//randomise a number
+		int rand = Random.Range(0, gameData.championsArray.Length);
 
-    /// <summary>
-    /// Called when ui champion frame clicked
-    /// </summary>
-    /// <param name="index"></param>
-    public void OnChampionFrameClicked(int index)
-    {    
-        bool isSucces = gamePlayController.BuyChampionFromShop(availableChampionArray[index]);
-
-        if(isSucces)
-            uIController.HideChampionFrame(index);
-    }
-
-    /// <summary>
-    /// Returns a random champion
-    /// </summary>
-    public Champion GetRandomChampionInfo()
-    {
-        //randomise a number
-        int rand = Random.Range(0, gameData.championsArray.Length);
-
-        //return from array
-        return gameData.championsArray[rand];
-    }
-
-
+		//return from array
+		return gameData.championsArray[rand];
+	}
 }

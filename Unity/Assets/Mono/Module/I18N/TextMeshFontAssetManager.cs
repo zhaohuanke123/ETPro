@@ -69,26 +69,26 @@ namespace ET
                 string fontName = tb[i].ToLower();
                 if (fontPaths.ContainsKey(fontName))
                 {
-                    AddFontAssetByFontPath(fontPaths[fontName]);
+                    // AddFontAssetByFontPath(fontPaths[fontName]);
                 }
             }
         }
 
         //可以从网上下载字体或获取到本地自带字体
-        private void AddFontAssetByFontPath(string fontPath)
-        {
-            if (addFontWithPathList.ContainsKey(fontPath))
-                return;
-
-            Font font = new Font(fontPath);
-            TMP_FontAsset tp_font = TMP_FontAsset.CreateFontAsset(font, 20, 2, GlyphRenderMode.SDFAA, 512, 512);
-            AddFontAsset(tp_font);
-            addFontWithPathList.Add(fontPath, tp_font);
-            if (TMP_Settings.defaultFontAsset != null)
-            {
-                TMP_Settings.defaultFontAsset.fallbackFontAssetTable.Add(tp_font);
-            }
-        }
+        // private void AddFontAssetByFontPath(string fontPath)
+        // {
+        //     if (addFontWithPathList.ContainsKey(fontPath))
+        //         return;
+        //
+        //     Font font = new Font(fontPath);
+        //     TMP_FontAsset tp_font = TMP_FontAsset.CreateFontAsset(font, 20, 2, GlyphRenderMode.SDFAA, 512, 512);
+        //     AddFontAsset(tp_font);
+        //     addFontWithPathList.Add(fontPath, tp_font);
+        //     if (TMP_Settings.defaultFontAsset != null)
+        //     {
+        //         TMP_Settings.defaultFontAsset.fallbackFontAssetTable.Add(tp_font);
+        //     }
+        // }
 
         public void RemoveFontAssetByFontPath(string fontPath)
         {
