@@ -7,6 +7,7 @@ using System.Text;
 namespace ET
 {
     using OneTypeSystems = UnOrderMultiMap<Type, object>;
+
     public class TypeSystems
     {
         private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new Dictionary<Type, OneTypeSystems>();
@@ -48,9 +49,9 @@ namespace ET
             return systems;
         }
     }
+
     public sealed class EventSystem: IDisposable
     {
-        
         private static EventSystem instance;
 
         public static EventSystem Instance
@@ -101,19 +102,19 @@ namespace ET
                 string fullName = item.Key;
                 Type type = item.Value;
                 this.allTypes[fullName] = type;
-                
+
                 if (type.IsAbstract)
                 {
                     continue;
                 }
-                
+
                 // 记录所有的有BaseAttribute标记的的类型
                 object[] objects = type.GetCustomAttributes(TypeInfo<BaseAttribute>.Type, true);
                 temp.Clear();
                 foreach (object o in objects)
                 {
                     var otype = o.GetType();
-                    if(temp.Contains(otype)) continue;
+                    if (temp.Contains(otype)) continue;
                     this.types.Add(otype, type);
                     temp.Add(otype);
                 }
@@ -162,7 +163,7 @@ namespace ET
                     dictionary[type.FullName] = type;
                 }
             }
-            
+
             this.Add(dictionary);
         }
 
@@ -193,7 +194,8 @@ namespace ET
 
             Type type = component.GetType();
 
-            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);;
+            OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);
+            ;
             if (component is ILoad)
             {
                 if (oneTypeSystems.ContainsKey(TypeInfo<ILoadSystem>.Type))
@@ -262,7 +264,7 @@ namespace ET
                 }
             }
         }
-        
+
         // GetComponentSystem
         public void GetComponent(Entity entity, Entity component)
         {
@@ -290,7 +292,7 @@ namespace ET
                 }
             }
         }
-        
+
         // AddComponentSystem
         public void AddComponent(Entity entity, Entity component)
         {
@@ -453,6 +455,7 @@ namespace ET
                 }
             }
         }
+
         public void Awake<P1, P2, P3, P4, P5>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
         {
             List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), TypeInfo<IAwakeSystem<P1, P2, P3, P4, P5>>.Type);
@@ -479,7 +482,7 @@ namespace ET
                 }
             }
         }
-        
+
         public void Load()
         {
             while (this.loaders.Count > 0)
@@ -662,7 +665,7 @@ namespace ET
                 }
             }
         }
-        
+
         public void Publish<T>(T a) where T : struct
         {
             List<object> iEvents;
@@ -670,7 +673,7 @@ namespace ET
             {
                 return;
             }
-            
+
             for (int i = 0; i < iEvents.Count; ++i)
             {
                 object obj = iEvents[i];
@@ -679,6 +682,7 @@ namespace ET
                     Log.Error($"event error: {obj.GetType().Name}");
                     continue;
                 }
+
                 aEvent.Handle(a);
             }
         }
@@ -691,13 +695,14 @@ namespace ET
             {
                 return;
             }
-            
+
             for (int i = 0; i < iEvents.Count; ++i)
             {
                 object obj = iEvents[i];
-                IEventClass aEvent = (IEventClass) obj;
+                IEventClass aEvent = (IEventClass)obj;
                 aEvent.Handle(a);
             }
+
             a.Dispose();
         }
 
