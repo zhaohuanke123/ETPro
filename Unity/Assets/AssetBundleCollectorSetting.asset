@@ -148,3 +148,10 @@ MonoBehaviour:
       PackRuleName: PackDirectory
       FilterRuleName: CollectAll
       AssetTags: 
+    - CollectPath: Assets/AssetsPackage/Scenes/Main
+      CollectorGUID: d8a163061bcd2ac458bdb182de7a82a0
+      CollectorType: 0
+      AddressRuleName: AddressByPath
+      PackRuleName: PackSeparately
+      FilterRuleName: CollectScene
+      AssetTags: 
