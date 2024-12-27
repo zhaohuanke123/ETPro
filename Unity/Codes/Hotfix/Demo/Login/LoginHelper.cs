@@ -43,6 +43,13 @@ namespace ET
                     session?.Dispose();
                 }
 
+                // 登录失败
+                // if (r2CLogin.Error != ErrorCode.ERR_Success)
+                // {
+                //     Game.EventSystem.PublishAsync(new UIEventType.ShowToast() { Text = "登录失败" }).Coroutine();
+                //     return;
+                // }
+
                 TimerComponent.Instance.Remove(ref timerId);
                 long channelId = RandomHelper.RandInt64();
                 var routercomponent = zoneScene.AddComponent<GetRouterComponent, long, long>(r2CLogin.GateId, channelId);
