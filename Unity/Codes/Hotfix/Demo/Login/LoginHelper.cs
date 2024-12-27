@@ -2,85 +2,94 @@ using System;
 
 namespace ET
 {
-    [FriendClass(typeof (RouterDataComponent))]
-    [FriendClass(typeof (GetRouterComponent))]
-    public static class LoginHelper
-    {
-        [Timer(TimerType.LoginTimeOut)]
-        public class LoginTimeOut: ATimer<ETCancellationToken>
-        {
-            public override void Run(ETCancellationToken cancel)
-            {
-                try
-                {
-                    cancel.Cancel();
-                    Log.Info("Login Time Out");
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"move timer error: LoginTimeOut\n{e}");
-                }
-            }
-        }
+	[FriendClass(typeof (RouterDataComponent))]
+	[FriendClass(typeof (GetRouterComponent))]
+	public static class LoginHelper
+	{
+		[Timer(TimerType.LoginTimeOut)]
+		public class LoginTimeOut: ATimer<ETCancellationToken>
+		{
+			public override void Run(ETCancellationToken cancel)
+			{
+				try
+				{
+					cancel.Cancel();
+					Log.Info("Login Time Out");
+				}
+				catch (Exception e)
+				{
+					Log.Error($"move timer error: LoginTimeOut\n{e}");
+				}
+			}
+		}
 
-        public static async ETTask Login(Scene zoneScene, string address, string account, string password, Action onError = null)
-        {
-            try
-            {
-                // 创建一个ETModel层的Session
-                R2C_Login r2CLogin;
-                Session session = null;
-                long timerId = 0;
-                try
-                {
-                    session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
-                    ETCancellationToken cancel = new ETCancellationToken();
-                    timerId = TimerComponent.Instance.NewOnceTimer(TimeInfo.Instance.ClientNow() + 10000, TimerType.LoginTimeOut, cancel);
-                    r2CLogin = (R2C_Login)await session.Call(new C2R_Login() { Account = account, Password = password }, cancel);
-                }
-                finally
-                {
-                    session?.Dispose();
-                }
+		public static async ETTask Login(Scene zoneScene, string address, string account, string password, Action onError = null)
+		{
+			try
+			{
+				// 创建一个ETModel层的Session
+				R2C_Login r2CLogin;
+				Session session = null;
+				long timerId = 0;
+				try
+				{
+					session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
+					ETCancellationToken cancel = new ETCancellationToken();
+					timerId = TimerComponent.Instance.NewOnceTimer(TimeInfo.Instance.ClientNow() + 10000, TimerType.LoginTimeOut, cancel);
+					r2CLogin = (R2C_Login)await session.Call(new C2R_Login()
+					{
+						Account = account,
+						Password = password
+					},
+					cancel);
+				}
+				finally
+				{
+					session?.Dispose();
+				}
 
-                // 登录失败
-                // if (r2CLogin.Error != ErrorCode.ERR_Success)
-                // {
-                //     Game.EventSystem.PublishAsync(new UIEventType.ShowToast() { Text = "登录失败" }).Coroutine();
-                //     return;
-                // }
+				TimerComponent.Instance.Remove(ref timerId);
+				long channelId = RandomHelper.RandInt64();
+				var routercomponent = zoneScene.AddComponent<GetRouterComponent, long, long>(r2CLogin.GateId, channelId);
+				string routerAddress = await routercomponent.Tcs;
+				if (routerAddress == "")
+				{
+					zoneScene.RemoveComponent<GetRouterComponent>();
+					throw new Exception("routerAddress 失败");
+				}
 
-                TimerComponent.Instance.Remove(ref timerId);
-                long channelId = RandomHelper.RandInt64();
-                var routercomponent = zoneScene.AddComponent<GetRouterComponent, long, long>(r2CLogin.GateId, channelId);
-                string routerAddress = await routercomponent.Tcs;
-                if (routerAddress == "")
-                {
-                    zoneScene.RemoveComponent<GetRouterComponent>();
-                    throw new Exception("routerAddress 失败");
-                }
+				Log.Debug("routerAddress 获取成功:" + routerAddress);
+				zoneScene.RemoveComponent<GetRouterComponent>();
+				// 创建一个gate Session,并且保存到SessionComponent中
+				Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(channelId, NetworkHelper.ToIPEndPoint(routerAddress));
+				gateSession.AddComponent<RouterDataComponent>().Gateid = r2CLogin.GateId;
 
-                Log.Debug("routerAddress 获取成功:" + routerAddress);
-                zoneScene.RemoveComponent<GetRouterComponent>();
-                // 创建一个gate Session,并且保存到SessionComponent中
-                Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(channelId, NetworkHelper.ToIPEndPoint(routerAddress));
-                gateSession.AddComponent<RouterDataComponent>().Gateid = r2CLogin.GateId;
+				gateSession.AddComponent<PingComponent>();
+				zoneScene.AddComponent<SessionComponent>().Session = gateSession;
 
-                gateSession.AddComponent<PingComponent>();
-                zoneScene.AddComponent<SessionComponent>().Session = gateSession;
+				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(new C2G_LoginGate()
+				{
+					Key = r2CLogin.Key,
+					GateId = r2CLogin.GateId
+				});
 
-                G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(
-                    new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId });
+				Log.Debug("登陆gate成功!");
 
-                Log.Debug("登陆gate成功!");
-
-                await Game.EventSystem.PublishAsync(new EventType.LoginFinish() { ZoneScene = zoneScene, Account = account });
-            }
-            catch (Exception e)
-            {
-                onError?.Invoke();
-                Log.Error(e);
-            }
-        }
-    }
+				await Game.EventSystem.PublishAsync(new EventType.LoginFinish()
+				{
+					ZoneScene = zoneScene,
+					Account = account
+				});
+			}
+			catch (Exception e)
+			{
+				Game.EventSystem.PublishAsync(new UIEventType.ShowToast()
+				{
+					Text = $"登录失败, 账号或密码错误"
+				}).Coroutine();
+				onError?.Invoke();
+				Log.Error(e);
+			}
+		}
+	}
 }

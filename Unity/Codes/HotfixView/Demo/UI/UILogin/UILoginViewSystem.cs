@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using ET.UIEventType;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 using SuperScrollView;
+
 namespace ET
 {
-	
 	[UISystem]
-	[FriendClass(typeof(UILoginView))]
-	public class UILoginViewOnCreateSystem : OnCreateSystem<UILoginView>
+	[FriendClass(typeof (UILoginView))]
+	public class UILoginViewOnCreateSystem: OnCreateSystem<UILoginView>
 	{
 		public override void OnCreate(UILoginView self)
 		{
@@ -21,19 +17,20 @@ namespace ET
 			self.account = self.AddUIComponent<UIInputTextmesh>("Panel/Account");
 			self.password = self.AddUIComponent<UIInputTextmesh>("Panel/Password");
 			self.ipaddr = self.AddUIComponent<UIInputTextmesh>("Panel/GM/InputField");
-			self.loginBtn.AddUIComponent<UIRedDotComponent, string>("","Test");
+			self.loginBtn.AddUIComponent<UIRedDotComponent, string>("", "Test");
 			self.settingView = self.AddUIComponent<UILoopListView2>("Panel/GM/Setting");
 			self.settingView.InitListView(ServerConfigCategory.Instance.GetAll().Count, (a, b) => { return self.GetItemByIndex(a, b); });
 			self.account.SetOnEndEdit(() =>
 			{
-				if(!string.IsNullOrEmpty(self.account.GetText()))
+				if (!string.IsNullOrEmpty(self.account.GetText()))
 					GuidanceComponent.Instance.NoticeEvent("Enter_Account");
 			});
 		}
 	}
+
 	[UISystem]
-	[FriendClass(typeof(UILoginView))]
-	public class UILoginViewOnEnableSystem : OnEnableSystem<UILoginView, Scene>
+	[FriendClass(typeof (UILoginView))]
+	public class UILoginViewOnEnableSystem: OnEnableSystem<UILoginView, Scene>
 	{
 		public override void OnEnable(UILoginView self, Scene scene)
 		{
@@ -43,43 +40,54 @@ namespace ET
 			self.password.SetText(PlayerPrefs.GetString(CacheKeys.Password, ""));
 		}
 	}
-	[FriendClass(typeof(UILoginView))]
-	[FriendClass(typeof(GlobalComponent))]
+
+	[FriendClass(typeof (UILoginView))]
+	[FriendClass(typeof (GlobalComponent))]
 	public static class UILoginViewSystem
 	{
-		
 		public static void OnLogin(this UILoginView self)
 		{
 			var account = self.account.GetText();
 			if (string.IsNullOrEmpty(account))
 			{
-				Game.EventSystem.PublishAsync(new UIEventType.ShowToast() { Text = I18NComponent.Instance.I18NGetText("Text_Enter_Account") }).Coroutine();
+				Game.EventSystem.PublishAsync(new UIEventType.ShowToast()
+				{
+					Text = I18NComponent.Instance.I18NGetText("Text_Enter_Account")
+				}).Coroutine();
 				return;
 			}
 			self.loginBtn.SetInteractable(false);
 			PlayerPrefs.SetString(CacheKeys.Account, account);
 			PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
-			LoginHelper.Login(self.scene, self.ipaddr.GetText(), self.account.GetText(), self.password.GetText(), () =>
+			LoginHelper.Login(self.scene,
+			self.ipaddr.GetText(),
+			self.account.GetText(),
+			self.password.GetText(),
+			() =>
 			{
 				self.loginBtn.SetInteractable(true);
 			}).Coroutine();
 		}
-		public static void OnBtnClick(this UILoginView self,int id)
-        {
+
+		public static void OnBtnClick(this UILoginView self, int id)
+		{
 			self.ipaddr.SetText(ServerConfigComponent.Instance.ChangeEnv(id).RealmIp);
 		}
 
 		public static void OnRegister(this UILoginView self)
 		{
-			Game.EventSystem.PublishAsync(new UIEventType.ShowToast() { Text = "测试OnRegister" }).Coroutine();
+			Game.EventSystem.PublishAsync(new ShowToast()
+			{
+				Text = "测试OnRegister"
+			}).Coroutine();
 			RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
 		}
 
-		public static LoopListViewItem2 GetItemByIndex(this UILoginView self,LoopListView2 listView, int index)
+		public static LoopListViewItem2 GetItemByIndex(this UILoginView self, LoopListView2 listView, int index)
 		{
 			if (index < 0 || index >= ServerConfigCategory.Instance.GetAll().Count)
 				return null;
-			var data = ServerConfigCategory.Instance.Get(index+1);//配置表从1开始的
+			var data = ServerConfigCategory.Instance.Get(index + 1); //配置表从1开始的
 			var item = listView.NewListViewItem("SettingItem");
 			if (!item.IsInitHandlerCalled)
 			{
@@ -87,7 +95,8 @@ namespace ET
 				self.settingView.AddItemViewComponent<UISettingItem>(item);
 			}
 			var uiitemview = self.settingView.GetUIItemView<UISettingItem>(item);
-			uiitemview.SetData(data,(id)=>
+			uiitemview.SetData(data,
+			(id) =>
 			{
 				self.OnBtnClick(id);
 			});

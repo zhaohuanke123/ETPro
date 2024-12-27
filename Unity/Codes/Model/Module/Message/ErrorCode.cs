@@ -13,6 +13,7 @@ namespace ET
         // 这里配置逻辑层的错误码
         // 110000 - 200000是抛异常的错误
         public const int ERR_AccountOrPasswordError = 110001;
+        public const int ERR_LoginInfoEmpty = 110002;
         // 200001以上不抛异常
     }
 }
