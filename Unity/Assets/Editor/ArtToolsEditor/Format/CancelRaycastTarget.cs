@@ -53,7 +53,7 @@ public class CancelRaycastTarget
     }
 
     //重写Create->UI->Text事件
-    [MenuItem("GameObject/UI/Text", false, 2080)]
+    [MenuItem("GameObject/CusUI/Text", false, 2080)]
     static void CreatText(MenuCommand menuCommand)
     {
         //新建TextMeshProUGUI对象  
@@ -64,25 +64,25 @@ public class CancelRaycastTarget
         go.transform.SetParent(Selection.activeTransform);
     }
 
-    [MenuItem("GameObject/UI/Button", false, 2081)]
+    [MenuItem("GameObject/CusUI/Button", false, 2081)]
     public static void CreateButton(MenuCommand menuCommand)
     {
         ChangeUIText("AddButton", menuCommand);
     }
 
-    [MenuItem("GameObject/UI/Toggle", false, 2033)]
+    [MenuItem("GameObject/CusUI/Toggle", false, 2033)]
     public static void CreateToggle(MenuCommand menuCommand)
     {
         ChangeUIText("AddToggle", menuCommand);
     }
 
-    [MenuItem("GameObject/UI/Dropdown", false, 2082)]
+    [MenuItem("GameObject/CusUI/Dropdown", false, 2082)]
     public static void CreateDropdown(MenuCommand menuCommand)
     {
         ChangeUIText("AddDropdown", menuCommand);
     }
 
-    [MenuItem("GameObject/UI/Input Field", false, 2083)]
+    [MenuItem("GameObject/CusUI/Input Field", false, 2083)]
     public static void CreateInputField(MenuCommand menuCommand)
     {
         ChangeUIText("AddInputField", menuCommand);
@@ -108,7 +108,7 @@ public class CancelRaycastTarget
     }
 
     // 自动取消RatcastTarget
-    [MenuItem("GameObject/UI/Image")]
+    [MenuItem("GameObject/CusUI/Image")]
     static void CreatImage()
     {
         GameObject go = new GameObject("image", typeof(Image));
@@ -117,7 +117,7 @@ public class CancelRaycastTarget
     }
 
     //重写Create->UI->Raw Image事件  
-    [MenuItem("GameObject/UI/Raw Image")]
+    [MenuItem("GameObject/CusUI/Raw Image")]
     static void CreatRawImage()
     {
         //新建Text对象  
@@ -129,7 +129,7 @@ public class CancelRaycastTarget
     }
 
     //重写Create->UI->TextMeshPro事件  
-    [MenuItem("GameObject/UI/Text - TextMeshPro")]
+    [MenuItem("GameObject/CusUI/Text - TextMeshPro")]
     static void CreatTextMeshPro()
     {
         //新建TextMeshProUGUI对象  

@@ -32,7 +32,6 @@ namespace ET
             InputWatcherComponent.Instance?.RemoveInputEntity(self);
             Log.Info("UIManagerComponent Dispose");
         }
-
     }
 
     [ObjectSystem]
@@ -90,9 +89,9 @@ namespace ET
                     ignores.Add(ignore[i]);
                 }
 
-                for (int i = (byte) UILayerNames.TopLayer; i >= 0; i--)
+                for (int i = (byte)UILayerNames.TopLayer; i >= 0; i--)
                 {
-                    var layer = (UILayerNames) i;
+                    var layer = (UILayerNames)i;
                     if (!ignores.Contains(layer))
                     {
                         var win = self.GetTopWindow(layer);
@@ -123,7 +122,6 @@ namespace ET
             }
 
             return null;
-
         }
 
         /// <summary>
@@ -300,7 +298,6 @@ namespace ET
             target.Layer = layerName;
             target.BanKey = banKey;
             return await self.InnerOpenWindow<T>(target);
-
         }
 
         /// <summary>
@@ -315,7 +312,6 @@ namespace ET
         public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, string path, P1 p1,
         UILayerNames layerName = UILayerNames.NormalLayer, bool banKey = true) where T : Entity, IAwake, IOnCreate, IOnEnable<P1>, new()
         {
-
             string uiName = TypeInfo<T>.TypeName;
             var target = self.GetWindow(uiName);
             if (target == null)
@@ -327,7 +323,6 @@ namespace ET
             target.Layer = layerName;
             target.BanKey = banKey;
             return await self.InnerOpenWindow<T, P1>(target, p1);
-
         }
 
         /// <summary>
@@ -342,7 +337,6 @@ namespace ET
         public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, string path, P1 p1, P2 p2,
         UILayerNames layerName = UILayerNames.NormalLayer, bool banKey = true) where T : Entity, IAwake, IOnCreate, IOnEnable<P1, P2>, new()
         {
-
             string uiName = TypeInfo<T>.TypeName;
             var target = self.GetWindow(uiName);
             if (target == null)
@@ -354,7 +348,6 @@ namespace ET
             target.Layer = layerName;
             target.BanKey = banKey;
             return await self.InnerOpenWindow<T, P1, P2>(target, p1, p2);
-
         }
 
         /// <summary>
@@ -369,7 +362,6 @@ namespace ET
         public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3,
         UILayerNames layerName = UILayerNames.NormalLayer, bool banKey = true) where T : Entity, IAwake, IOnCreate, IOnEnable<P1, P2, P3>, new()
         {
-
             string uiName = TypeInfo<T>.TypeName;
             var target = self.GetWindow(uiName);
             if (target == null)
@@ -381,7 +373,6 @@ namespace ET
             target.Layer = layerName;
             target.BanKey = banKey;
             return await self.InnerOpenWindow<T, P1, P2, P3>(target, p1, p2, p3);
-
         }
 
         /// <summary>
@@ -396,7 +387,6 @@ namespace ET
         public static async ETTask<T> OpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, P4 p4,
         UILayerNames layerName = UILayerNames.NormalLayer, bool banKey = true) where T : Entity, IAwake, IOnCreate, IOnEnable<P1, P2, P3, P4>, new()
         {
-
             string uiName = TypeInfo<T>.TypeName;
             var target = self.GetWindow(uiName);
             if (target == null)
@@ -408,7 +398,6 @@ namespace ET
             target.Layer = layerName;
             target.BanKey = banKey;
             return await self.InnerOpenWindow<T, P1, P2, P3, P4>(target, p1, p2, p3, p4);
-
         }
 
         /// <summary>
@@ -644,7 +633,6 @@ namespace ET
             {
                 coroutineLock?.Dispose();
             }
-
         }
 
         static async ETTask<T> InnerOpenWindow<T, P1>(this UIManagerComponent self, UIWindow target, P1 p1) where T : Entity
@@ -751,7 +739,6 @@ namespace ET
                 coroutineLock?.Dispose();
             }
         }
-
 
         #endregion
 

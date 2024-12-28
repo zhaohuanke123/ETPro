@@ -23,6 +23,8 @@ namespace ET
 		 public const ushort G2C_Test = 10020;
 		 public const ushort C2M_Reload = 10021;
 		 public const ushort M2C_Reload = 10022;
+		 public const ushort C2R_Register = 10039;
+		 public const ushort R2C_Register = 10040;
 		 public const ushort C2R_Login = 10023;
 		 public const ushort R2C_Login = 10024;
 		 public const ushort C2G_LoginGate = 10025;

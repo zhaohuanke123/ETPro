@@ -12,14 +12,16 @@ namespace ET
         {
             self.loginBtn = self.AddUIComponent<UIButton>("Panel/LoginBtn");
             self.registerBtn = self.AddUIComponent<UIButton>("Panel/RegisterBtn");
-            self.loginBtn.SetOnClick(() => { self.OnLogin(); });
-            self.registerBtn.SetOnClick(() => { self.OnRegister(); });
+            self.loginBtn.SetOnClick(self.OnLogin);
+            self.registerBtn.SetOnClick(self.OnRegister);
             self.account = self.AddUIComponent<UIInputTextmesh>("Panel/Account");
             self.password = self.AddUIComponent<UIInputTextmesh>("Panel/Password");
             self.ipaddr = self.AddUIComponent<UIInputTextmesh>("Panel/GM/InputField");
             self.loginBtn.AddUIComponent<UIRedDotComponent, string>("", "Test");
+
             self.settingView = self.AddUIComponent<UILoopListView2>("Panel/GM/Setting");
-            self.settingView.InitListView(ServerConfigCategory.Instance.GetAll().Count, (a, b) => { return self.GetItemByIndex(a, b); });
+            self.settingView.InitListView(ServerConfigCategory.Instance.GetAll().Count, self.GetItemByIndex);
+
             self.account.SetOnEndEdit(() =>
             {
                 if (!string.IsNullOrEmpty(self.account.GetText()))
@@ -47,11 +49,18 @@ namespace ET
     {
         public static void OnLogin(this UILoginView self)
         {
-            var account = self.account.GetText();
-            if (string.IsNullOrEmpty(account))
+            RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 0);
+            string account = self.account.GetText();
+            string password = self.password.GetText();
+            // if (string.IsNullOrEmpty(account))
+            // {
+            //     Game.EventSystem.PublishAsync(new ShowToast() { Text = I18NComponent.Instance.I18NGetText("Text_Enter_Account") })
+            //             .Coroutine();
+            //     return;
+            // }
+
+            if (!IsValidInput(account, password))
             {
-                Game.EventSystem.PublishAsync(new ShowToast() { Text = I18NComponent.Instance.I18NGetText("Text_Enter_Account") })
-                        .Coroutine();
                 return;
             }
 
@@ -65,7 +74,7 @@ namespace ET
                 () =>
                 {
                     Game.EventSystem.PublishAsync(new ShowToast() { Text = $"登录失败, 账号或密码错误" }).Coroutine();
-                    // self.loginBtn.SetInteractable(true);
+                    self.loginBtn.SetInteractable(true);
                 }).Coroutine();
         }
 
@@ -76,26 +85,60 @@ namespace ET
 
         public static void OnRegister(this UILoginView self)
         {
-            Game.EventSystem.PublishAsync(new ShowToast() { Text = "测试OnRegister" }).Coroutine();
-            RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
+            string account = self.account.GetText();
+            string password = self.password.GetText();
+
+            if (!IsValidInput(account, password))
+            {
+                return;
+            }
+
+            self.loginBtn.SetInteractable(false);
+            PlayerPrefs.SetString(CacheKeys.Account, account);
+            PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
+
+            LoginHelper.Register(self.scene, self.ipaddr.GetText(), account, password,
+                () =>
+                {
+                    Game.EventSystem.PublishAsync(new ShowToast() { Text = $"注册成功" }).Coroutine();
+                    self.loginBtn.SetInteractable(true);
+                    RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
+                },
+                () =>
+                {
+                    Game.EventSystem.PublishAsync(new ShowToast() { Text = $"注册失败, 账号已存在" }).Coroutine();
+                    self.loginBtn.SetInteractable(true);
+                }).Coroutine();
         }
 
         public static LoopListViewItem2 GetItemByIndex(this UILoginView self, LoopListView2 listView, int index)
         {
             if (index < 0 || index >= ServerConfigCategory.Instance.GetAll().Count)
                 return null;
-            var data = ServerConfigCategory.Instance.Get(index + 1); //配置表从1开始的
-            var item = listView.NewListViewItem("SettingItem");
+
+            ServerConfig data = ServerConfigCategory.Instance.Get(index + 1); //配置表从1开始的
+            LoopListViewItem2 item = listView.NewListViewItem("SettingItem");
             if (!item.IsInitHandlerCalled)
             {
                 item.IsInitHandlerCalled = true;
                 self.settingView.AddItemViewComponent<UISettingItem>(item);
             }
 
-            var uiitemview = self.settingView.GetUIItemView<UISettingItem>(item);
-            uiitemview.SetData(data,
-                (id) => { self.OnBtnClick(id); });
+            UISettingItem uiItemView = self.settingView.GetUIItemView<UISettingItem>(item);
+            uiItemView.SetData(data, self.OnBtnClick);
             return item;
+        }
+
+        private static bool IsValidInput(string account, string password)
+        {
+            if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password))
+            {
+                Game.EventSystem.PublishAsync(new ShowToast() { Text = I18NComponent.Instance.I18NGetText("Text_Enter_Account") })
+                        .Coroutine();
+                return false;
+            }
+
+            return true;
         }
     }
 }

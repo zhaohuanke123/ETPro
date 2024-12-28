@@ -19,7 +19,6 @@ namespace ET
 			DBComponent dbComponent = DBManagerComponent.Instance.GetZoneDB(session.DomainZone());
 			using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoginAccount, request.Account.GetHashCode()))
 			{
-
 				// 1. 查询账号是否存在
 				var accountInfos = await dbComponent.Query<AccountInfo>(a => a.Account == request.Account);
 				// 2. 不存在，创建账号

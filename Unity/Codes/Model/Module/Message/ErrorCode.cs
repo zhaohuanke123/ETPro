@@ -15,5 +15,6 @@ namespace ET
         public const int ERR_AccountOrPasswordError = 110001;
         public const int ERR_LoginInfoEmpty = 110002;
         // 200001以上不抛异常
+        public const int ERR_AccountAlreadyRegister = 110003;
     }
 }

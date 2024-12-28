@@ -7,7 +7,7 @@ namespace ET
 		protected override async ETTask Run(EventType.LoginFinish args)
 		{
 			args.ZoneScene.GetComponent<PlayerComponent>().Account = args.Account;
-			await UIManagerComponent.Instance.OpenWindow<UILobbyView,Scene>(UILobbyView.PrefabPath,args.ZoneScene);
+			await UIManagerComponent.Instance.OpenWindow<UILobbyView,Scene>(UILobbyView.PrefabPath, args.ZoneScene);
 		}
 	}
 }

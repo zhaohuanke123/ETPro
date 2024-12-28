@@ -369,6 +369,39 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(R2C_Register))]
+	[Message(OuterOpcode.C2R_Register)]
+	[ProtoContract]
+	public partial class C2R_Register: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		///<summary>帐号</summary>
+		[ProtoMember(1)]
+		public string Account { get; set; }
+
+		///<summary>密码</summary>
+		[ProtoMember(2)]
+		public string Password { get; set; }
+
+	}
+
+	[Message(OuterOpcode.R2C_Register)]
+	[ProtoContract]
+	public partial class R2C_Register: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
 	[ResponseType(nameof(R2C_Login))]
 	[Message(OuterOpcode.C2R_Login)]
 	[ProtoContract]
