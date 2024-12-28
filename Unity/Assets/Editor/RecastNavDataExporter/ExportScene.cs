@@ -58,7 +58,7 @@ namespace ET
                                 obj.AddComponent<MeshFilter>();
                                 obj.AddComponent<MeshRenderer>();
                                 var mesh = obj.AddComponent<ExportMesh>();
-                                mesh.terrainData = terrainData;
+                                // mesh.terrainData = terrainData;
                                 mesh.Generic();
                                 break;
                             default:

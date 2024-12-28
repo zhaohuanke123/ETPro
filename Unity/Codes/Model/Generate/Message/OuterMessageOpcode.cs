@@ -27,6 +27,8 @@ namespace ET
 		 public const ushort R2C_Register = 10040;
 		 public const ushort C2R_Login = 10023;
 		 public const ushort R2C_Login = 10024;
+		 public const ushort C2G_Logout = 10041;
+		 public const ushort G2C_Logout = 10042;
 		 public const ushort C2G_LoginGate = 10025;
 		 public const ushort G2C_LoginGate = 10026;
 		 public const ushort G2C_TestHotfixMessage = 10027;

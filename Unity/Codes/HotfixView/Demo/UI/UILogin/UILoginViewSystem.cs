@@ -71,9 +71,13 @@ namespace ET
                 self.ipaddr.GetText(),
                 self.account.GetText(),
                 self.password.GetText(),
-                () =>
+                (isSuccess) =>
                 {
-                    Game.EventSystem.PublishAsync(new ShowToast() { Text = $"登录失败, 账号或密码错误" }).Coroutine();
+                    if (!isSuccess)
+                    {
+                        Game.EventSystem.PublishAsync(new ShowToast() { Text = $"登录失败, 账号或密码错误" }).Coroutine();
+                    }
+
                     self.loginBtn.SetInteractable(true);
                 }).Coroutine();
         }
@@ -98,15 +102,18 @@ namespace ET
             PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
 
             LoginHelper.Register(self.scene, self.ipaddr.GetText(), account, password,
-                () =>
+                (isSuccess) =>
                 {
-                    Game.EventSystem.PublishAsync(new ShowToast() { Text = $"注册成功" }).Coroutine();
-                    self.loginBtn.SetInteractable(true);
-                    RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
-                },
-                () =>
-                {
-                    Game.EventSystem.PublishAsync(new ShowToast() { Text = $"注册失败, 账号已存在" }).Coroutine();
+                    if (isSuccess)
+                    {
+                        Game.EventSystem.PublishAsync(new ShowToast() { Text = $"注册成功" }).Coroutine();
+                        RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
+                    }
+                    else
+                    {
+                        Game.EventSystem.PublishAsync(new ShowToast() { Text = $"注册失败, 账号已存在" }).Coroutine();
+                    }
+
                     self.loginBtn.SetInteractable(true);
                 }).Coroutine();
         }

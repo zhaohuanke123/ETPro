@@ -1,6 +1,7 @@
 namespace ET
 {
-    public class AccountInfo: Entity
+    [ChildOf(typeof (AccountInfoComponent))]
+    public class AccountInfo: Entity, IAwake
     {
         //用户名
         public string Account { get; set; }

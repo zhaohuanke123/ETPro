@@ -210,6 +210,19 @@ message R2C_Login // IResponse
 	int64 GateId = 3;
 }
 
+//ResponseType G2C_Logout
+message C2G_Logout // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message G2C_Logout // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
 //ResponseType G2C_LoginGate
 message C2G_LoginGate // IRequest
 {

@@ -9,5 +9,6 @@ namespace ET
         public static string PrefabPath => "UI/UILobby/Prefabs/UILobbyView.prefab";
         public Scene zoneScene;
         public UIButton EnterBtn;
+        public UIButton ReturnLoginBtn;
     }
 }

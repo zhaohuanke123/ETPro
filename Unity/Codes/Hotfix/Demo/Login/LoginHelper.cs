@@ -23,7 +23,7 @@ namespace ET
             }
         }
 
-        public static async ETTask Login(Scene zoneScene, string address, string account, string password, Action onError = null)
+        public static async ETTask Login(Scene zoneScene, string address, string account, string password, Action<bool> callBack = null)
         {
             try
             {
@@ -71,15 +71,16 @@ namespace ET
                 Log.Debug("登陆gate成功!");
 
                 await Game.EventSystem.PublishAsync(new EventType.LoginFinish() { ZoneScene = zoneScene, Account = account });
+                callBack.Invoke(true);
             }
             catch (Exception e)
             {
-                onError?.Invoke();
+                callBack?.Invoke(false);
                 Log.Error(e);
             }
         }
 
-        public static async ETTask Register(Scene zoneScene, string address, string account, string password, Action onSuccess = null, Action onError = null)
+        public static async ETTask Register(Scene zoneScene, string address, string account, string password, Action<bool> callBack = null)
         {
             try
             {
@@ -101,13 +102,32 @@ namespace ET
                 }
 
                 TimerComponent.Instance.Remove(ref timerId);
-                
-                onSuccess?.Invoke();
+
+                callBack?.Invoke(true);
             }
             catch (Exception e)
             {
-                onError?.Invoke();
+                callBack?.Invoke(false);
                 Log.Error(e);
+            }
+        }
+
+        // 推出登录
+        public static async ETTask Logout(Scene zoneScene, Action<bool> callBack)
+        {
+            try
+            {
+                Session gateSession = zoneScene.GetComponent<SessionComponent>().Session;
+                await gateSession.Call(new C2G_Logout());
+                gateSession.Dispose();
+                zoneScene.RemoveComponent<SessionComponent>();
+
+                callBack?.Invoke(true);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                callBack?.Invoke(false);
             }
         }
     }
