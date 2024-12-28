@@ -43,5 +43,11 @@ namespace ET
 		 public const ushort M2C_ChangeSkillGroup = 10036;
 		 public const ushort M2C_RemoveBuff = 10037;
 		 public const ushort M2C_Interrupt = 10038;
+		 public const ushort C2M_TestActorLocationRequest = 10043;
+		 public const ushort M2C_TestActotLocationResponse = 10044;
+		 public const ushort C2M_TestActorLocationMessage = 10045;
+		 public const ushort M2C_TestActorMessage = 10046;
+		 public const ushort C2A_LoginAccount = 10047;
+		 public const ushort A2C_LoginAccount = 10048;
 	}
 }
