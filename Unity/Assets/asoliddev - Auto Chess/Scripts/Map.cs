@@ -1,387 +1,273 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Creates map grids where the player can move champions on
-/// </summary>
-public class Map : MonoBehaviour
+public class Map: MonoBehaviour
 {
-	//declare grid types
-	public static int GRIDTYPE_OWN_INVENTORY = 0;
-	public static int GRIDTYPE_OPONENT_INVENTORY = 1;
-	public static int GRIDTYPE_HEXA_MAP = 2;
+    public static int GRIDTYPE_OWN_INVENTORY = 0;
+    public static int GRIDTYPE_OPONENT_INVENTORY = 1;
+    public static int GRIDTYPE_HEXA_MAP = 2;
 
-	public static int hexMapSizeX = 7;
-	public static int hexMapSizeZ = 8;
-	public static int inventorySize = 9;
+    public static int hexMapSizeX = 7;
+    public static int hexMapSizeZ = 8;
+    public static int inventorySize = 9;
 
-	public Plane m_Plane;
+    public Plane m_Plane;
 
-	//start positions
-	public Transform ownInventoryStartPosition;
-	public Transform oponentInventoryStartPosition;
-	public Transform mapStartPosition;
+    public Transform ownInventoryStartPosition;
+    public Transform oponentInventoryStartPosition;
+    public Transform mapStartPosition;
 
+    public GameObject squareIndicator;
+    public GameObject hexaIndicator;
 
-	//indicators that show where we place champions
-	public GameObject squareIndicator;
-	public GameObject hexaIndicator;
+    public Color indicatorDefaultColor;
+    public Color indicatorActiveColor;
 
+    void Start()
+    {
+        CreateGridPosition();
+        CreateIndicators();
+        HideIndicators();
 
-	public Color indicatorDefaultColor;
-	public Color indicatorActiveColor;
+        m_Plane = new Plane(Vector3.up, Vector3.zero);
 
-	// Start is called before the first frame update
-	void Start()
-	{
-		CreateGridPosition();
-		CreateIndicators();
-		HideIndicators();
+        this.SendMessage("OnMapReady", SendMessageOptions.DontRequireReceiver);
+    }
 
-		m_Plane = new Plane(Vector3.up, Vector3.zero);
+    [HideInInspector]
+    public Vector3[] ownInventoryGridPositions;
 
-		//tell other scripts that map is ready
-		this.SendMessage("OnMapReady", SendMessageOptions.DontRequireReceiver);
-	}
+    [HideInInspector]
+    public Vector3[] oponentInventoryGridPositions;
 
-	/// Update is called once per frame
-	void Update()
-	{
+    [HideInInspector]
+    public Vector3[,] mapGridPositions;
 
-	}
+    private void CreateGridPosition()
+    {
+        ownInventoryGridPositions = new Vector3[inventorySize];
+        oponentInventoryGridPositions = new Vector3[inventorySize];
+        mapGridPositions = new Vector3[hexMapSizeX, hexMapSizeZ];
 
+        for (int i = 0; i < inventorySize; i++)
+        {
+            float offsetX = i * -2.5f;
 
-	//store grid positions in list
-	[HideInInspector]
-	public Vector3[] ownInventoryGridPositions;
+            Vector3 position = GetMapHitPoint(ownInventoryStartPosition.position + new Vector3(offsetX, 0, 0));
 
-	[HideInInspector]
-	public Vector3[] oponentInventoryGridPositions;
+            ownInventoryGridPositions[i] = position;
+        }
 
-	[HideInInspector]
-	public Vector3[,] mapGridPositions;
+        for (int i = 0; i < inventorySize; i++)
+        {
+            float offsetX = i * -2.5f;
 
-	/// <summary>
-	/// Creates the positions for all the map grids
-	/// </summary>
-	private void CreateGridPosition()
-	{
-		//initialize position arrays
-		ownInventoryGridPositions = new Vector3[inventorySize];
-		oponentInventoryGridPositions = new Vector3[inventorySize];
-		mapGridPositions = new Vector3[hexMapSizeX, hexMapSizeZ];
+            Vector3 position = GetMapHitPoint(oponentInventoryStartPosition.position + new Vector3(offsetX, 0, 0));
 
+            oponentInventoryGridPositions[i] = position;
+        }
 
-		//create own inventory position
-		for (int i = 0; i < inventorySize; i++)
-		{
-			//calculate position x offset for this slot
-			float offsetX = i * -2.5f;
+        for (int x = 0; x < hexMapSizeX; x++)
+        {
+            for (int z = 0; z < hexMapSizeZ; z++)
+            {
+                int rowOffset = z % 2;
 
-			//calculate and store the position
-			Vector3 position = GetMapHitPoint(ownInventoryStartPosition.position + new Vector3(offsetX, 0, 0));
+                float offsetX = x * -3f + rowOffset * 1.5f;
+                float offsetZ = z * -2.5f;
 
-			//add position variable to array
-			ownInventoryGridPositions[i] = position;
-		}
+                Vector3 position = GetMapHitPoint(mapStartPosition.position + new Vector3(offsetX, 0, offsetZ));
 
-		//create oponent inventory  position
-		for (int i = 0; i < inventorySize; i++)
-		{
-			//calculate position x offset for this slot
-			float offsetX = i * -2.5f;
+                mapGridPositions[x, z] = position;
+            }
+        }
+    }
 
-			//calculate and store the position
-			Vector3 position = GetMapHitPoint(oponentInventoryStartPosition.position + new Vector3(offsetX, 0, 0));
+    [HideInInspector]
+    public GameObject[] ownIndicatorArray;
 
-			//add position variable to array
-			oponentInventoryGridPositions[i] = position;
-		}
+    [HideInInspector]
+    public GameObject[] oponentIndicatorArray;
 
-		//create map position
-		for (int x = 0; x < hexMapSizeX; x++)
-		{
-			for (int z = 0; z < hexMapSizeZ; z++)
-			{
-				//calculate even or add row
-				int rowOffset = z % 2;
+    [HideInInspector]
+    public GameObject[,] mapIndicatorArray;
 
-				//calculate position x and z
-				float offsetX = x * -3f + rowOffset * 1.5f;
-				float offsetZ = z * -2.5f;
+    [HideInInspector]
+    public TriggerInfo[] ownTriggerArray;
 
-				//calculate and store the position
-				Vector3 position = GetMapHitPoint(mapStartPosition.position + new Vector3(offsetX, 0, offsetZ));
+    [HideInInspector]
+    public TriggerInfo[,] mapGridTriggerArray;
 
-				//add position variable to array
-				mapGridPositions[x, z] = position;
-			}
+    private GameObject indicatorContainer;
 
-		}
+    private void CreateIndicators()
+    {
+        indicatorContainer = new GameObject();
+        indicatorContainer.name = "IndicatorContainer";
 
-	}
+        GameObject triggerContainer = new GameObject();
+        triggerContainer.name = "TriggerContainer";
 
+        ownIndicatorArray = new GameObject[inventorySize];
+        oponentIndicatorArray = new GameObject[inventorySize];
+        mapIndicatorArray = new GameObject[hexMapSizeX, hexMapSizeZ / 2];
 
-	//declare arrays to store indicators
-	[HideInInspector]
-	public GameObject[] ownIndicatorArray;
+        ownTriggerArray = new TriggerInfo[inventorySize];
+        mapGridTriggerArray = new TriggerInfo[hexMapSizeX, hexMapSizeZ / 2];
 
-	[HideInInspector]
-	public GameObject[] oponentIndicatorArray;
+        for (int i = 0; i < inventorySize; i++)
+        {
+            GameObject indicatorGO = Instantiate(squareIndicator);
 
-	[HideInInspector]
-	public GameObject[,] mapIndicatorArray;
+            indicatorGO.transform.position = ownInventoryGridPositions[i];
 
-	[HideInInspector]
-	public TriggerInfo[] ownTriggerArray;
+            indicatorGO.transform.parent = indicatorContainer.transform;
 
-	[HideInInspector]
-	public TriggerInfo[,] mapGridTriggerArray;
+            ownIndicatorArray[i] = indicatorGO;
 
+            GameObject trigger = CreateBoxTrigger(GRIDTYPE_OWN_INVENTORY, i);
 
-	private GameObject indicatorContainer;
+            trigger.transform.parent = triggerContainer.transform;
 
-	/// <summary>
-	/// Creates all the map indicators
-	/// </summary>
-	private void CreateIndicators()
-	{
-		//create a container for indicators
-		indicatorContainer = new GameObject();
-		indicatorContainer.name = "IndicatorContainer";
+            trigger.transform.position = ownInventoryGridPositions[i];
 
-		//create a container for triggers
-		GameObject triggerContainer = new GameObject();
-		triggerContainer.name = "TriggerContainer";
+            ownTriggerArray[i] = trigger.GetComponent<TriggerInfo>();
+        }
 
+        /*
+        for (int i = 0; i < inventorySize; i++)
+        {
+            GameObject indicatorGO = Instantiate(squareIndicator);
 
-		//initialise arrays to store indicators
-		ownIndicatorArray = new GameObject[inventorySize];
-		oponentIndicatorArray = new GameObject[inventorySize];
-		mapIndicatorArray = new GameObject[hexMapSizeX, hexMapSizeZ / 2];
+            indicatorGO.transform.position = oponentInventoryGridPositions[i];
 
-		ownTriggerArray = new TriggerInfo[inventorySize];
-		mapGridTriggerArray = new TriggerInfo[hexMapSizeX, hexMapSizeZ / 2];
+            indicatorGO.transform.parent = indicatorContainer.transform;
 
+            oponentIndicatorArray[i] = indicatorGO;
 
-		//iterate own grid position
-		for (int i = 0; i < inventorySize; i++)
-		{
-			//create indicator gameobject
-			GameObject indicatorGO = Instantiate(squareIndicator);
 
-			//set indicator gameobject position
-			indicatorGO.transform.position = ownInventoryGridPositions[i];
+        }
+        */
 
-			//set indicator parent
-			indicatorGO.transform.parent = indicatorContainer.transform;
+        for (int x = 0; x < hexMapSizeX; x++)
+        {
+            for (int z = 0; z < hexMapSizeZ / 2; z++)
+            {
+                GameObject indicatorGO = Instantiate(hexaIndicator);
 
-			//store indicator gameobject in array
-			ownIndicatorArray[i] = indicatorGO;
+                indicatorGO.transform.position = mapGridPositions[x, z];
 
-			//create trigger gameobject
-			GameObject trigger = CreateBoxTrigger(GRIDTYPE_OWN_INVENTORY, i);
+                indicatorGO.transform.parent = indicatorContainer.transform;
 
-			//set trigger parent
-			trigger.transform.parent = triggerContainer.transform;
+                mapIndicatorArray[x, z] = indicatorGO;
 
-			//set trigger gameobject position
-			trigger.transform.position = ownInventoryGridPositions[i];
+                GameObject trigger = CreateSphereTrigger(GRIDTYPE_HEXA_MAP, x, z);
 
-			//store triggerinfo
-			ownTriggerArray[i] = trigger.GetComponent<TriggerInfo>();
-		}
+                trigger.transform.parent = triggerContainer.transform;
 
-		/*
-		//iterate oponent grid position
-		for (int i = 0; i < inventorySize; i++)
-		{
-		    //create indicator gameobject
-		    GameObject indicatorGO = Instantiate(squareIndicator);
+                trigger.transform.position = mapGridPositions[x, z];
 
-		    //set indicator gameobject position
-		    indicatorGO.transform.position = oponentInventoryGridPositions[i];
+                mapGridTriggerArray[x, z] = trigger.GetComponent<TriggerInfo>();
+            }
+        }
+    }
 
-		    //set indicator parent
-		    indicatorGO.transform.parent = indicatorContainer.transform;
+    public Vector3 GetMapHitPoint(Vector3 p)
+    {
+        Vector3 newPos = p;
 
-		    //store indicator gameobject in array
-		    oponentIndicatorArray[i] = indicatorGO;
+        RaycastHit hit;
 
+        if (Physics.Raycast(newPos + new Vector3(0, 10, 0), Vector3.down, out hit, 15))
+        {
+            newPos = hit.point;
+        }
 
-		}
-		*/
+        return newPos;
+    }
 
-		//iterate map grid position
-		for (int x = 0; x < hexMapSizeX; x++)
-		{
-			for (int z = 0; z < hexMapSizeZ / 2; z++)
-			{
-				//create indicator gameobject
-				GameObject indicatorGO = Instantiate(hexaIndicator);
+    private GameObject CreateBoxTrigger(int type, int x)
+    {
+        GameObject trigger = new GameObject();
 
-				//set indicator gameobject position
-				indicatorGO.transform.position = mapGridPositions[x, z];
+        BoxCollider collider = trigger.AddComponent<BoxCollider>();
 
-				//set indicator parent
-				indicatorGO.transform.parent = indicatorContainer.transform;
+        collider.size = new Vector3(2, 0.5f, 2);
 
-				//store indicator gameobject in array
-				mapIndicatorArray[x, z] = indicatorGO;
+        collider.isTrigger = true;
 
-				//create trigger gameobject
-				GameObject trigger = CreateSphereTrigger(GRIDTYPE_HEXA_MAP, x, z);
+        TriggerInfo trigerInfo = trigger.AddComponent<TriggerInfo>();
+        trigerInfo.gridType = type;
+        trigerInfo.gridX = x;
 
-				//set trigger parent
-				trigger.transform.parent = triggerContainer.transform;
+        trigger.layer = LayerMask.NameToLayer("Triggers");
 
-				//set trigger gameobject position
-				trigger.transform.position = mapGridPositions[x, z];
+        return trigger;
+    }
 
-				//store triggerinfo
-				mapGridTriggerArray[x, z] = trigger.GetComponent<TriggerInfo>();
+    private GameObject CreateSphereTrigger(int type, int x, int z)
+    {
+        GameObject trigger = new GameObject();
 
-			}
-		}
+        SphereCollider collider = trigger.AddComponent<SphereCollider>();
 
-	}
+        collider.radius = 1.4f;
 
-	/// <summary>
-	/// Get a point with accurate y axis
-	/// </summary>
-	/// <returns></returns>
-	public Vector3 GetMapHitPoint(Vector3 p)
-	{
-		Vector3 newPos = p;
+        collider.isTrigger = true;
 
-		RaycastHit hit;
+        TriggerInfo trigerInfo = trigger.AddComponent<TriggerInfo>();
+        trigerInfo.gridType = type;
+        trigerInfo.gridX = x;
+        trigerInfo.gridZ = z;
 
-		if (Physics.Raycast(newPos + new Vector3(0, 10, 0), Vector3.down, out hit, 15))
-		{
-			newPos = hit.point;
-		}
+        trigger.layer = LayerMask.NameToLayer("Triggers");
 
-		return newPos;
-	}
+        return trigger;
+    }
 
-	/// <summary>
-	/// Creates a trigger collider gameobject and returns it
-	/// </summary>
-	/// <returns></returns>
-	private GameObject CreateBoxTrigger(int type, int x)
-	{
-		//create primitive gameobject
-		GameObject trigger = new GameObject();
+    public GameObject GetIndicatorFromTriggerInfo(TriggerInfo triggerinfo)
+    {
+        GameObject triggerGo = null;
 
-		//add collider component
-		BoxCollider collider = trigger.AddComponent<BoxCollider>();
+        if (triggerinfo.gridType == GRIDTYPE_OWN_INVENTORY)
+        {
+            triggerGo = ownIndicatorArray[triggerinfo.gridX];
+        }
+        else if (triggerinfo.gridType == GRIDTYPE_OPONENT_INVENTORY)
+        {
+            triggerGo = oponentIndicatorArray[triggerinfo.gridX];
+        }
+        else if (triggerinfo.gridType == GRIDTYPE_HEXA_MAP)
+        {
+            triggerGo = mapIndicatorArray[triggerinfo.gridX, triggerinfo.gridZ];
+        }
 
-		//set collider size
-		collider.size = new Vector3(2, 0.5f, 2);
+        return triggerGo;
+    }
 
-		//set collider to trigger 
-		collider.isTrigger = true;
+    public void resetIndicators()
+    {
+        for (int x = 0; x < hexMapSizeX; x++)
+        {
+            for (int z = 0; z < hexMapSizeZ / 2; z++)
+            {
+                mapIndicatorArray[x, z].GetComponent<MeshRenderer>().material.color = indicatorDefaultColor;
+            }
+        }
 
-		//add and store trigger info
-		TriggerInfo trigerInfo = trigger.AddComponent<TriggerInfo>();
-		trigerInfo.gridType = type;
-		trigerInfo.gridX = x;
+        for (int x = 0; x < 9; x++)
+        {
+            ownIndicatorArray[x].GetComponent<MeshRenderer>().material.color = indicatorDefaultColor;
+            // oponentIndicatorArray[x].GetComponent<MeshRenderer>().material.color = indicatorDefaultColor;
+        }
+    }
 
-		trigger.layer = LayerMask.NameToLayer("Triggers");
+    public void ShowIndicators()
+    {
+        indicatorContainer.SetActive(true);
+    }
 
-		return trigger;
-	}
-
-	/// <summary>
-	/// Creates a trigger collider gameobject and returns it
-	/// </summary>
-	/// <returns></returns>
-	private GameObject CreateSphereTrigger(int type, int x, int z)
-	{
-		//create primitive gameobject
-		GameObject trigger = new GameObject();
-
-		//add collider component
-		SphereCollider collider = trigger.AddComponent<SphereCollider>();
-
-		//set collider size
-		collider.radius = 1.4f;
-
-		//set collider to trigger 
-		collider.isTrigger = true;
-
-		//add and store trigger info
-		TriggerInfo trigerInfo = trigger.AddComponent<TriggerInfo>();
-		trigerInfo.gridType = type;
-		trigerInfo.gridX = x;
-		trigerInfo.gridZ = z;
-
-		trigger.layer = LayerMask.NameToLayer("Triggers");
-
-		return trigger;
-	}
-
-
-	/// <summary>
-	/// Returns grid indicator from triggerinfo
-	/// </summary>
-	/// <param name="triggerinfo"></param>
-	/// <returns></returns>
-	public GameObject GetIndicatorFromTriggerInfo(TriggerInfo triggerinfo)
-	{
-		GameObject triggerGo = null;
-
-		if (triggerinfo.gridType == GRIDTYPE_OWN_INVENTORY)
-		{
-			triggerGo = ownIndicatorArray[triggerinfo.gridX];
-		}
-		else if (triggerinfo.gridType == GRIDTYPE_OPONENT_INVENTORY)
-		{
-			triggerGo = oponentIndicatorArray[triggerinfo.gridX];
-		}
-		else if (triggerinfo.gridType == GRIDTYPE_HEXA_MAP)
-		{
-			triggerGo = mapIndicatorArray[triggerinfo.gridX, triggerinfo.gridZ];
-		}
-
-
-		return triggerGo;
-	}
-
-	/// <summary>
-	/// Resets all indicator colors to default
-	/// </summary>
-	public void resetIndicators()
-	{
-		for (int x = 0; x < hexMapSizeX; x++)
-		{
-			for (int z = 0; z < hexMapSizeZ / 2; z++)
-			{
-				mapIndicatorArray[x, z].GetComponent<MeshRenderer>().material.color = indicatorDefaultColor;
-			}
-		}
-
-
-		for (int x = 0; x < 9; x++)
-		{
-			ownIndicatorArray[x].GetComponent<MeshRenderer>().material.color = indicatorDefaultColor;
-			// oponentIndicatorArray[x].GetComponent<MeshRenderer>().material.color = indicatorDefaultColor;
-		}
-
-	}
-
-	/// <summary>
-	/// Make all map indicators visible
-	/// </summary>
-	public void ShowIndicators()
-	{
-		indicatorContainer.SetActive(true);
-	}
-
-	/// <summary>
-	/// Make all map indicators invisible
-	/// </summary>
-	public void HideIndicators()
-	{
-		indicatorContainer.SetActive(false);
-	}
+    public void HideIndicators()
+    {
+        indicatorContainer.SetActive(false);
+    }
 }

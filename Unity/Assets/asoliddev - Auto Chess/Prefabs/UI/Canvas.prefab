@@ -3347,7 +3347,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: fire knight
+  m_Text: "\u9A91\u58EB"
 --- !u!1 &4039854866128042091
 GameObject:
   m_ObjectHideFlags: 0
@@ -3659,7 +3659,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: fire knight
+  m_Text: "\u9A91\u58EB"
 --- !u!1 &4845180854636427140
 GameObject:
   m_ObjectHideFlags: 0
@@ -6747,7 +6747,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: fire knight
+  m_Text: "\u9A91\u58EB"
 --- !u!1 &7976239063215249792
 GameObject:
   m_ObjectHideFlags: 0
@@ -6984,7 +6984,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Refresh
+  m_Text: "\u5237\u65B0"
 --- !u!1 &8032751312248020480
 GameObject:
   m_ObjectHideFlags: 0
@@ -7165,7 +7165,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Buy lvl
+  m_Text: "\u8D2D\u4E70\u7B49\u7EA7"
 --- !u!1 &8343012870252968111
 GameObject:
   m_ObjectHideFlags: 0
