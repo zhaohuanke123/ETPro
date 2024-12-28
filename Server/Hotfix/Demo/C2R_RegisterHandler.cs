@@ -29,12 +29,12 @@ namespace ET
                 }
 
                 // 3. 不存在，创建账号
-                AccountInfoComponent accountInfoComponent =
-                        session.GetComponent<AccountInfoComponent>() ?? session.AddComponent<AccountInfoComponent>();
-                AccountInfo accountInfo = accountInfoComponent.AddChild<AccountInfo>();
-                accountInfo.Account = request.Account;
-                accountInfo.Password = request.Password;
-                await dbComponent.Save(accountInfo);
+                // AccountInfoComponent accountInfoComponent =
+                //         session.GetComponent<AccountInfoComponent>() ?? session.AddComponent<AccountInfoComponent>();
+                // AccountInfo accountInfo = accountInfoComponent.AddChild<AccountInfo>();
+                // accountInfo.Account = request.Account;
+                // accountInfo.Password = request.Password;
+                // await dbComponent.Save(accountInfo);
             }
 
             reply();

@@ -6,7 +6,7 @@ namespace ET
         BlackList = 1,
     }
 
-    [ChildOf(typeof (AccountInfoComponent))]
+    [ChildOf(typeof (Session))]
     public class AccountInfo: Entity, IAwake
     {
         //用户名
