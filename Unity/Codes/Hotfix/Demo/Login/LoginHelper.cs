@@ -83,10 +83,6 @@ namespace ET
 			}
 			catch (Exception e)
 			{
-				Game.EventSystem.PublishAsync(new UIEventType.ShowToast()
-				{
-					Text = $"登录失败, 账号或密码错误"
-				}).Coroutine();
 				onError?.Invoke();
 				Log.Error(e);
 			}
