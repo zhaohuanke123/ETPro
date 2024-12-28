@@ -313,7 +313,7 @@ namespace ET
         UILayerNames layerName = UILayerNames.NormalLayer, bool banKey = true) where T : Entity, IAwake, IOnCreate, IOnEnable<P1>, new()
         {
             string uiName = TypeInfo<T>.TypeName;
-            var target = self.GetWindow(uiName);
+            UIWindow target = self.GetWindow(uiName);
             if (target == null)
             {
                 target = self.InitWindow<T>(path, layerName);
@@ -609,7 +609,7 @@ namespace ET
 
         #region 内部加载窗体,依次加载prefab、AwakeSystem、InitializationSystem、OnCreateSystem、OnEnableSystem
 
-        static async ETTask<T> InnerOpenWindow<T>(this UIManagerComponent self, UIWindow target) where T : Entity
+        private static async ETTask<T> InnerOpenWindow<T>(this UIManagerComponent self, UIWindow target) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try
@@ -643,7 +643,7 @@ namespace ET
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
                 T res = target.GetComponent(target.ViewType) as T;
-                var needLoad = target.LoadingState == UIWindowLoadingState.NotStart;
+                bool needLoad = target.LoadingState == UIWindowLoadingState.NotStart;
                 target.LoadingState = UIWindowLoadingState.Loading;
                 if (needLoad)
                 {
