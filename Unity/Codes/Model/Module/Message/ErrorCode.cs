@@ -16,7 +16,6 @@ namespace ET
 
 
         // 200001以上不抛异常
-        public const int ERR_AccountAlreadyRegister = 110003;
 
         public const int ERR_NotBindPlayer = 110004;
 
@@ -30,5 +29,6 @@ namespace ET
         public const int ERR_RequestRepeatedly = 200008;
         public const int ERR_LoginInfoEmpty = 200009;
         public const int ERR_AccountNotExistError = 200010;
+        public const int ERR_AccountAlreadyRegister = 200011;
     }
 }

@@ -90,15 +90,21 @@ namespace ET
             PlayerPrefs.SetString(CacheKeys.Account, account);
             PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
 
-            int errorCode = await LoginHelper.Register(self.scene, self.ipaddr.GetText(), account, password);
-
-            if (errorCode != ErrorCode.ERR_Success)
+            try
             {
-                EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.scene, ErrorCode = errorCode }).Coroutine();
-                return;
-            }
+                int errorCode = await LoginHelper.Register(self.scene, self.ipaddr.GetText(), account, password);
+                if (errorCode != ErrorCode.ERR_Success)
+                {
+                    EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.scene, ErrorCode = errorCode }).Coroutine();
+                    return;
+                }
 
-            EventSystem.Instance.PublishAsync(new ShowToast() { Text = "注册成功" }).Coroutine();
+                EventSystem.Instance.PublishAsync(new ShowToast() { Text = "注册成功" }).Coroutine();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+            }
         }
 
         public static LoopListViewItem2 GetItemByIndex(this UILoginView self, LoopListView2 listView, int index)

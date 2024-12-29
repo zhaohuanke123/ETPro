@@ -116,6 +116,7 @@ namespace ET
                     session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
                     ETCancellationToken cancel = new ETCancellationToken();
                     timerId = TimerComponent.Instance.NewOnceTimer(TimeInfo.Instance.ClientNow() + 10000, TimerType.LoginTimeOut, cancel);
+                    password = MD5Helper.StringMD5(password);
                     r2CRegister = (R2C_Register)await session.Call(new C2R_Register() { Account = account, Password = password },
                         cancel);
                 }
