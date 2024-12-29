@@ -90,6 +90,19 @@ namespace ET.Account.Handle
                         await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
                     }
 
+                    // 把之前的Session(已经登录的)踢下线
+                    AccountSessionsComponent accountSessionsComponent = session.DomainScene().GetComponent<AccountSessionsComponent>();
+                    long accountSessionInstanceId = accountSessionsComponent.Get(accountInfo.Id);
+                    if (Game.EventSystem.Get(accountSessionInstanceId) is Session otherSession)
+                    {
+                        otherSession.Send(new A2C_Disconnect() { Error = 0 });
+                        otherSession.DisConnect().Coroutine();
+                    }
+
+                    accountSessionsComponent.Add(accountInfo.Id, session.InstanceId);
+                    // 设置账号超时时间
+                    session.AddComponent<AccountCheckoutTimeComponent, long>(accountInfo.Id);
+
                     string Token = TimeHelper.ServerNow().ToString() + RandomHelper.RandomNumber(int.MinValue, int.MaxValue);
                     TokenComponent tokenComponent = session.DomainScene().GetComponent<TokenComponent>();
                     tokenComponent.Remove(accountInfo.Id);

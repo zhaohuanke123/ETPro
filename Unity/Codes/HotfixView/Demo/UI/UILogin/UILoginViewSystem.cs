@@ -53,19 +53,8 @@ namespace ET
             RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 0);
             string account = self.account.GetText();
             string password = self.password.GetText();
-            // if (string.IsNullOrEmpty(account))
-            // {
-            //     Game.EventSystem.PublishAsync(new ShowToast() { Text = I18NComponent.Instance.I18NGetText("Text_Enter_Account") })
-            //             .Coroutine();
-            //     return;
-            // }
 
-            if (!IsValidInput(account, password))
-            {
-                return;
-            }
-
-            self.loginBtn.SetInteractable(false);
+            // self.loginBtn.SetInteractable(false);
             PlayerPrefs.SetString(CacheKeys.Account, account);
             PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
 

@@ -12,6 +12,6 @@
             this.Run(args as T);
         }
 
-        public abstract void Run(T t);
+        public abstract void Run(T self);
     }
 }

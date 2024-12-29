@@ -14,7 +14,7 @@ namespace ET
                     break;
 
                 case ErrorCode.ERR_LoginInfoEmpty:
-                    text = "登录信息不能为空!";
+                    text = "账号或密码为空!";
                     break;
 
                 // 逻辑层错误
@@ -60,7 +60,7 @@ namespace ET
                     break;
             }
 
-            await EventSystem.Instance.PublishAsync(new UIEventType.ShowToast() { Scene = a.Scene, Text = text });
+            await EventSystem.Instance.PublishAsync(new ShowToast() { Scene = a.Scene, Text = text });
         }
     }
 }

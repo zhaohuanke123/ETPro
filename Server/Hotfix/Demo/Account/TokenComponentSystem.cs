@@ -7,7 +7,7 @@ namespace ET
         {
             self.accountDic.Add(key, token);
 
-            self.TimeOutRomove(key, token).Coroutine();
+            self.TimeOutRemoveKey(key, token).Coroutine();
         }
 
         public static string Get(this TokenComponent self, long key)
@@ -23,9 +23,9 @@ namespace ET
             }
         }
 
-        private static async ETTask TimeOutRomove(this TokenComponent self, long key, string tokenKey)
+        private static async ETTask TimeOutRemoveKey(this TokenComponent self, long key, string tokenKey)
         {
-            await TimerComponent.Instance.WaitAsync(3600000);
+            await TimerComponent.Instance.WaitAsync(600000);
 
             string onlineToken = self.Get(key);
 

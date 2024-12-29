@@ -10,11 +10,11 @@ namespace ET
         [Timer(TimerType.LoginTimeOut)]
         public class LoginTimeOut: ATimer<ETCancellationToken>
         {
-            public override void Run(ETCancellationToken cancel)
+            public override void Run(ETCancellationToken self)
             {
                 try
                 {
-                    cancel.Cancel();
+                    self.Cancel();
                     Log.Info("Login Time Out");
                 }
                 catch (Exception e)
@@ -24,7 +24,6 @@ namespace ET
             }
         }
 
-        // public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password, Action<bool> callBack = null)
         public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password)
         {
             A2C_LoginAccount a2CLoginAccount = null;
@@ -83,7 +82,6 @@ namespace ET
             catch (Exception e)
             {
                 Log.Error(e);
-                return ErrorCode.ERR_NetWorkError;
             }
 
             if (a2CLoginAccount.Error != ErrorCode.ERR_Success)
