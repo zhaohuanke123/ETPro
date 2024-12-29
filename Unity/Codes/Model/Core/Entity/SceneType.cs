@@ -18,5 +18,6 @@
         Login = 32,
         Robot = 33,
         Current = 34,
+        LoginCenter = 35,
     }
 }

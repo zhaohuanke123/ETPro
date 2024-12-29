@@ -90,6 +90,23 @@ namespace ET.Account.Handle
                         await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
                     }
 
+                    // 账号服务器请求登录中心服
+                    // StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
+                    // long loginCenterInstanceId = startSceneConfig.InstanceId;
+                    // var loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call(loginCenterInstanceId,
+                    //     new A2L_LoginAccountRequest() { AccountId = accountInfo.Id });
+                    //
+                    // if (loginAccountResponse.Error != ErrorCode.ERR_Success)
+                    // {
+                    //     response.Error = loginAccountResponse.Error;
+                    //
+                    //     reply();
+                    //     session.DisConnect().Coroutine();
+                    //     accountInfo.Dispose();
+                    //     return;
+                    // }
+                    //
+
                     // 把之前的Session(已经登录的)踢下线
                     AccountSessionsComponent accountSessionsComponent = session.DomainScene().GetComponent<AccountSessionsComponent>();
                     long accountSessionInstanceId = accountSessionsComponent.Get(accountInfo.Id);
@@ -98,6 +115,7 @@ namespace ET.Account.Handle
                         otherSession.Send(new A2C_Disconnect() { Error = 0 });
                         otherSession.DisConnect().Coroutine();
                     }
+                    //
 
                     accountSessionsComponent.Add(accountInfo.Id, session.InstanceId);
                     // 设置账号超时时间
@@ -112,7 +130,7 @@ namespace ET.Account.Handle
                     response.Token = Token;
 
                     reply();
-                    accountInfo?.Dispose();
+                    // accountInfo?.Dispose();
                 }
             }
         }

@@ -257,3 +257,17 @@ message M2M_Interrupt // IActorLocationMessage
 	int64 Timestamp = 3;
 	int64 UnitId = 4;
 }
+
+//ResponseType L2A_LoginAccountResponse
+message A2L_LoginAccountRequest // IActorRequest
+{
+	int32 RpcId = 90;
+	int64 AccountId = 1;
+}
+
+message L2A_LoginAccountResponse // IActorResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}

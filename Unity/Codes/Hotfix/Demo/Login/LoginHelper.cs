@@ -26,11 +26,13 @@ namespace ET
 
         public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password)
         {
+            zoneScene.RemoveComponent<SessionComponent>();
             A2C_LoginAccount a2CLoginAccount = null;
             Session accountSession = null;
             try
             {
                 accountSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
+                password = MD5Helper.StringMD5(password);
                 a2CLoginAccount = (A2C_LoginAccount)await accountSession.Call(new C2A_LoginAccount() { AccountName = account, Password = password });
 
                 // 创建一个ETModel层的Session
@@ -91,6 +93,8 @@ namespace ET
             }
 
             zoneScene.AddComponent<SessionComponent>().Session = accountSession;
+            // 心跳消息组件
+            zoneScene.GetComponent<SessionComponent>().Session.AddComponent<PingComponent>();
 
             AccountInfoComponent accountInfoComponent = zoneScene.GetComponent<AccountInfoComponent>();
             accountInfoComponent.Token = a2CLoginAccount.Token;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class AccountSessionsComponentDestorySystem: DestroySystem<AccountSessionsComponent>
+    public class AccountSessionsComponentDestroySystem: DestroySystem<AccountSessionsComponent>
     {
         public override void Destroy(AccountSessionsComponent self)
         {
