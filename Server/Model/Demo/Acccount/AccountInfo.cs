@@ -15,8 +15,10 @@ namespace ET
         //密码
         public string Password { get; set; }
 
+        //创建时间
         public long CreateTime { get; set; }
 
+        //账号类型
         public int AccountType { get; set; }
     }
 }

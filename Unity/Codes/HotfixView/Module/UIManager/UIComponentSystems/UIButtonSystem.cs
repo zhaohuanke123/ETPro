@@ -16,6 +16,7 @@ namespace ET
         public override void OnCreate(UIButton self)
         {
             self.grayState = false;
+            self.isClicked = false;
         }
     }
 
@@ -33,6 +34,7 @@ namespace ET
                 ImageLoaderComponent.Instance?.ReleaseImage(self.spritePath);
                 self.spritePath = null;
             }
+
             self.onClick = null;
         }
     }
@@ -83,6 +85,33 @@ namespace ET
                 //AkSoundEngine.PostEvent("ConFirmation", Camera.main.gameObject);
                 callback?.Invoke();
             }
+
+            self.onClick = OnClick;
+            self.button.onClick.AddListener(self.onClick);
+        }
+
+        public static void SetOnClickAsync(this UIButton self, Func<ETTask> callBack)
+        {
+            self.ActivatingComponent();
+            self.RemoveOnClick();
+
+            async ETTask OnClickAsync()
+            {
+                self.isClicked = true;
+                await callBack?.Invoke();
+                self.isClicked = false;
+            }
+
+            void OnClick()
+            {
+                if (self.isClicked)
+                {
+                    return;
+                }
+
+                OnClickAsync().Coroutine();
+            }
+
             self.onClick = OnClick;
             self.button.onClick.AddListener(self.onClick);
         }
@@ -126,11 +155,13 @@ namespace ET
                     mt = null;
                 }
             }
+
             self.image.material = mt;
             if (affectInteractable)
             {
                 self.image.raycastTarget = !self.grayState;
             }
+
             self.SetBtnGray(mt, isGray, includeText);
         }
 
@@ -169,7 +200,7 @@ namespace ET
             }
         }
 
-        public static async ETTask SetSpritePath(this UIButton self,string sprite_path,bool setNativeSize = false)
+        public static async ETTask SetSpritePath(this UIButton self, string sprite_path, bool setNativeSize = false)
         {
             CoroutineLock coroutine = null;
             try
@@ -194,11 +225,13 @@ namespace ET
                         ImageLoaderComponent.Instance.ReleaseImage(sprite_path);
                         return;
                     }
+
                     self.image.sprite = sprite;
-                    if(setNativeSize)
+                    if (setNativeSize)
                         self.SetNativeSize();
                 }
-                if(!string.IsNullOrEmpty(base_sprite_path))
+
+                if (!string.IsNullOrEmpty(base_sprite_path))
                     ImageLoaderComponent.Instance.ReleaseImage(base_sprite_path);
             }
             finally
@@ -217,7 +250,7 @@ namespace ET
             self.ActivatingImageComponent();
             self.image.color = color;
         }
-        
+
         public static void SetNativeSize(this UIButton self)
         {
             self.ActivatingImageComponent();

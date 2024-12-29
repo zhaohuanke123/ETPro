@@ -18,8 +18,16 @@ namespace ET
 
         // 200001以上不抛异常
         public const int ERR_AccountAlreadyRegister = 110003;
+
         public const int ERR_NotBindPlayer = 110004;
-        public const int ERR_NetWorkError = 200002;
-        public const int ERR_LoginInfoError = 200003;
+
+        // public const int ERR_LoginInfoError = 200003;
+        public const int ERR_NetWorkError = 200002; //网络错误
+        public const int ERR_LoginInfoIsNull = 200003; //登录信息错误
+        public const int ERR_AccountNameFormError = 200004; //登录账号格式错误
+        public const int ERR_PasswordFormError = 200005; //登录密码格式，错误
+        public const int ERR_AccountInBlackListError = 200006; //账号处于黑名单
+        public const int ERR_LoginPasswordError = 200007; //登录密码错误
+        public const int ERR_RequestRepeatedly = 200008;
     }
 }

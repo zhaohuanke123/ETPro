@@ -1,4 +1,5 @@
-﻿using ET.UIEventType;
+﻿using System;
+using ET.UIEventType;
 using UnityEngine;
 using SuperScrollView;
 
@@ -12,7 +13,7 @@ namespace ET
         {
             self.loginBtn = self.AddUIComponent<UIButton>("Panel/LoginBtn");
             self.registerBtn = self.AddUIComponent<UIButton>("Panel/RegisterBtn");
-            self.loginBtn.SetOnClick(self.OnLogin);
+            self.loginBtn.SetOnClickAsync(self.OnLoginClickHandler);
             self.registerBtn.SetOnClick(self.OnRegister);
             self.account = self.AddUIComponent<UIInputTextmesh>("Panel/Account");
             self.password = self.AddUIComponent<UIInputTextmesh>("Panel/Password");
@@ -47,7 +48,7 @@ namespace ET
     [FriendClass(typeof (GlobalComponent))]
     public static class UILoginViewSystem
     {
-        public static void OnLogin(this UILoginView self)
+        public static async ETTask OnLoginClickHandler(this UILoginView self)
         {
             RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 0);
             string account = self.account.GetText();
@@ -67,19 +68,21 @@ namespace ET
             self.loginBtn.SetInteractable(false);
             PlayerPrefs.SetString(CacheKeys.Account, account);
             PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
-            LoginHelper.Login(self.scene,
-                self.ipaddr.GetText(),
-                self.account.GetText(),
-                self.password.GetText(),
-                (isSuccess) =>
-                {
-                    if (!isSuccess)
-                    {
-                        Game.EventSystem.PublishAsync(new ShowToast() { Text = $"登录失败, 账号或密码错误" }).Coroutine();
-                    }
 
-                    self.loginBtn.SetInteractable(true);
-                }).Coroutine();
+            try
+            {
+                int errorCode = await LoginHelper.Login(self.scene, self.ipaddr.GetText(), account, password);
+
+                if (errorCode != ErrorCode.ERR_Success)
+                {
+                    EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.scene, ErrorCode = errorCode }).Coroutine();
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+            }
         }
 
         public static void OnBtnClick(this UILoginView self, int id)

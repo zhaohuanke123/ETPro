@@ -24,7 +24,8 @@ namespace ET
             }
         }
 
-        public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password, Action<bool> callBack = null)
+        // public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password, Action<bool> callBack = null)
+        public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password)
         {
             A2C_LoginAccount a2CLoginAccount = null;
             Session accountSession = null;
@@ -81,7 +82,6 @@ namespace ET
             }
             catch (Exception e)
             {
-                callBack?.Invoke(false);
                 Log.Error(e);
                 return ErrorCode.ERR_NetWorkError;
             }

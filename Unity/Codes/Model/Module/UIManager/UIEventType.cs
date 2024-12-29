@@ -46,11 +46,17 @@ namespace ET
         {
             public string[] cleanup_besides_path;
         }
-        //即时消息弹出框
+        //即时消息弹出
         public struct ShowToast
         {
             public Scene Scene;
             public string Text;
+        }
+
+        public struct ShowErrorToast
+        {
+            public Scene Scene;
+            public int ErrorCode;
         }
         //新创建UI组件
         public struct AddComponent

@@ -17,5 +17,6 @@ namespace ET
         public string spritePath;
         public Button button;
         public Image image;
+        public bool isClicked;
     }
 }

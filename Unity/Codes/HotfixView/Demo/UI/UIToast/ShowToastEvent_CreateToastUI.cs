@@ -10,7 +10,7 @@ namespace ET
             await Show(args.Text);
         }
 
-        async ETTask Show(string Content, int seconds = 1)
+        private async ETTask Show(string Content, int seconds = 1)
         {
             GameObject gameObject = await GameObjectPoolComponent.Instance.GetGameObjectAsync("UI/UIToast/Prefabs/UIToast.prefab");
             UIToast ui = ToastComponent.Instance.AddChild<UIToast>();

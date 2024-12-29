@@ -16,64 +16,92 @@ namespace ET.Account.Handle
 
             session.RemoveComponent<SessionAcceptTimeoutComponent>();
 
+            // 防止多次点击登录
+            if (session.GetComponent<SessionLockingComponent>() != null)
+            {
+                response.Error = ErrorCode.ERR_RequestRepeatedly;
+                reply();
+                session.DisConnect().Coroutine();
+                return;
+            }
+
             if (string.IsNullOrEmpty(request.AccountName) || string.IsNullOrEmpty(request.Password))
             {
-                response.Error = ErrorCode.ERR_LoginInfoError;
+                response.Error = ErrorCode.ERR_LoginInfoEmpty;
                 reply();
-                session.Dispose();
+                session.DisConnect().Coroutine();
                 return;
             }
 
             if (Regex.IsMatch(request.AccountName.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
             {
-                response.Error = ErrorCode.ERR_LoginInfoError;
+                response.Error = ErrorCode.ERR_AccountNameFormError;
                 reply();
-                session.Dispose();
+                session.DisConnect().Coroutine();
                 return;
             }
 
-            var accountInfos = await DBManagerComponent.Instance.GetZoneDB(session.DomainZone())
-                    .Query<AccountInfo>(d => d.Account.Equals(request.AccountName.Trim()));
-            AccountInfo accountInfo = null;
-            if (accountInfos.Count > 0)
+            if (Regex.IsMatch(request.Password.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
             {
-                accountInfo = accountInfos[0];
-                session.AddChild(accountInfo);
-                if (accountInfo.AccountType == (int)AccountType.BlackList)
-                {
-                    response.Error = ErrorCode.ERR_LoginInfoError;
-                    reply();
-                    session.Dispose();
-                    return;
-                }
-
-                if (!accountInfo.Password.Equals(request.Password))
-                {
-                    response.Error = ErrorCode.ERR_LoginInfoError;
-                    reply();
-                    session.Dispose();
-                    return;
-                }
-            }
-            else
-            {
-                accountInfo = session.AddChild<AccountInfo>();
-                accountInfo.Account = request.AccountName.Trim();
-                accountInfo.Password = request.Password;
-                accountInfo.CreateTime = TimeHelper.ServerNow();
-                accountInfo.AccountType = (int)AccountType.General;
-                await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
+                response.Error = ErrorCode.ERR_PasswordFormError;
+                reply();
+                session.DisConnect().Coroutine();
+                return;
             }
 
-            string Token = TimeHelper.ServerNow().ToString() + RandomHelper.RandomNumber(int.MinValue, int.MaxValue);
-            TokenComponent tokenComponent = session.DomainScene().GetComponent<TokenComponent>();
-            tokenComponent.Remove(accountInfo.Id);
-            tokenComponent.Add(accountInfo.Id, Token);
+            using (session.AddComponent<SessionLockingComponent>())
+            {
+                //  协程锁，防止多个人同时登录一个账号
+                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoginAccount, request.AccountName.Trim().GetHashCode()))
+                {
+                    var accountInfos = await DBManagerComponent.Instance.GetZoneDB(session.DomainZone())
+                            .Query<AccountInfo>(d => d.Account.Equals(request.AccountName.Trim()));
 
-            response.AccountId = accountInfo.Id;
-            response.Token = Token;
+                    AccountInfo accountInfo = null;
+                    if (accountInfos != null && accountInfos.Count > 0)
+                    {
+                        accountInfo = accountInfos[0];
+                        session.AddChild(accountInfo);
+                        if (accountInfo.AccountType == (int)AccountType.BlackList)
+                        {
+                            response.Error = ErrorCode.ERR_AccountInBlackListError;
+                            reply();
+                            session.DisConnect().Coroutine();
+                            accountInfo?.Dispose();
+                            return;
+                        }
 
-            reply();
+                        if (!accountInfo.Password.Equals(request.Password))
+                        {
+                            response.Error = ErrorCode.ERR_LoginPasswordError;
+                            reply();
+                            session.DisConnect().Coroutine();
+                            accountInfo?.Dispose();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        accountInfo = session.AddChild<AccountInfo>();
+                        accountInfo.Account = request.AccountName.Trim();
+                        accountInfo.Password = request.Password;
+                        accountInfo.CreateTime = TimeHelper.ServerNow();
+                        accountInfo.AccountType = (int)AccountType.General;
+                        await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
+                    }
+
+                    string Token = TimeHelper.ServerNow().ToString() + RandomHelper.RandomNumber(int.MinValue, int.MaxValue);
+                    TokenComponent tokenComponent = session.DomainScene().GetComponent<TokenComponent>();
+                    tokenComponent.Remove(accountInfo.Id);
+                    tokenComponent.Add(accountInfo.Id, Token);
+
+                    response.AccountId = accountInfo.Id;
+                    response.Token = Token;
+
+                    reply();
+                    accountInfo?.Dispose();
+                }
+            }
         }
     }
 }

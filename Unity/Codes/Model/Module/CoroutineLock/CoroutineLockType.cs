@@ -15,7 +15,8 @@ namespace ET
         public const int UIImage = 10;
         public const int AOIView = 11;
         public const int Transfer = 12;
-        public const int Max = 100; // 这个必须最大
         public const int LoginAccount = 13;
+        
+        public const int Max = 100; // 这个必须最大
     }
 }

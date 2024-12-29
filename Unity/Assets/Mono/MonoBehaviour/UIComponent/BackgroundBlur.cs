@@ -9,15 +9,15 @@ namespace ET
     /// <summary>
     /// UI弹窗后面的背景截图
     /// </summary>
-    [RequireComponent(typeof(RawImage))]
+    [RequireComponent(typeof (RawImage))]
     [ExecuteAlways]
-    public class BackgroundBlur : MonoBehaviour
+    public class BackgroundBlur: MonoBehaviour
     {
         public Material blurMaterial;
         public RawImage rImage;
 
         private static Texture2D screenShotTemp;
-        public static int RefCount = 0;//引用次数
+        public static int RefCount = 0; //引用次数
 #if UNITY_EDITOR
         private void Awake()
         {
@@ -25,7 +25,7 @@ namespace ET
             rImage = this.GetComponent<RawImage>();
         }
 #endif
-        
+
         private void OnEnable()
         {
             StartCoroutine(Snapshoot());
@@ -42,7 +42,6 @@ namespace ET
             {
                 yield return ReadPixels();
             }
-            
         }
 
         private IEnumerator ReadPixels()
@@ -50,10 +49,11 @@ namespace ET
             var mainCamera = Camera.main;
             if (mainCamera == null) yield break;
             rImage.enabled = false;
-            while (RefCount>0 && screenShotTemp == null)
+            while (RefCount > 0 && screenShotTemp == null)
             {
                 yield return new WaitForEndOfFrame();
             }
+
             RefCount++;
             if (screenShotTemp == null)
             {
@@ -67,21 +67,23 @@ namespace ET
                         break;
                     }
                 }
+
                 uiCamera?.SetActive(false);
                 yield return new WaitForEndOfFrame();
-                if (RefCount > 0)//防止等一帧回来已经被关了
+                if (RefCount > 0) //防止等一帧回来已经被关了
                 {
                     // 先创建一个的空纹理，大小可根据实现需要来设置  
                     var rect = new Rect(0, 0, Screen.width, Screen.height);
-                    screenShotTemp = new Texture2D((int) rect.width, (int) rect.height, TextureFormat.RGB24, false);
+                    screenShotTemp = new Texture2D((int)rect.width, (int)rect.height, TextureFormat.RGB24, false);
                     // 读取屏幕像素信息并存储为纹理数据，  
                     screenShotTemp.ReadPixels(rect, 0, 0);
                     screenShotTemp.Apply();
                     // 调用shader模糊
                     if (blurMaterial != null)
                     {
-                        RenderTexture destination = RenderTexture.GetTemporary((int) rect.width, (int) rect.height, 0,RenderTextureFormat.Default,RenderTextureReadWrite.Linear);
-                        blurMaterial.SetTexture("_MainTex",screenShotTemp);
+                        RenderTexture destination = RenderTexture.GetTemporary((int)rect.width, (int)rect.height, 0, RenderTextureFormat.Default,
+                            RenderTextureReadWrite.Linear);
+                        blurMaterial.SetTexture("_MainTex", screenShotTemp);
                         Graphics.Blit(null, destination, blurMaterial);
 
                         screenShotTemp.ReadPixels(rect, 0, 0);
@@ -89,9 +91,10 @@ namespace ET
                         destination.Release();
                     }
                 }
+
                 uiCamera?.SetActive(true);
             }
-            
+
             rImage.enabled = true;
             rImage.texture = screenShotTemp;
         }
