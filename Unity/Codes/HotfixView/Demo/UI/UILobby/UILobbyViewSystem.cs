@@ -12,7 +12,7 @@ namespace ET
             self.EnterBtn = self.AddUIComponent<UIButton>("Panel/EnterMap");
             // self.EnterBtn.SetOnClick(self.OnEnterBtnClick);
             self.ReturnLoginBtn = self.AddUIComponent<UIButton>("Panel/ReturnLogin");
-            self.ReturnLoginBtn.SetOnClick(self.OnReturnLoginBtnClick);
+            self.ReturnLoginBtn.SetOnClickAsync(self.OnReturnLoginBtnClick);
         }
     }
 
@@ -36,16 +36,18 @@ namespace ET
             // GuidanceComponent.Instance.NoticeEvent("Click_EnterMap");
         }
 
-        public static void OnReturnLoginBtnClick(this UILobbyView self)
+        public static async ETTask OnReturnLoginBtnClick(this UILobbyView self)
         {
-            LoginHelper.Logout(self.zoneScene, (success) =>
+            int errorCode = await LoginHelper.Logout(self.zoneScene);
+
+            if (errorCode != ErrorCode.ERR_Success)
             {
-                if (success)
-                {
-                    UIManagerComponent.Instance.OpenWindow<UILoginView, Scene>(UILoginView.PrefabPath, self.zoneScene).Coroutine();
-                    UIManagerComponent.Instance.CloseWindow<UILobbyView>().Coroutine();
-                }
-            }).Coroutine();
+                Log.Error("Logout error");
+                return;
+            }
+
+            UIManagerComponent.Instance.OpenWindow<UILoginView, Scene>(UILoginView.PrefabPath, self.zoneScene).Coroutine();
+            UIManagerComponent.Instance.CloseWindow<UILobbyView>().Coroutine();
         }
     }
 }

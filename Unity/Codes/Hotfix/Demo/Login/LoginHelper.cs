@@ -106,7 +106,7 @@ namespace ET
         public static async ETTask<int> Register(Scene zoneScene, string address, string account, string password)
         {
             // 创建一个ETModel层的Session
-            R2C_Register r2CRegister = null;
+            A2C_RegisterAccount a2CRegisterAccount = null;
             Session session = null;
             try
             {
@@ -117,7 +117,8 @@ namespace ET
                     ETCancellationToken cancel = new ETCancellationToken();
                     timerId = TimerComponent.Instance.NewOnceTimer(TimeInfo.Instance.ClientNow() + 10000, TimerType.LoginTimeOut, cancel);
                     password = MD5Helper.StringMD5(password);
-                    r2CRegister = (R2C_Register)await session.Call(new C2R_Register() { Account = account, Password = password },
+                    a2CRegisterAccount = (A2C_RegisterAccount)await session.Call(
+                        new C2A_RegisterAccount() { AccountName = account, Password = password },
                         cancel);
                 }
                 finally
@@ -131,31 +132,36 @@ namespace ET
                 Log.Error(e);
             }
 
-            if (r2CRegister.Error != ErrorCode.ERR_Success)
+            if (a2CRegisterAccount.Error != ErrorCode.ERR_Success)
             {
-                return r2CRegister.Error;
+                return a2CRegisterAccount.Error;
             }
 
             return ErrorCode.ERR_Success;
         }
 
         // 推出登录
-        public static async ETTask Logout(Scene zoneScene, Action<bool> callBack)
+        public static async ETTask<int> Logout(Scene zoneScene)
         {
+            A2C_LogoutResponse a2C_LogoutResponse = null;
+            Session accountSession = null;
             try
             {
-                Session gateSession = zoneScene.GetComponent<SessionComponent>().Session;
-                await gateSession.Call(new C2G_Logout());
-                gateSession.Dispose();
-                zoneScene.RemoveComponent<SessionComponent>();
-
-                callBack?.Invoke(true);
+                accountSession = zoneScene.GetComponent<SessionComponent>().Session;
+                a2C_LogoutResponse = (A2C_LogoutResponse)await accountSession.Call(new C2A_LogoutRequest());
             }
             catch (Exception e)
             {
                 Log.Error(e);
-                callBack?.Invoke(false);
             }
+
+            if (a2C_LogoutResponse.Error != ErrorCode.ERR_Success)
+            {
+                return a2C_LogoutResponse.Error;
+            }
+
+            accountSession.Dispose();
+            return ErrorCode.ERR_Success;
         }
     }
 }

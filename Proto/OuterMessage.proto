@@ -395,6 +395,19 @@ message A2C_RegisterAccount // IResponse
 	string Message = 92;
 }
 
+//ResponseType A2C_LogoutResponse
+message C2A_LogoutRequest // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message A2C_LogoutResponse // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
 message A2C_Disconnect // IMessage
 {
 	int32 Error = 1;

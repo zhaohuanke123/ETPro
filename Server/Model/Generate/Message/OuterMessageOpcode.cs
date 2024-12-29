@@ -51,6 +51,8 @@ namespace ET
 		 public const ushort A2C_LoginAccount = 10048;
 		 public const ushort C2A_RegisterAccount = 10050;
 		 public const ushort A2C_RegisterAccount = 10051;
+		 public const ushort C2A_LogoutRequest = 10052;
+		 public const ushort A2C_LogoutResponse = 10053;
 		 public const ushort A2C_Disconnect = 10049;
 	}
 }

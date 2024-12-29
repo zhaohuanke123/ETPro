@@ -86,12 +86,6 @@ namespace ET.Account.Handle
                         reply();
                         session.DisConnect().Coroutine();
                         return;
-                        // accountInfo = session.AddChild<AccountInfo>();
-                        // accountInfo.Account = request.AccountName.Trim();
-                        // accountInfo.Password = request.Password;
-                        // accountInfo.CreateTime = TimeHelper.ServerNow();
-                        // accountInfo.AccountType = (int)AccountType.General;
-                        // await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
                     }
 
                     // 账号服务器请求登录中心服
@@ -133,7 +127,6 @@ namespace ET.Account.Handle
                     response.Token = Token;
 
                     reply();
-                    // accountInfo?.Dispose();
                 }
             }
         }
