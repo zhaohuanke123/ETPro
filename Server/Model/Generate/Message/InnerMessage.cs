@@ -590,4 +590,32 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(G2L_DisconnectGateUnit))]
+	[Message(InnerOpcode.L2G_DisconnectGateUnit)]
+	[ProtoContract]
+	public partial class L2G_DisconnectGateUnit: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long AccountId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.G2L_DisconnectGateUnit)]
+	[ProtoContract]
+	public partial class G2L_DisconnectGateUnit: Object, IActorResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
 }

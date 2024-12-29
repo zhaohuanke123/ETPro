@@ -29,5 +29,6 @@ namespace ET
         public const int ERR_LoginPasswordError = 200007; //登录密码错误
         public const int ERR_RequestRepeatedly = 200008;
         public const int ERR_LoginInfoEmpty = 200009;
+        public const int ERR_AccountNotExistError = 200010;
     }
 }

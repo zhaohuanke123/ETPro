@@ -54,7 +54,9 @@ namespace ET
                 case ErrorCode.ERR_RequestRepeatedly:
                     text = "请勿重复请求!";
                     break;
-
+                case ErrorCode.ERR_AccountNotExistError:
+                    text = "账号不存在!";
+                    break;
                 default:
                     text = $"未知错误: {a.ErrorCode}";
                     break;

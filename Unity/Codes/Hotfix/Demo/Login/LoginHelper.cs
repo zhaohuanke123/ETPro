@@ -103,13 +103,13 @@ namespace ET
             return ErrorCode.ERR_Success;
         }
 
-        public static async ETTask Register(Scene zoneScene, string address, string account, string password, Action<bool> callBack = null)
+        public static async ETTask<int> Register(Scene zoneScene, string address, string account, string password)
         {
+            // 创建一个ETModel层的Session
+            R2C_Register r2CRegister = null;
+            Session session = null;
             try
             {
-                // 创建一个ETModel层的Session
-                R2C_Register r2CRegister;
-                Session session = null;
                 long timerId = 0;
                 try
                 {
@@ -121,18 +121,21 @@ namespace ET
                 }
                 finally
                 {
+                    TimerComponent.Instance.Remove(ref timerId);
                     session?.Dispose();
                 }
-
-                TimerComponent.Instance.Remove(ref timerId);
-
-                callBack?.Invoke(true);
             }
             catch (Exception e)
             {
-                callBack?.Invoke(false);
                 Log.Error(e);
             }
+
+            if (r2CRegister.Error != ErrorCode.ERR_Success)
+            {
+                return r2CRegister.Error;
+            }
+
+            return ErrorCode.ERR_Success;
         }
 
         // 推出登录

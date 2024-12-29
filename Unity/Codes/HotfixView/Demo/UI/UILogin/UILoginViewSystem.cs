@@ -1,4 +1,5 @@
 ﻿using System;
+using ET.EventType;
 using ET.UIEventType;
 using UnityEngine;
 using SuperScrollView;
@@ -14,7 +15,7 @@ namespace ET
             self.loginBtn = self.AddUIComponent<UIButton>("Panel/LoginBtn");
             self.registerBtn = self.AddUIComponent<UIButton>("Panel/RegisterBtn");
             self.loginBtn.SetOnClickAsync(self.OnLoginClickHandler);
-            self.registerBtn.SetOnClick(self.OnRegister);
+            self.registerBtn.SetOnClickAsync(self.OnRegisterClockHandler);
             self.account = self.AddUIComponent<UIInputTextmesh>("Panel/Account");
             self.password = self.AddUIComponent<UIInputTextmesh>("Panel/Password");
             self.ipaddr = self.AddUIComponent<UIInputTextmesh>("Panel/GM/InputField");
@@ -67,6 +68,8 @@ namespace ET
                     EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.scene, ErrorCode = errorCode }).Coroutine();
                     return;
                 }
+
+                EventSystem.Instance.PublishAsync(new LoginFinish() { ZoneScene = self.scene, Account = account }).Coroutine();
             }
             catch (Exception e)
             {
@@ -79,35 +82,23 @@ namespace ET
             self.ipaddr.SetText(ServerConfigComponent.Instance.ChangeEnv(id).RealmIp);
         }
 
-        public static void OnRegister(this UILoginView self)
+        public static async ETTask OnRegisterClockHandler(this UILoginView self)
         {
             string account = self.account.GetText();
             string password = self.password.GetText();
 
-            if (!IsValidInput(account, password))
-            {
-                return;
-            }
-
-            self.loginBtn.SetInteractable(false);
             PlayerPrefs.SetString(CacheKeys.Account, account);
             PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
 
-            LoginHelper.Register(self.scene, self.ipaddr.GetText(), account, password,
-                (isSuccess) =>
-                {
-                    if (isSuccess)
-                    {
-                        Game.EventSystem.PublishAsync(new ShowToast() { Text = $"注册成功" }).Coroutine();
-                        RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
-                    }
-                    else
-                    {
-                        Game.EventSystem.PublishAsync(new ShowToast() { Text = $"注册失败, 账号已存在" }).Coroutine();
-                    }
+            int errorCode = await LoginHelper.Register(self.scene, self.ipaddr.GetText(), account, password);
 
-                    self.loginBtn.SetInteractable(true);
-                }).Coroutine();
+            if (errorCode != ErrorCode.ERR_Success)
+            {
+                EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.scene, ErrorCode = errorCode }).Coroutine();
+                return;
+            }
+
+            EventSystem.Instance.PublishAsync(new ShowToast() { Text = "注册成功" }).Coroutine();
         }
 
         public static LoopListViewItem2 GetItemByIndex(this UILoginView self, LoopListView2 listView, int index)

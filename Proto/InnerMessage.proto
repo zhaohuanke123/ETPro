@@ -271,3 +271,17 @@ message L2A_LoginAccountResponse // IActorResponse
 	int32 Error = 91;
 	string Message = 92;
 }
+
+//ResponseType G2L_DisconnectGateUnit
+message L2G_DisconnectGateUnit // IActorRequest
+{
+	int32 RpcId = 90;
+	int64 AccountId = 1;
+}
+
+message G2L_DisconnectGateUnit // IActorResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}

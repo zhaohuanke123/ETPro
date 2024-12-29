@@ -33,7 +33,7 @@ namespace ET.Account.Handle
                 return;
             }
 
-            if (Regex.IsMatch(request.AccountName.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
+            if (!Regex.IsMatch(request.AccountName.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
             {
                 response.Error = ErrorCode.ERR_AccountNameFormError;
                 reply();
@@ -41,7 +41,7 @@ namespace ET.Account.Handle
                 return;
             }
 
-            if (Regex.IsMatch(request.Password.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
+            if (!Regex.IsMatch(request.Password.Trim(), @"^[A-Za-z0-9]+$"))
             {
                 response.Error = ErrorCode.ERR_PasswordFormError;
                 reply();
@@ -82,30 +82,33 @@ namespace ET.Account.Handle
                     }
                     else
                     {
-                        accountInfo = session.AddChild<AccountInfo>();
-                        accountInfo.Account = request.AccountName.Trim();
-                        accountInfo.Password = request.Password;
-                        accountInfo.CreateTime = TimeHelper.ServerNow();
-                        accountInfo.AccountType = (int)AccountType.General;
-                        await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
+                        response.Error = ErrorCode.ERR_AccountNotExistError;
+                        reply();
+                        session.DisConnect().Coroutine();
+                        return;
+                        // accountInfo = session.AddChild<AccountInfo>();
+                        // accountInfo.Account = request.AccountName.Trim();
+                        // accountInfo.Password = request.Password;
+                        // accountInfo.CreateTime = TimeHelper.ServerNow();
+                        // accountInfo.AccountType = (int)AccountType.General;
+                        // await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
                     }
 
                     // 账号服务器请求登录中心服
-                    // StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
-                    // long loginCenterInstanceId = startSceneConfig.InstanceId;
-                    // var loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call(loginCenterInstanceId,
-                    //     new A2L_LoginAccountRequest() { AccountId = accountInfo.Id });
-                    //
-                    // if (loginAccountResponse.Error != ErrorCode.ERR_Success)
-                    // {
-                    //     response.Error = loginAccountResponse.Error;
-                    //
-                    //     reply();
-                    //     session.DisConnect().Coroutine();
-                    //     accountInfo.Dispose();
-                    //     return;
-                    // }
-                    //
+                    StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
+                    long loginCenterInstanceId = startSceneConfig.InstanceId;
+                    var loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call(loginCenterInstanceId,
+                        new A2L_LoginAccountRequest() { AccountId = accountInfo.Id });
+
+                    if (loginAccountResponse.Error != ErrorCode.ERR_Success)
+                    {
+                        response.Error = loginAccountResponse.Error;
+
+                        reply();
+                        session.DisConnect().Coroutine();
+                        accountInfo.Dispose();
+                        return;
+                    }
 
                     // 把之前的Session(已经登录的)踢下线
                     AccountSessionsComponent accountSessionsComponent = session.DomainScene().GetComponent<AccountSessionsComponent>();
