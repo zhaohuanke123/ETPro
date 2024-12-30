@@ -55,7 +55,11 @@ namespace ET
             string account = self.account.GetText();
             string password = self.password.GetText();
 
-            // self.loginBtn.SetInteractable(false);
+            if (!IsValidInput(account, password))
+            {
+                return;
+            }
+
             PlayerPrefs.SetString(CacheKeys.Account, account);
             PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
 
@@ -86,6 +90,11 @@ namespace ET
         {
             string account = self.account.GetText();
             string password = self.password.GetText();
+
+            if (!IsValidInput(account, password))
+            {
+                return;
+            }
 
             PlayerPrefs.SetString(CacheKeys.Account, account);
             PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
@@ -127,9 +136,22 @@ namespace ET
 
         private static bool IsValidInput(string account, string password)
         {
-            if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password))
+            string text = "";
+            if (string.IsNullOrEmpty(account))
             {
-                Game.EventSystem.PublishAsync(new ShowToast() { Text = I18NComponent.Instance.I18NGetText("Text_Enter_Account") })
+                text = "账号不能为空!";
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(password))
+                {
+                    text = "密码不能为空!";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                Game.EventSystem.PublishAsync(new ShowToast() { Text = text })
                         .Coroutine();
                 return false;
             }
