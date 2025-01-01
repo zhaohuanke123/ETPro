@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using UnityEngine;
+
 namespace ET
 {
 	// 1 mono模式 2 ILRuntime模式 3 mono热重载模式
@@ -15,7 +16,7 @@ namespace ET
 		Reload = 2,
 		Wolong = 3,
 	}
-	
+
 	public class Init: MonoBehaviour
 	{
 		public CodeMode CodeMode = CodeMode.Mono;
@@ -23,14 +24,13 @@ namespace ET
 		public YooAssets.EPlayMode PlayMode = YooAssets.EPlayMode.EditorSimulateMode;
 
 		private bool IsInit = false;
-		
 
 		private IEnumerator AwakeAsync()
 		{
 #if !UNITY_EDITOR && !FORCE_UPDATE //编辑器模式下跳过更新
 			Define.Networked = Application.internetReachability != NetworkReachability.NotReachable;
 #endif
-			
+
 #if UNITY_EDITOR
 			// 编辑器下的模拟模式
 			if (PlayMode == YooAssets.EPlayMode.EditorSimulateMode)
@@ -43,7 +43,7 @@ namespace ET
 			}
 			else
 #endif
-			// 单机运行模式
+					// 单机运行模式
 			if (PlayMode == YooAssets.EPlayMode.OfflinePlayMode)
 			{
 				yield return YooAssetsMgr.Instance.Init(YooAssets.EPlayMode.OfflinePlayMode);
@@ -51,9 +51,9 @@ namespace ET
 				createParameters.LocationServices = new AddressByPathLocationServices("Assets/AssetsPackage");
 				createParameters.DecryptionServices = new BundleDecryption();
 				yield return YooAssets.InitializeAsync(createParameters);
-				
+
 				// 先设置更新补丁清单
-				yield return  YooAssets.WeaklyUpdateManifestAsync(YooAssetsMgr.Instance.staticVersion);
+				yield return YooAssets.WeaklyUpdateManifestAsync(YooAssetsMgr.Instance.staticVersion);
 			}
 			// 联机运行模式
 			else
@@ -63,17 +63,18 @@ namespace ET
 				createParameters.LocationServices = new AddressByPathLocationServices("Assets/AssetsPackage");
 				createParameters.DecryptionServices = new BundleDecryption();
 				createParameters.ClearCacheWhenDirty = true;
-				createParameters.DefaultHostServer = YooAssetsMgr.Instance.Config.RemoteCdnUrl+"/"+YooAssetsMgr.Instance.Config.Channel+"_"+PlatformUtil.GetStrPlatformIgnoreEditor();
-				createParameters.FallbackHostServer = YooAssetsMgr.Instance.Config.RemoteCdnUrl2+"/"+YooAssetsMgr.Instance.Config.Channel+"_"+PlatformUtil.GetStrPlatformIgnoreEditor();
+				createParameters.DefaultHostServer = YooAssetsMgr.Instance.Config.RemoteCdnUrl + "/" + YooAssetsMgr.Instance.Config.Channel + "_" +
+						PlatformUtil.GetStrPlatformIgnoreEditor();
+				createParameters.FallbackHostServer = YooAssetsMgr.Instance.Config.RemoteCdnUrl2 + "/" + YooAssetsMgr.Instance.Config.Channel + "_" +
+						PlatformUtil.GetStrPlatformIgnoreEditor();
 				createParameters.VerifyLevel = EVerifyLevel.High;
 				yield return YooAssets.InitializeAsync(createParameters);
 
 				// 先设置更新补丁清单
-				yield return  YooAssets.WeaklyUpdateManifestAsync(YooAssetsMgr.Instance.staticVersion);
+				yield return YooAssets.WeaklyUpdateManifestAsync(YooAssetsMgr.Instance.staticVersion);
 			}
 
 			InitUnitySetting();
-			
 
 #if ENABLE_IL2CPP
 			this.CodeMode = CodeMode.Wolong;
@@ -85,7 +86,7 @@ namespace ET
 			{
 				Log.Error(e.ExceptionObject.ToString());
 			};
-			
+
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
 			DontDestroyOnLoad(gameObject);
@@ -143,7 +144,7 @@ namespace ET
 			CodeLoader.Instance.OnApplicationQuit();
 			CodeLoader.Instance.Dispose();
 		}
-		
+
 		// 一些unity的设置项目
 		void InitUnitySetting()
 		{
