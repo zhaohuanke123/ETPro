@@ -5,12 +5,13 @@ using UnityEngine;
 
 namespace ET
 {
-	public class PlatformTypeComparer : IEqualityComparer<PlatformType>
+	public class PlatformTypeComparer: IEqualityComparer<PlatformType>
 	{
 		public static PlatformTypeComparer Instance = new PlatformTypeComparer();
+
 		public bool Equals(PlatformType x, PlatformType y)
 		{
-			return x == y;          //x.Equals(y);  注意这里不要使用Equals方法，因为也会造成封箱操作
+			return x == y; //x.Equals(y);  注意这里不要使用Equals方法，因为也会造成封箱操作
 		}
 
 		public int GetHashCode(PlatformType x)
@@ -18,7 +19,8 @@ namespace ET
 			return (int)x;
 		}
 	}
-	public enum PlatformType:byte
+
+	public enum PlatformType: byte
 	{
 		None,
 		Android,
@@ -27,14 +29,14 @@ namespace ET
 		MacOS,
 		Linux
 	}
-	
-	public enum BuildType:byte
+
+	public enum BuildType: byte
 	{
 		Development,
 		Release,
 	}
 
-	public class BuildEditor : EditorWindow
+	public class BuildEditor: EditorWindow
 	{
 		private const string settingAsset = "Assets/Editor/BuildEditor/ETBuildSettings.asset";
 
@@ -52,14 +54,15 @@ namespace ET
 		private ETBuildSettings buildSettings;
 
 		private BuildConfig config;
+
 		[MenuItem("Tools/打包工具")]
 		public static void ShowWindow()
 		{
 			GetWindow(typeof (BuildEditor));
 		}
 
-        private void OnEnable()
-        {
+		private void OnEnable()
+		{
 #if UNITY_ANDROID
 			activePlatform = PlatformType.Android;
 #elif UNITY_IOS
@@ -73,13 +76,13 @@ namespace ET
 #else
 			activePlatform = PlatformType.None;
 #endif
-            platformType = activePlatform;
+			platformType = activePlatform;
 
 			if (!File.Exists(settingAsset))
-            {
-				buildSettings = new ETBuildSettings();
+			{
+				buildSettings = CreateInstance<ETBuildSettings>();
 				AssetDatabase.CreateAsset(buildSettings, settingAsset);
-            }
+			}
 			else
 			{
 				buildSettings = AssetDatabase.LoadAssetAtPath<ETBuildSettings>(settingAsset);
@@ -93,14 +96,14 @@ namespace ET
 				buildType = buildSettings.buildType;
 				buildAssetBundleOptions = buildSettings.buildAssetBundleOptions;
 			}
-        }
+		}
 
-        private void OnDisable()
-        {
+		private void OnDisable()
+		{
 			SaveSettings();
-        }
+		}
 
-        private void OnGUI() 
+		private void OnGUI()
 		{
 			if (this.config == null)
 			{
@@ -123,15 +126,15 @@ namespace ET
 			EditorGUILayout.LabelField("");
 			EditorGUILayout.LabelField("打包平台:");
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-            this.clearFolder = EditorGUILayout.Toggle("清理资源文件夹: ", clearFolder);
-            this.isPackAtlas = EditorGUILayout.Toggle("是否重新打图集: ", isPackAtlas);
-            this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE(整包): ", this.isBuildExe);
-            if (this.isBuildExe)
-            {
-	            this.buildResourceAll = EditorGUILayout.Toggle("是否打全量包: ", this.buildResourceAll);
-	            this.buildHotfixAssembliesAOT = EditorGUILayout.Toggle("热更代码是否打AOT: ", this.buildHotfixAssembliesAOT);
-            }
-            this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
+			this.clearFolder = EditorGUILayout.Toggle("清理资源文件夹: ", clearFolder);
+			this.isPackAtlas = EditorGUILayout.Toggle("是否重新打图集: ", isPackAtlas);
+			this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE(整包): ", this.isBuildExe);
+			if (this.isBuildExe)
+			{
+				this.buildResourceAll = EditorGUILayout.Toggle("是否打全量包: ", this.buildResourceAll);
+				this.buildHotfixAssembliesAOT = EditorGUILayout.Toggle("热更代码是否打AOT: ", this.buildHotfixAssembliesAOT);
+			}
+			this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
 			//EditorGUILayout.LabelField("BuildAssetBundleOptions(可多选):");
 			//this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
 
@@ -140,6 +143,7 @@ namespace ET
 				case BuildType.Development:
 					this.buildOptions = BuildOptions.Development | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
 					break;
+
 				case BuildType.Release:
 					this.buildOptions = BuildOptions.None;
 					break;
@@ -155,22 +159,35 @@ namespace ET
 					return;
 				}
 				if (platformType != activePlatform)
-                {
-                    switch (EditorUtility.DisplayDialogComplex("警告!", $"当前目标平台为{activePlatform}, 如果切换到{platformType}, 可能需要较长加载时间", "切换", "取消", "不切换"))
-                    {
+				{
+					switch (EditorUtility.DisplayDialogComplex("警告!", $"当前目标平台为{activePlatform}, 如果切换到{platformType}, 可能需要较长加载时间", "切换", "取消", "不切换"))
+					{
 						case 0:
 							activePlatform = platformType;
 							break;
+
 						case 1:
 							return;
-                        case 2:
+
+						case 2:
 							platformType = activePlatform;
 							break;
-                    }
-                }
+					}
+				}
+
 				BuildTargetGroup group = BuildHelper.buildGroupmap[activePlatform];
-				if(!HybridCLR.HybridCLRHelper.Setup(group))return;
-				BuildHelper.Build(this.platformType, this.buildOptions, this.isBuildExe,this.clearFolder,this.buildHotfixAssembliesAOT,this.buildResourceAll,this.isPackAtlas);
+				if (!HybridCLR.HybridCLRHelper.Setup(group))
+				{
+					return;
+				}
+
+				BuildHelper.Build(this.platformType,
+				this.buildOptions,
+				this.isBuildExe,
+				this.clearFolder,
+				this.buildHotfixAssembliesAOT,
+				this.buildResourceAll,
+				this.isPackAtlas);
 			}
 
 			GUILayout.Space(5);

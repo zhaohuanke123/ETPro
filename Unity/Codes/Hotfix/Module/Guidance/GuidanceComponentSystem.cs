@@ -11,11 +11,11 @@ namespace ET
         {
             public override void Awake(GuidanceComponent self)
             {
-                GuidanceComponent.Instance = self;
-                self.CacheValues = new Dictionary<string, int>();
-                self.CurIndex = -1;
-                self.Group = -1;
-                self.CheckGroupStart();
+                // GuidanceComponent.Instance = self;
+                // self.CacheValues = new Dictionary<string, int>();
+                // self.CurIndex = -1;
+                // self.Group = -1;
+                // self.CheckGroupStart();
             }
         }
 
@@ -26,15 +26,15 @@ namespace ET
         /// <param name="doneList"></param>
         public static void UpdateGuidanceDone(this GuidanceComponent self, List<int> doneList)
         {
-            if (string.IsNullOrEmpty(PlayerComponent.Instance.Account))//根据游戏类型确定按账号还是角色id、存档id
-            {
-                Log.Error("PlayerComponent.Instance.Account == null");
-                return;
-            }
-            for (int i = 0; i < doneList.Count; i++)
-            {
-                self.SaveKey(CacheKeys.Guidance+"_"+doneList[i]+"_"+PlayerComponent.Instance.Account,1);
-            }
+            // if (string.IsNullOrEmpty(PlayerComponent.Instance.Account))//根据游戏类型确定按账号还是角色id、存档id
+            // {
+            //     Log.Error("PlayerComponent.Instance.Account == null");
+            //     return;
+            // }
+            // for (int i = 0; i < doneList.Count; i++)
+            // {
+            //     self.SaveKey(CacheKeys.Guidance+"_"+doneList[i]+"_"+PlayerComponent.Instance.Account,1);
+            // }
         }
 
         /// <summary>
@@ -43,26 +43,26 @@ namespace ET
         /// <param name="self"></param>
         public static void CheckGroupStart(this GuidanceComponent self)
         {
-            if(self.Group>=0) return;
-            for (int i = 0; i < GuidanceConfigCategory.Instance.GetAllGroupList().Count; i++)
-            {
-                var item = GuidanceConfigCategory.Instance.GetAllGroupList()[i];
-                var val = 0;
-                if (item.Share != 0)
-                {
-                    val = self.GetKey(CacheKeys.Guidance + "_" + item.Group);
-                }
-                else
-                {
-                    val = self.GetKey(CacheKeys.Guidance+"_"+item.Group+"_"+PlayerComponent.Instance?.Account);
-                }
-
-                if (val == 0)
-                {
-                    self.StartGuide(item.Group);
-                    return;
-                }
-            }
+            // if(self.Group>=0) return;
+            // for (int i = 0; i < GuidanceConfigCategory.Instance.GetAllGroupList().Count; i++)
+            // {
+            //     var item = GuidanceConfigCategory.Instance.GetAllGroupList()[i];
+            //     var val = 0;
+            //     if (item.Share != 0)
+            //     {
+            //         val = self.GetKey(CacheKeys.Guidance + "_" + item.Group);
+            //     }
+            //     else
+            //     {
+            //         val = self.GetKey(CacheKeys.Guidance+"_"+item.Group+"_"+PlayerComponent.Instance?.Account);
+            //     }
+            //
+            //     if (val == 0)
+            //     {
+            //         self.StartGuide(item.Group);
+            //         return;
+            //     }
+            // }
         }
         
         
@@ -106,22 +106,22 @@ namespace ET
         /// <param name="evt"></param>
         public static void NoticeEvent(this GuidanceComponent self, string evt)
         {
-            if(self==null) return;
-            if (self.CurIndex >=0 )
-            {
-                if (self.StepConfig.Event == evt)
-                {
-                    self.OnStepOver(self.StepConfig.Id);
-                    return;
-                }
-
-                if (self.StepConfig.Steptype == GuidanceStepType.UIRouter&&evt.StartsWith("Open_"))//路由进行中打开了新界面
-                {
-                    if(evt!="Open_UIGuidanceView")//打开引导界面忽略
-                        self.RunStep(self.CurIndex);
-                    return;
-                }
-            }
+            // if(self==null) return;
+            // if (self.CurIndex >=0 )
+            // {
+            //     if (self.StepConfig.Event == evt)
+            //     {
+            //         self.OnStepOver(self.StepConfig.Id);
+            //         return;
+            //     }
+            //
+            //     if (self.StepConfig.Steptype == GuidanceStepType.UIRouter&&evt.StartsWith("Open_"))//路由进行中打开了新界面
+            //     {
+            //         if(evt!="Open_UIGuidanceView")//打开引导界面忽略
+            //             self.RunStep(self.CurIndex);
+            //         return;
+            //     }
+            // }
 
         }
         
