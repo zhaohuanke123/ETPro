@@ -803,6 +803,15 @@ namespace ET
 		[ProtoMember(2)]
 		public long AccountId { get; set; }
 
+		[ProtoMember(3)]
+		public string Address { get; set; }
+
+		[ProtoMember(4)]
+		public long Key { get; set; }
+
+		[ProtoMember(5)]
+		public long GateId { get; set; }
+
 	}
 
 	[ResponseType(nameof(A2C_RegisterAccount))]

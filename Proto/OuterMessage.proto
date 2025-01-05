@@ -378,6 +378,9 @@ message A2C_LoginAccount // IResponse
 	string Message = 92;
 	string Token  = 1;
 	int64 AccountId = 2;
+	string Address = 3;
+	int64 Key = 4;
+	int64 GateId = 5;
 }
 
 //ResponseType A2C_RegisterAccount

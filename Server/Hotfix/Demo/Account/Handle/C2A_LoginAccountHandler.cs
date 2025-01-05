@@ -49,6 +49,7 @@ namespace ET.Account.Handle
                 return;
             }
 
+            AccountInfo accountInfo = null;
             using (session.AddComponent<SessionLockingComponent>())
             {
                 //  协程锁，防止多个人同时登录一个账号
@@ -57,7 +58,6 @@ namespace ET.Account.Handle
                     var accountInfos = await DBManagerComponent.Instance.GetZoneDB(session.DomainZone())
                             .Query<AccountInfo>(d => d.Account.Equals(request.AccountName.Trim()));
 
-                    AccountInfo accountInfo = null;
                     if (accountInfos != null && accountInfos.Count > 0)
                     {
                         accountInfo = accountInfos[0];
@@ -87,48 +87,60 @@ namespace ET.Account.Handle
                         session.DisConnect().Coroutine();
                         return;
                     }
-
-                    // 账号服务器请求登录中心服
-                    StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
-                    long loginCenterInstanceId = startSceneConfig.InstanceId;
-                    var loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call(loginCenterInstanceId,
-                        new A2L_LoginAccountRequest() { AccountId = accountInfo.Id });
-
-                    if (loginAccountResponse.Error != ErrorCode.ERR_Success)
-                    {
-                        response.Error = loginAccountResponse.Error;
-
-                        reply();
-                        session.DisConnect().Coroutine();
-                        accountInfo.Dispose();
-                        return;
-                    }
-
-                    // 把之前的Session(已经登录的)踢下线
-                    AccountSessionsComponent accountSessionsComponent = session.DomainScene().GetComponent<AccountSessionsComponent>();
-                    long accountSessionInstanceId = accountSessionsComponent.Get(accountInfo.Id);
-                    if (Game.EventSystem.Get(accountSessionInstanceId) is Session otherSession)
-                    {
-                        otherSession.Send(new A2C_Disconnect() { Error = 0 });
-                        otherSession.DisConnect().Coroutine();
-                    }
-                    //
-
-                    accountSessionsComponent.Add(accountInfo.Id, session.InstanceId);
-                    // 设置账号超时时间
-                    session.AddComponent<AccountCheckoutTimeComponent, long>(accountInfo.Id);
-
-                    string Token = TimeHelper.ServerNow().ToString() + RandomHelper.RandomNumber(int.MinValue, int.MaxValue);
-                    TokenComponent tokenComponent = session.DomainScene().GetComponent<TokenComponent>();
-                    tokenComponent.Remove(accountInfo.Id);
-                    tokenComponent.Add(accountInfo.Id, Token);
-
-                    response.AccountId = accountInfo.Id;
-                    response.Token = Token;
-
-                    reply();
                 }
             }
+
+            // 账号服务器请求登录中心服
+            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
+            long loginCenterInstanceId = startSceneConfig.InstanceId;
+            var loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call(loginCenterInstanceId,
+                new A2L_LoginAccountRequest() { AccountId = accountInfo.Id });
+
+            if (loginAccountResponse.Error != ErrorCode.ERR_Success)
+            {
+                response.Error = loginAccountResponse.Error;
+
+                reply();
+                session.DisConnect().Coroutine();
+                accountInfo.Dispose();
+                return;
+            }
+
+            // 把之前的Session(已经登录的)踢下线
+            AccountSessionsComponent accountSessionsComponent = session.DomainScene().GetComponent<AccountSessionsComponent>();
+            long accountSessionInstanceId = accountSessionsComponent.Get(accountInfo.Id);
+            if (Game.EventSystem.Get(accountSessionInstanceId) is Session otherSession)
+            {
+                otherSession.Send(new A2C_Disconnect() { Error = 0 });
+                otherSession.DisConnect().Coroutine();
+            }
+            //
+
+            accountSessionsComponent.Add(accountInfo.Id, session.InstanceId);
+            // 设置账号超时时间
+            session.AddComponent<AccountCheckoutTimeComponent, long>(accountInfo.Id);
+
+            string Token = TimeHelper.ServerNow().ToString() + RandomHelper.RandomNumber(int.MinValue, int.MaxValue);
+            TokenComponent tokenComponent = session.DomainScene().GetComponent<TokenComponent>();
+            tokenComponent.Remove(accountInfo.Id);
+            tokenComponent.Add(accountInfo.Id, Token);
+
+            response.AccountId = accountInfo.Id;
+            response.Token = Token;
+
+            // 随机分配一个Gate
+            StartSceneConfig config = RealmGateAddressHelper.GetGate(session.DomainZone());
+            Log.Debug($"gate address: {MongoHelper.ToJson(config)}");
+
+            // 向gate请求一个key,客户端可以拿着这个key连接gate
+            G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey)await ActorMessageSenderComponent.Instance.Call(config.InstanceId,
+                new R2G_GetLoginKey() { Account = request.AccountName });
+
+            response.Address = config.OuterIPPort.ToString();
+            response.Key = g2RGetLoginKey.Key;
+            response.GateId = g2RGetLoginKey.GateId;
+
+            reply();
         }
     }
 }
