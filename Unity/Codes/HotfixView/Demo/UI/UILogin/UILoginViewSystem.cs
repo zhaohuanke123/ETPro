@@ -26,11 +26,7 @@ namespace ET
             self.settingView = self.AddUIComponent<UILoopListView2>("Panel/GM/Setting");
             self.settingView.InitListView(ServerConfigCategory.Instance.GetAll().Count, self.GetItemByIndex);
 
-#if !UNITY_EDITOR
-            self.GMPanel.SetActive(false);
-#endif
-
-            Debug.Log("哈哈哈哈哈哈哈哈哈哈哈哈哈");
+            // self.GMPanel.SetActive(false);
             // self.account.SetOnEndEdit(() =>
             // {
             //     if (!string.IsNullOrEmpty(self.account.GetText()))

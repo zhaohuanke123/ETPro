@@ -16,18 +16,19 @@ MonoBehaviour:
   useGlobalIl2cpp: 0
   hybridclrRepoURL: https://github.com/526077247/hybridclr
   il2cppPlusRepoURL: https://github.com/526077247/il2cpp_plus
-  hotUpdateAssemblyDefinitions: []
-  hotUpdateAssemblies:
-  - Unity.Model
-  - Unity.Hotfix
-  - Unity.ModelView
-  - Unity.HotfixView
+  hotUpdateAssemblyDefinitions:
+  - {fileID: 5897886265953266890, guid: 56a1255879ec6714f96131eaa8f496b8, type: 3}
+  hotUpdateAssemblies: []
   preserveHotUpdateAssemblies: []
   hotUpdateDllCompileOutputRootDir: HybridCLRData/HotUpdateDlls
-  externalHotUpdateAssembliyDirs:
-  - Temp/Bin/Debug
+  externalHotUpdateAssembliyDirs: []
   strippedAOTDllOutputRootDir: HybridCLRData/AssembliesPostIl2CppStrip
-  patchAOTAssemblies: []
+  patchAOTAssemblies:
+  - mscorlib.dll
+  - System.Core.dll
+  - System.dll
+  - Unity.Mono.dll
+  - Unity.ThirdParty.dll
   outputLinkFile: HybridCLRData/Generated/link.xml
   outputAOTGenericReferenceFile: HybridCLRData/Generated/AOTGenericReferences.cs
   maxGenericReferenceIteration: 10
