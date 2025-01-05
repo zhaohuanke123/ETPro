@@ -16,12 +16,16 @@ MonoBehaviour:
   useGlobalIl2cpp: 0
   hybridclrRepoURL: https://github.com/526077247/hybridclr
   il2cppPlusRepoURL: https://github.com/526077247/il2cpp_plus
-  hotUpdateAssemblyDefinitions:
-  - {fileID: 5897886265953266890, guid: 56a1255879ec6714f96131eaa8f496b8, type: 3}
-  hotUpdateAssemblies: []
+  hotUpdateAssemblyDefinitions: []
+  hotUpdateAssemblies:
+  - Unity.Model
+  - Unity.Hotfix
+  - Unity.ModelView
+  - Unity.HotfixView
   preserveHotUpdateAssemblies: []
   hotUpdateDllCompileOutputRootDir: HybridCLRData/HotUpdateDlls
-  externalHotUpdateAssembliyDirs: []
+  externalHotUpdateAssembliyDirs:
+  - Temp/Bin/Debug
   strippedAOTDllOutputRootDir: HybridCLRData/AssembliesPostIl2CppStrip
   patchAOTAssemblies: []
   outputLinkFile: HybridCLRData/Generated/link.xml

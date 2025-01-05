@@ -150,5 +150,10 @@ namespace ET
             self.ActivatingComponent();
             self.loopListView.mOnSnapNearestChanged = callback;
         }
+
+        public static void HideAll(this UILoopListView2 self)
+        {
+            self.GetGameObject().SetActive(false);
+        }
     }
 }
