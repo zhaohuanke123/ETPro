@@ -10,7 +10,7 @@ namespace ET
         public override void OnCreate(UILobbyView self)
         {
             self.EnterBtn = self.AddUIComponent<UIButton>("Panel/EnterMap");
-            // self.EnterBtn.SetOnClick(self.OnEnterBtnClick);
+            self.EnterBtn.SetOnClick(self.OnEnterBtnClick);
             self.ReturnLoginBtn = self.AddUIComponent<UIButton>("Panel/ReturnLogin");
             self.ReturnLoginBtn.SetOnClickAsync(self.OnReturnLoginBtnClick);
         }
@@ -23,7 +23,7 @@ namespace ET
         public override void OnEnable(UILobbyView self, Scene scene)
         {
             self.zoneScene = scene;
-            GuidanceComponent.Instance.NoticeEvent("Click_Login");
+            // GuidanceComponent.Instance.NoticeEvent("Click_Login");
         }
     }
 

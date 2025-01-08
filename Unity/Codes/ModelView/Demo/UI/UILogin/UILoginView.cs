@@ -16,6 +16,7 @@ namespace ET
 		public UIButton registerBtn;
 		public UILoopListView2 settingView;
 		public Scene scene;
+		public GameObject GMPanel; 
 
         public static string PrefabPath => "UI/UILogin/Prefabs/UILoginView.prefab";
 
