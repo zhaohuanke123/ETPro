@@ -25,8 +25,8 @@ namespace ET
 			self.settingView.InitListView(ServerConfigCategory.Instance.GetAll().Count, self.GetItemByIndex);
 			self.account.SetOnEndEdit(() =>
 			{
-			    if (!string.IsNullOrEmpty(self.account.GetText()))
-			        GuidanceComponent.Instance.NoticeEvent("Enter_Account");
+				if (!string.IsNullOrEmpty(self.account.GetText()))
+					GuidanceComponent.Instance.NoticeEvent("Enter_Account");
 			});
 		}
 	}
