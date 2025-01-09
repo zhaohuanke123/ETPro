@@ -26,13 +26,17 @@
 
 			M2C_CreateMyUnit m2CCreateMyUnit = waitCreateMyUnit.Message;
 			var task = zoneScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_LoadAOISceneFinish>(); //先声明出来
+
 			UnitFactory.Create(currentScene, m2CCreateMyUnit.Unit); //添加AOI组件时会Wait_LoadAOISceneFinish
+
 			await task;
+
 			await Game.EventSystem.PublishAsync(new EventType.SceneChangeFinish()
 			{
 				ZoneScene = zoneScene,
 				CurrentScene = currentScene
 			});
+
 			// 通知等待场景切换的协程
 			zoneScene.GetComponent<ObjectWait>().Notify(new WaitType.Wait_SceneChangeFinish());
 		}
