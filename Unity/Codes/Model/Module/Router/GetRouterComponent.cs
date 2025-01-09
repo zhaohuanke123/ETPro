@@ -2,13 +2,14 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Linq;
+
 namespace ET
 {
     /// <summary>
     /// 初始获取路由组件
     /// </summary>
-    [ComponentOf(typeof(Scene))]
-    public class GetRouterComponent : Entity,IAwake<long,long>,IUpdate,IDestroy
+    [ComponentOf(typeof (Scene))]
+    public class GetRouterComponent: Entity, IAwake<long, long>, IUpdate, IDestroy
     {
         public int ChangeTimes;
         public Socket socket;
@@ -17,7 +18,5 @@ namespace ET
         public ETCancellationToken CancellationToken;
         public ETTask<string> Tcs;
         public bool IsChangingRouter;
-        
     }
-
 }

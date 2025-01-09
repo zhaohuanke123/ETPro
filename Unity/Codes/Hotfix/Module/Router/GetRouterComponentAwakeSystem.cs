@@ -45,9 +45,9 @@ namespace ET
             self.CancellationToken = new ETCancellationToken();
             self.Tcs = ETTask<string>.Create();
             //value是对应gate的scene.
-            var insid = new InstanceIdStruct(gateid);
+            InstanceIdStruct insid = new InstanceIdStruct(gateid);
             uint localConn = (uint)((ulong)channelid & uint.MaxValue);
-            var routerlist = await GetRouterListFake();
+            string[] routerlist = await GetRouterListFake();
             if (routerlist == null)
             {
                 var tcs = self.Tcs;
@@ -66,10 +66,12 @@ namespace ET
             for (int i = 0; i < self.ChangeTimes; i++)
             {
                 string router = routerlist.RandomArray();
+
                 Log.Debug("router:" + router);
+
                 self.socket.SendTo(buffer, 0, 9, SocketFlags.None, NetworkHelper.ToIPEndPoint(router));
-                var returnbool = await TimerComponent.Instance.WaitAsync(300, self.CancellationToken);
-                if (returnbool == false)
+                bool result = await TimerComponent.Instance.WaitAsync(300, self.CancellationToken);
+                if (result == false)
                 {
                     Log.Debug("提前取消了.可能连接上了");
                     return;
@@ -77,9 +79,10 @@ namespace ET
             }
 
             await TimerComponent.Instance.WaitAsync(1300, self.CancellationToken);
-            var tcss = self.Tcs;
+
+            var tcs_s = self.Tcs;
             self.Tcs = null;
-            tcss?.SetResult("");
+            tcs_s?.SetResult("");
             Log.Debug("三次失败.获取路由失败");
         }
     }

@@ -41,7 +41,7 @@ namespace ET
         {
             C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
             self.ZoneScene().RemoveComponent<KeyCodeComponent>();
-            self.ZoneScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
+            self.ZoneScene().GetComponent<SessionComponent>().GateSession.Call(c2MTransferMap).Coroutine();
             self.Dispose();
         }
     }
@@ -66,7 +66,7 @@ namespace ET
                 self.frameClickMap.X = self.ClickPoint.x;
                 self.frameClickMap.Y = self.ClickPoint.y;
                 self.frameClickMap.Z = self.ClickPoint.z;
-                self.ZoneScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
+                self.ZoneScene().GetComponent<SessionComponent>().GateSession.Send(self.frameClickMap);
                 unit.GetComponent<CombatUnitComponent>().GetComponent<MoveAndSpellComponent>().Cancel();//取消施法
             }
         }
