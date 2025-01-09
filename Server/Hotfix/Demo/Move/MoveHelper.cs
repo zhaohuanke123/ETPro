@@ -16,7 +16,7 @@ namespace ET
             }
 
             using var list = ListComponent<Vector3>.Create();
-            
+
             unit.GetComponent<PathfindingComponent>().Find(unit.Position, target, list);
 
             List<Vector3> path = list;
@@ -25,7 +25,7 @@ namespace ET
                 unit.SendStop(3);
                 return;
             }
-                
+
             // 广播寻路路径
             M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult();
             m2CPathfindingResult.X = unit.Position.x;
@@ -39,6 +39,7 @@ namespace ET
                 m2CPathfindingResult.Ys.Add(vector3.y);
                 m2CPathfindingResult.Zs.Add(vector3.z);
             }
+
             MessageHelper.Broadcast(unit, m2CPathfindingResult);
 
             bool ret = await unit.GetComponent<MoveComponent>().MoveToAsync(path, speed);
@@ -56,6 +57,7 @@ namespace ET
                 unit.SendStop(-1);
                 return;
             }
+
             // 广播寻路路径
             M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult();
             m2CPathfindingResult.X = unit.Position.x;
@@ -69,6 +71,7 @@ namespace ET
                 m2CPathfindingResult.Ys.Add(vector3.y);
                 m2CPathfindingResult.Zs.Add(vector3.z);
             }
+
             MessageHelper.Broadcast(unit, m2CPathfindingResult);
 
             bool ret = await unit.GetComponent<MoveComponent>().MoveToAsync(path, speed);
@@ -77,22 +80,23 @@ namespace ET
                 unit.SendStop(0);
             }
         }
+
         public static void Stop(this Unit unit, int error)
         {
             unit.GetComponent<MoveComponent>().Stop(error == 0);
             unit.SendStop(error);
         }
+
         // error: 0表示协程走完正常停止
         public static void SendStop(this Unit unit, int error)
         {
             MessageHelper.Broadcast(unit, new M2C_Stop()
             {
                 Error = error,
-                Id = unit.Id, 
+                Id = unit.Id,
                 X = unit.Position.x,
                 Y = unit.Position.y,
                 Z = unit.Position.z,
-						
                 A = unit.Rotation.x,
                 B = unit.Rotation.y,
                 C = unit.Rotation.z,
