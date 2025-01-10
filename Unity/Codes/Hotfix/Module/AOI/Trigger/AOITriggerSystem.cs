@@ -186,7 +186,7 @@ namespace ET
         /// <param name="handler"></param>
         /// <param name="selecter"></param>
         /// <returns></returns>
-        static AOITrigger AddTrigger(this AOIUnitComponent self, float radius, AOITriggerType type,
+        private static AOITrigger AddTrigger(this AOIUnitComponent self, float radius, AOITriggerType type,
             Action<AOIUnitComponent, AOITriggerType> handler, params UnitType[] selecter)
         {
             AOITrigger trigger = self.AddChild<AOITrigger,float,Action<AOIUnitComponent, AOITriggerType>>(radius,handler);
@@ -204,7 +204,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        static AOITrigger AddCollider(this AOIUnitComponent self, float radius)
+        private static AOITrigger AddCollider(this AOIUnitComponent self, float radius)
         {
             AOITrigger trigger = self.AddChild<AOITrigger,float>(radius);
             trigger.Selecter = null;
@@ -220,7 +220,7 @@ namespace ET
         /// <param name="trigger"></param>
         /// <param name="type"></param>
         /// <param name="broadcast">是否需要检测触发</param>
-        static void AddTriggerListener(this AOIUnitComponent self,AOITrigger trigger,AOITriggerType type,bool broadcast = true)
+        private static void AddTriggerListener(this AOIUnitComponent self,AOITrigger trigger,AOITriggerType type,bool broadcast = true)
         {
             var len = self.Scene.gridLen;
             int count = (int)Mathf.Ceil(trigger.Radius / len);
@@ -293,7 +293,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="trigger"></param>
         /// <param name="broadcast">是否需要检测触发</param>
-        static void AddColliderListener(this AOIUnitComponent self,AOITrigger trigger,bool broadcast = true)
+        private static void AddColliderListener(this AOIUnitComponent self,AOITrigger trigger,bool broadcast = true)
         {
             var len = self.Scene.gridLen;
             int count = (int)Mathf.Ceil(trigger.Radius / len);

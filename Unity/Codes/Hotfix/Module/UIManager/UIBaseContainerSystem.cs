@@ -31,7 +31,8 @@ namespace ET
         {
             UIManagerComponent.Instance.lengthMap[self.Id] = length;
         }
-        static void AfterOnEnable(this Entity self)
+
+        private static void AfterOnEnable(this Entity self)
         {
             self.Walk((component) =>
             {
@@ -40,7 +41,7 @@ namespace ET
             });
         }
 
-        static void BeforeOnDisable(this Entity self)
+        private static void BeforeOnDisable(this Entity self)
         {
             self.Walk((component) =>
             {
@@ -82,7 +83,7 @@ namespace ET
         }
 
         //遍历：注意，这里是无序的
-        static void Walk(this Entity self,Action<Entity> callback)
+        private static void Walk(this Entity self,Action<Entity> callback)
         {
             foreach (var item in self.GetCompoennts())
             {
@@ -97,7 +98,7 @@ namespace ET
         }
 
         //记录Component
-        static void RecordUIComponent(this Entity self,string name, Type component_class, Entity component)
+        private static void RecordUIComponent(this Entity self,string name, Type component_class, Entity component)
         {
             if (self.GetCompoennts().TryGetValue(name, component_class,out var obj))
             {
@@ -313,7 +314,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
-        static void InnerRemoveUIComponent(this Entity self, Entity component, string path)
+        private static void InnerRemoveUIComponent(this Entity self, Entity component, string path)
         {
             if (component != null)
             {

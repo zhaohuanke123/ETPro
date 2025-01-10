@@ -245,7 +245,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        static bool CheckPause(this SpellComponent self)
+        private static bool CheckPause(this SpellComponent self)
         {
             return self.WaitStep != SkillStepType.None;
         }

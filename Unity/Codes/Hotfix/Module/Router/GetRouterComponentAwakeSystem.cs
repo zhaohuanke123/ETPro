@@ -12,6 +12,7 @@ namespace ET
         {
             self.ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
             self.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
             // 作为客户端不需要修改发送跟接收缓冲区大小
             self.socket.Bind(new IPEndPoint(IPAddress.Any, 0));
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -30,14 +31,14 @@ namespace ET
         /// 应从cdn获取.此处临时写假的
         /// </summary>
         /// <returns></returns>
-        static async ETTask<string[]> GetRouterListFake()
+        private static async ETTask<string[]> GetRouterListFake()
         {
-#if !NOT_UNITY
-            return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
-#else
+// #if !NOT_UNITY
+//             return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
+// #else
             await ETTask.CompletedTask;
-            return new string[]{"172.22.213.58:10007", "172.22.213.58:10008", "172.22.213.58:10009", };
-#endif
+            return new string[] { "117.72.91.228:10002", "117.72.91.228:10003", };
+// #endif
         }
 
         private static async ETTask SynAsync(GetRouterComponent self, long gateid, long channelid)
@@ -47,8 +48,8 @@ namespace ET
             //value是对应gate的scene.
             InstanceIdStruct insid = new InstanceIdStruct(gateid);
             uint localConn = (uint)((ulong)channelid & uint.MaxValue);
-            string[] routerlist = await GetRouterListFake();
-            if (routerlist == null)
+            string[] routerList = await GetRouterListFake();
+            if (routerList == null)
             {
                 var tcs = self.Tcs;
                 self.Tcs = null;
@@ -57,20 +58,21 @@ namespace ET
                 return;
             }
 
-            Log.Debug("路由数量:" + routerlist.Length);
+            Log.Debug("路由数量:" + routerList.Length);
             Log.Debug("gateid:" + insid.Value);
             byte[] buffer = self.cache;
             buffer.WriteTo(0, KcpProtocalType.RouterSYN);
             buffer.WriteTo(1, localConn);
             buffer.WriteTo(5, insid.Value);
+
             for (int i = 0; i < self.ChangeTimes; i++)
             {
-                string router = routerlist.RandomArray();
+                string router = routerList.RandomArray();
 
                 Log.Debug("router:" + router);
 
                 self.socket.SendTo(buffer, 0, 9, SocketFlags.None, NetworkHelper.ToIPEndPoint(router));
-                bool result = await TimerComponent.Instance.WaitAsync(300, self.CancellationToken);
+                bool result = await TimerComponent.Instance.WaitAsync(1300, self.CancellationToken);
                 if (result == false)
                 {
                     Log.Debug("提前取消了.可能连接上了");

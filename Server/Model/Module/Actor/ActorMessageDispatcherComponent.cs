@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace ET
 {
     /// <summary>
-    /// Actor消息分发组件
+    /// Actor消息调度器组件
     /// </summary>
-    [ComponentOf(typeof(Scene))]
+    [ComponentOf(typeof (Scene))]
     public class ActorMessageDispatcherComponent: Entity, IAwake, IDestroy, ILoad
     {
         public static ActorMessageDispatcherComponent Instance;

@@ -586,7 +586,7 @@ namespace ET
         /// <summary>
         /// 初始化window
         /// </summary>
-        static UIWindow InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layerName) where T : Entity, IAwake, new()
+        private static UIWindow InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layerName) where T : Entity, IAwake, new()
         {
             UIWindow window = self.AddChild<UIWindow>();
             var type = TypeInfo<T>.Type;
@@ -600,7 +600,7 @@ namespace ET
             return window;
         }
 
-        static void Deactivate(UIWindow target)
+        private static void Deactivate(UIWindow target)
         {
             var view = target.GetComponent(target.ViewType);
             if (view != null)
@@ -635,7 +635,7 @@ namespace ET
             }
         }
 
-        static async ETTask<T> InnerOpenWindow<T, P1>(this UIManagerComponent self, UIWindow target, P1 p1) where T : Entity
+        private static async ETTask<T> InnerOpenWindow<T, P1>(this UIManagerComponent self, UIWindow target, P1 p1) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try
@@ -661,7 +661,7 @@ namespace ET
             }
         }
 
-        static async ETTask<T> InnerOpenWindow<T, P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2) where T : Entity
+        private static async ETTask<T> InnerOpenWindow<T, P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try
@@ -687,7 +687,7 @@ namespace ET
             }
         }
 
-        static async ETTask<T> InnerOpenWindow<T, P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3) where T : Entity
+        private static async ETTask<T> InnerOpenWindow<T, P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try
@@ -713,7 +713,7 @@ namespace ET
             }
         }
 
-        static async ETTask<T> InnerOpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, P4 p4)
+        private static async ETTask<T> InnerOpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, P4 p4)
                 where T : Entity
         {
             CoroutineLock coroutineLock = null;
@@ -747,7 +747,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="target"></param>
-        static void InnnerCloseWindow(this UIManagerComponent self, UIWindow target)
+        private static void InnnerCloseWindow(this UIManagerComponent self, UIWindow target)
         {
             if (target.Active)
             {
@@ -780,7 +780,7 @@ namespace ET
             Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
         }
 
-        static async ETTask AddWindowToStack(this UIManagerComponent self, UIWindow target)
+        private static async ETTask AddWindowToStack(this UIManagerComponent self, UIWindow target)
         {
             var uiName = target.Name;
             var layerName = target.Layer;
@@ -805,7 +805,7 @@ namespace ET
             }
         }
 
-        static async ETTask AddWindowToStack<P1>(this UIManagerComponent self, UIWindow target, P1 p1)
+        private static async ETTask AddWindowToStack<P1>(this UIManagerComponent self, UIWindow target, P1 p1)
         {
             var uiName = target.Name;
             var layerName = target.Layer;
@@ -830,7 +830,7 @@ namespace ET
             }
         }
 
-        static async ETTask AddWindowToStack<P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2)
+        private static async ETTask AddWindowToStack<P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2)
         {
             var uiName = target.Name;
             var layerName = target.Layer;
@@ -855,7 +855,7 @@ namespace ET
             }
         }
 
-        static async ETTask AddWindowToStack<P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3)
+        private static async ETTask AddWindowToStack<P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3)
         {
             var uiName = target.Name;
             var layerName = target.Layer;
@@ -880,7 +880,7 @@ namespace ET
             }
         }
 
-        static async ETTask AddWindowToStack<P1, P2, P3, P4>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, P4 p4)
+        private static async ETTask AddWindowToStack<P1, P2, P3, P4>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, P4 p4)
         {
             var uiName = target.Name;
             var layerName = target.Layer;
@@ -910,7 +910,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="target"></param>
-        static void RemoveFromStack(this UIManagerComponent self, UIWindow target)
+        private static void RemoveFromStack(this UIManagerComponent self, UIWindow target)
         {
             var uiName = target.Name;
             var layerName = target.Layer;
