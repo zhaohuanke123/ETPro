@@ -13,19 +13,20 @@ namespace ET
                 Log.Error("暂时无法移动");
                 return 1;
             }
-            C2M_PathfindingResult msg = new C2M_PathfindingResult() {X = targetPos.x, Y = targetPos.y, Z = targetPos.z};
+
+            C2M_PathfindingResult msg = new C2M_PathfindingResult() { X = targetPos.x, Y = targetPos.y, Z = targetPos.z };
             unit.ZoneScene().GetComponent<SessionComponent>().GateSession.Send(msg);
 
             ObjectWait objectWait = unit.GetComponent<ObjectWait>();
-            
+
             // 要取消上一次的移动协程
             objectWait.Notify(new WaitType.Wait_UnitStop() { Error = WaitTypeError.Cancel });
-            
+
             // 一直等到unit发送stop
             WaitType.Wait_UnitStop waitUnitStop = await objectWait.Wait<WaitType.Wait_UnitStop>(cancellationToken);
             return waitUnitStop.Error;
         }
-        
+
         public static async ETTask<bool> MoveToAsync(this Unit unit, List<Vector3> path)
         {
             float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);

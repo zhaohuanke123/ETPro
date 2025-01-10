@@ -12,6 +12,7 @@ namespace ET
             {
                 return 0;
             }
+
             return 1;
         }
 
@@ -24,7 +25,7 @@ namespace ET
             {
                 return;
             }
-            
+
             Log.Debug("开始巡逻");
 
             while (true)
@@ -36,6 +37,7 @@ namespace ET
                 {
                     return;
                 }
+
                 xunLuoPathComponent.MoveNext();
             }
         }
