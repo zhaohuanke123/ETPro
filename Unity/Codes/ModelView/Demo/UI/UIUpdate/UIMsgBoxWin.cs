@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace ET
 {
 	[UIComponent]
-	public class UIMsgBoxWin : Entity,IAwake,IOnCreate,IOnEnable<UIMsgBoxWin.MsgBoxPara>,IOnDisable
+	public class UIMsgBoxWin: Entity, IAwake, IOnCreate, IOnEnable<UIMsgBoxWin.MsgBoxPara>, IOnDisable
 	{
 		public static string PrefabPath => "UI/UIUpdate/Prefabs/UIMsgBoxWin.prefab";
 		public UIText Text;
@@ -16,9 +16,9 @@ namespace ET
 		public UIText CancelText;
 		public UIButton btn_confirm;
 		public UIText ConfirmText;
-		 
+
 		public class MsgBoxPara
-        {
+		{
 			public string Content;
 			public string CancelText;
 			public string ConfirmText;
