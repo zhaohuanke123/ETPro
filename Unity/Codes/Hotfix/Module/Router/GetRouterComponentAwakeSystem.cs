@@ -37,7 +37,7 @@ namespace ET
 //             return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
 // #else
             await ETTask.CompletedTask;
-            return new string[] { "117.72.91.228:10002", "117.72.91.228:10003", };
+            return new string[] { "117.72.91.228:40002", "117.72.91.228:10002", };
 // #endif
         }
 
