@@ -100,12 +100,12 @@ namespace ET
             return clipSource;
         }
 
-        static void Add(this SoundComponent self,string key, AudioClip value) {
+        private static void Add(this SoundComponent self,string key, AudioClip value) {
             if (self._sounds[key] != null || value == null) return;
             self._sounds.Add(key, value);
         }
 
-        static AudioClip Get(this SoundComponent self,string key) {
+        private static AudioClip Get(this SoundComponent self,string key) {
             if (self._sounds[key] == null) return null;
             return self._sounds[key] as AudioClip;
         }

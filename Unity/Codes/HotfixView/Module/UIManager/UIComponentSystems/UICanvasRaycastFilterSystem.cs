@@ -16,7 +16,7 @@ namespace ET
             }
         }
 
-        static void ActivatingComponent(this UICanvasRaycastFilter self)
+        private static void ActivatingComponent(this UICanvasRaycastFilter self)
         {
             if (self.canvasRaycastFilter == null)
             {

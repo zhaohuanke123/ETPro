@@ -41,7 +41,7 @@ namespace ET
     [FriendClass(typeof (UITextmesh))]
     public static class UITextmeshSystem
     {
-        static void ActivatingComponent(this UITextmesh self)
+        private static void ActivatingComponent(this UITextmesh self)
         {
             if (self.textmesh == null)
             {
@@ -61,7 +61,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="enable"></param>
-        static void DisableI18Component(this UITextmesh self, bool enable = false)
+        private static void DisableI18Component(this UITextmesh self, bool enable = false)
         {
             self.ActivatingComponent();
             if (self.i18nCompTouched != null)

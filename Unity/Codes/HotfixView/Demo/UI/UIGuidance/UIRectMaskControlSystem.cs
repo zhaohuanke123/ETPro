@@ -87,7 +87,7 @@ namespace ET
         /// <param name="canvas">画布</param>
         /// <param name="world">世界坐标</param>
         /// <returns>返回画布上的二维坐标</returns>
-        static Vector2 WorldToCanvasPos(Canvas canvas, Vector3 world)
+        private static Vector2 WorldToCanvasPos(Canvas canvas, Vector3 world)
         {
             Vector2 position;
 

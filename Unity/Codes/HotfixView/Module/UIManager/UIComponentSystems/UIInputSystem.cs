@@ -10,7 +10,7 @@ namespace ET
     [FriendClass(typeof(UIInput))]
     public static class UIInputSystem
     {
-        static void ActivatingComponent(this UIInput self)
+        private static void ActivatingComponent(this UIInput self)
         {
             if (self.input == null)
             {

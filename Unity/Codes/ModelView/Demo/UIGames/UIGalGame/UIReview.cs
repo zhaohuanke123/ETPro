@@ -1,8 +1,5 @@
-﻿using SuperScrollView;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UITextMeshPro = TMPro.TMP_Text;
+﻿using System.Collections.Generic;
+
 namespace ET
 {
     [UIComponent]

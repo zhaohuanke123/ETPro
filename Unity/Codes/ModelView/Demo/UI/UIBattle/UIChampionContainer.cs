@@ -1,10 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace ET
+﻿namespace ET
 {
     public class UIChampionContainer: Entity, IAwake, ILoad, IOnCreate, IOnEnable
     {

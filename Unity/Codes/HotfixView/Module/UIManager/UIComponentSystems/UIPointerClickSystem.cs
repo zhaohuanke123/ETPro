@@ -22,7 +22,7 @@ namespace ET
     [FriendClass(typeof (UIPointerClick))]
     public static class UIPointerClickSystem
     {
-        static void ActivatingComponent(this UIPointerClick self)
+        private static void ActivatingComponent(this UIPointerClick self)
         {
             if (self.pointerClick == null)
             {

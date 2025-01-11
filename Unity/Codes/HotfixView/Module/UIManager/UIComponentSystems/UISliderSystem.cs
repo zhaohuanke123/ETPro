@@ -22,7 +22,7 @@ namespace ET
     [FriendClass(typeof (UISlider))]
     public static class UISliderSystem
     {
-        static void ActivatingComponent(this UISlider self)
+        private static void ActivatingComponent(this UISlider self)
         {
             if (self.slider == null)
             {

@@ -60,8 +60,7 @@ namespace ET
             AddOverlayCamera(self.sceneMainCamera, uiCamera);
         }
 
-
-        static void AddOverlayCamera(Camera baseCamera, Camera overlayCamera)
+        private static void AddOverlayCamera(Camera baseCamera, Camera overlayCamera)
         {
             overlayCamera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Overlay;
             baseCamera.GetUniversalAdditionalCameraData().cameraStack.Add(overlayCamera);

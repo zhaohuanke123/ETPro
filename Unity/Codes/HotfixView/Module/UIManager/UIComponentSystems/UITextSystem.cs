@@ -54,7 +54,7 @@ namespace ET
     [FriendClass(typeof (UIText))]
     public static class UITextSystem
     {
-        static void ActivatingComponent(this UIText self)
+        private static void ActivatingComponent(this UIText self)
         {
             if (self.text == null)
             {
@@ -74,7 +74,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="enable"></param>
-        static void DisableI18Component(this UIText self, bool enable = false)
+        private static void DisableI18Component(this UIText self, bool enable = false)
         {
             self.ActivatingComponent();
             if (self.i18nCompTouched != null)

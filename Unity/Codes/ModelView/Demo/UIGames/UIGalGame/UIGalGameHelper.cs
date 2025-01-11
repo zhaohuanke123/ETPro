@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-namespace ET
+﻿namespace ET
 {
 	[UIComponent]
 	public class UIGalGameHelper : Entity,IAwake,IOnCreate,IOnEnable,IOnDisable

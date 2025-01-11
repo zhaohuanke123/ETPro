@@ -30,5 +30,6 @@ namespace ET
         public const int ERR_AccountNotLoggedIn = 200012;
         public const int ERR_NotBindPlayer = 200013;
         public const int ERR_PlayerNotLoggedIn = 200014;
+        public const int ERR_NotInMap = 200015;
     }
 }

@@ -21,7 +21,7 @@ namespace ET
     [FriendClass(typeof(UIDropdown))]
     public static class UIDropdownSystem
     {
-        static void ActivatingComponent(this UIDropdown self)
+        private static void ActivatingComponent(this UIDropdown self)
         {
             if (self.dropdown == null)
             {

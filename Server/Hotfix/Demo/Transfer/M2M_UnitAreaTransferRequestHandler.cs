@@ -13,15 +13,15 @@ namespace ET
 			await ETTask.CompletedTask;
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
 			Unit unit = request.Unit;
-			var oldUnit = unitComponent.Get(unit.Id);
+			Unit oldUnit = unitComponent.Get(unit.Id);
 			if (oldUnit==null)
 			{
 				unitComponent.AddChild(unit);
 				unitComponent.Add(unit);
 
-				foreach (var item in request.Map)
+				foreach (RecursiveEntitys item in request.Map)
 				{
-					var entity = request.Entitys[item.ChildIndex];
+					Entity entity = request.Entitys[item.ChildIndex];
 					Entity parent;
 					if (item.ParentIndex == -1) //父组件为自己
 						parent = unit;

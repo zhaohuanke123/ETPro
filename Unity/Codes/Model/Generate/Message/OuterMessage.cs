@@ -91,6 +91,31 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(G2C_ExitMap))]
+	[Message(OuterOpcode.C2G_ExitMap)]
+	[ProtoContract]
+	public partial class C2G_ExitMap: Object, IRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_ExitMap)]
+	[ProtoContract]
+	public partial class G2C_ExitMap: Object, IResponse
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
+
+	}
+
 	[Message(OuterOpcode.MoveInfo)]
 	[ProtoContract]
 	public partial class MoveInfo: Object
@@ -206,6 +231,12 @@ namespace ET
 		[ProtoMember(2)]
 		public string SceneName { get; set; }
 
+	}
+
+	[Message(OuterOpcode.M2C_StartSceneChangeToLogin)]
+	[ProtoContract]
+	public partial class M2C_StartSceneChangeToLogin: Object, IActorMessage
+	{
 	}
 
 	[Message(OuterOpcode.M2C_RemoveUnits)]
@@ -876,6 +907,43 @@ namespace ET
 	{
 		[ProtoMember(1)]
 		public int Error { get; set; }
+
+	}
+
+	[ResponseType(nameof(A2C_CreateChessUnit))]
+	[Message(OuterOpcode.C2A_CreateChessUnit)]
+	[ProtoContract]
+	public partial class C2A_CreateChessUnit: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public float X { get; set; }
+
+		[ProtoMember(2)]
+		public float Y { get; set; }
+
+		[ProtoMember(3)]
+		public float Z { get; set; }
+
+	}
+
+	[Message(OuterOpcode.A2C_CreateChessUnit)]
+	[ProtoContract]
+	public partial class A2C_CreateChessUnit: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public UnitInfo Unit { get; set; }
 
 	}
 

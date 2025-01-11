@@ -34,7 +34,7 @@ namespace ET
     [FriendClass(typeof(UIImage))]
     public static class UIImageSystem
     {
-        static void ActivatingComponent(this UIImage self)
+        private static void ActivatingComponent(this UIImage self)
         {
             if (self.image == null)
             {

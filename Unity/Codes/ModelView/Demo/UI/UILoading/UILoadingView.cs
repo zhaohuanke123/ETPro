@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-namespace ET
+﻿namespace ET
 {
 	[UIComponent]
 	public class UILoadingView : Entity,IAwake,IOnCreate,IOnEnable

@@ -20,6 +20,14 @@ namespace ET
             public Scene CurrentScene;
         }
 
+        public struct SceneChangeLoginBegin
+        {
+        }
+
+        public struct SceneChangeLoginFinish
+        {
+        }
+
         public class ChangePosition: DisposeObject
         {
             public static readonly ChangePosition Instance = new ChangePosition();

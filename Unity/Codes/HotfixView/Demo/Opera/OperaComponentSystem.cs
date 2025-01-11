@@ -73,6 +73,16 @@ namespace ET
         }
     }
 
+    [InputSystem((int)KeyCode.Mouse1, InputType.KeyDown)]
+    public class OperaComponentSystem_AddUnit: InputSystem<OperaComponent>
+    {
+        public override void Run(OperaComponent self, int key, int type, ref bool stop)
+        {
+            // 1. 获取点击位置
+            // 2. 请求生成一个unit
+        }
+    }
+
     [FriendClass(typeof (OperaComponent))]
     public static class OperaComponentSystem
     {

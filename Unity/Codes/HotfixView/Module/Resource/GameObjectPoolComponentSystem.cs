@@ -430,7 +430,7 @@ namespace ET
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="inst"></param>
-		static void InitInst(this GameObjectPoolComponent self,GameObject inst)
+		private static void InitInst(this GameObjectPoolComponent self,GameObject inst)
 		{
 			if (inst != null)
 			{
@@ -443,7 +443,7 @@ namespace ET
 		/// <param name="self"></param>
 		/// <param name="path"></param>
 		/// <returns></returns>
-		static bool CheckHasCached(this GameObjectPoolComponent self,string path)
+		private static bool CheckHasCached(this GameObjectPoolComponent self,string path)
 		{
 			if (string.IsNullOrEmpty(path))
 			{
@@ -470,7 +470,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="go"></param>
 		/// <param name="inst_count"></param>
-		static void CacheAndInstGameObject(this GameObjectPoolComponent self,string path, GameObject go, int inst_count)
+		private static void CacheAndInstGameObject(this GameObjectPoolComponent self,string path, GameObject go, int inst_count)
 		{
 			self.goPool.Set(path, go);
 			self.InitGoChildCount(path, go);
@@ -497,7 +497,7 @@ namespace ET
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="inst"></param>
-		static void DestroyGameObject(this GameObjectPoolComponent self,GameObject inst)
+		private static void DestroyGameObject(this GameObjectPoolComponent self,GameObject inst)
 		{
 			if (self.instPathCache.TryGetValue(inst, out string path))
 			{
@@ -530,7 +530,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="inst"></param>
 		/// <param name="callback"></param>
-		static void CheckRecycleInstIsDirty(this GameObjectPoolComponent self,string path, GameObject inst, Action callback)
+		private static void CheckRecycleInstIsDirty(this GameObjectPoolComponent self,string path, GameObject inst, Action callback)
 		{
 			if (!self.IsOpenCheck())
 			{
@@ -548,7 +548,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="inst"></param>
 		/// <returns></returns>
-		static async ETTask CheckAfter(this GameObjectPoolComponent self,string path, GameObject inst)
+		private static async ETTask CheckAfter(this GameObjectPoolComponent self,string path, GameObject inst)
 		{
 			await TimerComponent.Instance.WaitAsync(2000);
 			if (inst != null && inst.transform != null && self.CheckInstIsInPool(path, inst))
@@ -581,7 +581,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="inst"></param>
 		/// <returns></returns>
-		static bool CheckInstIsInPool(this GameObjectPoolComponent self,string path, GameObject inst)
+		private static bool CheckInstIsInPool(this GameObjectPoolComponent self,string path, GameObject inst)
 		{
 			if (self.instCache.TryGetValue(path, out var inst_array))
 			{
@@ -598,7 +598,7 @@ namespace ET
 		/// <param name="self"></param>
 		/// <param name="path"></param>
 		/// <param name="go"></param>
-		static void InitGoChildCount(this GameObjectPoolComponent self,string path, GameObject go)
+		private static void InitGoChildCount(this GameObjectPoolComponent self,string path, GameObject go)
 		{
 			if (!self.IsOpenCheck()) return;
 			if (!self.goChildsCountPool.ContainsKey(path))
@@ -639,7 +639,7 @@ namespace ET
 		/// </summary>
 		/// <param name="self"></param>
 		/// <returns></returns>
-		static bool IsOpenCheck(this GameObjectPoolComponent self)
+		private static bool IsOpenCheck(this GameObjectPoolComponent self)
 		{
 			return Define.Debug;
 		}
@@ -651,7 +651,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="record"></param>
 		/// <returns></returns>
-		static int RecursiveGetChildCount(this GameObjectPoolComponent self,Transform trans, string path, ref Dictionary<string, int> record)
+		private static int RecursiveGetChildCount(this GameObjectPoolComponent self,Transform trans, string path, ref Dictionary<string, int> record)
 		{
 			int total_child_count = trans.childCount;
 			for (int i = 0; i < trans.childCount; i++)

@@ -12,7 +12,7 @@ namespace ET
         {
             await ETTask.CompletedTask;
             UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
-            var unit = unitComponent.Get(request.UnitId);
+            Unit unit = unitComponent.Get(request.UnitId);
             if (unit!=null)
             {
                 Log.Info(unit.Id+" M2M_UnitAreaRemove "+ unit.DomainScene().Id);

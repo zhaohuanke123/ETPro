@@ -1,13 +1,10 @@
-﻿using System;
-using UnityEngine;
-
-namespace ET
+﻿namespace ET
 {
     [UIComponent]
-	public class UILobbyView : Entity,IAwake,IOnCreate,IOnEnable<Scene>
+	public class UILobbyView : Entity,IAwake,IOnCreate,IOnEnable
     {
         public static string PrefabPath => "UI/UILobby/Prefabs/UILobbyView.prefab";
-        public Scene zoneScene;
+        // public Scene zoneScene;
         public UIButton EnterBtn;
         public UIButton ReturnLoginBtn;
     }

@@ -43,7 +43,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="value"></param>
-        static void SetProgress(this UIUpdateView self, float value)
+        private static void SetProgress(this UIUpdateView self, float value)
         {
             if (value > self.LastProgress)
                 self.LastProgress = value;
@@ -58,7 +58,7 @@ namespace ET
         /// <param name="confirmBtnText"></param>
         /// <param name="cancelBtnText"></param>
         /// <returns></returns>
-        static async ETTask<int> ShowMsgBoxView(this UIUpdateView self, string content, string confirmBtnText, string cancelBtnText)
+        private static async ETTask<int> ShowMsgBoxView(this UIUpdateView self, string content, string confirmBtnText, string cancelBtnText)
         {
             ETTask<int> tcs = ETTask<int>.Create();
             void ConfirmBtnFunc()
@@ -114,7 +114,7 @@ namespace ET
         /// 白名单
         /// </summary>
         /// <param name="self"></param>
-        static async ETTask CheckIsInWhiteList(this UIUpdateView self)
+        private static async ETTask CheckIsInWhiteList(this UIUpdateView self)
         {
             var url = ServerConfigComponent.Instance.GetWhiteListCdnUrl();
             if (string.IsNullOrEmpty(url))
@@ -144,7 +144,7 @@ namespace ET
         /// 版本号信息
         /// </summary>
         /// <param name="self"></param>
-        static async ETTask CheckUpdateList(this UIUpdateView self)
+        private static async ETTask CheckUpdateList(this UIUpdateView self)
         {
             var url = ServerConfigComponent.Instance.GetUpdateListCdnUrl();
             var info = await HttpManager.Instance.HttpGetResult<UpdateConfig>(url);
@@ -172,7 +172,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        static async ETTask<bool> CheckAppUpdate(this UIUpdateView self)
+        private static async ETTask<bool> CheckAppUpdate(this UIUpdateView self)
         {
             var appChannel = PlatformUtil.GetAppChannel();
             var channelAppUpdateList = ServerConfigComponent.Instance.GetAppUpdateListByChannel(appChannel);
@@ -242,7 +242,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        static async ETTask<bool> CheckResUpdate(this UIUpdateView self)
+        private static async ETTask<bool> CheckResUpdate(this UIUpdateView self)
         {
             var appChannel = PlatformUtil.GetAppChannel();
             var channel = YooAssetsMgr.Instance.Config.Channel;

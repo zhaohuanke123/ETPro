@@ -16,7 +16,7 @@ namespace ET
     [FriendClass(typeof (UICopyGameObject))]
     public static class UICopyGameObjectSystem
     {
-        static void ActivatingComponent(this UICopyGameObject self)
+        private static void ActivatingComponent(this UICopyGameObject self)
         {
             if (self.comp == null)
             {

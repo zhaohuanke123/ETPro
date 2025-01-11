@@ -17,6 +17,7 @@ namespace ET
             self.FinishCount = 0;
         }
     }
+
     [ObjectSystem]
     public class SceneLoadComponentDestroySystem: DestroySystem<SceneLoadComponent>
     {
@@ -29,7 +30,8 @@ namespace ET
             self.Tasks.Dispose();
         }
     }
-    [FriendClass(typeof(SceneLoadComponent))]
+
+    [FriendClass(typeof (SceneLoadComponent))]
     public static class SceneLoadComponentSystem
     {
         //预加载prefab
@@ -40,11 +42,13 @@ namespace ET
                 self.ObjCount[path]++;
                 return;
             }
-            self.ObjCount.Add(path,count);
+
+            self.ObjCount.Add(path, count);
             self.Paths.Add(path);
             self.Types.Add(SceneLoadComponent.LoadType.GameObject);
             self.Total++;
         }
+
         //预加载图集
         public static void AddPreloadImage(this SceneLoadComponent self, string path)
         {
@@ -53,6 +57,7 @@ namespace ET
             self.Types.Add(SceneLoadComponent.LoadType.Image);
             self.Total++;
         }
+
         //预加载材质
         public static void AddPreloadMaterial(this SceneLoadComponent self, string path)
         {
@@ -61,17 +66,19 @@ namespace ET
             self.Types.Add(SceneLoadComponent.LoadType.Material);
             self.Total++;
         }
+
         //预加载
         public static void AddPreloadTask(this SceneLoadComponent self, Func<ETTask> task)
         {
-            self.Tasks.Add(self.Total.ToString(),task);
+            self.Tasks.Add(self.Total.ToString(), task);
             self.Paths.Add(self.Total.ToString());
             self.Types.Add(SceneLoadComponent.LoadType.Task);
             self.Total++;
         }
+
         //场景加载结束：后续资源准备（预加载等）
         //注意：这里使用协程，子类别重写了，需要加载的资源添加到列表就可以了
-        public static async ETTask OnPrepare(this SceneLoadComponent self,Action<float> progress_callback)
+        public static async ETTask OnPrepare(this SceneLoadComponent self, Action<float> progress_callback)
         {
             for (int i = 0; i < self.Total; i++)
             {
@@ -84,7 +91,7 @@ namespace ET
                         self.PreLoadTask.Add(MaterialComponent.Instance.LoadMaterialTask(self.Paths[i]));
                         break;
                     case SceneLoadComponent.LoadType.GameObject:
-                        self.PreLoadTask.Add(GameObjectPoolComponent.Instance.PreLoadGameObjectAsync(self.Paths[i],self.ObjCount[self.Paths[i]]));
+                        self.PreLoadTask.Add(GameObjectPoolComponent.Instance.PreLoadGameObjectAsync(self.Paths[i], self.ObjCount[self.Paths[i]]));
                         break;
                     case SceneLoadComponent.LoadType.Task:
                         self.PreLoadTask.Add(self.Tasks[self.Paths[i]].Invoke());
@@ -93,6 +100,7 @@ namespace ET
                         break;
                 }
             }
+
             self.ProgressCallback = progress_callback;
             if (self.Total <= 0) return;
             await ETTaskHelper.WaitAll(self.PreLoadTask);

@@ -233,7 +233,7 @@ namespace ET
         
         #region 私有方法
 
-        static async ETTask PreLoad()
+        private static async ETTask PreLoad()
         {
             for (int i = 0; i < 2; i++)//看情况提前预加载，加载会卡顿
             {
@@ -242,7 +242,8 @@ namespace ET
                 temp.Dispose();
             }
         }
-        static void InitSpriteAtlasCache(this ImageLoaderComponent self,LruCache<string, SpriteAtlasValue> cache)
+
+        private static void InitSpriteAtlasCache(this ImageLoaderComponent self,LruCache<string, SpriteAtlasValue> cache)
         {
             cache.SetCheckCanPopCallback((string key, SpriteAtlasValue value) => {
                 return value.RefCount == 0;
@@ -261,8 +262,8 @@ namespace ET
                 value.RefCount = 0;
             });
         }
-        
-        static void InitSingleSpriteCache(this ImageLoaderComponent self, LruCache<string, SpriteValue> cache)
+
+        private static void InitSingleSpriteCache(this ImageLoaderComponent self, LruCache<string, SpriteValue> cache)
         {
             cache.SetCheckCanPopCallback((string key, SpriteValue value) => {
                 return value.RefCount == 0;
@@ -273,7 +274,8 @@ namespace ET
                 value.RefCount = 0;
             });
         }
-        static async ETTask<Sprite> LoadAtlasImageAsyncInternal(this ImageLoaderComponent self,string assetAddress, string subassetName, Action<Sprite> callback = null)
+
+        private static async ETTask<Sprite> LoadAtlasImageAsyncInternal(this ImageLoaderComponent self,string assetAddress, string subassetName, Action<Sprite> callback = null)
         {
             var cacheCls = self.cacheSpriteAtlas;
             if (cacheCls.TryGet(assetAddress, out var valueC))
@@ -345,7 +347,8 @@ namespace ET
             callback?.Invoke(null);
             return null;
         }
-        static async ETTask<Sprite> LoadSingleImageAsyncInternal(this ImageLoaderComponent self,string assetAddress, Action<Sprite> callback = null)
+
+        private static async ETTask<Sprite> LoadSingleImageAsyncInternal(this ImageLoaderComponent self,string assetAddress, Action<Sprite> callback = null)
         {
             var cacheCls = self.cacheSingleSprite;
             if (cacheCls.TryGet(assetAddress, out var value_c))
@@ -379,7 +382,8 @@ namespace ET
             callback?.Invoke(null);
             return null;
         }
-        static void GetSpriteLoadInfoByPath(this ImageLoaderComponent self,string imagePath, out int assetType, out string assetAddress, out string subasset_name)
+
+        private static void GetSpriteLoadInfoByPath(this ImageLoaderComponent self,string imagePath, out int assetType, out string assetAddress, out string subasset_name)
         {
             assetAddress = imagePath;
             subasset_name = "";
@@ -431,7 +435,7 @@ namespace ET
             subasset_name = spriteName;
         }
 
-        static async ETTask<Sprite> LoadSpriteImageAsyncInternal(this ImageLoaderComponent self,
+        private static async ETTask<Sprite> LoadSpriteImageAsyncInternal(this ImageLoaderComponent self,
              string assetAddress, string subassetName, Action<Sprite> callback)
         {
             LruCache<string, SpriteAtlasValue> cacheCls = self.cacheSpriteAtlas;
@@ -530,7 +534,7 @@ namespace ET
 
         }
 
-        static async ETTask<Sprite> LoadDynSpriteImageAsyncInternal(this ImageLoaderComponent self,
+        private static async ETTask<Sprite> LoadDynSpriteImageAsyncInternal(this ImageLoaderComponent self,
              string assetAddress, Action<Sprite> callback)
         {
             Dictionary<string, DynamicAtlas> cacheCls = self.cacheDynamicAtlas;

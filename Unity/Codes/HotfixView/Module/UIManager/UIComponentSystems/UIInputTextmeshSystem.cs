@@ -9,7 +9,7 @@ namespace ET
     [FriendClass(typeof(UIInputTextmesh))]
     public static class UIInputTextmeshSystem
     {
-        static void ActivatingComponent(this UIInputTextmesh self)
+        private static void ActivatingComponent(this UIInputTextmesh self)
         {
             if (self.input == null)
             {

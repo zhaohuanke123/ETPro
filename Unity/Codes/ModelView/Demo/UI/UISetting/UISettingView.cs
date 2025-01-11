@@ -1,10 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace ET
+﻿namespace ET
 {
 	[UIComponent]
 	public class UISettingView : Entity, IAwake, ILoad, IOnCreate, IOnEnable

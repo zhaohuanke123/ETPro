@@ -11,8 +11,7 @@ namespace ET
 	[FriendClass(typeof(UIManagerComponent))]
 	public class UILayersComponentAwakeSystem : AwakeSystem<UILayersComponent>
     {
-
-		UILayerDefine[] GetConfig()
+	    private UILayerDefine[] GetConfig()
         {
 			UILayerDefine GameBackgroudLayer = new UILayerDefine
 			{

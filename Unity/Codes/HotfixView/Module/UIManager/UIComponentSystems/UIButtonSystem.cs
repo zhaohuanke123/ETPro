@@ -42,7 +42,7 @@ namespace ET
     [FriendClass(typeof (UIButton))]
     public static class UIButtonSystem
     {
-        static void ActivatingComponent(this UIButton self)
+        private static void ActivatingComponent(this UIButton self)
         {
             if (self.button == null)
             {
@@ -54,7 +54,7 @@ namespace ET
             }
         }
 
-        static void ActivatingImageComponent(this UIButton self)
+        private static void ActivatingImageComponent(this UIButton self)
         {
             if (self.image == null)
             {

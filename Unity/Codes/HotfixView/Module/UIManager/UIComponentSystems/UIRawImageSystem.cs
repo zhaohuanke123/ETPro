@@ -36,7 +36,7 @@ namespace ET
     [FriendClass(typeof (UIRawImage))]
     public static class UIRawImageSystem
     {
-        static void ActivatingComponent(this UIRawImage self)
+        private static void ActivatingComponent(this UIRawImage self)
         {
             if (self.image == null)
             {

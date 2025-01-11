@@ -15,7 +15,7 @@ namespace ET
     [FriendClass(typeof(UIToggle))]
     public static class UIToggleSystem
     {
-        static void ActivatingComponent(this UIToggle self)
+        private static void ActivatingComponent(this UIToggle self)
         {
             if (self.toggle == null)
             {

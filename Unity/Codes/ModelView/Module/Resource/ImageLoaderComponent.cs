@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.U2D;
 using System.Collections.Generic;
-using System;
 
 namespace ET
 {

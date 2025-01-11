@@ -8,11 +8,14 @@ namespace ET
 		 public const ushort Actor_TransferResponse = 10005;
 		 public const ushort C2G_EnterMap = 10006;
 		 public const ushort G2C_EnterMap = 10007;
+		 public const ushort C2G_ExitMap = 10054;
+		 public const ushort G2C_ExitMap = 10055;
 		 public const ushort MoveInfo = 10008;
 		 public const ushort UnitInfo = 10009;
 		 public const ushort M2C_CreateUnits = 10010;
 		 public const ushort M2C_CreateMyUnit = 10011;
 		 public const ushort M2C_StartSceneChange = 10012;
+		 public const ushort M2C_StartSceneChangeToLogin = 10058;
 		 public const ushort M2C_RemoveUnits = 10013;
 		 public const ushort C2M_PathfindingResult = 10014;
 		 public const ushort C2M_Stop = 10015;
@@ -54,5 +57,7 @@ namespace ET
 		 public const ushort C2A_LogoutRequest = 10052;
 		 public const ushort A2C_LogoutResponse = 10053;
 		 public const ushort A2C_Disconnect = 10049;
+		 public const ushort C2A_CreateChessUnit = 10056;
+		 public const ushort A2C_CreateChessUnit = 10057;
 	}
 }
