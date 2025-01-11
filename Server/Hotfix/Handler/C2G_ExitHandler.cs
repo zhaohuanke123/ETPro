@@ -9,24 +9,13 @@ namespace ET
         {
             Player player = session.GetComponent<SessionPlayerComponent>().GetMyPlayer();
             GateMapComponent gateMapComponent = player.GetComponent<GateMapComponent>();
-
-            if (gateMapComponent == null)
-            {
-                response.Error = ErrorCode.ERR_NotInMap;
-                reply();
-                return;
-            }
-
-            UnitComponent unitComponent = gateMapComponent.Scene.GetComponent<UnitComponent>();
-            if (unitComponent == null)
-            {
-                response.Error = ErrorCode.ERR_NotInMap;
-                reply();
-                return;
-            }
-
-            unitComponent.Remove(player.Id);
             player.RemoveComponent<GateMapComponent>();
+
+            string map = "Map1";
+            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), map);
+            MapSceneConfig mapSceneConfig = MapSceneConfigCategory.Instance.Get(startSceneConfig.Id);
+
+            await TransferHelper.ExitMap(player.Id, startSceneConfig.InstanceId, mapSceneConfig.Name);
 
             session.Send(new M2C_StartSceneChangeToLogin());
 

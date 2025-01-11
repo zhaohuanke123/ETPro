@@ -20,6 +20,7 @@ message M2M_UnitTransferRequest // IActorRequest
 	repeated RecursiveEntitys Map = 4;
 }
 
+
 //ResponseType M2M_UnitAreaTransferResponse
 message M2M_UnitAreaTransferRequest // IActorRequest
 {

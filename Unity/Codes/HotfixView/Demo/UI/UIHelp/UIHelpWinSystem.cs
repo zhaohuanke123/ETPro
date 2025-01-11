@@ -8,8 +8,10 @@
         {
             self.GalBtn = self.AddUIComponent<UIButton>("Button");
             self.GalBtn.SetOnClick(self.OnGalBtnClick);
+            self.GalBtn.SetActive(false);
             self.SettingBtn = self.AddUIComponent<UIButton>("Setting");
             self.SettingBtn.SetOnClick(self.OnSettingBtnClick);
+            self.SettingBtn.SetActive(false);
             self.ReturnBtn = self.AddUIComponent<UIButton>("Return");
             self.ReturnBtn.SetOnClick(self.OnReturnBtnClick);
         }

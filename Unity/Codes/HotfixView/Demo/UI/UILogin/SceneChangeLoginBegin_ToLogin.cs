@@ -4,6 +4,7 @@
     {
         protected override async ETTask Run(EventType.SceneChangeLoginBegin args)
         {
+            AOISceneViewComponent.Instance.ExitScene();
             await SceneManagerComponent.Instance.SwitchScene(SceneNames.Login, true);
         }
     }

@@ -51,7 +51,7 @@ namespace ET
             CameraManagerComponent.Instance.SetCameraStackAtLoadingStart();
 
             //等待资源管理器加载任务结束，否则很多Unity版本在切场景时会有异常，甚至在真机上crash
-            Log.Info("InnerSwitchScene ProsessRunning Done ");
+            Log.Info("InnerSwitchScene Prosess Running Done ");
             while (ResourcesComponent.Instance.IsProsessRunning())
             {
                 await Game.WaitFrameFinish();
@@ -70,7 +70,7 @@ namespace ET
             //清除ImageLoaderManager里的资源缓存 这里考虑到我们是单场景
             Log.Info("InnerSwitchScene ImageLoaderManager Cleanup");
             ImageLoaderComponent.Instance.Clear();
-            //清除预设以及其创建出来的gameobject, 这里不能清除loading的资源
+            //清除预设以及其创建出来的game object, 这里不能清除loading的资源
             Log.Info("InnerSwitchScene GameObjectPool Cleanup");
             if (needclean)
             {
@@ -104,6 +104,7 @@ namespace ET
             Log.Info("LoadSceneAsync Over");
             slid_value += 0.01f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+            
             //GC：交替重复2次，清干净一点
             GC.Collect();
             GC.Collect();

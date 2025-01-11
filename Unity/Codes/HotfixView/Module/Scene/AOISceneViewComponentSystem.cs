@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 
 namespace ET
@@ -17,17 +18,17 @@ namespace ET
             self.NameMapScene = new Dictionary<string, AssetsScene>();
             self.Init();
         }
-        
-        
     }
-    [FriendClass(typeof(AOISceneViewComponent))]
-    [FriendClass(typeof(SceneManagerComponent))]
+
+    [FriendClass(typeof (AOISceneViewComponent))]
+    [FriendClass(typeof (SceneManagerComponent))]
     public static class AOISceneViewComponentSystem
     {
         public static void Init(this AOISceneViewComponent self)
         {
             #region 从Proto初始化场景物体信息
-            string[] protoPaths = {"MapConfig/Map.bytes"};
+
+            string[] protoPaths = { "MapConfig/Map.bytes" };
             for (int i = 0; i < protoPaths.Length; i++)
             {
                 var jsonPath = protoPaths[i];
@@ -35,16 +36,17 @@ namespace ET
                 {
                     var bytes = file.bytes;
                     AssetsRoot root;
-                    for (int k = 0; k < 3; k++)//有时候Protobuf解析大量数据失败，多试几次
+                    for (int k = 0; k < 3; k++) //有时候Protobuf解析大量数据失败，多试几次
                     {
                         try
                         {
-                            root= ProtobufHelper.FromBytes(TypeInfo<AssetsRoot>.Type,bytes,0,bytes.Length) as AssetsRoot;
+                            root = ProtobufHelper.FromBytes(TypeInfo<AssetsRoot>.Type, bytes, 0, bytes.Length) as AssetsRoot;
                             for (int j = 0; j < root.Scenes.Count; j++)
                             {
                                 self.NameMapScene.Add(root.Scenes[j].Name, root.Scenes[j]);
                                 root.Scenes[j].CellMapObjects = new Dictionary<long, List<int>>(root.Scenes[j].CellIds.Count);
                             }
+
                             return;
                         }
                         catch (Exception ex)
@@ -54,24 +56,37 @@ namespace ET
                     }
                 }).Coroutine();
             }
-            
+
             #endregion
         }
+
         /// <summary>
         /// 切换到某个场景
         /// </summary>
+        /// <param name="self"></param>
         /// <param name="name"></param>
-        public static async ETTask ChangeToScene(this AOISceneViewComponent self,string name=null,SceneLoadComponent slc = null)
+        /// <param name="slc"></param>
+        public static async ETTask ChangeToScene(this AOISceneViewComponent self, string name = null, SceneLoadComponent slc = null)
         {
-            if (string.IsNullOrEmpty(name)) return;
-            if (SceneManagerComponent.Instance.Busing) return;
+            if (string.IsNullOrEmpty(name))
+            {
+                return;
+            }
+
+            if (SceneManagerComponent.Instance.Busing)
+            {
+                return;
+            }
+
             //打开loading界面
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
             float slid_value = 0;
+
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+
             int flag = 1;
-            AssetsScene scene=null;
-            while(!self.NameMapScene.TryGetValue(name,out scene)&&flag<300)//30s还没加载出来数据大小就有问题了
+            AssetsScene scene = null;
+            while (!self.NameMapScene.TryGetValue(name, out scene) && flag < 300) //30s还没加载出来数据大小就有问题了
             {
                 await TimerComponent.Instance.WaitAsync(100);
                 flag++;
@@ -81,37 +96,40 @@ namespace ET
 
             if (scene == null)
             {
-                Log.Error(name+" == null");
+                Log.Error(name + " == null");
                 SceneManagerComponent.Instance.Busing = false;
                 return;
             }
+
             SceneManagerComponent.Instance.Busing = true;
             self.LastGridX = null;
             self.LastGridY = null;
-            Log.Info("InnerSwitchScene start open uiloading");
+            Log.Info("InnerSwitchScene start open ui loading");
             slid_value = 0.1f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
-            if (self.CurMap==null||name != self.CurMap.Name)//需要重新加载场景物体
+            if (self.CurMap == null || name != self.CurMap.Name) //需要重新加载场景物体
             {
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                 if (SceneManagerComponent.Instance.CurrentScene != SceneNames.Map)
                 {
                     CameraManagerComponent.Instance.SetCameraStackAtLoadingStart();
                 }
+
                 slid_value = 0.15f;
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                 //等待资源管理器加载任务结束，否则很多Unity版本在切场景时会有异常，甚至在真机上crash
-                Log.Info("InnerSwitchScene ProsessRunning Done ");
+                Log.Info("InnerSwitchScene Prosess Running Done ");
                 while (ResourcesComponent.Instance.IsProsessRunning())
                 {
                     await Game.WaitFrameFinish();
                 }
-                
+
                 //清理旧场景
                 foreach (var item in self.DynamicSceneObjectMapObj)
                 {
-                    self.RecycleObj(item.Key,false);
+                    self.RecycleObj(item.Key, false);
                 }
+
                 self.DynamicSceneObjectMapObj.Clear();
                 self.DynamicSceneObjectMapCount.Clear();
                 slid_value = 0.2f;
@@ -122,7 +140,7 @@ namespace ET
                     //清理UI
                     Log.Info("InnerSwitchScene Clean UI");
                     await UIManagerComponent.Instance.DestroyWindowExceptNames(SceneManagerComponent.Instance.DestroyWindowExceptNames.ToArray());
-                    
+
                     slid_value = 0.25f;
                     Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                     //清除ImageLoaderManager里的资源缓存 这里考虑到我们是单场景
@@ -130,7 +148,7 @@ namespace ET
                     ImageLoaderComponent.Instance.Clear();
                     //清除预设以及其创建出来的gameobject, 这里不能清除loading的资源
                     Log.Info("InnerSwitchScene GameObjectPool Cleanup");
-                    
+
                     GameObjectPoolComponent.Instance.Cleanup(true, SceneManagerComponent.Instance.ScenesChangeIgnoreClean);
                     slid_value = 0.3f;
                     Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
@@ -145,12 +163,14 @@ namespace ET
                             gos.Add(go);
                         }
                     }
+
                     Log.Info("InnerSwitchScene ResourcesManager ClearAssetsCache excludeAssetLen = " + gos.Count);
                     ResourcesComponent.Instance.ClearAssetsCache(gos.ToArray());
                     slid_value = 0.45f;
                     Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
-                    
-                    await ResourcesComponent.Instance.LoadSceneAsync(SceneManagerComponent.Instance.GetSceneConfigByName(SceneNames.Loading).SceneAddress, false);
+
+                    await ResourcesComponent.Instance.LoadSceneAsync(
+                        SceneManagerComponent.Instance.GetSceneConfigByName(SceneNames.Loading).SceneAddress, false);
                     Log.Info("LoadSceneAsync Over");
                     slid_value = 0.5f;
                     Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
@@ -163,6 +183,7 @@ namespace ET
                     {
                         await Game.WaitFrameFinish();
                     }
+
                     slid_value = 0.6f;
                     Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
 
@@ -172,6 +193,7 @@ namespace ET
                     await ResourcesComponent.Instance.LoadSceneAsync(scene_config.SceneAddress, false);
                     SceneManagerComponent.Instance.CurrentScene = scene_config.Name;
                 }
+
                 slid_value = 0.7f;
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                 //准备工作：预加载资源等
@@ -180,16 +202,17 @@ namespace ET
                     await slc.OnPrepare((progress) =>
                     {
                         Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value + 0.3f * progress });
-                        if (progress > 1) Log.Error("scene load waht's the fuck!");
+                        if (progress > 1) Log.Error("scene load what's the fuck!");
                     });
                 }
+
                 slid_value = 1f;
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                 CameraManagerComponent.Instance.SetCameraStackAtLoadingDone();
             }
 
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = 1 });
-            await TimerComponent.Instance.WaitAsync(1000);//等1帧
+            await TimerComponent.Instance.WaitAsync(1000); //等1帧
             self.CurMap = scene;
             SceneManagerComponent.Instance.Busing = false;
         }
@@ -198,10 +221,11 @@ namespace ET
         /// 改变格子
         /// 这里通过9宫格实现，如果需要可自己改为四叉树八叉树
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="pos"></param>
         /// <param name="viewLen"></param>
-        public static async ETTask ChangePosition(this AOISceneViewComponent self,Scene zoneScene,Vector3 pos,int viewLen)
+        /// <param name="self"></param>
+        /// <param name="zoneScene"></param>
+        public static async ETTask ChangePosition(this AOISceneViewComponent self, Scene zoneScene, Vector3 pos, int viewLen)
         {
             CoroutineLock coroutineLock = null;
             try
@@ -211,18 +235,20 @@ namespace ET
                 {
                     await Game.WaitFrameFinish();
                 }
+
                 int x = (int)(pos.x / self.CellLen);
                 int y = (int)(pos.z / self.CellLen);
                 if (self.LastGridX != null)
                 {
                     int count = 0;
-                    count += Math.Abs(x - (int) self.LastGridX);
-                    count += Math.Abs(y - (int) self.LastGridY);
+                    count += Math.Abs(x - (int)self.LastGridX);
+                    count += Math.Abs(y - (int)self.LastGridY);
                     if (count > 4) //太远了走loading
                     {
                         await self.ChangeToScene();
                     }
                 }
+
                 DictionaryComponent<long, int> temp = DictionaryComponent<long, int>.Create();
                 for (int i = -viewLen; i <= viewLen; i++)
                 {
@@ -230,7 +256,7 @@ namespace ET
                     {
                         if (self.LastGridY != null)
                         {
-                            var oldid = AOIHelper.CreateCellId((int) self.LastGridX + i, (int) self.LastGridY + j);
+                            var oldid = AOIHelper.CreateCellId((int)self.LastGridX + i, (int)self.LastGridY + j);
                             if (!temp.ContainsKey(oldid))
                             {
                                 temp[oldid] = 0;
@@ -246,8 +272,6 @@ namespace ET
                         }
 
                         temp[newid]++;
-
-
                     }
                 }
 
@@ -257,7 +281,7 @@ namespace ET
                     {
                         if (item.Value == 0) continue;
                         var list = self.GetCellMapObjects(item.Key);
-                        if (list==null) continue;
+                        if (list == null) continue;
                         for (int i = 0; i < list.Count; i++)
                         {
                             var index = list[i];
@@ -313,7 +337,7 @@ namespace ET
                                             view.transform.parent = GlobalComponent.Instance.Scene;
                                         }));
                                     }
-                                
+
                                     else if (viewObj.Type == "Terrain")
                                     {
                                         var view = new GameObject(obj.Name);
@@ -361,7 +385,7 @@ namespace ET
 
                     await ETTaskHelper.WaitAll(tasks);
                 }
-                
+
                 temp.Dispose();
                 self.LastGridX = x;
                 self.LastGridY = y;
@@ -376,7 +400,7 @@ namespace ET
             }
         }
 
-        public static void RecycleObj(this AOISceneViewComponent self,int index,bool remove=true)
+        public static void RecycleObj(this AOISceneViewComponent self, int index, bool remove = true)
         {
             var viewObj = self.DynamicSceneObjectMapObj[index];
             if (viewObj.Obj == null) //还在加载
@@ -392,7 +416,7 @@ namespace ET
                 {
                     var collider = viewObj.Obj.GetComponent<TerrainCollider>();
                     ResourcesComponent.Instance.ReleaseAsset(collider.terrainData);
-                    GameObject.Destroy(viewObj.Obj);
+                    UnityEngine.Object.Destroy(viewObj.Obj);
                 }
 
                 if (remove)
@@ -400,7 +424,6 @@ namespace ET
                     self.DynamicSceneObjectMapObj.Remove(index);
                 }
             }
-
         }
 
         public static List<int> GetCellMapObjects(this AOISceneViewComponent self, long id)
@@ -411,7 +434,7 @@ namespace ET
                 int left = 0;
                 int right = arr.Count - 1;
 
-                while (left<=right)
+                while (left <= right)
                 {
                     int mid = left + (right - left) / 2;
                     if (id < arr[mid])
@@ -431,7 +454,52 @@ namespace ET
                     }
                 }
             }
+
             return res;
+        }
+
+        public static void ExitScene(this AOISceneViewComponent self)
+        {
+            // 检查当前是否有场景在加载中，避免冲突
+            if (SceneManagerComponent.Instance.Busing)
+            {
+                Log.Warning("Scene is currently in transition, cannot exit at this time.");
+                return;
+            }
+
+            Log.Info("Exiting current scene and cleaning up resources...");
+
+            // 清理动态场景对象
+            foreach (var item in self.DynamicSceneObjectMapObj.ToList())
+            {
+                self.RecycleObj(item.Key);
+            }
+
+            self.DynamicSceneObjectMapObj.Clear();
+            self.DynamicSceneObjectMapCount.Clear();
+
+            // 清理当前地图数据
+            if (self.CurMap != null)
+            {
+                self.CurMap.CellMapObjects.Clear();
+            }
+
+            // 重置状态
+            self.CurMap = null;
+            self.LastGridX = null;
+            self.LastGridY = null;
+            self.Busing = false;
+
+            // 清理资源缓存
+            Log.Info("Clearing asset cache...");
+            ResourcesComponent.Instance.ClearAssetsCache();
+
+            // 触发GC以释放未使用的资源
+            GC.Collect();
+            GC.Collect();
+            Resources.UnloadUnusedAssets();
+
+            Log.Info("Scene exit cleanup complete.");
         }
     }
 }

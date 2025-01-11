@@ -85,6 +85,17 @@ namespace ET
             }
         }
 
+        public static async ETTask ExitMap(long playerId, long sceneInstanceId, string sceneName)
+        {
+            G2M_UnitExitMap g2MUnitExitMapHandler = new G2M_UnitExitMap();
+
+            g2MUnitExitMapHandler.PlyerId = playerId;
+
+            ActorMessageSenderComponent.Instance.Send(sceneInstanceId, g2MUnitExitMapHandler);
+
+            await ETTask.CompletedTask;
+        }
+
         /// <summary>
         /// 异步执行游戏单位区域转移的方法
         /// </summary>

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace ET
@@ -27,10 +26,10 @@ namespace ET
     {
         public override void Run(OperaComponent self, int key, int type, ref bool stop)
         {
-            CodeLoader.Instance.LoadLogic();
-            Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
-            Game.EventSystem.Load();
-            Log.Debug("hot reload success!");
+            // CodeLoader.Instance.LoadLogic();
+            // Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
+            // Game.EventSystem.Load();
+            // Log.Debug("hot reload success!");
         }
     }
 
@@ -39,10 +38,10 @@ namespace ET
     {
         public override void Run(OperaComponent self, int key, int type, ref bool stop)
         {
-            C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
-            self.ZoneScene().RemoveComponent<KeyCodeComponent>();
-            self.ZoneScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
-            self.Dispose();
+            // C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
+            // self.ZoneScene().RemoveComponent<KeyCodeComponent>();
+            // self.ZoneScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
+            // self.Dispose();
         }
     }
 

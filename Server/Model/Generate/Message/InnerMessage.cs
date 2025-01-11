@@ -618,4 +618,16 @@ namespace ET
 
 	}
 
+	[Message(InnerOpcode.G2M_UnitExitMap)]
+	[ProtoContract]
+	public partial class G2M_UnitExitMap: Object, IActorMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long PlyerId { get; set; }
+
+	}
+
 }

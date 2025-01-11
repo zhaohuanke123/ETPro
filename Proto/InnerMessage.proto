@@ -285,3 +285,9 @@ message G2L_DisconnectGateUnit // IActorResponse
 	int32 Error = 91;
 	string Message = 92;
 }
+
+message G2M_UnitExitMap // IActorMessage
+{
+	int32 RpcId = 1;
+	int64 PlyerId = 2;
+}

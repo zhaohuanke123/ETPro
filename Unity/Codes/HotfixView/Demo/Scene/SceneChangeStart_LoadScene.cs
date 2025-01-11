@@ -11,9 +11,9 @@ namespace ET
             slc.Dispose();
         }
 
-        public SceneLoadComponent EnterMap(Entity self)
+        private SceneLoadComponent EnterMap(Entity self)
         {
-            var slc = self.AddComponent<SceneLoadComponent>();
+            SceneLoadComponent slc = self.AddComponent<SceneLoadComponent>();
             var role = UnitConfigCategory.Instance.GetAll();
 
             foreach (var item in role)

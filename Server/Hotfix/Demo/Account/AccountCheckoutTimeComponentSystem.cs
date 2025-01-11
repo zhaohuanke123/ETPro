@@ -6,11 +6,11 @@ namespace ET
     [Timer(TimerType.AccountSessionCheckoutTime)]
     public class AccountSessionCheckOutTimer: ATimer<AccountCheckoutTimeComponent>
     {
-        public override void Run(AccountCheckoutTimeComponent self)
+        public override async void Run(AccountCheckoutTimeComponent self)
         {
             try
             {
-                self.DeleteSession();
+                await self.DeleteSession();
             }
             catch (Exception e)
             {
@@ -37,12 +37,12 @@ namespace ET
             TimerComponent.Instance.Remove(ref self.Timer);
         }
     }
-    [FriendClassAttribute(typeof(ET.AccountCheckoutTimeComponent))]
-    // public static class AccountCheckoutTimeComponentSystem
 
+    [FriendClass(typeof (ET.AccountCheckoutTimeComponent))]
+    [FriendClassAttribute(typeof (ET.SessionPlayerComponent))] // public static class AccountCheckoutTimeComponentSystem
     public static class AccountCheckoutTimeComponentSystem
     {
-        public static void DeleteSession(this AccountCheckoutTimeComponent self)
+        public static async ETTask DeleteSession(this AccountCheckoutTimeComponent self)
         {
             Session session = self.GetParent<Session>();
 
@@ -52,6 +52,20 @@ namespace ET
             {
                 accountSessionsComponent.Remove(self.AccountId);
             }
+
+            string map = "Map1";
+            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), map);
+            MapSceneConfig mapSceneConfig = MapSceneConfigCategory.Instance.Get(startSceneConfig.Id);
+
+            SessionPlayerComponent sessionPlayerComponent = session.GetComponent<SessionPlayerComponent>();
+            if (sessionPlayerComponent == null)
+            {
+                session.DisConnect().Coroutine();
+                return;
+            }
+
+            long playerId = sessionPlayerComponent.PlayerId;
+            await TransferHelper.ExitMap(playerId, startSceneConfig.InstanceId, mapSceneConfig.Name);
 
             session.Send(new A2C_Disconnect() { Error = 0 });
             session.DisConnect().Coroutine();
