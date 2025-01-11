@@ -33,12 +33,12 @@ namespace ET
         /// <returns></returns>
         private static async ETTask<string[]> GetRouterListFake()
         {
-// #if !NOT_UNITY
-//             return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
-// #else
+#if !NOT_UNITY
+            return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
+#else
             await ETTask.CompletedTask;
             return new string[] { "117.72.91.228:40002", "117.72.91.228:10002", };
-// #endif
+#endif
         }
 
         private static async ETTask SynAsync(GetRouterComponent self, long gateid, long channelid)

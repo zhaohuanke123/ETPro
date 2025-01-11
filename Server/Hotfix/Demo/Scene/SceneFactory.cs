@@ -47,6 +47,7 @@ namespace ET
                         SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
                     scene.AddComponent<TokenComponent>();
                     scene.AddComponent<AccountSessionsComponent>();
+                    scene.AddComponent<PlayerComponent>();
                     break;
                 case SceneType.LoginCenter:
                     scene.AddComponent<LoginInfoRecordComponent>();

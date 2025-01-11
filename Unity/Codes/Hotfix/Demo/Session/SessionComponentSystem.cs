@@ -5,7 +5,7 @@
 		public override void Destroy(SessionComponent self)
 		{
 			self.Session.Dispose();
-			self.GateSession?.Dispose();
+			// self.GateSession?.Dispose();
 		}
 	}
 }

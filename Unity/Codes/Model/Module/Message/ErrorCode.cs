@@ -14,9 +14,7 @@ namespace ET
         // 110000 - 200000是抛异常的错误
         public const int ERR_AccountOrPasswordError = 110001;
 
-
         // 200001以上不抛异常
-
 
         // public const int ERR_LoginInfoError = 200003;
         public const int ERR_NetWorkError = 200002; //网络错误
@@ -31,5 +29,6 @@ namespace ET
         public const int ERR_AccountAlreadyRegister = 200011;
         public const int ERR_AccountNotLoggedIn = 200012;
         public const int ERR_NotBindPlayer = 200013;
+        public const int ERR_PlayerNotLoggedIn = 200014;
     }
 }

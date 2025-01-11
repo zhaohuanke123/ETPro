@@ -2,8 +2,9 @@ using System;
 
 namespace ET
 {
-    [FriendClass(typeof(AccountCheckoutTimeComponent))]
-    public class C2A_LogoutRequestHandler : AMRpcHandler<C2A_LogoutRequest, A2C_LogoutResponse>
+    [FriendClass(typeof (AccountCheckoutTimeComponent))]
+    [FriendClassAttribute(typeof (ET.SessionPlayerComponent))]
+    public class C2A_LogoutRequestHandler: AMRpcHandler<C2A_LogoutRequest, A2C_LogoutResponse>
     {
         protected override async ETTask Run(Session session, C2A_LogoutRequest request, A2C_LogoutResponse response, Action reply)
         {
@@ -36,6 +37,20 @@ namespace ET
             // 移除账号会话
             AccountSessionsComponent accountSessionsComponent = session.DomainScene().GetComponent<AccountSessionsComponent>();
             accountSessionsComponent?.Remove(accountId);
+
+            Scene scene = session.DomainScene();
+            long playerId = session.GetComponent<SessionPlayerComponent>().PlayerId;
+            PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
+            Player player = playerComponent.Get(playerId);
+
+            if (player == null)
+            {
+                response.Error = ErrorCode.ERR_PlayerNotLoggedIn;
+                reply();
+                return;
+            }
+
+            playerComponent.Remove(playerId);
 
             // 断开会话
             session.DisConnect().Coroutine();

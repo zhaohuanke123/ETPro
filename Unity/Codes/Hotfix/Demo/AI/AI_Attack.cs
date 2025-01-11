@@ -26,7 +26,7 @@ namespace ET
             }
 
             // 停在当前位置
-            zoneScene.GetComponent<SessionComponent>().GateSession.Send(new C2M_Stop());
+            zoneScene.GetComponent<SessionComponent>().Session.Send(new C2M_Stop());
             
             Log.Debug("开始攻击");
 

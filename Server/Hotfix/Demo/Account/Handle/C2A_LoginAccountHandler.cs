@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace ET.Account.Handle
 {
+    [FriendClassAttribute(typeof (ET.SessionPlayerComponent))]
     public class C2A_LoginAccountHandler: AMRpcHandler<C2A_LoginAccount, A2C_LoginAccount>
     {
         protected override async ETTask Run(Session session, C2A_LoginAccount request, A2C_LoginAccount response, Action reply)
@@ -91,20 +92,20 @@ namespace ET.Account.Handle
             }
 
             // 账号服务器请求登录中心服
-            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
-            long loginCenterInstanceId = startSceneConfig.InstanceId;
-            var loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call(loginCenterInstanceId,
-                new A2L_LoginAccountRequest() { AccountId = accountInfo.Id });
+            // StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
+            // long loginCenterInstanceId = startSceneConfig.InstanceId;
+            // var loginAccountResponse = (L2A_LoginAccountResponse)await ActorMessageSenderComponent.Instance.Call(loginCenterInstanceId,
+            //     new A2L_LoginAccountRequest() { AccountId = accountInfo.Id });
 
-            if (loginAccountResponse.Error != ErrorCode.ERR_Success)
-            {
-                response.Error = loginAccountResponse.Error;
-
-                reply();
-                session.DisConnect().Coroutine();
-                accountInfo.Dispose();
-                return;
-            }
+            // if (loginAccountResponse.Error != ErrorCode.ERR_Success)
+            // {
+            //     response.Error = loginAccountResponse.Error;
+            //
+            //     reply();
+            //     session.DisConnect().Coroutine();
+            //     accountInfo.Dispose();
+            //     return;
+            // }
 
             // 把之前的Session(已经登录的)踢下线
             AccountSessionsComponent accountSessionsComponent = session.DomainScene().GetComponent<AccountSessionsComponent>();
@@ -114,7 +115,6 @@ namespace ET.Account.Handle
                 otherSession.Send(new A2C_Disconnect() { Error = 0 });
                 otherSession.DisConnect().Coroutine();
             }
-            //
 
             accountSessionsComponent.Add(accountInfo.Id, session.InstanceId);
             // 设置账号超时时间
@@ -129,16 +129,23 @@ namespace ET.Account.Handle
             response.Token = Token;
 
             // 随机分配一个Gate
-            StartSceneConfig config = RealmGateAddressHelper.GetGate(session.DomainZone());
-            Log.Debug($"gate address: {MongoHelper.ToJson(config)}");
+            // StartSceneConfig config = RealmGateAddressHelper.GetGate(session.DomainZone());
+            // Log.Debug($"gate address: {MongoHelper.ToJson(config)}");
 
             // 向gate请求一个key,客户端可以拿着这个key连接gate
-            G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey)await ActorMessageSenderComponent.Instance.Call(config.InstanceId,
-                new R2G_GetLoginKey() { Account = request.AccountName });
+            // G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey)await ActorMessageSenderComponent.Instance.Call(config.InstanceId,
+            //     new R2G_GetLoginKey() { Account = request.AccountName });
+            //
+            // response.Address = config.OuterIPPort.ToString();
+            // response.Key = g2RGetLoginKey.Key;
+            // response.GateId = g2RGetLoginKey.GateId;
 
-            response.Address = config.OuterIPPort.ToString();
-            response.Key = g2RGetLoginKey.Key;
-            response.GateId = g2RGetLoginKey.GateId;
+            Scene scene = session.DomainScene();
+            PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
+            Player player = playerComponent.AddChild<Player, string>(request.AccountName);
+            playerComponent.Add(player);
+            session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
+            session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
 
             reply();
         }

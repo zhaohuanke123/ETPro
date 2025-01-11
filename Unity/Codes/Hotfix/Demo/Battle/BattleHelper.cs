@@ -14,7 +14,7 @@ namespace ET
                 Z = pos.z,
                 Id = id
             };
-            skill.ZoneScene().GetComponent<SessionComponent>().GateSession.Send(msg);
+            skill.ZoneScene().GetComponent<SessionComponent>().Session.Send(msg);
         }
 
         public static void Damage(CombatUnitComponent from, CombatUnitComponent to, float value)
