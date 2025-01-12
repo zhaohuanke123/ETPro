@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MonKey Settings
   m_EditorClassIdentifier: 
   UseSortedSelection: 1
-  MaxSortedSelectionSize: 200
+  MaxSortedSelectionSize: 1000
   ShowSortedSelectionWarning: 1
   MonkeyConsoleOverrideHotKey: f
   PauseGameOnConsoleOpen: 1
@@ -22,7 +22,7 @@ MonoBehaviour:
   IncludeOnlyMenuItemsWithHotKeys: 0
   ExcludedAssemblies: 
   ExcludedNameSpaces: 
-  IncludedAssemblies: Unity.Editor;
+  IncludedAssemblies: Unity.Editor
   IncludeModeOnly: 1
   ForceFocusOnDocked: 0
-  ShowHelpOnSelectedOnly: 1
+  ShowHelpOnSelectedOnly: 0

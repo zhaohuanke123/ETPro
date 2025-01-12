@@ -80,7 +80,7 @@ namespace ET
 
             if (!File.Exists(settingAsset))
             {
-                buildSettings = CreateInstance<ETBuildSettings>();
+                  buildSettings = CreateInstance<ETBuildSettings>();
                 AssetDatabase.CreateAsset(buildSettings, settingAsset);
             }
             else

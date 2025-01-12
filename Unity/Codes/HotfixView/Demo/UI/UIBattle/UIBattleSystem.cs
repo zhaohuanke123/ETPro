@@ -17,7 +17,7 @@ namespace ET
 
             //Gold/CostGo
             self.allCoin = self.AddUIComponent<UICostIN>("Gold/CostGo");
-            self.allCoin.SetNumber(123123);
+            // self.allCoin.SetNumber(123123);
 
             // championLimit/Text
             self.championLimitText = self.AddUIComponent<UIText>("championLimit/Text");
