@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CheckEmptyImage : EditorWindow
 {
-    Dictionary<string, List<string>> problems = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> problems = new Dictionary<string, List<string>>();
     private Vector2 scrollPosition = Vector2.zero;
     private bool isDone = false;
     private GameObject curOpenPrefab = null;
@@ -130,7 +130,7 @@ public class CheckEmptyImage : EditorWindow
         this.ShowNotification(new GUIContent("查找完成！"));
     }
 
-    void AddProblem(string cur, Transform tran)
+    private void AddProblem(string cur, Transform tran)
     {
         if (!problems.ContainsKey(cur))
         {
@@ -140,7 +140,7 @@ public class CheckEmptyImage : EditorWindow
         problems[cur].Add(GetProblemFullPath(tran));
     }
 
-    string GetProblemFullPath(Transform tran)
+    private string GetProblemFullPath(Transform tran)
     {
         string path = tran.name;
 

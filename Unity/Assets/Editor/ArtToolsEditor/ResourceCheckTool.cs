@@ -10,8 +10,7 @@ using UnityEngine.Profiling;
 using OfficeOpenXml;
 public class ResourceCheckTool: EditorWindow
 {
-
-    static Dictionary<string, List<string>> refDic = new Dictionary<string, List<string>>();
+    private static Dictionary<string, List<string>> refDic = new Dictionary<string, List<string>>();
 
     private static EditorApplication.CallbackFunction _updateDelegate;
 
@@ -296,14 +295,12 @@ public class ResourceCheckTool: EditorWindow
                 .Replace('\\', '/');
     }
 
+    private bool showNoUser = true;
+    private bool showUser = true;
+    private System.Collections.Generic.List<bool> showList = new System.Collections.Generic.List<bool>();
+    private Vector2 scrollPos;
 
-
-
-    bool showNoUser = true;
-    bool showUser = true;
-    System.Collections.Generic.List<bool> showList = new System.Collections.Generic.List<bool>();
-    Vector2 scrollPos;
-    void OnGUI()
+    private void OnGUI()
     {
 
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(position.width),

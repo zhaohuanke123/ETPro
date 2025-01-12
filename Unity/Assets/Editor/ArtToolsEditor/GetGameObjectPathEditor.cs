@@ -15,7 +15,7 @@ public class GetGameObjectPathEditor : MonoBehaviour
     }
 
     [MenuItem("GameObject/复制物体路径", false, 24)]
-    static void CopyGameObjectPath() {
+    private static void CopyGameObjectPath() {
         Object obj = Selection.activeObject;
         if (obj == null) {
             Debug.LogError("请先选择一个物体");

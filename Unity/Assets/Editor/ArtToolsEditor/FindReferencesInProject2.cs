@@ -11,7 +11,7 @@ public class FindReferencesInProject2 : EditorWindow
 {
     //public const string MenuItemName = "Tools/ArtTools/查找资源映射";
     private const string MetaExtension = ".meta";
-    static Dictionary<string, System.Collections.Generic.List<string>> refDic = new Dictionary<string, System.Collections.Generic.List<string>>();
+    private static Dictionary<string, System.Collections.Generic.List<string>> refDic = new Dictionary<string, System.Collections.Generic.List<string>>();
     
     //[MenuItem(MenuItemName, false, 209)]
     public static List<string> FindByRG(string searchStr,string searchPath,bool showWin=true,bool clearData = true)
@@ -187,12 +187,12 @@ public class FindReferencesInProject2 : EditorWindow
         //}
     }
 
+    private bool showNoUser = true;
+    private bool showUser = true;
+    private System.Collections.Generic.List<bool> showList = new System.Collections.Generic.List<bool>();
+    private Vector2 scrollPos;
 
-    bool showNoUser = true;
-    bool showUser = true;
-    System.Collections.Generic.List<bool> showList = new System.Collections.Generic.List<bool>();
-    Vector2 scrollPos;
-    void OnGUI()
+    private void OnGUI()
     {
 
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(position.width), GUILayout.Height(position.height));

@@ -172,8 +172,7 @@ public class BetterList<T>
 	/// <summary>
 	/// Helper function that expands the size of the array, maintaining the content.
 	/// </summary>
-
-	void AllocateMore ()
+	private void AllocateMore ()
 	{
 		T[] newList = (buffer != null) ? new T[Mathf.Max(buffer.Length << 1, 32)] : new T[32];
 		if (buffer != null && size > 0) buffer.CopyTo(newList, 0);
@@ -184,8 +183,7 @@ public class BetterList<T>
 	/// Trim the unnecessary memory, resizing the buffer to be of 'Length' size.
 	/// Call this function only if you are sure that the buffer won't need to resize anytime soon.
 	/// </summary>
-
-	void Trim ()
+	private void Trim ()
 	{
 		if (size > 0)
 		{

@@ -38,14 +38,14 @@ public class ArtToolsWindow: EditorWindow
 		initFileData();
 	}
 
-	void OnDestroy()
+	private void OnDestroy()
 	{
 		showWin = false;
 	}
 
-	Vector2 scrollPos;
+	private Vector2 scrollPos;
 
-	void OnGUI()
+	private void OnGUI()
 	{
 
 		GUILayout.Label("提示1:标红说明图片大小超过256*256");

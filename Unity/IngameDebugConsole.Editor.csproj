@@ -321,6 +321,12 @@
  <Reference Include="AmazingAssets.TerrainToMesh">
  <HintPath>D:/Study/Unity/ETPro/Unity/Assets/Mono/Module/Map/AmazingAssets.TerrainToMesh.dll</HintPath>
  </Reference>
+ <Reference Include="MonKey Core">
+ <HintPath>D:/Study/Unity/ETPro/Unity/Assets/Plugins/MonKey Commander/MonKey Core.dll</HintPath>
+ </Reference>
+ <Reference Include="MonKey Commander">
+ <HintPath>D:/Study/Unity/ETPro/Unity/Assets/Plugins/MonKey Commander/Editor/Libs/MonKey Commander.dll</HintPath>
+ </Reference>
  <Reference Include="nunit.framework">
  <HintPath>D:/Study/Unity/ETPro/Unity/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
  </Reference>

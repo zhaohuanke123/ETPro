@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using MonKey;
+using UnityEditor;
 using UnityEngine;
 
 namespace ET
@@ -6,11 +7,18 @@ namespace ET
     public class ArtToolsEditor
     {
         [MenuItem("Tools/帮助/启动场景 #_b")]
-        static void ChangeInitScene()
+        [Command("ET_StartScene", "启动场景", Category = "ETEditor")]
+        private static void ChangeInitScene()
         {
             EditorApplication.OpenScene("Assets/AssetsPackage/Scenes/InitScene/Init.unity");
         }
-        
+
+        [Command("ET_UIScene", "UI场景", Category = "ETEditor")]
+        private static void ChangeUIScene()
+        {
+            EditorApplication.OpenScene("Assets/UIScene.unity");
+        }
+
         [MenuItem("Tools/ArtTools/创建子目录", false, 101)]
         [MenuItem("Assets/ArtTools/创建子目录", false, 101)]
         public static void CreateArtSubFolder()
@@ -24,13 +32,13 @@ namespace ET
         {
             FbxHelperWindow.ShowWindow();
         }
-        
+
         [MenuItem("Tools/ArtTools/资源分析输出excel", false, 202)]
         public static void ResourceAnalysis()
         {
             ResourceCheckTool.ResourceAnalysis();
         }
-        
+
         [MenuItem("Tools/ArtTools/资源可视化窗口", false, 208)]
         public static void OpenWindow()
         {
@@ -43,7 +51,7 @@ namespace ET
         {
             ArtistFont.BatchCreateArtistFont();
         }
-        
+
         [MenuItem("Tools/ArtTools/搜索或批量替换Sprite", false, 503)]
         public static void ReplaceImage()
         {

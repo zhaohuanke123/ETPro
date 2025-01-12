@@ -15,8 +15,7 @@ public static class BMFontReader
 	/// <summary>
 	/// Helper function that retrieves the string value of the key=value pair.
 	/// </summary>
-
-	static string GetString (string s)
+	private static string GetString (string s)
 	{
 		int idx = s.IndexOf('=');
 		return (idx == -1) ? "" : s.Substring(idx + 1);
@@ -25,8 +24,7 @@ public static class BMFontReader
 	/// <summary>
 	/// Helper function that retrieves the integer value of the key=value pair.
 	/// </summary>
-
-	static int GetInt (string s)
+	private static int GetInt (string s)
 	{
 		int val = 0;
 		string text = GetString(s);

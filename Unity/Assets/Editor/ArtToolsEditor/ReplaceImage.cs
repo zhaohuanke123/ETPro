@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class ReplaceImage : EditorWindow
 {
-    Sprite a = null;
-    Sprite b = null;
-    bool isDone = false;
+    private Sprite a = null;
+    private Sprite b = null;
+    private bool isDone = false;
     private GameObject curOpenPrefab = null;
     private string curOpenPrefabKey = null;
     private string curSelectTextKey = null;
     private Vector2 scrollPosition = Vector2.zero;
-    Dictionary<string, List<string>> record = new Dictionary<string, List<string>>();
-    Dictionary<string, List<string>> problems = new Dictionary<string, List<string>>();
-    List<string> res = new List<string>();
+    private Dictionary<string, List<string>> record = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> problems = new Dictionary<string, List<string>>();
+    private List<string> res = new List<string>();
 
     private void ResetData()
     {
@@ -345,7 +345,7 @@ public class ReplaceImage : EditorWindow
         this.ShowNotification(new GUIContent("替换完成！"));
     }
 
-    void AddRecord(string cur, Transform tran)
+    private void AddRecord(string cur, Transform tran)
     {
         if (!record.ContainsKey(cur))
         {
@@ -354,7 +354,8 @@ public class ReplaceImage : EditorWindow
 
         record[cur].Add(GetProblemFullPath(tran));
     }
-    void AddProblem(string cur, Transform tran)
+
+    private void AddProblem(string cur, Transform tran)
     {
         if (!problems.ContainsKey(cur))
         {
@@ -364,7 +365,7 @@ public class ReplaceImage : EditorWindow
         problems[cur].Add(GetProblemFullPath(tran));
     }
 
-    string GetProblemFullPath(Transform tran)
+    private string GetProblemFullPath(Transform tran)
     {
         string path = tran.name;
 

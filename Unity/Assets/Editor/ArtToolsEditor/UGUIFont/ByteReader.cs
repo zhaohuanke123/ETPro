@@ -16,8 +16,8 @@ using System.IO;
 
 public class ByteReader
 {
-	byte[] mBuffer;
-	int mOffset = 0;
+	private byte[] mBuffer;
+	private int mOffset = 0;
 
 	public ByteReader (byte[] bytes) { mBuffer = bytes; }
 	public ByteReader (TextAsset asset) { mBuffer = asset.bytes; }
@@ -53,8 +53,7 @@ public class ByteReader
 	/// <summary>
 	/// Read a single line from the buffer.
 	/// </summary>
-
-	static string ReadLine (byte[] buffer, int start, int count)
+	private static string ReadLine (byte[] buffer, int start, int count)
 	{
 #if UNITY_FLASH
 		// Encoding.UTF8 is not supported in Flash :(
@@ -196,7 +195,7 @@ public class ByteReader
 		return dict;
 	}
 
-	static BetterList<string> mTemp = new BetterList<string>();
+	private static BetterList<string> mTemp = new BetterList<string>();
 
 	/// <summary>
 	/// Read a single line of Comma-Separated Values from the file.

@@ -9,8 +9,7 @@ using System.Diagnostics;
 
 public class CheckUnuseImage : EditorWindow
 {
-
-    static List<string> Results = new List<string>();
+    private static List<string> Results = new List<string>();
     public delegate List<string> ThreadRun(ThreadPars par);
     private static EditorApplication.CallbackFunction _updateDelegate;
     private Vector2 scrollPosition = Vector2.zero;

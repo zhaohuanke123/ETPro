@@ -11,7 +11,7 @@ public class AssetImportMgr : AssetPostprocessor
 
     private static string pattern = "[\u4e00-\u9fbb]";
 
-    static void OnPostprocessAllAssets(
+    private static void OnPostprocessAllAssets(
         string[] importedAssets,
         string[] deletedAssets,
         string[] movedAssets,

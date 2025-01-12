@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class Finddependent : EditorWindow
 {
-    static Dictionary<string, string[]> refDic = new Dictionary<string, string[]>();
-    Vector2 scrollPos;
-    System.Collections.Generic.List<bool> showList = new System.Collections.Generic.List<bool>();
+    private static Dictionary<string, string[]> refDic = new Dictionary<string, string[]>();
+    private Vector2 scrollPos;
+
+    private System.Collections.Generic.List<bool> showList = new System.Collections.Generic.List<bool>();
     //查找某个资源的依赖
     public static void FindAssetDependent()
     {
@@ -115,8 +116,7 @@ public class Finddependent : EditorWindow
         return dependecies;
     }
 
-
-    void OnGUI()
+    private void OnGUI()
     {
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(position.width), GUILayout.Height(position.height));
         int index = 0;

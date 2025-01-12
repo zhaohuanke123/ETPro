@@ -9,8 +9,8 @@ using UnityEngine.Profiling;
 
 public class FindReferences : EditorWindow
 {
-    static Dictionary<string, System.Collections.Generic.List<string>> refDic = new Dictionary<string, System.Collections.Generic.List<string>>();
-    static bool showWin = true;
+    private static Dictionary<string, System.Collections.Generic.List<string>> refDic = new Dictionary<string, System.Collections.Generic.List<string>>();
+    private static bool showWin = true;
     /// <summary>
     /// 查询目标文件夹下资源的使用（.prefab/.unity/.mat/.asset）情况，标记出资源使用为0的
     /// </summary>
@@ -274,11 +274,12 @@ public class FindReferences : EditorWindow
         }
     }
 
-    bool showNoUser = true;
-    bool showUser = true;
-    System.Collections.Generic.List<bool> showList = new System.Collections.Generic.List<bool>();
-    Vector2 scrollPos;
-    void OnGUI()
+    private bool showNoUser = true;
+    private bool showUser = true;
+    private System.Collections.Generic.List<bool> showList = new System.Collections.Generic.List<bool>();
+    private Vector2 scrollPos;
+
+    private void OnGUI()
     {
 
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(position.width), GUILayout.Height(position.height));

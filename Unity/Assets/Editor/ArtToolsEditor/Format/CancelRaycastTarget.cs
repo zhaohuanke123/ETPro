@@ -49,7 +49,7 @@ public class CancelRaycastTarget
 
     //重写Create->UI->Text事件
     [MenuItem("GameObject/CusUI/Text", false, 2080)]
-    static void CreatText(MenuCommand menuCommand)
+    private static void CreatText(MenuCommand menuCommand)
     {
         //新建TextMeshProUGUI对象  
         GameObject go = new GameObject("textmesh", typeof(TextMeshProUGUI));
@@ -104,7 +104,7 @@ public class CancelRaycastTarget
 
     // 自动取消RatcastTarget
     [MenuItem("GameObject/CusUI/Image")]
-    static void CreatImage()
+    private static void CreatImage()
     {
         GameObject go = new GameObject("image", typeof(Image));
         go.GetComponent<Image>().raycastTarget = false;
@@ -113,7 +113,7 @@ public class CancelRaycastTarget
 
     //重写Create->UI->Raw Image事件  
     [MenuItem("GameObject/CusUI/Raw Image")]
-    static void CreatRawImage()
+    private static void CreatRawImage()
     {
         //新建Text对象  
         GameObject go = new GameObject("RawImage", typeof(RawImage));
@@ -125,7 +125,7 @@ public class CancelRaycastTarget
 
     //重写Create->UI->TextMeshPro事件  
     [MenuItem("GameObject/CusUI/Text - TextMeshPro")]
-    static void CreatTextMeshPro()
+    private static void CreatTextMeshPro()
     {
         //新建TextMeshProUGUI对象  
         GameObject go = new GameObject("textmesh", typeof(TextMeshProUGUI));

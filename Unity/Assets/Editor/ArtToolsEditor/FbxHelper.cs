@@ -17,7 +17,7 @@ public class FbxHelperWindow : EditorWindow
         window.titleContent = new GUIContent("动画工具");
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         EditorGUILayout.BeginVertical();
         GUILayout.Label("可以选中文件夹、FBX文件、anim文件");
@@ -79,7 +79,8 @@ public class FbxHelperWindow : EditorWindow
     {
 
     }
-    void OnSelectionChange()
+
+    private void OnSelectionChange()
     {
         this.Repaint();
     }
@@ -87,9 +88,7 @@ public class FbxHelperWindow : EditorWindow
     /// <summary>
     /// //获取当前选中目录
     /// </summary>
-
-
-    List<string> getSelectedPaths()
+    private List<string> getSelectedPaths()
     {
         List<string> seledtFile = new List<string>(); // 保存选中的文件、文件夹
         UnityEngine.Object[] arr = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.TopLevel);
@@ -308,7 +307,7 @@ public class FbxHelperWindow : EditorWindow
     /// <summary>
     /// 优化scale曲线
     /// </summary>
-    static AnimationClip optmizeAnimationScaleCurve(AnimationClip clip)
+    private static AnimationClip optmizeAnimationScaleCurve(AnimationClip clip)
     {
         EditorCurveBinding[] bs = AnimationUtility.GetCurveBindings(clip);
         foreach (EditorCurveBinding theCurveBinding in bs)
@@ -345,7 +344,8 @@ public class FbxHelperWindow : EditorWindow
         }
         return clip;
     }
-    static AnimationClip optmizeAnimationFloat(AnimationClip clip)
+
+    private static AnimationClip optmizeAnimationFloat(AnimationClip clip)
     {
         if (clip == null)
             return clip;

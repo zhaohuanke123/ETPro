@@ -13,17 +13,23 @@ using System.Collections.Generic;
 [System.Serializable]
 public class BMFont
 {
-	[HideInInspector][SerializeField] int mSize = 16;			// How much to move the cursor when moving to the next line
-	[HideInInspector][SerializeField] int mBase = 0;			// Offset from the top of the line to the base of each character
-	[HideInInspector][SerializeField] int mWidth = 0;			// Original width of the texture
-	[HideInInspector][SerializeField] int mHeight = 0;			// Original height of the texture
-	[HideInInspector][SerializeField] string mSpriteName;
+	[HideInInspector][SerializeField]
+	private int mSize = 16;			// How much to move the cursor when moving to the next line
+	[HideInInspector][SerializeField]
+	private int mBase = 0;			// Offset from the top of the line to the base of each character
+	[HideInInspector][SerializeField]
+	private int mWidth = 0;			// Original width of the texture
+	[HideInInspector][SerializeField]
+	private int mHeight = 0;			// Original height of the texture
+	[HideInInspector][SerializeField]
+	private string mSpriteName;
 
 	// List of serialized glyphs
-	[HideInInspector][SerializeField] List<BMGlyph> mSaved = new List<BMGlyph>();
+	[HideInInspector][SerializeField]
+	private List<BMGlyph> mSaved = new List<BMGlyph>();
 
 	// Actual glyphs that we'll be working with are stored in a dictionary, making the lookup faster
-	Dictionary<int, BMGlyph> mDict = new Dictionary<int, BMGlyph>();
+	private Dictionary<int, BMGlyph> mDict = new Dictionary<int, BMGlyph>();
 
 	/// <summary>
 	/// Whether the font can be used.

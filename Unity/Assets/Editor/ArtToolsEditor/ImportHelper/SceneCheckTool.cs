@@ -64,7 +64,8 @@ public class SceneCheckTool : AssetModificationProcessor
     }
 
     private static string[] COMMON_NODE_PATH = { }; //{ "Main Camera" };
-    static string checkNodes(string scenePath)
+
+    private static string checkNodes(string scenePath)
     {
         var nodes = COMMON_NODE_PATH;
 
@@ -81,7 +82,7 @@ public class SceneCheckTool : AssetModificationProcessor
         return sb.ToString();
     }
 
-    static string checkCamera(string sceneName)
+    private static string checkCamera(string sceneName)
     {
         //将Camera的tag 设置为untag
         var camera = GameObject.Find("Main Camera");
@@ -93,7 +94,7 @@ public class SceneCheckTool : AssetModificationProcessor
         return "";
     }
 
-    static string checkLight()
+    private static string checkLight()
     {
         string t = string.Empty;
         //找所有light
