@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using UnityEngine;
+
+namespace ET
 {
     [UISystem]
     [FriendClass(typeof (UIBattle))]
@@ -8,11 +10,22 @@
         {
             self.GoldText = self.AddUIComponent<UIText>("/Gold/Text");
             self.CountDownText = self.AddUIComponent<UIText>("Placement/Timer/Text");
-            self.HpText = self.AddUIComponent<UIText>("Hp/Text");
-            
+
             // ReturnBtn
-            self.ReturnBtn = self.AddUIComponent<UIButton>("ReturnBtn");
-            self.ReturnBtn.SetOnClickAsync(self.OnReturnBtnClick);
+            self.returnBtn = self.AddUIComponent<UIButton>("ReturnBtn");
+            self.returnBtn.SetOnClickAsync(self.OnReturnBtnClick);
+
+            //Gold/CostGo
+            self.allCoin = self.AddUIComponent<UICostIN>("Gold/CostGo");
+            self.allCoin.SetNumber(123123);
+
+            // championLimit/Text
+            self.championLimitText = self.AddUIComponent<UIText>("championLimit/Text");
+            //Hp/Text  
+            self.HpText = self.AddUIComponent<UIText>("Hp/Text");
+
+            // Shop/layout/champion container_0
+            self.championContainer = self.AddUIComponent<UIChampionContainer>("Shop/layout/champion container_0");
         }
     }
 

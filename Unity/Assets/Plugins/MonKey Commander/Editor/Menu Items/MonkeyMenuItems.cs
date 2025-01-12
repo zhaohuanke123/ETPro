@@ -412,12 +412,12 @@ namespace Monkey
 
 #if UNITY_2017_1_OR_NEWER
 
-        [MenuItem("Tools/MonKey Commander/Commands/Tools/Play Timelines _F5")]
-        [MenuItemCommandLink]
-        public static void PlayTimelines()
-        {
-            EditorUtilities.PlayTimelines(true);
-        }
+        // [MenuItem("Tools/MonKey Commander/Commands/Tools/Play Timelines _F5")]
+        // [MenuItemCommandLink]
+        // public static void PlayTimelines()
+        // {
+        //     EditorUtilities.PlayTimelines(true);
+        // }
 
         [MenuItem("Tools/MonKey Commander/Commands/Tools/Editor Physics _F4")]
         [MenuItemCommandLink]

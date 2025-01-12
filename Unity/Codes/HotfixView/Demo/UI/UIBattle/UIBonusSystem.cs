@@ -1,4 +1,11 @@
-﻿namespace ET
+﻿using System.Collections;
+using System.Collections.Generic;
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+using SuperScrollView;
+
+namespace ET
 {
     [UISystem]
     [FriendClass(typeof (UIBonus))]

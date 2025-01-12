@@ -7,6 +7,9 @@
         public UIText GoldText;
         public UIText CountDownText;
         public UIText HpText;
-        public UIButton ReturnBtn;
+        public UICostIN allCoin;
+        public UIButton returnBtn;
+        public UIText championLimitText;
+        public UIChampionContainer championContainer;
     }
 }

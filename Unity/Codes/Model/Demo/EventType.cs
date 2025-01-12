@@ -128,5 +128,12 @@ namespace ET
             public Unit Unit;
             public Entity Parent;
         }
+
+        public struct UIEvent
+        {
+            public string UIName;
+            public string EventName;
+            public object args;
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
-    public class StepPara<T> : IDisposable
+    public class StepPara<T>: IDisposable
     {
         public T Value;
 
@@ -17,11 +19,10 @@
             MonoPool.Instance.Recycle(this);
         }
     }
-    
+
     public static class StepParaHelper
     {
-
-        public static bool TryParseInt(ref object obj,out int value)
+        public static bool TryParseInt(ref object obj, out int value)
         {
             if (obj is StepPara<int> res)
             {
@@ -45,7 +46,8 @@
             value = 0;
             return false;
         }
-        public static bool TryParseFloat(ref object obj,out float value)
+
+        public static bool TryParseFloat(ref object obj, out float value)
         {
             if (obj is StepPara<float> res)
             {
@@ -69,7 +71,8 @@
             value = 0;
             return false;
         }
-        public static bool TryParseString(ref object obj,out string value)
+
+        public static bool TryParseString(ref object obj, out string value)
         {
             if (obj is StepPara<string> res)
             {
@@ -83,7 +86,7 @@
                 value = str;
                 return true;
             }
-            
+
             value = obj.ToString();
             obj = StepPara<string>.Create(value);
             return true;

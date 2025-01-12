@@ -12,8 +12,9 @@
     [FriendClass(typeof (UICostIN))]
     public static class UICostINSystemSystem
     {
-        public static void Test(this UICostIN self)
+        public static void SetNumber(this UICostIN self, int number)
         {
+            self.costText.SetText(number.ToString());
         }
     }
 }
