@@ -4,8 +4,8 @@
 	public class UILobbyView : Entity,IAwake,IOnCreate,IOnEnable
     {
         public static string PrefabPath => "UI/UILobby/Prefabs/UILobbyView.prefab";
-        // public Scene zoneScene;
         public UIButton EnterBtn;
         public UIButton ReturnLoginBtn;
+        public UIButton EnterChessMapBtn;
     }
 }

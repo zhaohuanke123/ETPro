@@ -16,7 +16,7 @@
 
             Scene currentScene = SceneFactory.CreateCurrentScene(sceneInstanceId, zoneScene.Zone, sceneName, currentScenesComponent);
             currentScene.AddComponent<UnitComponent>();
-            currentScene.AddComponent<AOISceneComponent, int>(6);
+            currentScene.AddComponent<AOISceneComponent, int>(16);
 
             // 可以订阅这个事件中创建Loading界面
             using (ListComponent<ETTask> tasks = ListComponent<ETTask>.Create())

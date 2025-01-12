@@ -42,7 +42,7 @@ namespace ET
     public static class SceneManagerComponentSystem
     {
         //切换场景
-        private static async ETTask InnerSwitchScene(this SceneManagerComponent self, SceneConfig scene_config, bool needclean = false,
+        private static async ETTask InnerSwitchScene(this SceneManagerComponent self, SceneConfig scene_config, bool needClean = false,
         SceneLoadComponent slc = null)
         {
             float slid_value = 0;
@@ -51,7 +51,7 @@ namespace ET
             CameraManagerComponent.Instance.SetCameraStackAtLoadingStart();
 
             //等待资源管理器加载任务结束，否则很多Unity版本在切场景时会有异常，甚至在真机上crash
-            Log.Info("InnerSwitchScene Prosess Running Done ");
+            Log.Info("InnerSwitchScene Process Running Done ");
             while (ResourcesComponent.Instance.IsProsessRunning())
             {
                 await Game.WaitFrameFinish();
@@ -59,6 +59,7 @@ namespace ET
 
             slid_value += 0.01f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+            
             await Game.WaitFrameFinish();
 
             //清理UI
@@ -67,16 +68,20 @@ namespace ET
 
             slid_value += 0.01f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+            
             //清除ImageLoaderManager里的资源缓存 这里考虑到我们是单场景
             Log.Info("InnerSwitchScene ImageLoaderManager Cleanup");
             ImageLoaderComponent.Instance.Clear();
             //清除预设以及其创建出来的game object, 这里不能清除loading的资源
             Log.Info("InnerSwitchScene GameObjectPool Cleanup");
-            if (needclean)
+            
+            if (needClean)
             {
                 GameObjectPoolComponent.Instance.Cleanup(true, self.ScenesChangeIgnoreClean);
+
                 slid_value += 0.01f;
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+
                 //清除除loading外的资源缓存 
                 List<UnityEngine.Object> gos = new List<UnityEngine.Object>();
                 for (int i = 0; i < self.ScenesChangeIgnoreClean.Count; i++)
@@ -91,6 +96,7 @@ namespace ET
 
                 Log.Info("InnerSwitchScene ResourcesManager ClearAssetsCache excludeAssetLen = " + gos.Count);
                 ResourcesComponent.Instance.ClearAssetsCache(gos.ToArray());
+
                 slid_value += 0.01f;
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             }
@@ -102,9 +108,10 @@ namespace ET
 
             await ResourcesComponent.Instance.LoadSceneAsync(self.GetSceneConfigByName(SceneNames.Loading).SceneAddress, false);
             Log.Info("LoadSceneAsync Over");
+
             slid_value += 0.01f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
-            
+
             //GC：交替重复2次，清干净一点
             GC.Collect();
             GC.Collect();
@@ -124,6 +131,7 @@ namespace ET
 
             slid_value += 0.65f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+
             //准备工作：预加载资源等
             if (slc != null)
             {
@@ -136,17 +144,19 @@ namespace ET
 
             slid_value += 0.15f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+
             CameraManagerComponent.Instance.SetCameraStackAtLoadingDone();
             self.CurrentScene = scene_config.Name;
 
             slid_value = 1;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+
             //等久点，跳的太快
             await TimerComponent.Instance.WaitAsync(500);
         }
 
         //切换场景
-        public static async ETTask SwitchScene(this SceneManagerComponent self, SceneConfig scene_config, bool needclean = false,
+        public static async ETTask SwitchScene(this SceneManagerComponent self, SceneConfig scene_config, bool needClean = false,
         SceneLoadComponent slc = null)
         {
             if (self.Busing) return;
@@ -157,7 +167,7 @@ namespace ET
             //打开loading界面
             Log.Info("InnerSwitchScene start open uiloading");
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
-            await self.InnerSwitchScene(scene_config, needclean, slc);
+            await self.InnerSwitchScene(scene_config, needClean, slc);
             //加载完成，关闭loading界面
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingFinish());
             //释放loading界面引用的资源
@@ -166,23 +176,36 @@ namespace ET
         }
 
         //切换场景
-        public static async ETTask SwitchScene(this SceneManagerComponent self, string scene_name, bool needclean = false,
+        public static async ETTask SwitchScene(this SceneManagerComponent self, string scene_name, bool needClean = false,
         SceneLoadComponent slc = null)
         {
-            if (self.Busing) return;
-            SceneConfig scene_config = self.GetSceneConfigByName(scene_name);
-            if (scene_config == null) return;
-            if (self.CurrentScene == scene_config.Name)
+            if (self.Busing)
+            {
                 return;
+            }
+
+            SceneConfig scene_config = self.GetSceneConfigByName(scene_name);
+            if (scene_config == null)
+            {
+                return;
+            }
+
+            if (self.CurrentScene == scene_config.Name)
+            {
+                return;
+            }
+
             self.Busing = true;
+
             //打开loading界面
             Log.Info("InnerSwitchScene start open ui Loading");
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
-            await self.InnerSwitchScene(scene_config, needclean, slc);
+            await self.InnerSwitchScene(scene_config, needClean, slc);
             //加载完成，关闭loading界面
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingFinish());
             //释放loading界面引用的资源
             GameObjectPoolComponent.Instance.CleanupWithPathArray(true, self.ScenesChangeIgnoreClean);
+
             self.Busing = false;
         }
 

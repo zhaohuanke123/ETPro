@@ -13,6 +13,9 @@ namespace ET
             self.EnterBtn.SetOnClick(self.OnEnterBtnClick);
             self.ReturnLoginBtn = self.AddUIComponent<UIButton>("Panel/ReturnLogin");
             self.ReturnLoginBtn.SetOnClickAsync(self.OnReturnLoginBtnClick);
+            // Panel/EnterChessMap
+            self.EnterChessMapBtn = self.AddUIComponent<UIButton>("Panel/EnterChessMap");
+            self.EnterChessMapBtn.SetOnClickAsync(self.OnEnterChessMapBtnClick);
         }
     }
 
@@ -46,8 +49,16 @@ namespace ET
                 return;
             }
 
-            UIManagerComponent.Instance.OpenWindow<UILoginView, Scene>(UILoginView.PrefabPath, self.ZoneScene()).Coroutine();
+            UIManagerComponent.Instance.OpenWindow<UILoginView>(UILoginView.PrefabPath).Coroutine();
             UIManagerComponent.Instance.DestroyWindow<UILobbyView>().Coroutine();
+        }
+
+        public static async ETTask OnEnterChessMapBtnClick(this UILobbyView self)
+        {
+            // EnterMapHelper.EnterChessMapAsync(self.ZoneScene()).Coroutine();
+            await SceneManagerComponent.Instance.SwitchScene(SceneNames.Main, true);
+            await UIManagerComponent.Instance.OpenWindow<UIBattle>(UIBattle.PrefabPath);
+            await UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
         }
     }
 }

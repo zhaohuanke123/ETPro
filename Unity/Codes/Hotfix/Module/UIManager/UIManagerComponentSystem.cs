@@ -274,7 +274,7 @@ namespace ET
                 await ETTaskHelper.WaitAll(taskScheduler);
             }
         }
-
+        
         /// <summary>
         /// 打开窗口 对应 <see cref="AwakeSystem{T}" />
         /// </summary>

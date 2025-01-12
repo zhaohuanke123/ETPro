@@ -37,11 +37,11 @@ namespace ET
 
     [UISystem]
     [FriendClass(typeof (UILoginView))]
-    public class UILoginViewOnEnableSystem: OnEnableSystem<UILoginView, Scene>
+    public class UILoginViewOnEnableSystem: OnEnableSystem<UILoginView>
     {
-        public override void OnEnable(UILoginView self, Scene scene)
+        public override void OnEnable(UILoginView self)
         {
-            self.scene = scene;
+            // self.scene = scene;
             self.ipaddr.SetText(ServerConfigComponent.Instance.GetCurConfig().RealmIp);
             self.account.SetText(PlayerPrefs.GetString(CacheKeys.Account, ""));
             self.password.SetText(PlayerPrefs.GetString(CacheKeys.Password, ""));
@@ -63,11 +63,11 @@ namespace ET
 
             try
             {
-                int errorCode = await LoginHelper.Login(self.scene, self.ipaddr.GetText(), account, password);
+                int errorCode = await LoginHelper.Login(self.ZoneScene(), self.ipaddr.GetText(), account, password);
 
                 if (errorCode != ErrorCode.ERR_Success)
                 {
-                    EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.scene, ErrorCode = errorCode }).Coroutine();
+                    EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.ZoneScene(), ErrorCode = errorCode }).Coroutine();
                     return;
                 }
             }
@@ -92,10 +92,10 @@ namespace ET
 
             try
             {
-                int errorCode = await LoginHelper.Register(self.scene, self.ipaddr.GetText(), account, password);
+                int errorCode = await LoginHelper.Register(self.ZoneScene(), self.ipaddr.GetText(), account, password);
                 if (errorCode != ErrorCode.ERR_Success)
                 {
-                    EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.scene, ErrorCode = errorCode }).Coroutine();
+                    EventSystem.Instance.PublishAsync(new ShowErrorToast() { Scene = self.ZoneScene(), ErrorCode = errorCode }).Coroutine();
                     return;
                 }
 

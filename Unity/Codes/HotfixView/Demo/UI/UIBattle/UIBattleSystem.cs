@@ -1,11 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
-using UnityEngine.UI;
-using SuperScrollView;
-
-namespace ET
+﻿namespace ET
 {
     [UISystem]
     [FriendClass(typeof (UIBattle))]
@@ -13,9 +6,12 @@ namespace ET
     {
         public override void OnCreate(UIBattle self)
         {
-            self.GoldText = self.AddUIComponent<UIText>("Gold/Text");
+            self.GoldText = self.AddUIComponent<UIText>("/Gold/Text");
             self.CountDownText = self.AddUIComponent<UIText>("Placement/Timer/Text");
             self.HpText = self.AddUIComponent<UIText>("Hp/Text");
+            // ReturnBtn
+            self.ReturnBtn = self.AddUIComponent<UIButton>("ReturnBtn");
+            self.ReturnBtn.SetOnClickAsync(self.OnReturnBtnClick);
         }
     }
 
@@ -31,5 +27,12 @@ namespace ET
     [FriendClass(typeof (UIBattle))]
     public static class UIBattleSystem
     {
+        public static async ETTask OnReturnBtnClick(this UIBattle self)
+        {
+            await SceneManagerComponent.Instance.SwitchScene(SceneNames.Login);
+            await UIManagerComponent.Instance.DestroyWindow<UIBattle>();
+            await UIManagerComponent.Instance.OpenWindow<UILobbyView>(UILobbyView.PrefabPath);
+            await UIManagerComponent.Instance.CloseWindow<UILoadingView>();
+        }
     }
 }

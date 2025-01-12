@@ -3,7 +3,7 @@
 namespace ET
 {
 	[UIComponent]
-	public class UILoginView: Entity,IAwake,IOnCreate,IOnEnable<Scene>
+	public class UILoginView: Entity,IAwake,IOnCreate,IOnEnable
 	{
 		public UIButton loginBtn;
 		public UIInputTextmesh password;
@@ -11,7 +11,7 @@ namespace ET
 		public UIInputTextmesh ipaddr;
 		public UIButton registerBtn;
 		public UILoopListView2 settingView;
-		public Scene scene;
+		// public Scene scene;
 		public GameObject GMPanel; 
 
         public static string PrefabPath => "UI/UILogin/Prefabs/UILoginView.prefab";

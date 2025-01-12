@@ -8,12 +8,12 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class AOISceneComponentAwakeSystem : AwakeSystem<AOISceneComponent, int>
+    public class AOISceneComponentAwakeSystem: AwakeSystem<AOISceneComponent, int>
     {
         public override void Awake(AOISceneComponent self, int gridLen)
         {
             self.gridLen = gridLen;
-            self.halfDiagonal = self.gridLen*0.7072f;
+            self.halfDiagonal = self.gridLen * 0.7072f;
             Log.Info("AOIScene StandBy! ");
 #if SERVER
             var id = (int)self.Id;
@@ -26,16 +26,17 @@ namespace ET
     }
 
     [ObjectSystem]
-    public class AOISceneComponentDestroySystem : DestroySystem<AOISceneComponent>
+    public class AOISceneComponentDestroySystem: DestroySystem<AOISceneComponent>
     {
         public override void Destroy(AOISceneComponent self)
         {
             Log.Info("AOIScene Destroy! ");
         }
     }
-    [FriendClass(typeof(AOISceneComponent))]
-    [FriendClass(typeof(AOIUnitComponent))]
-    [FriendClass(typeof(AOICell))]
+
+    [FriendClass(typeof (AOISceneComponent))]
+    [FriendClass(typeof (AOIUnitComponent))]
+    [FriendClass(typeof (AOICell))]
     public static class AOISceneComponentSystem
     {
         /// <summary>
@@ -44,12 +45,12 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="pos"></param>
         /// <param name="create">没有是否创建</param>
-        public static AOICell GetAOICell(this AOISceneComponent self,Vector3 pos,bool create = true)
+        public static AOICell GetAOICell(this AOISceneComponent self, Vector3 pos, bool create = true)
         {
             int xIndex = (int)pos.x / self.gridLen;
             int yIndex = (int)pos.z / self.gridLen;
-            
-            return self.GetCell(xIndex,yIndex,create);
+
+            return self.GetCell(xIndex, yIndex, create);
         }
 
         /// <summary>
@@ -82,16 +83,12 @@ namespace ET
 #endif
                         using (var list = item.GetAllUnit())
                         {
-                            Game.EventSystem.Publish(new AOIRegisterUnit()
-                            {
-                                Receive = unit,
-                                Units = list
-                            });
+                            Game.EventSystem.Publish(new AOIRegisterUnit() { Receive = unit, Units = list });
                         }
-
                     }
                 }
             }
+
             await ETTask.CompletedTask;
         }
 
@@ -119,20 +116,16 @@ namespace ET
 #endif
                             using (var list = item.GetAllUnit())
                             {
-                                Game.EventSystem.Publish(new AOIRemoveUnit()
-                                {
-                                    Receive = unit,
-                                    Units = list
-                                });
+                                Game.EventSystem.Publish(new AOIRemoveUnit() { Receive = unit, Units = list });
                             }
                         }
                     }
                 }
+
                 unit.Cell.Remove(unit);
             }
-            
         }
-        
+
         /// <summary>
         /// 获取指定位置为中心指定圈数的所有格子
         /// </summary>
@@ -141,7 +134,7 @@ namespace ET
         /// <param name="posx"></param>
         /// <param name="posy"></param>
         /// <returns></returns>
-        public static ListComponent<AOICell> GetNearbyGrid(this AOISceneComponent self,int turnNum,int posx,int posy)
+        public static ListComponent<AOICell> GetNearbyGrid(this AOISceneComponent self, int turnNum, int posx, int posy)
         {
             ListComponent<AOICell> res = ListComponent<AOICell>.Create();
             for (int i = -turnNum; i <= turnNum; i++)
@@ -150,13 +143,14 @@ namespace ET
                 for (int j = -turnNum; j <= turnNum; j++)
                 {
                     var y = posy + j;
-                    res.Add(self.GetCell(x,y));
+                    res.Add(self.GetCell(x, y));
                 }
             }
+
             return res;
         }
-        
-        private static AOICell GetCell(this AOISceneComponent self, int x,int y,bool create = true)
+
+        private static AOICell GetCell(this AOISceneComponent self, int x, int y, bool create = true)
         {
             long cellId = AOIHelper.CreateCellId(x, y);
             AOICell cell = self.GetChild<AOICell>(cellId);
@@ -174,6 +168,7 @@ namespace ET
 
             return cell;
         }
+
         /// <summary>
         /// 获取指定位置为中心指定圈数的所有格子
         /// </summary>
@@ -181,19 +176,20 @@ namespace ET
         /// <param name="turnNum"></param>
         /// <param name="pos"></param>
         /// <returns></returns>
-        public static ListComponent<AOICell> GetNearbyGrid(this AOISceneComponent self,int turnNum,Vector3 pos)
+        public static ListComponent<AOICell> GetNearbyGrid(this AOISceneComponent self, int turnNum, Vector3 pos)
         {
             var grid = self.GetAOICell(pos);
             ListComponent<AOICell> res = ListComponent<AOICell>.Create();
             for (int i = -turnNum; i <= turnNum; i++)
             {
-                var x = grid.posx  + i;
+                var x = grid.posx + i;
                 for (int j = -turnNum; j <= turnNum; j++)
                 {
                     var y = grid.posy + j;
-                    res.Add(self.GetCell(x,y));
+                    res.Add(self.GetCell(x, y));
                 }
             }
+
             return res;
         }
     }
