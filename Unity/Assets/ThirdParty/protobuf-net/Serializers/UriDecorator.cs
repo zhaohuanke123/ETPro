@@ -1,6 +1,5 @@
 ﻿#if !NO_RUNTIME
 using System;
-using System.Reflection;
 
 #if FEAT_COMPILER
 using ProtoBuf.Compiler;

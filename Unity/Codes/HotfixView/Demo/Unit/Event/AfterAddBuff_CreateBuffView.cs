@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace ET
+﻿namespace ET
 {
     [FriendClass(typeof(BuffComponent))]
     public class AfterAddBuff_CreateBuffView: AEvent<EventType.AfterAddBuff>

@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using ET;
-using System;
 
 public class I18NText : MonoBehaviour
 {

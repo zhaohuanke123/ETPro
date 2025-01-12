@@ -1,5 +1,4 @@
-﻿using System;
-namespace ET
+﻿namespace ET
 {
     public class DamageInfo :IDisposable
     {

@@ -1,8 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace ET
+﻿namespace ET
 {
     [FriendClass(typeof(CombatUnitComponent))]
     public class AfterCombatUnitComponentCreate_Init:AEvent<EventType.AfterCombatUnitComponentCreate>

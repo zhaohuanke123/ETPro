@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ET
 {
@@ -22,7 +19,7 @@ namespace ET
     [ObjectSystem]
     public class UIManagerComponentDestroySystem: DestroySystem<UIManagerComponent>
     {
-        public async override void Destroy(UIManagerComponent self)
+        public override async void Destroy(UIManagerComponent self)
         {
             await self.DestroyAllWindow();
             self.windows.Clear();

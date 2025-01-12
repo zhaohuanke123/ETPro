@@ -1,7 +1,5 @@
 ﻿#if !NO_RUNTIME
 using System;
-using System.Reflection;
-
 using ProtoBuf.Meta;
 
 namespace ProtoBuf.Serializers

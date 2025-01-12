@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using AmazingAssets.TerrainToMesh;
+﻿using UnityEngine;
+
 namespace ET
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]

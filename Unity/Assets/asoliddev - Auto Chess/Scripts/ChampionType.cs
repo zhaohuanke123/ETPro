@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefauultChampionType", menuName = "AutoChess/ChampionType", order = 2)]
 public class ChampionType : ScriptableObject

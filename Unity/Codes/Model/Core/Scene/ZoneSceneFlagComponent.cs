@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ET
+﻿namespace ET
 {
     [ComponentOf(typeof(Scene))]
     public class ZoneSceneFlagComponent: Entity, IAwake, IDestroy

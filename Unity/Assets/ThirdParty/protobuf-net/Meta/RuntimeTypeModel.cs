@@ -9,9 +9,6 @@ using System.Reflection.Emit;
 
 using ProtoBuf.Serializers;
 using System.Threading;
-using System.IO;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace ProtoBuf.Meta
 {

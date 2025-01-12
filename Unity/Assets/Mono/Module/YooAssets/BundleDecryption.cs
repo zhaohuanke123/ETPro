@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace YooAsset
+﻿namespace YooAsset
 {
     public class BundleDecryption : IDecryptionServices
     {

@@ -1,6 +1,4 @@
-﻿using ET.EventType;
-
-namespace ET
+﻿namespace ET
 {
     [MessageHandler]
     public class A2C_DisconnectHandler: AMHandler<A2C_Disconnect>

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ET
+﻿namespace ET
 {
 	[ComponentOf(typeof(Scene))]
 	public sealed class SelectWatcherComponent:Entity,IAwake,ILoad

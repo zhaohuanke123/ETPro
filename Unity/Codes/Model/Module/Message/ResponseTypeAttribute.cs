@@ -1,5 +1,3 @@
-using System;
-
 namespace ET
 {
     public class ResponseTypeAttribute: BaseAttribute

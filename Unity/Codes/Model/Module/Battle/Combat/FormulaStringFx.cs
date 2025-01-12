@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using ET;
 
 /// 公式解析类，将公式的基础单元与运算符分割出来//

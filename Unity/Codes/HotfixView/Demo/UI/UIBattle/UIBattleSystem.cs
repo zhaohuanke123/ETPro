@@ -9,6 +9,7 @@
             self.GoldText = self.AddUIComponent<UIText>("/Gold/Text");
             self.CountDownText = self.AddUIComponent<UIText>("Placement/Timer/Text");
             self.HpText = self.AddUIComponent<UIText>("Hp/Text");
+            
             // ReturnBtn
             self.ReturnBtn = self.AddUIComponent<UIButton>("ReturnBtn");
             self.ReturnBtn.SetOnClickAsync(self.OnReturnBtnClick);

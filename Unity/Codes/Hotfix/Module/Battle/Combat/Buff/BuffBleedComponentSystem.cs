@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ET
+﻿namespace ET
 {
     [ObjectSystem]
     public class BuffBleedComponentAwakeSystem: AwakeSystem<BuffBleedComponent,int>

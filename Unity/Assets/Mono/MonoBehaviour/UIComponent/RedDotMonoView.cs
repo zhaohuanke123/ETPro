@@ -1,6 +1,4 @@
-using ET;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RedDotMonoView: MonoBehaviour
 {
