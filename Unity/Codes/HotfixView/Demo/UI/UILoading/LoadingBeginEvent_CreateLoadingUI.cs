@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace ET
+﻿namespace ET
 {
     public class LoadingBeginEvent_CreateLoadingUI : AEventAsync<UIEventType.LoadingBegin>
     {

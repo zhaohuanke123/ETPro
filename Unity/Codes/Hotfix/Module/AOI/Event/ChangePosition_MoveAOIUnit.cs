@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace ET
+﻿namespace ET
 {
     public class ChangePosition_MoveAOIUnit: AEventClass<EventType.ChangePosition>
     {

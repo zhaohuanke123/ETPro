@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace ET
+﻿namespace ET
 {
     [ObjectSystem]
     public class NetThreadComponentAwakeSystem: AwakeSystem<NetThreadComponent>

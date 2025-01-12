@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace ET
+﻿namespace ET
 {
     [UISystem]
     [FriendClass(typeof(UIToast))]

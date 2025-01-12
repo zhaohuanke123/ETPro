@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
-using UnityEngine.UI;
-using SuperScrollView;
+﻿using UnityEngine;
+
 namespace ET
 {
 	[UISystem]

@@ -1,13 +1,10 @@
 using UnityEngine;
-using System.Collections;
 using UnityEditor;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using OfficeOpenXml;
-using System.Reflection;
 using UnityEngine.Profiling;
 
 public class FindReferences : EditorWindow

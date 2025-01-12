@@ -1,10 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
-using UnityEngine.UI;
-using SuperScrollView;
-namespace ET
+﻿namespace ET
 {
 	[UISystem]
 	[FriendClass(typeof(UIReviewItem))]

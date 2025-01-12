@@ -4,8 +4,6 @@
 //----------------------------------------------
 
 using UnityEngine;
-using UnityEditor;
-using System.Text;
 
 /// <summary>
 /// Helper class that takes care of loading BMFont's glyph information from the specified byte array.

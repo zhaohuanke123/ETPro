@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
+
 namespace ET
 {
     [InputSystem((int)KeyCode.Mouse0,InputType.KeyDown,int.MaxValue-1000)]

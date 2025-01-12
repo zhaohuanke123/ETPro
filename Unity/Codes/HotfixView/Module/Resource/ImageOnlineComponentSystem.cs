@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.Networking;
+
 namespace ET
 {
     [FriendClass(typeof(ImageOnlineComponent))]

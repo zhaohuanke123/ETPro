@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-namespace ET
+﻿namespace ET
 {
 	[UISystem]
 	[FriendClass(typeof(UILoadingView))]

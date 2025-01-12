@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace ET
 {
-	using OneTypeSystems = UnOrderMultiMap<Type, object>;
 	[ComponentOf(typeof(Scene))]
 	public class UIWatcherComponent:Entity,IAwake,ILoad
     {

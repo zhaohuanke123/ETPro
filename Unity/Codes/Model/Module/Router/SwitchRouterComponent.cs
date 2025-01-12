@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Linq;
-
-namespace ET
+﻿namespace ET
 {
 	/// <summary>
 	/// 在session上挂载的保存路由信息的组件.切换路由用

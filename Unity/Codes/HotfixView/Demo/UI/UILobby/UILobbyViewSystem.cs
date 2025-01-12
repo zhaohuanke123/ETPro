@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace ET
+﻿namespace ET
 {
     [UISystem]
     [FriendClass(typeof (UILobbyView))]

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace ET
+﻿namespace ET
 {
     /// <summary>
     /// 消耗计算

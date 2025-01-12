@@ -2,12 +2,9 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using ET;
 using UnityEditor;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 namespace ETEditor

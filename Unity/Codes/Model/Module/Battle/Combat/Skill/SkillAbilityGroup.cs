@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ET
+﻿namespace ET
 {
     [ChildOf(typeof(SkillAbility))]
     public class SkillAbilityGroup:Entity,IAwake<int>,ITransfer

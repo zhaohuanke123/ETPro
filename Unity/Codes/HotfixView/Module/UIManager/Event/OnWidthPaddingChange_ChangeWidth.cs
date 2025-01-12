@@ -1,5 +1,4 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
 namespace ET
 {
     [FriendClass(typeof(UIManagerComponent))]

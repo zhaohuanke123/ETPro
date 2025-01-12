@@ -3,7 +3,6 @@
 // Copyright © 2011-2014 Tasharen Entertainment
 //----------------------------------------------
 
-using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>

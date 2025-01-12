@@ -1,11 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-using UnityEditor.Animations;
-using System.Linq;
-using System.IO;
-using UnityEngine.UI;
 
 public class UIScriptCreatorEditor : Editor
 {

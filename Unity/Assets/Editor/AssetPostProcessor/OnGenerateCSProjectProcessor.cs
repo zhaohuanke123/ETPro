@@ -1,9 +1,6 @@
-﻿using System;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEditor;
 using System.Xml;
 using System.IO;
-using System.Text;
 
 namespace ET
 {

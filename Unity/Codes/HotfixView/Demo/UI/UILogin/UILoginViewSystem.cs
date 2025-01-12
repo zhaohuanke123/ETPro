@@ -1,5 +1,4 @@
 ﻿using System;
-using ET.EventType;
 using ET.UIEventType;
 using UnityEngine;
 using SuperScrollView;

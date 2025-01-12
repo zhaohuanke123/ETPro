@@ -1,15 +1,10 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
 using UnityEditor;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
-using Object = System.Object;
 
 public class CancelRaycastTarget
 {

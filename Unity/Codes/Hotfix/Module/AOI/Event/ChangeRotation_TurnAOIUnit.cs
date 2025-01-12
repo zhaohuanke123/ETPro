@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace ET
+﻿namespace ET
 {
     public class ChangeRotation_TurnAOIUnit: AEventClass<EventType.ChangeRotation>
     {

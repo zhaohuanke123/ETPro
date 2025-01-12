@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+
 namespace ET
 {
     [FriendClass(typeof(UICircleMaskControl))]
