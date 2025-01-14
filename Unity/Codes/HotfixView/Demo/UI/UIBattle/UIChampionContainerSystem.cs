@@ -1,25 +1,35 @@
-﻿namespace ET
-{
-    public class UIChampionContainerAwakeSystem: AwakeSystem<UIChampionContainer>
-    {
-        public override void Awake(UIChampionContainer self)
-        {
-            // champion
-            self.championBtn = self.AddUIComponent<UIButton>("champion");
-            // champion/top/SK1
-            self.Sk1 = self.championBtn.AddUIComponent<UIIconName>("top/SK1");
-            // champion/top/SK2
-            self.Sk2 = self.championBtn.AddUIComponent<UIIconName>("top/SK2");
-            // champion/bottom/CostGo
-            self.cost = self.championBtn.AddUIComponent<UICostIN>("bottom/CostGo");
-        }
-    }
+﻿using UnityEngine;
 
-    [FriendClass(typeof (UIChampionContainer))]
-    public static class UIChampionContainerSystem
-    {
-        public static void Test(this UIChampionContainer self)
-        {
-        }
-    }
+namespace ET
+{
+	[UISystem]
+	[FriendClass(typeof (UIChampionContainer))]
+	public class UIChampionContainerCreateSystem: OnCreateSystem<UIChampionContainer>
+	{
+		public override void OnCreate(UIChampionContainer self)
+		{
+			// champion
+			self.championBtn = self.AddUIComponent<UIButton>("champion");
+			self.championBtn.SetOnClick(() =>
+			{
+				Log.Warning("championBtn Click");
+			});
+			// champion/top/SK1
+			self.Sk1 = self.AddUIComponent<UIIconName>("champion/top/SK1");
+			self.Sk1.SetIcon("UIGames/UIChess/DiscreteImages/frost icon 1.png").Coroutine();
+			// champion/top/SK2
+			self.Sk2 = self.AddUIComponent<UIIconName>("champion/top/SK2");
+			// // champion/bottom/CostGo
+			self.cost = self.AddUIComponent<UICostIN>("champion/bottom/CostGo");
+		}
+	}
+
+	[FriendClass(typeof (UIChampionContainer))]
+	public static class UIChampionContainerSystem
+	{
+		public static void Test(this UIChampionContainer self)
+		{
+
+		}
+	}
 }

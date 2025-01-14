@@ -1,9 +1,9 @@
 ﻿namespace ET
 {
     [ObjectSystem]
-    public class UIIconNameAwakeSystem: AwakeSystem<UIIconName>
+    public class UIIconNameCreateSystem: OnCreateSystem<UIIconName>
     {
-        public override void Awake(UIIconName self)
+        public override void OnCreate(UIIconName self)
         {
             self.Icon = self.AddUIComponent<UIImage>("Icon");
             self.Name = self.AddUIComponent<UIText>("Name");
