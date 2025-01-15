@@ -28,6 +28,18 @@ namespace ET
         {
         }
 
+        public struct SceneChangeChessMapStart
+        {
+            public Scene ZoneScene;
+            public string Name;
+        }
+
+        public struct SceneChangeChessMapFinish
+        {
+            public Scene ZoneScene;
+            public Scene CurrentScene;
+        }
+
         public class ChangePosition: DisposeObject
         {
             public static readonly ChangePosition Instance = new ChangePosition();

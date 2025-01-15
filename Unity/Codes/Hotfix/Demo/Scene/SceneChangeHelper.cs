@@ -59,7 +59,26 @@
             await Game.EventSystem.PublishAsync(new EventType.SceneChangeLoginBegin() { });
 
             await Game.EventSystem.PublishAsync(new EventType.SceneChangeLoginFinish() { });
-            
+
+            zoneScene.GetComponent<ObjectWait>().Notify(new WaitType.Wait_SceneChangeFinish());
+        }
+
+        public static async ETTask SceneChangeToChessMap(Scene zoneScene, string sceneName, long sceneInstanceId)
+        {
+            if (zoneScene.GetComponent<KeyCodeComponent>() == null)
+            {
+                zoneScene.AddComponent<KeyCodeComponent>();
+            }
+
+            CurrentScenesComponent currentScenesComponent = zoneScene.GetComponent<CurrentScenesComponent>();
+            currentScenesComponent.Scene?.Dispose(); // 删除之前的CurrentScene，创建新的
+
+            Scene currentScene = SceneFactory.CreateCurrentScene(sceneInstanceId, zoneScene.Zone, sceneName, currentScenesComponent);
+
+            await Game.EventSystem.PublishAsync(new EventType.SceneChangeChessMapStart() { ZoneScene = zoneScene, Name = sceneName });
+
+            await Game.EventSystem.PublishAsync(new EventType.SceneChangeChessMapFinish() { ZoneScene = zoneScene, CurrentScene = currentScene });
+
             zoneScene.GetComponent<ObjectWait>().Notify(new WaitType.Wait_SceneChangeFinish());
         }
     }

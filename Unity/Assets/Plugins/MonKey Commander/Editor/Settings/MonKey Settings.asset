@@ -15,14 +15,14 @@ MonoBehaviour:
   UseSortedSelection: 1
   MaxSortedSelectionSize: 1000
   ShowSortedSelectionWarning: 1
-  MonkeyConsoleOverrideHotKey: 
+  MonkeyConsoleOverrideHotKey: f
   PauseGameOnConsoleOpen: 1
   PutInvalidCommandAtEndOfSearch: 0
   IncludeMenuItems: 1
   IncludeOnlyMenuItemsWithHotKeys: 0
   ExcludedAssemblies: 
   ExcludedNameSpaces: 
-  IncludedAssemblies: 
+  IncludedAssemblies: Unity.Editor
   IncludeModeOnly: 1
   ForceFocusOnDocked: 0
   ShowHelpOnSelectedOnly: 0

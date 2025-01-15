@@ -16,17 +16,6 @@
         }
     }
 
-    // [UISystem]
-    // [FriendClass(typeof (UILobbyView))]
-    // public class UILobbyViewOnEnableSystem: OnEnableSystem<UILobbyView, Scene>
-    // {
-    // 	public override void OnEnable(UILobbyView self, Scene scene)
-    // 	{
-    // 		self.zoneScene = scene;
-    // 		// GuidanceComponent.Instance.NoticeEvent("Click_Login");
-    // 	}
-    // }
-
     [FriendClass(typeof (UILobbyView))]
     public static class UILobbyViewSystem
     {
@@ -52,10 +41,7 @@
 
         public static async ETTask OnEnterChessMapBtnClick(this UILobbyView self)
         {
-            // EnterMapHelper.EnterChessMapAsync(self.ZoneScene()).Coroutine();
-            await SceneManagerComponent.Instance.SwitchScene(SceneNames.Main, true);
-            await UIManagerComponent.Instance.OpenWindow<UIBattle>(UIBattle.PrefabPath);
-            await UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
+           await EnterMapHelper.EnterChessMapAsync(self.ZoneScene());
         }
     }
 }

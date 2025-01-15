@@ -21,15 +21,15 @@ namespace ET
         }
     }
 
-    [InputSystem(114, InputType.KeyDown, -10000)]
+    [InputSystem((int)KeyCode.R, InputType.KeyDown, -10000)]
     public class OperaComponentInputSystem_Load: InputSystem<OperaComponent>
     {
         public override void Run(OperaComponent self, int key, int type, ref bool stop)
         {
-            // CodeLoader.Instance.LoadLogic();
-            // Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
-            // Game.EventSystem.Load();
-            // Log.Debug("hot reload success!");
+            CodeLoader.Instance.LoadLogic();
+            Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
+            Game.EventSystem.Load();
+            Log.Debug("hot reload success!");
         }
     }
 
@@ -51,7 +51,11 @@ namespace ET
         public override void Run(OperaComponent self, int key, int type, ref bool stop)
         {
             var unit = self.GetMyUnitFromZoneScene();
-            if (unit == null) return;
+            if (unit == null)
+            {
+                return;
+            }
+
             if (!unit.GetComponent<MoveComponent>().Enable)
             {
                 Log.Error("暂时无法移动");

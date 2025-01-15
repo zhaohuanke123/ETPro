@@ -45,6 +45,22 @@ message G2C_EnterMap // IResponse
 	int64 MyId = 4;
 }
 
+//ResponseType G2C_EnterChessMap
+message C2G_EnterChessMap // IRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_EnterChessMap // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int64 MyId = 4;
+	int64 SceneInstanceId = 5;
+	string SceneName = 6;
+}
+
 //ResponseType G2C_ExitMap
 message C2G_ExitMap // IRequest
 {

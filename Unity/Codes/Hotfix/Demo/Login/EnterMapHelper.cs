@@ -38,5 +38,23 @@ namespace ET
                 Log.Error(e);
             }
         }
+
+        public static async ETTask EnterChessMapAsync(Scene zoneScene)
+        {
+            try
+            {
+                G2C_EnterChessMap g2CEnterChessMap =
+                        await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_EnterChessMap()) as G2C_EnterChessMap;
+                zoneScene.GetComponent<PlayerComponent>().MyId = g2CEnterChessMap.MyId;
+
+                await SceneChangeHelper.SceneChangeToChessMap(zoneScene, g2CEnterChessMap.SceneName, g2CEnterChessMap.SceneInstanceId);
+
+                // Game.EventSystem.Publish(new EventType.EnterMapFinish() { ZoneScene = zoneScene });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
     }
 }
