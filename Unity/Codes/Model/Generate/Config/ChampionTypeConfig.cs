@@ -82,24 +82,15 @@ namespace ET
 		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
-		/// <summary>羁绊触发所需人数</summary>
+		/// <summary>羁绊名称</summary>
 		[ProtoMember(2)]
-		public string championCount { get; set; }
-		/// <summary>羁绊效果类型</summary>
+		public string displayName { get; set; }
+		/// <summary>图标</summary>
 		[ProtoMember(3)]
-		public string championBonusType { get; set; }
-		/// <summary>羁绊效果目标</summary>
+		public string icon { get; set; }
+		/// <summary>关联的羁绊效果</summary>
 		[ProtoMember(4)]
-		public string bonusTarget { get; set; }
-		/// <summary>羁绊效果数值</summary>
-		[ProtoMember(5)]
-		public int bonusValue { get; set; }
-		/// <summary>效果持续时间</summary>
-		[ProtoMember(6)]
-		public float duration { get; set; }
-		/// <summary>效果预制件</summary>
-		[ProtoMember(7)]
-		public string effectPrefab { get; set; }
+		public int championBonusId { get; set; }
 
 	}
 }
