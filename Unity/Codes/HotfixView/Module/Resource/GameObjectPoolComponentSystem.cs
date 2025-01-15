@@ -2,99 +2,101 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 namespace ET
 {
-    
-    [ObjectSystem]
-    public class GameObjectPoolComponentAwakeSystem : AwakeSystem<GameObjectPoolComponent>
-    {
-        public override void Awake(GameObjectPoolComponent self)
-        {
-            GameObjectPoolComponent.Instance = self;
-            self.goPool = new LruCache<string, GameObject>();
-            self.goInstCountCache = new Dictionary<string, int>();
-            self.goChildsCountPool = new Dictionary<string, int>();
-            self.instCache = new Dictionary<string, List<GameObject>>();
-            self.instPathCache = new Dictionary<GameObject, string>();
-            self.persistentPathCache = new Dictionary<string, bool>();
-            self.detailGoChildsCount = new Dictionary<string, Dictionary<string, int>>();
-
-            var go = GameObject.Find("GameObjectCacheRoot");
-            if (go == null)
-            {
-                go = new GameObject("GameObjectCacheRoot");
-            }
-            GameObject.DontDestroyOnLoad(go);
-            self.cacheTransRoot = go.transform;
-
-            self.goPool.SetPopCallback((path, pooledGo) =>
-            {
-                self.ReleaseAsset(path);
-            });
-            self.goPool.SetCheckCanPopCallback((path, pooledGo) =>
-            {
-                var cnt = self.goInstCountCache[path] - (self.instCache.ContainsKey(path) ? self.instCache[path].Count : 0);
-                if (cnt > 0)
-                    Log.Info(string.Format("path={0} goInstCountCache={1} instCache={2}", path, self.goInstCountCache[path], 
-                        (self.instCache[path] != null ? self.instCache[path].Count : 0)));
-                return cnt == 0 && !self.persistentPathCache.ContainsKey(path);
-            });
-
-        }
-    }
 	[ObjectSystem]
-    public class GameObjectPoolComponentDestroy: DestroySystem<GameObjectPoolComponent>
-    {
-	    public override void Destroy(GameObjectPoolComponent self)
-	    {
-		    self.Cleanup();
-		    GameObjectPoolComponent.Instance = null;
-	    }
-    }
-    
-    [FriendClass(typeof(GameObjectPoolComponent))]
-    [FriendClass(typeof(UITransform))]
-    public static class GameObjectPoolComponentSystem
-    {
-	    /// <summary>
-	    /// 从池子获取UI组件
-	    /// </summary>
-	    /// <param name="self"></param>
-	    /// <param name="path"></param>
-	    /// <typeparam name="T"></typeparam>
-	    /// <returns></returns>
-        public static async ETTask<T> GetUIGameObjectAsync<T>(this GameObjectPoolComponent self, string path) where T : Entity,IAwake,IOnCreate
-        {
-            var obj = await self.GetGameObjectAsync(path);
-            if (obj == null) return null;
-            T res = self.AddChild<T>();
-            res.AddUIComponent<UITransform,Transform>("", obj.transform);
-            UIWatcherComponent.Instance.OnCreate(res);
-            return res;
-        }
+	public class GameObjectPoolComponentAwakeSystem: AwakeSystem<GameObjectPoolComponent>
+	{
+		public override void Awake(GameObjectPoolComponent self)
+		{
+			GameObjectPoolComponent.Instance = self;
+			self.goPool = new LruCache<string, GameObject>();
+			self.goInstCountCache = new Dictionary<string, int>();
+			self.goChildsCountPool = new Dictionary<string, int>();
+			self.instCache = new Dictionary<string, List<GameObject>>();
+			self.instPathCache = new Dictionary<GameObject, string>();
+			self.persistentPathCache = new Dictionary<string, bool>();
+			self.detailGoChildsCount = new Dictionary<string, Dictionary<string, int>>();
 
-	    /// <summary>
-	    /// 池子回收UI组件
-	    /// </summary>
-	    /// <param name="self"></param>
-	    /// <param name="obj"></param>
-	    /// <param name="isClear"></param>
-	    /// <typeparam name="T"></typeparam>
-        public static void RecycleUIGameObject<T>(this GameObjectPoolComponent self, T obj,bool isClear = false) where T : Entity,IAwake,IOnCreate
-        {
-            var uiTrans = obj.GetUIComponent<UITransform>();
-            self.RecycleGameObject(uiTrans.transform.gameObject, isClear);
-            obj.BeforeOnDestroy();
-            UIWatcherComponent.Instance.OnDestroy(obj);
-        }
+			var go = GameObject.Find("GameObjectCacheRoot");
+			if (go == null)
+			{
+				go = new GameObject("GameObjectCacheRoot");
+			}
+			GameObject.DontDestroyOnLoad(go);
+			self.cacheTransRoot = go.transform;
 
+			self.goPool.SetPopCallback((path, pooledGo) =>
+			{
+				self.ReleaseAsset(path);
+			});
+			self.goPool.SetCheckCanPopCallback((path, pooledGo) =>
+			{
+				var cnt = self.goInstCountCache[path] - (self.instCache.ContainsKey(path)? self.instCache[path].Count : 0);
+				if (cnt > 0)
+					Log.Info(string.Format("path={0} goInstCountCache={1} instCache={2}",
+					path,
+					self.goInstCountCache[path],
+					(self.instCache[path] != null? self.instCache[path].Count : 0)));
+				return cnt == 0 && !self.persistentPathCache.ContainsKey(path);
+			});
+
+		}
+	}
+
+	[ObjectSystem]
+	public class GameObjectPoolComponentDestroy: DestroySystem<GameObjectPoolComponent>
+	{
+		public override void Destroy(GameObjectPoolComponent self)
+		{
+			self.Cleanup();
+			GameObjectPoolComponent.Instance = null;
+		}
+	}
+
+	[FriendClass(typeof (GameObjectPoolComponent))]
+	[FriendClass(typeof (UITransform))]
+	public static class GameObjectPoolComponentSystem
+	{
+		/// <summary>
+		/// 从池子获取UI组件
+		/// </summary>
+		/// <param name="self"></param>
+		/// <param name="path"></param>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		public static async ETTask<T> GetUIGameObjectAsync<T>(this GameObjectPoolComponent self, string path) where T : Entity, IAwake, IOnCreate
+		{
+			var obj = await self.GetGameObjectAsync(path);
+			if (obj == null) return null;
+			T res = self.AddChild<T>();
+			res.AddUIComponent<UITransform, Transform>("", obj.transform);
+			UIWatcherComponent.Instance.OnCreate(res);
+			return res;
+		}
+
+		/// <summary>
+		/// 池子回收UI组件
+		/// </summary>
+		/// <param name="self"></param>
+		/// <param name="obj"></param>
+		/// <param name="isClear"></param>
+		/// <typeparam name="T"></typeparam>
+		public static void RecycleUIGameObject<T>(this GameObjectPoolComponent self, T obj, bool isClear = false) where T : Entity, IAwake, IOnCreate
+		{
+			var uiTrans = obj.GetUIComponent<UITransform>();
+			self.RecycleGameObject(uiTrans.transform.gameObject, isClear);
+			obj.BeforeOnDestroy();
+			UIWatcherComponent.Instance.OnDestroy(obj);
+		}
 
 		/// <summary>
 		/// 预加载一系列资源
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="res"></param>
-		public static async ETTask LoadDependency(this GameObjectPoolComponent self,List<string> res)
+		public static async ETTask LoadDependency(this GameObjectPoolComponent self, List<string> res)
 		{
 			if (res.Count <= 0) return;
 			using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
@@ -106,6 +108,7 @@ namespace ET
 				await ETTaskHelper.WaitAll(TaskScheduler);
 			}
 		}
+
 		/// <summary>
 		/// 尝试从缓存中获取
 		/// </summary>
@@ -113,7 +116,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="go"></param>
 		/// <returns></returns>
-		public static bool TryGetFromCache(this GameObjectPoolComponent self,string path, out GameObject go)
+		public static bool TryGetFromCache(this GameObjectPoolComponent self, string path, out GameObject go)
 		{
 			go = null;
 			if (!self.CheckHasCached(path)) return false;
@@ -137,9 +140,9 @@ namespace ET
 				if (pooledGo != null)
 				{
 					var inst = GameObject.Instantiate(pooledGo);
-					if(self.goInstCountCache.ContainsKey(path))
+					if (self.goInstCountCache.ContainsKey(path))
 						self.goInstCountCache[path]++;
-					else 
+					else
 						self.goInstCountCache[path] = 1;
 					self.instPathCache[inst] = path;
 					go = inst;
@@ -156,7 +159,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="instCount">初始实例化个数</param>
 		/// <param name="callback"></param>
-		public static async ETTask PreLoadGameObjectAsync(this GameObjectPoolComponent self,string path, int instCount,Action callback = null)
+		public static async ETTask PreLoadGameObjectAsync(this GameObjectPoolComponent self, string path, int instCount, Action callback = null)
 		{
 			CoroutineLock coroutineLock = null;
 			try
@@ -181,6 +184,7 @@ namespace ET
 				coroutineLock?.Dispose();
 			}
 		}
+
 		/// <summary>
 		/// 异步获取：必要时加载
 		/// </summary>
@@ -191,7 +195,8 @@ namespace ET
 		public static ETTask GetGameObjectTask(this GameObjectPoolComponent self, string path, Action<GameObject> callback = null)
 		{
 			ETTask task = ETTask.Create();
-			self.GetGameObjectAsync(path, (data) =>
+			self.GetGameObjectAsync(path,
+			(data) =>
 			{
 				callback?.Invoke(data);
 				task.SetResult();
@@ -206,7 +211,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="callback"></param>
 		/// <returns></returns>
-		public static async ETTask<GameObject> GetGameObjectAsync(this GameObjectPoolComponent self,string path,Action<GameObject> callback = null)
+		public static async ETTask<GameObject> GetGameObjectAsync(this GameObjectPoolComponent self, string path, Action<GameObject> callback = null)
 		{
 			if (self.TryGetFromCache(path, out var inst))
 			{
@@ -231,7 +236,7 @@ namespace ET
 		/// <param name="self"></param>
 		/// <param name="path"></param>
 		/// <returns></returns>
-		public static GameObject GetGameObject(this GameObjectPoolComponent self,string path)
+		public static GameObject GetGameObject(this GameObjectPoolComponent self, string path)
 		{
 			if (self.TryGetFromCache(path, out var inst))
 			{
@@ -240,15 +245,16 @@ namespace ET
 			}
 			return null;
 		}
+
 		/// <summary>
 		/// 回收
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="inst"></param>
 		/// <param name="isclear"></param>
-		public static void RecycleGameObject(this GameObjectPoolComponent self,GameObject inst, bool isclear = false)
+		public static void RecycleGameObject(this GameObjectPoolComponent self, GameObject inst, bool isclear = false)
 		{
-			if(self==null||self.IsDisposed) return;
+			if (self == null || self.IsDisposed) return;
 			if (!self.instPathCache.ContainsKey(inst))
 			{
 				Log.Error("RecycleGameObject inst not found from instPathCache");
@@ -273,15 +279,16 @@ namespace ET
 
 			//self.CheckCleanRes(path);
 		}
+
 		/// <summary>
 		/// <para>检测回收的时候是否需要清理资源(这里是检测是否清空 inst和缓存的go)</para>
 		/// <para>这里可以考虑加一个配置表来处理优先级问题，一些优先级较高的保留</para>
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="path"></param>
-		public static void CheckCleanRes(this GameObjectPoolComponent self,string path)
+		public static void CheckCleanRes(this GameObjectPoolComponent self, string path)
 		{
-			var cnt = self.goInstCountCache[path] - (self.instCache.ContainsKey(path) ? self.instCache[path].Count : 0);
+			var cnt = self.goInstCountCache[path] - (self.instCache.ContainsKey(path)? self.instCache[path].Count : 0);
 			if (cnt == 0 && !self.persistentPathCache.ContainsKey(path))
 				self.ReleaseAsset(path);
 		}
@@ -290,7 +297,7 @@ namespace ET
 		/// <para>添加需要持久化的资源</para>
 		/// </summary>
 		/// <param name="path"></param>
-		public static void AddPersistentPrefabPath(this GameObjectPoolComponent self,string path)
+		public static void AddPersistentPrefabPath(this GameObjectPoolComponent self, string path)
 		{
 			self.persistentPathCache[path] = true;
 
@@ -302,7 +309,7 @@ namespace ET
 		/// <param name="self"></param>
 		/// <param name="includePooledGo">是否需要将预设也释放</param>
 		/// <param name="excludePathArray">忽略的</param>
-		public static void Cleanup(this GameObjectPoolComponent self,bool includePooledGo = true, List<string> excludePathArray = null)
+		public static void Cleanup(this GameObjectPoolComponent self, bool includePooledGo = true, List<string> excludePathArray = null)
 		{
 			Log.Info("GameObjectPool Cleanup ");
 			foreach (var item in self.instCache)
@@ -349,6 +356,7 @@ namespace ET
 			}
 			Log.Info("GameObjectPool Cleanup Over");
 		}
+
 		/// <summary>
 		/// <para>释放asset</para>
 		/// <para>注意这里需要保证外面没有引用这些path的inst了，不然会出现材质丢失的问题</para>
@@ -357,7 +365,7 @@ namespace ET
 		/// <param name="self"></param>
 		/// <param name="includePooledGo">是否需要将预设也释放</param>
 		/// <param name="patharray">需要释放的资源路径数组</param>
-		public static void CleanupWithPathArray(this GameObjectPoolComponent self,bool includePooledGo = true, List<string> patharray = null)
+		public static void CleanupWithPathArray(this GameObjectPoolComponent self, bool includePooledGo = true, List<string> patharray = null)
 		{
 			Debug.Log("GameObjectPool Cleanup ");
 			Dictionary<string, bool> dict_path = null;
@@ -378,7 +386,7 @@ namespace ET
 							if (inst != null)
 							{
 								GameObject.Destroy(inst);
-								self.goInstCountCache[item.Key]-- ;
+								self.goInstCountCache[item.Key]--;
 							}
 							self.instPathCache.Remove(inst);
 						}
@@ -389,7 +397,7 @@ namespace ET
 					self.instCache.Remove(patharray[i]);
 				}
 			}
-			
+
 			if (includePooledGo)
 			{
 				List<string> keys = self.goPool.Keys.ToList();
@@ -407,13 +415,14 @@ namespace ET
 				}
 			}
 		}
+
 		/// <summary>
 		/// 获取已经缓存的预制
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="path"></param>
 		/// <returns></returns>
-		public static GameObject GetCachedGoWithPath(this GameObjectPoolComponent self,string path)
+		public static GameObject GetCachedGoWithPath(this GameObjectPoolComponent self, string path)
 		{
 			if (self.goPool.TryOnlyGet(path, out var res))
 			{
@@ -421,29 +430,29 @@ namespace ET
 			}
 			return null;
 		}
-		
-				
+
 		#region 私有方法
-		        
+
 		/// <summary>
 		/// 初始化inst
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="inst"></param>
-		private static void InitInst(this GameObjectPoolComponent self,GameObject inst)
+		private static void InitInst(this GameObjectPoolComponent self, GameObject inst)
 		{
 			if (inst != null)
 			{
 				inst.SetActive(true);
 			}
 		}
+
 		/// <summary>
 		/// 检测是否已经被缓存
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="path"></param>
 		/// <returns></returns>
-		private static bool CheckHasCached(this GameObjectPoolComponent self,string path)
+		private static bool CheckHasCached(this GameObjectPoolComponent self, string path)
 		{
 			if (string.IsNullOrEmpty(path))
 			{
@@ -470,7 +479,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="go"></param>
 		/// <param name="inst_count"></param>
-		private static void CacheAndInstGameObject(this GameObjectPoolComponent self,string path, GameObject go, int inst_count)
+		private static void CacheAndInstGameObject(this GameObjectPoolComponent self, string path, GameObject go, int inst_count)
 		{
 			self.goPool.Set(path, go);
 			self.InitGoChildCount(path, go);
@@ -492,12 +501,13 @@ namespace ET
 				self.goInstCountCache[path] = self.goInstCountCache[path] + inst_count;
 			}
 		}
+
 		/// <summary>
 		/// 删除gameobject 所有从GameObjectPool中
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="inst"></param>
-		private static void DestroyGameObject(this GameObjectPoolComponent self,GameObject inst)
+		private static void DestroyGameObject(this GameObjectPoolComponent self, GameObject inst)
 		{
 			if (self.instPathCache.TryGetValue(inst, out string path))
 			{
@@ -509,7 +519,9 @@ namespace ET
 					}
 					else
 					{
-						self.CheckRecycleInstIsDirty(path, inst, () =>
+						self.CheckRecycleInstIsDirty(path,
+						inst,
+						() =>
 						{
 							GameObject.Destroy(inst);
 							self.goInstCountCache[path]--;
@@ -523,6 +535,7 @@ namespace ET
 				Log.Error("DestroyGameObject inst not found from instPathCache");
 			}
 		}
+
 		/// <summary>
 		/// 检查回收时是否污染
 		/// </summary>
@@ -530,7 +543,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="inst"></param>
 		/// <param name="callback"></param>
-		private static void CheckRecycleInstIsDirty(this GameObjectPoolComponent self,string path, GameObject inst, Action callback)
+		private static void CheckRecycleInstIsDirty(this GameObjectPoolComponent self, string path, GameObject inst, Action callback)
 		{
 			if (!self.IsOpenCheck())
 			{
@@ -541,6 +554,7 @@ namespace ET
 			self.CheckAfter(path, inst).Coroutine();
 			callback?.Invoke();
 		}
+
 		/// <summary>
 		/// 延迟一段时间检查
 		/// </summary>
@@ -548,7 +562,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="inst"></param>
 		/// <returns></returns>
-		private static async ETTask CheckAfter(this GameObjectPoolComponent self,string path, GameObject inst)
+		private static async ETTask CheckAfter(this GameObjectPoolComponent self, string path, GameObject inst)
 		{
 			await TimerComponent.Instance.WaitAsync(2000);
 			if (inst != null && inst.transform != null && self.CheckInstIsInPool(path, inst))
@@ -558,7 +572,7 @@ namespace ET
 				int instChildCount = self.RecursiveGetChildCount(inst.transform, "", ref childsCountMap);
 				if (go_child_count != instChildCount)
 				{
-					Log.Error($"go_child_count({ go_child_count }) must equip inst_child_count({instChildCount}) path = {path} ");
+					Log.Error($"go_child_count({go_child_count}) must equip inst_child_count({instChildCount}) path = {path} ");
 					foreach (var item in childsCountMap)
 					{
 						var k = item.Key;
@@ -569,11 +583,12 @@ namespace ET
 						else if (self.detailGoChildsCount[path][k] != v)
 							unfair = true;
 						if (unfair)
-							Log.Error($"not match path on checkrecycle = { k}, count = {v}");
+							Log.Error($"not match path on checkrecycle = {k}, count = {v}");
 					}
 				}
 			}
 		}
+
 		/// <summary>
 		/// 检查inst是否在池子中
 		/// </summary>
@@ -581,7 +596,7 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="inst"></param>
 		/// <returns></returns>
-		private static bool CheckInstIsInPool(this GameObjectPoolComponent self,string path, GameObject inst)
+		private static bool CheckInstIsInPool(this GameObjectPoolComponent self, string path, GameObject inst)
 		{
 			if (self.instCache.TryGetValue(path, out var inst_array))
 			{
@@ -592,13 +607,14 @@ namespace ET
 			}
 			return false;
 		}
+
 		/// <summary>
 		/// 获取GameObject的child数量
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="path"></param>
 		/// <param name="go"></param>
-		private static void InitGoChildCount(this GameObjectPoolComponent self,string path, GameObject go)
+		private static void InitGoChildCount(this GameObjectPoolComponent self, string path, GameObject go)
 		{
 			if (!self.IsOpenCheck()) return;
 			if (!self.goChildsCountPool.ContainsKey(path))
@@ -615,7 +631,7 @@ namespace ET
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="path"></param>
-		public static void ReleaseAsset(this GameObjectPoolComponent self,string path)
+		public static void ReleaseAsset(this GameObjectPoolComponent self, string path)
 		{
 			if (self.instCache.ContainsKey(path))
 			{
@@ -634,6 +650,7 @@ namespace ET
 				self.goPool.Remove(path);
 			}
 		}
+
 		/// <summary>
 		/// 是否开启检查污染
 		/// </summary>
@@ -643,6 +660,7 @@ namespace ET
 		{
 			return Define.Debug;
 		}
+
 		/// <summary>
 		/// 递归取子物体组件数量
 		/// </summary>
@@ -651,14 +669,16 @@ namespace ET
 		/// <param name="path"></param>
 		/// <param name="record"></param>
 		/// <returns></returns>
-		private static int RecursiveGetChildCount(this GameObjectPoolComponent self,Transform trans, string path, ref Dictionary<string, int> record)
+		private static int RecursiveGetChildCount(this GameObjectPoolComponent self, Transform trans, string path, ref Dictionary<string, int> record)
 		{
 			int total_child_count = trans.childCount;
 			for (int i = 0; i < trans.childCount; i++)
 			{
 				var child = trans.GetChild(i);
-				if (child.name.Contains("Input Caret") || child.name.Contains("TMP SubMeshUI") || child.name.Contains("TMP UI SubObject") || /*child.GetComponent<LoopListViewItem2>()!=null
-					 || child.GetComponent<LoopGridViewItem>() != null ||*/ (child.name.Contains("Caret") && child.parent.name.Contains("Text Area")))
+				if (child.name.Contains("Input Caret") || child.name.Contains("TMP SubMeshUI") ||
+				    child.name.Contains("TMP UI SubObject") || /*child.GetComponent<LoopListViewItem2>()!=null
+					     || child.GetComponent<LoopGridViewItem>() != null ||*/
+				    (child.name.Contains("Caret") && child.parent.name.Contains("Text Area")))
 				{
 					//Input控件在运行时会自动生成个光标子控件，而prefab中是没有的，所以得过滤掉
 					//TextMesh会生成相应字体子控件
@@ -681,18 +701,17 @@ namespace ET
 			}
 			return total_child_count;
 		}
-		
+
 		/// <summary>
 		/// 检查指定路径是否有未回收的预制体
 		/// </summary>
 		/// <param name="self"></param>
 		/// <param name="path"></param>
-		private static bool CheckNeedUnload(this GameObjectPoolComponent self,string path)
+		private static bool CheckNeedUnload(this GameObjectPoolComponent self, string path)
 		{
 			return !self.instPathCache.ContainsValue(path);
 		}
-		
+
 		#endregion
-		
-    }
+	}
 }
