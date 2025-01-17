@@ -96,10 +96,10 @@ namespace ET
 		public int cost { get; set; }
 		/// <summary>主羁绊类型</summary>
 		[ProtoMember(6)]
-		public int type1 { get; set; }
+		public int type1Id { get; set; }
 		/// <summary>副羁绊类型</summary>
 		[ProtoMember(7)]
-		public int type2 { get; set; }
+		public int type2Id { get; set; }
 		/// <summary>血量</summary>
 		[ProtoMember(8)]
 		public int health { get; set; }

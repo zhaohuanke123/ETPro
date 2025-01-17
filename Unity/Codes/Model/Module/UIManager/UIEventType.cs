@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System.Collections.Generic;
+
+namespace ET
 {
 	namespace UIEventType
 	{
@@ -97,6 +99,11 @@
 			public UIWindow Win;
 			public string Path;
 			public int Type;
+		}
+
+		public struct RefreshShop
+		{
+			public List<int> championIds;
 		}
 	}
 }

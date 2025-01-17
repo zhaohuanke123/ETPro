@@ -31,10 +31,10 @@
             await self.Icon.SetSpritePath(spritePath);
         }
 
-        public static async ETTask SetIconAndName(this UIIconName self, string spritePath, string Name)
+        public static void SetIconAndName(this UIIconName self, string spritePath, string Name)
         {
-            await self.SetIcon(spritePath);
             self.SetName(Name);
+            self.SetIcon(spritePath).Coroutine();
         }
     }
 }

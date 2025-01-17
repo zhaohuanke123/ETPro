@@ -467,3 +467,27 @@ message A2C_CreateChessUnit // IResponse
 	string Message = 92;
 	UnitInfo Unit = 1;
 }
+
+//ResponseType G2C_RefreshShop
+message C2G_RefreshShop // IRequest
+{
+	int32 RpcId = 90;
+} 
+
+message G2C_RefreshGold // IMessage
+{
+	int32 GlodCount = 1;
+}
+
+message G2C_RefreshShop // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	repeated int32 championIds = 1;
+}
+
+message C2G_EnterChessMapFinish // IMessage
+{
+
+}

@@ -108,32 +108,6 @@ public class GamePlayController: MonoBehaviour
             }
         }
 
-        if (emptyIndex == -1)
-            return false;
-
-        if (currentGold < champion.cost)
-            return false;
-
-        GameObject championPrefab = Instantiate(champion.prefab);
-
-        ChampionController championController = championPrefab.GetComponent<ChampionController>();
-
-        championController.Init(champion, ChampionController.TEAMID_PLAYER);
-
-        championController.SetGridPosition(Map.GRIDTYPE_OWN_INVENTORY, emptyIndex, -1);
-
-        championController.SetWorldPosition();
-        championController.SetWorldRotation();
-
-        StoreChampionInArray(Map.GRIDTYPE_OWN_INVENTORY, map.ownTriggerArray[emptyIndex].gridX, -1, championPrefab);
-
-        if (currentGameStage == GameStage.Preparation)
-            TryUpgradeChampion(champion); //upgrade champion
-
-        currentGold -= champion.cost;
-
-        // uIController.UpdateUI();
-
         return true;
     }
 

@@ -2,34 +2,40 @@
 
 namespace ET
 {
-	[UISystem]
-	[FriendClass(typeof (UIChampionContainer))]
-	public class UIChampionContainerCreateSystem: OnCreateSystem<UIChampionContainer>
-	{
-		public override void OnCreate(UIChampionContainer self)
-		{
-			// champion
-			self.championBtn = self.AddUIComponent<UIButton>("champion");
-			self.championBtn.SetOnClick(() =>
-			{
-				Log.Warning("championBtn Click");
-			});
-			// champion/top/SK1
-			self.Sk1 = self.AddUIComponent<UIIconName>("champion/top/SK1");
-			self.Sk1.SetIcon("UIGames/UIChess/DiscreteImages/frost icon 1.png").Coroutine();
-			// champion/top/SK2
-			self.Sk2 = self.AddUIComponent<UIIconName>("champion/top/SK2");
-			// // champion/bottom/CostGo
-			self.cost = self.AddUIComponent<UICostIN>("champion/bottom/CostGo");
-		}
-	}
+    [UISystem]
+    [FriendClass(typeof (UIChampionContainer))]
+    public class UIChampionContainerCreateSystem: OnCreateSystem<UIChampionContainer>
+    {
+        public override void OnCreate(UIChampionContainer self)
+        {
+            // champion
+            self.championBtn = self.AddUIComponent<UIButton>("champion");
+            self.championBtn.SetOnClick(() => { Log.Warning("championBtn Click"); });
+            // champion/top/SK1
+            self.Sk1 = self.AddUIComponent<UIIconName>("champion/top/SK1");
+            self.Sk1.SetIcon("UIGames/UIChess/DiscreteImages/frost icon 1.png").Coroutine();
+            // champion/top/SK2
+            self.Sk2 = self.AddUIComponent<UIIconName>("champion/top/SK2");
+            // // champion/bottom/CostGo
+            self.cost = self.AddUIComponent<UICostIN>("champion/bottom/CostGo");
+        }
+    }
 
-	[FriendClass(typeof (UIChampionContainer))]
-	public static class UIChampionContainerSystem
-	{
-		public static void Test(this UIChampionContainer self)
-		{
+    [FriendClass(typeof (UIChampionContainer))]
+    public static class UIChampionContainerSystem
+    {
+        public static void SetChampion(this UIChampionContainer self, int id)
+        {
+            ChampionConfig config = ChampionConfigCategory.Instance.Get(id);
+            int type1Id = config.type1Id;
+            int type2Id = config.type2Id;
 
-		}
-	}
+            ChampionTypeConfig type1Config = ChampionTypeConfigCategory.Instance.Get(type1Id);
+            ChampionTypeConfig type2Config = ChampionTypeConfigCategory.Instance.Get(type2Id);
+
+            self.Sk1.SetIconAndName(type1Config.icon, type1Config.displayName);
+            self.Sk2.SetIconAndName(type2Config.icon, type1Config.displayName);
+            self.cost.SetNumber(config.cost);
+        }
+    }
 }

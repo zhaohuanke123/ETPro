@@ -78,8 +78,6 @@
             await Game.EventSystem.PublishAsync(new EventType.SceneChangeChessMapStart() { ZoneScene = zoneScene, Name = sceneName });
 
             await Game.EventSystem.PublishAsync(new EventType.SceneChangeChessMapFinish() { ZoneScene = zoneScene, CurrentScene = currentScene });
-
-            zoneScene.GetComponent<ObjectWait>().Notify(new WaitType.Wait_SceneChangeFinish());
         }
     }
 }

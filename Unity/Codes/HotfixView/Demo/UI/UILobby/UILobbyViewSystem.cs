@@ -41,7 +41,7 @@
 
         public static async ETTask OnEnterChessMapBtnClick(this UILobbyView self)
         {
-           await EnterMapHelper.EnterChessMapAsync(self.ZoneScene());
+            await EnterMapHelper.EnterChessMapAsync(self.ZoneScene());
         }
     }
 }

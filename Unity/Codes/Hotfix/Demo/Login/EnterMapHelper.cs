@@ -43,13 +43,18 @@ namespace ET
         {
             try
             {
+                Session session = zoneScene.GetComponent<SessionComponent>().Session;
                 G2C_EnterChessMap g2CEnterChessMap =
-                        await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_EnterChessMap()) as G2C_EnterChessMap;
+                        await session.Call(new C2G_EnterChessMap()) as G2C_EnterChessMap;
                 zoneScene.GetComponent<PlayerComponent>().MyId = g2CEnterChessMap.MyId;
 
                 await SceneChangeHelper.SceneChangeToChessMap(zoneScene, g2CEnterChessMap.SceneName, g2CEnterChessMap.SceneInstanceId);
 
-                // Game.EventSystem.Publish(new EventType.EnterMapFinish() { ZoneScene = zoneScene });
+                // session.Send(new C2G_EnterChessMap());
+#if !NOT_UNITY
+                G2C_RefreshShop g2CRefreshShop = (G2C_RefreshShop)await session.Call(new C2G_RefreshShop());
+                Game.EventSystem.Publish(new UIEventType.RefreshShop() { championIds = g2CRefreshShop.championIds });
+#endif
             }
             catch (Exception e)
             {

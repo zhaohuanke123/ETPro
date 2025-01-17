@@ -22,6 +22,14 @@
   </PropertyGroup>
   <ItemGroup>
 
+    <Compile Include="..\..\Unity\Codes\Model\Chess\BonusTarget.cs">
+      <Link>Chess\BonusTarget.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Codes\Model\Chess\GamePlayComponent.cs">
+      <Link>Chess\GamePlayComponent.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Model\Core\**\*.cs"> 
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>

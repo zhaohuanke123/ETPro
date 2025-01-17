@@ -61,5 +61,9 @@ namespace ET
 		 public const ushort A2C_Disconnect = 10049;
 		 public const ushort C2A_CreateChessUnit = 10056;
 		 public const ushort A2C_CreateChessUnit = 10057;
+		 public const ushort C2G_RefreshShop = 10065;
+		 public const ushort G2C_RefreshGold = 10068;
+		 public const ushort G2C_RefreshShop = 10067;
+		 public const ushort C2G_EnterChessMapFinish = 10064;
 	}
 }

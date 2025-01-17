@@ -1,7 +1,7 @@
 
-8Archer*UIGames/UIChess/DiscreteImages/archer icon 
-6Fire*UIGames/UIChess/DiscreteImages/fire icon 1 
-8Frost+UIGames/UIChess/DiscreteImages/frost icon 1 
-8Knight*UIGames/UIChess/DiscreteImages/knight icon 
-:Nature,UIGames/UIChess/DiscreteImages/nature icon 1 
-<Wizard.UIGames/UIChess/DiscreteImages/wizzard icon 64 
+<Archer.UIGames/UIChess/DiscreteImages/archer icon.png 
+:Fire.UIGames/UIChess/DiscreteImages/fire icon 1.png 
+<Frost/UIGames/UIChess/DiscreteImages/frost icon 1.png 
+<Knight.UIGames/UIChess/DiscreteImages/knight icon.png 
+>Nature0UIGames/UIChess/DiscreteImages/nature icon 1.png 
+@Wizard2UIGames/UIChess/DiscreteImages/wizzard icon 64.png 

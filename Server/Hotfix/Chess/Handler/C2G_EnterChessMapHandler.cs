@@ -1,4 +1,5 @@
 ﻿using System;
+using MongoDB.Driver.Core.Events;
 
 namespace ET
 {
@@ -6,14 +7,23 @@ namespace ET
     {
         protected override async ETTask Run(Session session, C2G_EnterChessMap request, G2C_EnterChessMap response, Action reply)
         {
-            string map = "Main";
+            const string map = "Main";
             // StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), map);
 
             //TODO: 临时
+
+            Player player = session.GetComponent<SessionPlayerComponent>().GetMyPlayer();
+
+            session.RemoveComponent<GamePlayComponent>();
+            GamePlayComponent gamePlayComponent = session.AddComponent<GamePlayComponent>();
+            ShopComponent shopComponent = gamePlayComponent.AddComponent<ShopComponent>();
+            shopComponent.AddPlayerGold(player.Id, 5);
+
             response.SceneInstanceId = 123;
             response.SceneName = map;
-
+            response.MyId = player.Id;
             reply();
+
             await ETTask.CompletedTask;
         }
     }
