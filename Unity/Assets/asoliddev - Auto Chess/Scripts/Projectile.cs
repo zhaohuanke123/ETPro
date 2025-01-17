@@ -17,7 +17,7 @@ public class Projectile : MonoBehaviour
         isMoving = true;
     }
 
-    void Update()
+    private void Update()
     {
       
         if (isMoving)

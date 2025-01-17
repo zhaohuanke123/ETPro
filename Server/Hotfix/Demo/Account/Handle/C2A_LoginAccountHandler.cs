@@ -144,6 +144,7 @@ namespace ET.Account.Handle
             PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
             Player player = playerComponent.AddChild<Player, string>(request.AccountName);
             playerComponent.Add(player);
+            player.Session = session;
             session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
             session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
 

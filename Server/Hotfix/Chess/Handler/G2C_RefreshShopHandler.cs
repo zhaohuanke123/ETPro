@@ -9,7 +9,15 @@ namespace ET
             Player player = session.GetComponent<SessionPlayerComponent>().GetMyPlayer();
             GamePlayComponent gamePlayComponent = session.GetComponent<GamePlayComponent>();
             ShopComponent shopComponent = gamePlayComponent.GetComponent<ShopComponent>();
-            shopComponent.RefreshShop(player.Id, true);
+
+            bool res = shopComponent.RefreshShop(player);
+            if (res == false)
+            {
+                response.Error = ErrorCode.ERR_RefreshShopFailed;
+                reply();
+                return;
+            }
+
             response.championIds = shopComponent.GetAvailableChampionIdArray(player.Id);
 
             reply();

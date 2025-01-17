@@ -491,3 +491,18 @@ message C2G_EnterChessMapFinish // IMessage
 {
 
 }
+
+// ResponseType G2C_BuyChampion
+message C2G_BuyChampion // IRequest
+{
+	int32 RpcId = 90;
+	int32 slopIndex = 1;
+}
+
+message G2C_BuyChampion // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	int32 cpId = 1;
+}

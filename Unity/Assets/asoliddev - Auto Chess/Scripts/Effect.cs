@@ -8,7 +8,7 @@ public class Effect: MonoBehaviour
     private GameObject championGO;
     private GameObject effectGO;
 
-    void Update()
+    private void Update()
     {
         duration -= Time.deltaTime;
 

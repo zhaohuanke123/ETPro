@@ -22,7 +22,7 @@ public class Map: MonoBehaviour
     public Color indicatorDefaultColor;
     public Color indicatorActiveColor;
 
-    void Start()
+    private void Start()
     {
         CreateGridPosition();
         CreateIndicators();
@@ -30,7 +30,7 @@ public class Map: MonoBehaviour
 
         m_Plane = new Plane(Vector3.up, Vector3.zero);
 
-        this.SendMessage("OnMapReady", SendMessageOptions.DontRequireReceiver);
+        // this.SendMessage("OnMapReady", SendMessageOptions.DontRequireReceiver);
     }
 
     [HideInInspector]

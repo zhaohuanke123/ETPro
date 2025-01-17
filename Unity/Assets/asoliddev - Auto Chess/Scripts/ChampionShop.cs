@@ -7,7 +7,7 @@ public class ChampionShop: MonoBehaviour
 
     private Champion[] availableChampionArray;
 
-    void Start()
+    private void Start()
     {
         RefreshShop(true);
     }

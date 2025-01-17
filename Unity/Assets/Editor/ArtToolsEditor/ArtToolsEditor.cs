@@ -1,5 +1,6 @@
 ﻿using MonKey;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace ET
@@ -10,13 +11,19 @@ namespace ET
         [Command("ET_StartScene", "启动场景", Category = "ETEditor")]
         private static void ChangeInitScene()
         {
-            EditorApplication.OpenScene("Assets/AssetsPackage/Scenes/InitScene/Init.unity");
+            EditorSceneManager.OpenScene("Assets/AssetsPackage/Scenes/InitScene/Init.unity");
         }
 
         [Command("ET_UIScene", "UI场景", Category = "ETEditor")]
         private static void ChangeUIScene()
         {
-            EditorApplication.OpenScene("Assets/UIScene.unity");
+            EditorSceneManager.OpenScene("Assets/UIScene.unity");
+        }
+
+        [Command("ET_ChessScene", "ChessScene", Category = "ETEditor")]
+        private static void ChangeChessScene()
+        {
+            EditorSceneManager.OpenScene("Assets/AssetsPackage/Scenes/Main/Main.unity");
         }
 
         [MenuItem("Tools/ArtTools/创建子目录", false, 101)]

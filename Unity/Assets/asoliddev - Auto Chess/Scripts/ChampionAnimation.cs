@@ -8,7 +8,7 @@ public class ChampionAnimation: MonoBehaviour
 
     private Vector3 lastFramePosition;
 
-    void Start()
+    private void Start()
     {
         characterModel = this.transform.Find("character").gameObject;
 
@@ -16,7 +16,7 @@ public class ChampionAnimation: MonoBehaviour
         championController = this.transform.GetComponent<ChampionController>();
     }
 
-    void Update()
+    private void Update()
     {
         float movementSpeed = (this.transform.position - lastFramePosition).magnitude / Time.deltaTime;
 

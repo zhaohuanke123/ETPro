@@ -10,24 +10,24 @@ namespace ET
     {
         public override void OnCreate(UIBattle self)
         {
-            self.GoldText = self.AddUIComponent<UIText>("/Gold/Text");
+            self.GoldText = self.AddUIComponent<UIText>("Gold/CostGo/cost");
             self.CountDownText = self.AddUIComponent<UIText>("Placement/Timer/Text");
+            self.allCoin = self.AddUIComponent<UICostIN>("Gold/CostGo");
+            self.championLimitText = self.AddUIComponent<UIText>("championLimit/Text");
+            self.HpText = self.AddUIComponent<UIText>("Hp/Text");
 
-            // ReturnBtn
+            self.refreshShopButton = self.AddUIComponent<UIButton>("Shop/left menu/refresh");
+            self.refreshShopButton.SetOnClickAsync(self.OnRefreshShopBtnClick);
+
             self.returnBtn = self.AddUIComponent<UIButton>("ReturnBtn");
             self.returnBtn.SetOnClickAsync(self.OnReturnBtnClick);
 
-            //Gold/CostGo
-            self.allCoin = self.AddUIComponent<UICostIN>("Gold/CostGo");
-            self.allCoin.SetNumber(123123);
-
-            // championLimit/Text
-            self.championLimitText = self.AddUIComponent<UIText>("championLimit/Text");
-            //Hp/Text  
-            self.HpText = self.AddUIComponent<UIText>("Hp/Text");
-
-            // Shop/layout/champion container_0
-            self.championContainer = self.AddUIComponent<UIChampionContainer>("Shop/Layout/CC0");
+            const int count = 5;
+            self.cContainers = new UIChampionContainer[count];
+            for (int i = 0; i < self.cContainers.Length; i++)
+            {
+                self.cContainers[i] = self.AddUIComponent<UIChampionContainer, int>($"Shop/Layout/CC{i}", i);
+            }
         }
     }
 
@@ -58,7 +58,25 @@ namespace ET
 
         public static void SetShopChampionList(this UIBattle self, List<int> championIds)
         {
-            self.championContainer.SetChampion(championIds[0]);
+            for (int i = 0; i < self.cContainers.Length; i++)
+            {
+                self.cContainers[i].SetChampion(championIds[i]);
+            }
+        }
+
+        public static void SetChampionLimit(this UIBattle self, int championLimit)
+        {
+            self.championLimitText.SetText(championLimit.ToString());
+        }
+
+        public static void SetHp(this UIBattle self, int hp)
+        {
+            self.HpText.SetText(hp.ToString());
+        }
+
+        public static async ETTask OnRefreshShopBtnClick(this UIBattle self)
+        {
+            await ChessBattleHelper.RefreshShopChampionList(self.ZoneScene());
         }
     }
 }

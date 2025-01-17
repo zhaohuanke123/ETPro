@@ -7,8 +7,8 @@ using UnityEngine.UI;
 /// </summary>
 public class UIController: MonoBehaviour
 {
-    // public ChampionShop championShop;
-    // public GamePlayController gamePlayController;
+    public ChampionShop championShop;
+    public GamePlayController gamePlayController;
 
     public GameObject[] championsFrameArray;
     public GameObject[] bonusPanels;
@@ -32,7 +32,7 @@ public class UIController: MonoBehaviour
         string defaultName = "champion container_";
         int championFrameIndex = int.Parse(name.Substring(defaultName.Length, 1));
 
-        // championShop.OnChampionFrameClicked(championFrameIndex);
+        championShop.OnChampionFrameClicked(championFrameIndex);
     }
 
     public void Refresh_Click()

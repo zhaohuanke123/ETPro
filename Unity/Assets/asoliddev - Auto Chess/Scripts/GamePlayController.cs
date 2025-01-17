@@ -55,7 +55,7 @@ public class GamePlayController: MonoBehaviour
     public Dictionary<ChampionType, int> championTypeCount;
     public List<ChampionBonus> activeBonusList;
 
-    void Start()
+    private void Start()
     {
         currentGameStage = GameStage.Preparation;
 
@@ -64,7 +64,7 @@ public class GamePlayController: MonoBehaviour
         gridChampionsArray = new GameObject[Map.hexMapSizeX, Map.hexMapSizeZ / 2];
     }
 
-    void Update()
+    private void Update()
     {
         if (currentGameStage == GameStage.Preparation)
         {

@@ -141,11 +141,9 @@ namespace ET
             public Entity Parent;
         }
 
-        public struct UIEvent
+        public struct GenChampion
         {
-            public string UIName;
-            public string EventName;
-            public object args;
+            public int cpId;
         }
     }
 }

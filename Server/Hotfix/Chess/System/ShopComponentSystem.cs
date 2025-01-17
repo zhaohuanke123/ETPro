@@ -31,22 +31,29 @@ namespace ET
         // public static void Test(this ShopComponent self)
         // {
         // }
-        public static void AddPlayerGold(this ShopComponent self, long playerId, int gold)
+        public static void AddPlayerGold(this ShopComponent self, Player player, int gold)
         {
-            if (!self.playersGoldDict.TryAdd(playerId, gold))
+            if (!self.playersGoldDict.TryAdd(player.Id, gold))
             {
-                self.playersGoldDict[playerId] += gold;
+                self.playersGoldDict[player.Id] += gold;
             }
+
+            self.SendRefreshGold(player, gold);
         }
 
-        public static void SubPlayerGold(this ShopComponent self, long playerId, int gold)
+        public static void SubPlayerGold(this ShopComponent self, Player player, int gold)
         {
-            if (self.playersGoldDict.ContainsKey(playerId))
+            if (self.playersGoldDict.TryGetValue(player.Id, out int count))
             {
-                if (self.playersGoldDict[playerId] >= gold)
-                    self.playersGoldDict[playerId] -= gold;
+                if (count >= gold)
+                {
+                    self.playersGoldDict[player.Id] -= gold;
+                    self.SendRefreshGold(player, count - gold);
+                }
                 else
+                {
                     throw new InvalidOperationException("金币不足");
+                }
             }
         }
 
@@ -76,25 +83,27 @@ namespace ET
         /// 刷新商店
         /// </summary>
         /// <param name="self"></param>
-        /// <param name="id"></param>
+        /// <param name="player"></param>
         /// <param name="isFree"></param>
-        public static void RefreshShop(this ShopComponent self, long id, bool isFree)
+        public static bool RefreshShop(this ShopComponent self, Player player, bool isFree = false)
         {
-            if (self.playersGoldDict.TryGetValue(id, out int gold))
+            if (self.playersGoldDict.TryGetValue(player.Id, out int gold))
             {
                 if (gold < 2 && isFree == false)
-                    return;
+                {
+                    return false;
+                }
             }
 
-            if (self.availableChampionIdArray.ContainsKey(id))
+            if (self.availableChampionIdArray.ContainsKey(player.Id))
             {
-                self.availableChampionIdArray.Remove(id);
+                self.availableChampionIdArray.Remove(player.Id);
             }
 
             // TODO 临时
             const int count = 5;
             var availableChampionArray = new List<int>(count);
-            self.availableChampionIdArray.Add(id, availableChampionArray);
+            self.availableChampionIdArray.Add(player.Id, availableChampionArray);
 
             for (int i = 0; i < count; i++)
             {
@@ -105,8 +114,10 @@ namespace ET
 
             if (isFree == false)
             {
-                self.SubPlayerGold(id, 2);
+                self.SubPlayerGold(player, 2);
             }
+
+            return true;
         }
 
         public static List<int> GetAvailableChampionIdArray(this ShopComponent self, long id)
@@ -117,6 +128,23 @@ namespace ET
             }
 
             return value;
+        }
+
+        public static void SendRefreshGold(this ShopComponent self, Player player)
+        {
+            if (self.playersGoldDict.TryGetValue(player.Id, out int gold))
+            {
+                self.SendRefreshGold(player, gold);
+            }
+            else
+            {
+                throw new ArgumentException("玩家不存在");
+            }
+        }
+
+        public static void SendRefreshGold(this ShopComponent self, Player player, int goldCount)
+        {
+            player.Session.Send(new G2C_RefreshGold() { GlodCount = goldCount });
         }
     }
 }

@@ -9,12 +9,12 @@ public class HealthBar: MonoBehaviour
 
     private CanvasGroup canvasGroup;
 
-    void Start()
+    private void Start()
     {
         canvasGroup = this.GetComponent<CanvasGroup>();
     }
 
-    void Update()
+    private void Update()
     {
         if (championGO != null)
         {

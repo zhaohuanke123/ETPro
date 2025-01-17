@@ -8,7 +8,7 @@ public class AIopponent: MonoBehaviour
 {
     public ChampionShop championShop;
     public Map map;
-    public UIController uIController;
+    // public UIController uIController;
     public GamePlayController gamePlayController;
 
     public GameObject[,] gridChampionsArray;

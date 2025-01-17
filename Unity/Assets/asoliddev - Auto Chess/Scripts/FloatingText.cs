@@ -11,7 +11,7 @@ public class FloatingText: MonoBehaviour
 
     public float fadeOutTime = 1f;
 
-    void Update()
+    private void Update()
     {
         this.transform.position = this.transform.position + moveDirection * speed * Time.deltaTime;
 

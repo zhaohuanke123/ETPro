@@ -86,7 +86,7 @@ public class ChampionController: MonoBehaviour
         effects = new List<Effect>();
     }
 
-    void Update()
+    private void Update()
     {
         if (_isDragged)
         {

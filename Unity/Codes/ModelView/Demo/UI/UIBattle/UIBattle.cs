@@ -10,6 +10,7 @@
         public UICostIN allCoin;
         public UIButton returnBtn;
         public UIText championLimitText;
-        public UIChampionContainer championContainer;
+        public UIChampionContainer[] cContainers;
+        public UIButton refreshShopButton;
     }
 }

@@ -31,5 +31,6 @@ namespace ET
         public const int ERR_NotBindPlayer = 200013;
         public const int ERR_PlayerNotLoggedIn = 200014;
         public const int ERR_NotInMap = 200015;
+        public const int ERR_RefreshShopFailed = 200016;
     }
 }

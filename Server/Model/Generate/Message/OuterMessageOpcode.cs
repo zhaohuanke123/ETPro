@@ -65,5 +65,7 @@ namespace ET
 		 public const ushort G2C_RefreshGold = 10068;
 		 public const ushort G2C_RefreshShop = 10067;
 		 public const ushort C2G_EnterChessMapFinish = 10064;
+		 public const ushort C2G_BuyChampion = 10069;
+		 public const ushort G2C_BuyChampion = 10070;
 	}
 }

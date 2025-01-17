@@ -10,7 +10,7 @@ public class InputController: MonoBehaviour
 
     private Vector3 rayCastStartPosition;
 
-    void Start()
+    private void Start()
     {
         rayCastStartPosition = new Vector3(0, 20, 0);
     }
@@ -20,7 +20,7 @@ public class InputController: MonoBehaviour
     [HideInInspector]
     public TriggerInfo triggerInfo = null;
 
-    void Update()
+    private void Update()
     {
         triggerInfo = null;
         map.resetIndicators();

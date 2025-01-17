@@ -4,13 +4,13 @@ namespace ET
 {
     [UISystem]
     [FriendClass(typeof (UIChampionContainer))]
-    public class UIChampionContainerCreateSystem: OnCreateSystem<UIChampionContainer>
+    public class UIChampionContainerCreateSystem: OnCreateSystem<UIChampionContainer, int>
     {
-        public override void OnCreate(UIChampionContainer self)
+        public override void OnCreate(UIChampionContainer self, int index)
         {
             // champion
             self.championBtn = self.AddUIComponent<UIButton>("champion");
-            self.championBtn.SetOnClick(() => { Log.Warning("championBtn Click"); });
+            // self.championBtn.SetOnClick(() => { Log.Warning("championBtn Click"); });
             // champion/top/SK1
             self.Sk1 = self.AddUIComponent<UIIconName>("champion/top/SK1");
             self.Sk1.SetIcon("UIGames/UIChess/DiscreteImages/frost icon 1.png").Coroutine();
@@ -18,6 +18,9 @@ namespace ET
             self.Sk2 = self.AddUIComponent<UIIconName>("champion/top/SK2");
             // // champion/bottom/CostGo
             self.cost = self.AddUIComponent<UICostIN>("champion/bottom/CostGo");
+
+            self.championBtn.SetOnClickAsync(self.OnChampionBtnClick);
+            self.index = index;
         }
     }
 
@@ -26,6 +29,7 @@ namespace ET
     {
         public static void SetChampion(this UIChampionContainer self, int id)
         {
+            self.id = id;
             ChampionConfig config = ChampionConfigCategory.Instance.Get(id);
             int type1Id = config.type1Id;
             int type2Id = config.type2Id;
@@ -36,6 +40,11 @@ namespace ET
             self.Sk1.SetIconAndName(type1Config.icon, type1Config.displayName);
             self.Sk2.SetIconAndName(type2Config.icon, type1Config.displayName);
             self.cost.SetNumber(config.cost);
+        }
+
+        public static async ETTask OnChampionBtnClick(this UIChampionContainer self)
+        {
+            await ChessBattleHelper.TryBuyChampion(self.index);
         }
     }
 }
