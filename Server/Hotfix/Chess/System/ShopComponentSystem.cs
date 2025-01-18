@@ -57,7 +57,26 @@ namespace ET
             }
         }
 
-        public static bool IsEnoughGold(this ShopComponent self, int playerId, int gold)
+        public static bool TrySubPlayerGold(this ShopComponent self, Player player, int goldCount)
+        {
+            if (self.playersGoldDict.TryGetValue(player.Id, out int count))
+            {
+                if (count >= goldCount)
+                {
+                    self.playersGoldDict[player.Id] -= goldCount;
+                    self.SendRefreshGold(player, count - goldCount);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsEnoughGold(this ShopComponent self, long playerId, int gold)
         {
             if (self.playersGoldDict.TryGetValue(playerId, out int value))
             {
@@ -145,6 +164,23 @@ namespace ET
         public static void SendRefreshGold(this ShopComponent self, Player player, int goldCount)
         {
             player.Session.Send(new G2C_RefreshGold() { GlodCount = goldCount });
+        }
+
+        public static int GetIdByIndex(this ShopComponent self, Player player, int index)
+        {
+            if (self.availableChampionIdArray.TryGetValue(player.Id, out var availableList))
+            {
+                if (index >= availableList.Count)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return availableList[index];
+                }
+            }
+
+            return -1;
         }
     }
 }

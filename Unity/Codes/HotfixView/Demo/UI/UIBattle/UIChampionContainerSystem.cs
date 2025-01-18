@@ -8,15 +8,11 @@ namespace ET
     {
         public override void OnCreate(UIChampionContainer self, int index)
         {
-            // champion
             self.championBtn = self.AddUIComponent<UIButton>("champion");
-            // self.championBtn.SetOnClick(() => { Log.Warning("championBtn Click"); });
-            // champion/top/SK1
+
             self.Sk1 = self.AddUIComponent<UIIconName>("champion/top/SK1");
-            self.Sk1.SetIcon("UIGames/UIChess/DiscreteImages/frost icon 1.png").Coroutine();
-            // champion/top/SK2
             self.Sk2 = self.AddUIComponent<UIIconName>("champion/top/SK2");
-            // // champion/bottom/CostGo
+
             self.cost = self.AddUIComponent<UICostIN>("champion/bottom/CostGo");
 
             self.championBtn.SetOnClickAsync(self.OnChampionBtnClick);
@@ -44,7 +40,7 @@ namespace ET
 
         public static async ETTask OnChampionBtnClick(this UIChampionContainer self)
         {
-            await ChessBattleHelper.TryBuyChampion(self.index);
+            await ChessBattleHelper.TryBuyChampion(self.ZoneScene(),self.index);
         }
     }
 }

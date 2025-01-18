@@ -77,9 +77,9 @@ public class ChampionController: MonoBehaviour
 
         navMeshAgent.enabled = false;
 
-        maxHealth = champion.health;
-        currentHealth = champion.health;
-        currentDamage = champion.damage;
+        // maxHealth = champion.health;
+        // currentHealth = champion.health;
+        // currentDamage = champion.damage;
 
         worldCanvasController.AddHealthBar(this.gameObject);
 
@@ -104,8 +104,8 @@ public class ChampionController: MonoBehaviour
         }
         else
         {
-            if (gamePlayController.currentGameStage == GameStage.Preparation)
-            {
+            // if (gamePlayController.currentGameStage == GameStage.Preparation)
+            // {
                 float distance = Vector3.Distance(gridTargetPosition, this.transform.position);
 
                 if (distance > 0.25f)
@@ -116,68 +116,68 @@ public class ChampionController: MonoBehaviour
                 {
                     this.transform.position = gridTargetPosition;
                 }
-            }
+            // }
         }
 
-        if (isInCombat && isStuned == false)
-        {
-            if (target == null)
-            {
-                combatTimer += Time.deltaTime;
-                if (combatTimer > 0.5f)
-                {
-                    combatTimer = 0;
-
-                    TryAttackNewTarget();
-                }
-            }
-
-            if (target != null)
-            {
-                this.transform.LookAt(target.transform, Vector3.up);
-
-                if (target.GetComponent<ChampionController>().isDead == true)
-                {
-                    target = null;
-                    navMeshAgent.isStopped = true;
-                }
-                else
-                {
-                    if (isAttacking == false)
-                    {
-                        float distance = Vector3.Distance(this.transform.position, target.transform.position);
-
-                        if (distance < champion.attackRange)
-                        {
-                            DoAttack();
-                        }
-                        else
-                        {
-                            navMeshAgent.destination = target.transform.position;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (isStuned)
-        {
-            stunTimer -= Time.deltaTime;
-
-            if (stunTimer < 0)
-            {
-                isStuned = false;
-
-                championAnimation.IsAnimated(true);
-
-                if (target != null)
-                {
-                    navMeshAgent.destination = target.transform.position;
-
-                    navMeshAgent.isStopped = false;
-                }
-            }
-        }
+        // if (isInCombat && isStuned == false)
+        // {
+        //     if (target == null)
+        //     {
+        //         combatTimer += Time.deltaTime;
+        //         if (combatTimer > 0.5f)
+        //         {
+        //             combatTimer = 0;
+        //
+        //             TryAttackNewTarget();
+        //         }
+        //     }
+        //
+        //     if (target != null)
+        //     {
+        //         this.transform.LookAt(target.transform, Vector3.up);
+        //
+        //         if (target.GetComponent<ChampionController>().isDead == true)
+        //         {
+        //             target = null;
+        //             navMeshAgent.isStopped = true;
+        //         }
+        //         else
+        //         {
+        //             if (isAttacking == false)
+        //             {
+        //                 float distance = Vector3.Distance(this.transform.position, target.transform.position);
+        //
+        //                 if (distance < champion.attackRange)
+        //                 {
+        //                     DoAttack();
+        //                 }
+        //                 else
+        //                 {
+        //                     navMeshAgent.destination = target.transform.position;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        //
+        // if (isStuned)
+        // {
+        //     stunTimer -= Time.deltaTime;
+        //
+        //     if (stunTimer < 0)
+        //     {
+        //         isStuned = false;
+        //
+        //         championAnimation.IsAnimated(true);
+        //
+        //         if (target != null)
+        //         {
+        //             navMeshAgent.destination = target.transform.position;
+        //
+        //             navMeshAgent.isStopped = false;
+        //         }
+        //     }
+        // }
     }
 
     public bool IsDragged

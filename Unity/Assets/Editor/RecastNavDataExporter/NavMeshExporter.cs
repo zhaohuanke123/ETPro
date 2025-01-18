@@ -68,10 +68,11 @@ namespace ETEditor
         private static string outputServerFolder = "../Config/RecastNavData/ExportedObj/";
 
         #region 菜单主函数
+
         [MenuItem("Tools/NavMesh/ExportSceneObj")]
         public static void ExportScene()
         {
-            var triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
+            NavMeshTriangulation triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
             if (triangulation.indices.Length < 3)
             {
                 Debug.LogError($"NavMeshExporter ExportScene Error - 场景里没有需要被导出的物体，请先用NavMesh进行Bake。");
@@ -109,9 +110,9 @@ namespace ETEditor
             for (int i = 0, n = vertices.Length - 1; i <= n; i++)
             {
                 var point = vertices[i];
-                var x = (float) Math.Round(point.x, 2);
-                var y = (float) Math.Round(point.y, 2);
-                var z = (float) Math.Round(point.z, 2);
+                var x = (float)Math.Round(point.x, 2);
+                var y = (float)Math.Round(point.y, 2);
+                var z = (float)Math.Round(point.z, 2);
                 if (!pointVertDict.ContainsKey(x))
                 {
                     pointVertDict.Add(x, new Dictionary<float, Vert>());
@@ -231,7 +232,7 @@ namespace ETEditor
 
         private static float GetDistance(float deltaX, float deltaZ)
         {
-            return (float) Math.Round(Math.Sqrt((double) deltaX * (double) deltaX + (double) deltaZ * (double) deltaZ), 2);
+            return (float)Math.Round(Math.Sqrt((double)deltaX * (double)deltaX + (double)deltaZ * (double)deltaZ), 2);
         }
 
         private static void InitFace(Face face)
@@ -254,8 +255,8 @@ namespace ETEditor
             face.centerZ /= vertCount;
             if (face.normalB != 0)
             {
-                face.normalX = (float) Math.Round(face.normalA / face.normalB, 6);
-                face.normalZ = (float) Math.Round(face.normalC / face.normalB, 6);
+                face.normalX = (float)Math.Round(face.normalA / face.normalB, 6);
+                face.normalZ = (float)Math.Round(face.normalC / face.normalB, 6);
             }
 
             for (int i = 0, n = vertCount - 1; i <= n; i++)
@@ -326,8 +327,8 @@ namespace ETEditor
             var hilbertZ = 65535f / (maxZ - minZ);
             foreach (var face in faceList)
             {
-                var X = (uint) Math.Round((face.centerX - minX) * hilbertX);
-                var Z = (uint) Math.Round((face.centerZ - minZ) * hilbertZ);
+                var X = (uint)Math.Round((face.centerX - minX) * hilbertX);
+                var Z = (uint)Math.Round((face.centerZ - minZ) * hilbertZ);
                 var a = X ^ Z;
                 var b = 0xFFFF ^ a;
                 var c = 0xFFFF ^ (X | Z);
@@ -514,7 +515,7 @@ namespace ETEditor
                 sw.Write("mtllib ./" + filename + ".mtl\n");
                 string strMes = MeshToString(mf, materialList);
                 sw.Write(strMes);
-                EditorUtility.DisplayProgressBar("Exporting objects...", mf.name, count++ / (float) meshes.Count);
+                EditorUtility.DisplayProgressBar("Exporting objects...", mf.name, count++ / (float)meshes.Count);
             }
 
             sw.Flush();
@@ -727,6 +728,7 @@ namespace ETEditor
                 {
                     System.IO.Directory.CreateDirectory(outputServerFolder);
                 }
+
                 foreach (string file in files)
                 {
                     string name = System.IO.Path.GetFileName(file);

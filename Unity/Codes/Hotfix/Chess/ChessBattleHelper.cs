@@ -15,9 +15,9 @@
             Game.EventSystem.Publish(new UIEventType.RefreshShop() { championIds = g2CRefreshShop.championIds });
         }
 
-        public static async ETTask TryBuyChampion(int index)
+        public static async ETTask TryBuyChampion(Scene zoneScene, int index)
         {
-            Session session = Game.Scene.GetComponent<SessionComponent>().Session;
+            Session session = zoneScene.GetComponent<SessionComponent>().Session;
             C2G_BuyChampion request = new C2G_BuyChampion();
             request.slopIndex = index;
 
@@ -29,7 +29,7 @@
             }
 
             int responseCpId = response.cpId;
-            Game.EventSystem.Publish(new EventType.GenChampion() { cpId = responseCpId });
+            await Game.EventSystem.PublishAsync(new EventType.GenChampion() { cpId = responseCpId });
         }
     }
 }

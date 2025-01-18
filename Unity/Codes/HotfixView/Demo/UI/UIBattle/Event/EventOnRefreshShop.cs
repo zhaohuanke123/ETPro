@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class OnEventRefreshShop: AEvent<UIEventType.RefreshShop>
+    public class EventOnRefreshShop: AEvent<UIEventType.RefreshShop>
     {
         protected override void Run(UIEventType.RefreshShop args)
         {

@@ -32,5 +32,7 @@ namespace ET
         public const int ERR_PlayerNotLoggedIn = 200014;
         public const int ERR_NotInMap = 200015;
         public const int ERR_RefreshShopFailed = 200016;
+        public const int ArgumentNotRight = 200017;
+        public const int GoldNotEnough = 200018;
     }
 }

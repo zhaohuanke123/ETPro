@@ -357,7 +357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   championShop: {fileID: 27158426}
   map: {fileID: 27158421}
-  uIController: {fileID: 0}
   gamePlayController: {fileID: 27158423}
   activeBonusList: []
   championDamage: 2
@@ -10249,7 +10248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1702208223
 MonoBehaviour:
   m_ObjectHideFlags: 0

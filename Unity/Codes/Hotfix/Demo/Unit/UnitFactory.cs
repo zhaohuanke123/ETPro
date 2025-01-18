@@ -23,7 +23,9 @@ namespace ET
                     for (int i = 0; i < unitInfo.Ks.Count; ++i)
                     {
                         if (unitInfo.Ks[i] > NumericType.Max) //不需要同步最终值
+                        {
                             numericComponent.Set(unitInfo.Ks[i], unitInfo.Vs[i], true);
+                        }
                     }
 
                     unit.AddComponent<MoveComponent>();

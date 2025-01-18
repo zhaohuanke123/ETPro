@@ -6,7 +6,12 @@
         {
             EventType.ChangePosition args = changeRotation as EventType.ChangePosition;
             AOIUnitComponent aoiUnitComponent = args?.Unit?.GetComponent<AOIUnitComponent>();
-            if (aoiUnitComponent == null || aoiUnitComponent.IsDisposed) return;
+
+            if (aoiUnitComponent == null || aoiUnitComponent.IsDisposed)
+            {
+                return;
+            }
+
             aoiUnitComponent.Turn(args.Unit.Rotation);
         }
     }

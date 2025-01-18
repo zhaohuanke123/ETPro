@@ -58,9 +58,16 @@ namespace ET
 
         public static void SetShopChampionList(this UIBattle self, List<int> championIds)
         {
-            for (int i = 0; i < self.cContainers.Length; i++)
+            if (championIds != null)
             {
-                self.cContainers[i].SetChampion(championIds[i]);
+                for (int i = 0; i < self.cContainers.Length; i++)
+                {
+                    self.cContainers[i].SetChampion(championIds[i]);
+                }
+            }
+            else
+            {
+                Log.Info("SetShopChampionList :: championIds is null");
             }
         }
 
