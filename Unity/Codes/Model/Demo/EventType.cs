@@ -143,7 +143,9 @@ namespace ET
 
         public struct GenChampion
         {
-            public int cpId;
+            public int cPId;
+            public int index;
+            public Scene zoneScene;
         }
     }
 }

@@ -2,45 +2,36 @@
 
 public class InputController: MonoBehaviour
 {
-    public GamePlayController gamePlayController;
-
-    public Map map;
-
-    public LayerMask triggerLayer;
-
-    private Vector3 rayCastStartPosition;
-
     private void Start()
     {
+        this.mainCamera = Camera.main;
         rayCastStartPosition = new Vector3(0, 20, 0);
     }
-
-    private Vector3 mousePosition;
-
-    [HideInInspector]
-    public TriggerInfo triggerInfo = null;
 
     private void Update()
     {
         triggerInfo = null;
-        map.resetIndicators();
+        Map.Instance.resetIndicators();
 
         RaycastHit hit;
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = this.mainCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, 100f, triggerLayer, QueryTriggerInteraction.Collide))
         {
             triggerInfo = hit.collider.gameObject.GetComponent<TriggerInfo>();
+            // Debug.Log($"this.triggerInfo : {this.triggerInfo}");
 
             if (triggerInfo != null)
             {
-                GameObject indicator = map.GetIndicatorFromTriggerInfo(triggerInfo);
+                GameObject indicator = Map.Instance.GetIndicatorFromTriggerInfo(triggerInfo);
 
-                indicator.GetComponent<MeshRenderer>().material.color = map.indicatorActiveColor;
+                indicator.GetComponent<MeshRenderer>().material.color = Map.Instance.indicatorActiveColor;
             }
             else
-                map.resetIndicators();
+            {
+                Map.Instance.resetIndicators();
+            }
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -55,4 +46,17 @@ public class InputController: MonoBehaviour
 
         mousePosition = Input.mousePosition;
     }
+
+    public GamePlayController gamePlayController;
+
+    public LayerMask triggerLayer;
+
+    private Vector3 rayCastStartPosition;
+
+    private Vector3 mousePosition;
+
+    [HideInInspector]
+    public TriggerInfo triggerInfo = null;
+
+    private Camera mainCamera;
 }

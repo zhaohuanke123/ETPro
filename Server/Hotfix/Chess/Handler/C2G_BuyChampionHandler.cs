@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [FriendClassAttribute(typeof (ET.ChampionInfo))]
     public class C2G_BuyChampionHandler: AMRpcHandler<C2G_BuyChampion, G2C_BuyChampion>
     {
         protected override async ETTask Run(Session session, C2G_BuyChampion request, G2C_BuyChampion response, Action reply)
@@ -10,9 +11,9 @@ namespace ET
             Player player = session.GetComponent<SessionPlayerComponent>().GetMyPlayer();
             GamePlayComponent gamePlayComponent = session.GetComponent<GamePlayComponent>();
             ShopComponent shopComponent = gamePlayComponent.GetComponent<ShopComponent>();
-            // 查询champion，是否够金币
+            ChampionArrayComponent championArrayComponent = gamePlayComponent.GetComponent<ChampionArrayComponent>();
 
-            int id = shopComponent.GetIdByIndex(player, request.slopIndex);
+            int id = shopComponent.GetIdByIndex(player, request.SlopIndex);
             if (id == -1)
             {
                 response.Error = ErrorCode.ArgumentNotRight;
@@ -21,14 +22,31 @@ namespace ET
             }
 
             ChampionConfig config = ChampionConfigCategory.Instance.Get(id);
-            if (!shopComponent.TrySubPlayerGold(player, config.cost))
+
+            //  钱够不 
+            if (!shopComponent.IsEnoughGold(player.Id, config.cost))
             {
                 response.Error = ErrorCode.GoldNotEnough;
                 reply();
                 return;
             }
 
-            response.cpId = id;
+            // 加角色
+            ChampionInfo championInfo = championArrayComponent.AddChild<ChampionInfo>();
+            championInfo.configId = id;
+            if (!championArrayComponent.TryAdd(player, championInfo))
+            {
+                response.Error = ErrorCode.ChampionArrayFull;
+                championInfo.Dispose();
+                reply();
+                return;
+            }
+
+            // 扣钱
+            shopComponent.SubPlayerGold(player, config.cost);
+
+            response.CPId = id;
+            response.InventoryIndex = championInfo.gridPositionX;
             reply();
             await ETTask.CompletedTask;
         }

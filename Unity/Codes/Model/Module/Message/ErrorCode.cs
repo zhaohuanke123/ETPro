@@ -34,5 +34,6 @@ namespace ET
         public const int ERR_RefreshShopFailed = 200016;
         public const int ArgumentNotRight = 200017;
         public const int GoldNotEnough = 200018;
+        public const int ChampionArrayFull = 200019;
     }
 }

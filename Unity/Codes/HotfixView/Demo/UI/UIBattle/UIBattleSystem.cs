@@ -45,10 +45,11 @@ namespace ET
     {
         public static async ETTask OnReturnBtnClick(this UIBattle self)
         {
-            await SceneManagerComponent.Instance.SwitchScene(SceneNames.Login);
+            await SceneChangeHelper.SceneChangeToLogin(self.ZoneScene());
+            // await SceneManagerComponent.Instance.SwitchScene(SceneNames.Login);
             await UIManagerComponent.Instance.DestroyWindow<UIBattle>();
-            await UIManagerComponent.Instance.OpenWindow<UILobbyView>(UILobbyView.PrefabPath);
-            await UIManagerComponent.Instance.CloseWindow<UILoadingView>();
+            // await UIManagerComponent.Instance.OpenWindow<UILobbyView>(UILobbyView.PrefabPath);
+            // await UIManagerComponent.Instance.CloseWindow<UILoadingView>();
         }
 
         public static void SetGold(this UIBattle self, int gold)

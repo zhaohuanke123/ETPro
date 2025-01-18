@@ -1024,7 +1024,7 @@ namespace ET
 	{
 	}
 
-// ResponseType G2C_BuyChampion
+	[ResponseType(nameof(G2C_BuyChampion))]
 	[Message(OuterOpcode.C2G_BuyChampion)]
 	[ProtoContract]
 	public partial class C2G_BuyChampion: Object, IRequest
@@ -1033,7 +1033,7 @@ namespace ET
 		public int RpcId { get; set; }
 
 		[ProtoMember(1)]
-		public int slopIndex { get; set; }
+		public int SlopIndex { get; set; }
 
 	}
 
@@ -1051,7 +1051,10 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(1)]
-		public int cpId { get; set; }
+		public int CPId { get; set; }
+
+		[ProtoMember(2)]
+		public int InventoryIndex { get; set; }
 
 	}
 

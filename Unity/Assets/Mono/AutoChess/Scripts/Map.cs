@@ -2,26 +2,6 @@
 
 public class Map: MonoBehaviour
 {
-    public static int GRIDTYPE_OWN_INVENTORY = 0;
-    public static int GRIDTYPE_OPONENT_INVENTORY = 1;
-    public static int GRIDTYPE_HEXA_MAP = 2;
-
-    public static int hexMapSizeX = 7;
-    public static int hexMapSizeZ = 8;
-    public static int inventorySize = 9;
-
-    public Plane m_Plane;
-
-    public Transform ownInventoryStartPosition;
-    public Transform oponentInventoryStartPosition;
-    public Transform mapStartPosition;
-
-    public GameObject squareIndicator;
-    public GameObject hexaIndicator;
-
-    public Color indicatorDefaultColor;
-    public Color indicatorActiveColor;
-
     private void Start()
     {
         CreateGridPosition();
@@ -39,7 +19,6 @@ public class Map: MonoBehaviour
     [HideInInspector]
     public Vector3[] oponentInventoryGridPositions;
 
-    [HideInInspector]
     public Vector3[,] mapGridPositions;
 
     private void CreateGridPosition()
@@ -116,11 +95,9 @@ public class Map: MonoBehaviour
 
         for (int i = 0; i < inventorySize; i++)
         {
-            GameObject indicatorGO = Instantiate(squareIndicator);
+            GameObject indicatorGO = Instantiate(squareIndicator, indicatorContainer.transform, true);
 
             indicatorGO.transform.position = ownInventoryGridPositions[i];
-
-            indicatorGO.transform.parent = indicatorContainer.transform;
 
             ownIndicatorArray[i] = indicatorGO;
 
@@ -143,8 +120,6 @@ public class Map: MonoBehaviour
             indicatorGO.transform.parent = indicatorContainer.transform;
 
             oponentIndicatorArray[i] = indicatorGO;
-
-
         }
         */
 
@@ -152,11 +127,9 @@ public class Map: MonoBehaviour
         {
             for (int z = 0; z < hexMapSizeZ / 2; z++)
             {
-                GameObject indicatorGO = Instantiate(hexaIndicator);
+                GameObject indicatorGO = Instantiate(hexaIndicator, indicatorContainer.transform, true);
 
                 indicatorGO.transform.position = mapGridPositions[x, z];
-
-                indicatorGO.transform.parent = indicatorContainer.transform;
 
                 mapIndicatorArray[x, z] = indicatorGO;
 
@@ -270,4 +243,39 @@ public class Map: MonoBehaviour
     {
         indicatorContainer.SetActive(false);
     }
+
+    public static Map Instance
+    {
+        get
+        {
+            if (m_instance == null)
+            {
+                m_instance = FindObjectOfType<Map>();
+            }
+
+            return m_instance;
+        }
+    }
+
+    private static Map m_instance;
+
+    public static int GRIDTYPE_OWN_INVENTORY = 0;
+    public static int GRIDTYPE_OPONENT_INVENTORY = 1;
+    public static int GRIDTYPE_HEXA_MAP = 2;
+
+    public static int hexMapSizeX = 7;
+    public static int hexMapSizeZ = 8;
+    public static int inventorySize = 9;
+
+    public Plane m_Plane;
+
+    public Transform ownInventoryStartPosition;
+    public Transform oponentInventoryStartPosition;
+    public Transform mapStartPosition;
+
+    public GameObject squareIndicator;
+    public GameObject hexaIndicator;
+
+    public Color indicatorDefaultColor;
+    public Color indicatorActiveColor;
 }

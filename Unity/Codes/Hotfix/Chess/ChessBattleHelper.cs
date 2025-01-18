@@ -19,7 +19,7 @@
         {
             Session session = zoneScene.GetComponent<SessionComponent>().Session;
             C2G_BuyChampion request = new C2G_BuyChampion();
-            request.slopIndex = index;
+            request.SlopIndex = index;
 
             G2C_BuyChampion response = await session.Call(request) as G2C_BuyChampion;
 
@@ -28,8 +28,11 @@
                 return;
             }
 
-            int responseCpId = response.cpId;
-            await Game.EventSystem.PublishAsync(new EventType.GenChampion() { cpId = responseCpId });
+            int responseCpId = response.CPId;
+            await Game.EventSystem.PublishAsync(new EventType.GenChampion()
+            {
+                zoneScene = zoneScene, cPId = responseCpId, index = response.InventoryIndex
+            });
         }
     }
 }

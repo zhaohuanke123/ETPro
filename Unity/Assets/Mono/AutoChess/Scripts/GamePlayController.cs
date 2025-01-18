@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public enum GameStage
 {
@@ -10,7 +11,22 @@ public enum GameStage
 
 public class GamePlayController: MonoBehaviour
 {
-    public Map map;
+    public static GamePlayController Instance
+    {
+        get
+        {
+            if (s_instance == null)
+            {
+                s_instance = FindObjectOfType<GamePlayController>();
+            }
+
+            return s_instance;
+        }
+    }
+
+    public static GamePlayController s_instance;
+
+    // public Map map;
     public InputController inputController;
 
     public GameData gameData;
@@ -66,34 +82,34 @@ public class GamePlayController: MonoBehaviour
 
     private void Update()
     {
-        if (currentGameStage == GameStage.Preparation)
-        {
-            timer += Time.deltaTime;
-
-            timerDisplay = (int)(PreparationStageDuration - timer);
-
-            // uIController.UpdateTimerText();
-
-            if (timer > PreparationStageDuration)
-            {
-                timer = 0;
-
-                OnGameStageComplate();
-            }
-        }
-        else if (currentGameStage == GameStage.Combat)
-        {
-            timer += Time.deltaTime;
-
-            timerDisplay = (int)timer;
-
-            if (timer > CombatStageDuration)
-            {
-                timer = 0;
-
-                OnGameStageComplate();
-            }
-        }
+        // if (currentGameStage == GameStage.Preparation)
+        // {
+        //     timer += Time.deltaTime;
+        //
+        //     timerDisplay = (int)(PreparationStageDuration - timer);
+        //
+        //     // uIController.UpdateTimerText();
+        //
+        //     if (timer > PreparationStageDuration)
+        //     {
+        //         timer = 0;
+        //
+        //         this.OnGameStageComplicate();
+        //     }
+        // }
+        // else if (currentGameStage == GameStage.Combat)
+        // {
+        //     timer += Time.deltaTime;
+        //
+        //     timerDisplay = (int)timer;
+        //
+        //     if (timer > CombatStageDuration)
+        //     {
+        //         timer = 0;
+        //
+        //         this.OnGameStageComplicate();
+        //     }
+        // }
     }
 
     public bool BuyChampionFromShop(Champion champion)
@@ -183,33 +199,34 @@ public class GamePlayController: MonoBehaviour
 
     public void StartDrag()
     {
-        if (currentGameStage != GameStage.Preparation)
-            return;
+        // Debug.Log("Start Drag");
+        // if (currentGameStage != GameStage.Preparation)
+        //     return;
 
-        TriggerInfo triggerinfo = inputController.triggerInfo;
-        if (triggerinfo != null)
+        TriggerInfo triggerInfo = inputController.triggerInfo;
+        if (triggerInfo != null)
         {
-            dragStartTrigger = triggerinfo;
+            dragStartTrigger = triggerInfo;
 
-            GameObject championGO = GetChampionFromTriggerInfo(triggerinfo);
+            GameObject championGO = GetChampionFromTriggerInfo(triggerInfo);
 
             if (championGO != null)
             {
-                map.ShowIndicators();
+                Map.Instance.ShowIndicators();
 
                 draggedChampion = championGO;
 
                 //isDragging = true;
 
                 championGO.GetComponent<ChampionController>().IsDragged = true;
-                //Debug.Log("STARTDRAG");
+                // Debug.Log("STARTDRAG");
             }
         }
     }
 
     public void StopDrag()
     {
-        map.HideIndicators();
+        Map.Instance.HideIndicators();
 
         int championsOnField = GetChampionCountOnHexGrid();
 
@@ -255,7 +272,7 @@ public class GamePlayController: MonoBehaviour
                 }
             }
 
-            CalculateBonuses();
+            // CalculateBonuses();
 
             currentChampionCount = GetChampionCountOnHexGrid();
 
@@ -402,7 +419,7 @@ public class GamePlayController: MonoBehaviour
         }
     }
 
-    private void OnGameStageComplate()
+    private void OnGameStageComplicate()
     {
         aIopponent.OnGameStageComplate(currentGameStage);
 
@@ -410,7 +427,7 @@ public class GamePlayController: MonoBehaviour
         {
             currentGameStage = GameStage.Combat;
 
-            map.HideIndicators();
+            Map.Instance.HideIndicators();
 
             // uIController.SetTimerTextActive(false);
 
