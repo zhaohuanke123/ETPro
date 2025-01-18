@@ -2,7 +2,7 @@
 
 public class Map: MonoBehaviour
 {
-    private void Start()
+    public void Start()
     {
         CreateGridPosition();
         CreateIndicators();
@@ -21,7 +21,7 @@ public class Map: MonoBehaviour
 
     public Vector3[,] mapGridPositions;
 
-    private void CreateGridPosition()
+    public void CreateGridPosition()
     {
         ownInventoryGridPositions = new Vector3[inventorySize];
         oponentInventoryGridPositions = new Vector3[inventorySize];
@@ -76,9 +76,9 @@ public class Map: MonoBehaviour
     [HideInInspector]
     public TriggerInfo[,] mapGridTriggerArray;
 
-    private GameObject indicatorContainer;
+    public GameObject indicatorContainer;
 
-    private void CreateIndicators()
+    public void CreateIndicators()
     {
         indicatorContainer = new GameObject();
         indicatorContainer.name = "IndicatorContainer";
@@ -158,7 +158,7 @@ public class Map: MonoBehaviour
         return newPos;
     }
 
-    private GameObject CreateBoxTrigger(int type, int x)
+    public GameObject CreateBoxTrigger(int type, int x)
     {
         GameObject trigger = new GameObject();
 
@@ -177,7 +177,7 @@ public class Map: MonoBehaviour
         return trigger;
     }
 
-    private GameObject CreateSphereTrigger(int type, int x, int z)
+    public GameObject CreateSphereTrigger(int type, int x, int z)
     {
         GameObject trigger = new GameObject();
 
@@ -257,7 +257,7 @@ public class Map: MonoBehaviour
         }
     }
 
-    private static Map m_instance;
+    public static Map m_instance;
 
     public static int GRIDTYPE_OWN_INVENTORY = 0;
     public static int GRIDTYPE_OPONENT_INVENTORY = 1;

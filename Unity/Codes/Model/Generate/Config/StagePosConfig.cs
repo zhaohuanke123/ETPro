@@ -85,6 +85,7 @@ namespace ET
 		/// <summary>位置关键字（不能重复）</summary>
 		[ProtoMember(2)]
 		public string NameKey { get; set; }
+		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
 		/// <summary>位置</summary>
 		[ProtoMember(3)]
 		public float[] Position { get; set; }

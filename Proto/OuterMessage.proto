@@ -499,11 +499,31 @@ message C2G_BuyChampion // IRequest
 	int32 SlopIndex = 1;
 }
 
+enum GridType
+{
+	OwnInventory = 0;
+	ChessMap = 1;
+}
+
+message ChampionInfoPB
+{
+	int32 ConfigId = 1;
+	int32 GridPositionX = 2; 
+	int32 GridPositionY = 3; 
+	GridType Type = 4; 
+	int32 Lv = 5;
+}
+
 message G2C_BuyChampion // IResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;
 	string Message = 92;
-	int32 CPId = 1;
-	int32 InventoryIndex = 2;
+	repeated ChampionInfoPB CPInfos = 1;
+}
+
+message G2C_UpdateBonus // IMessage
+{
+	repeated int32 BonusIdList = 1;
+	repeated int32 CountList = 1;
 }

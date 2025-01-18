@@ -55,7 +55,6 @@
             zoneScene.RemoveComponent<KeyCodeComponent>();
             CurrentScenesComponent currentScenesComponent = zoneScene.GetComponent<CurrentScenesComponent>();
             currentScenesComponent.Scene?.Dispose();
-            currentScenesComponent.RemoveComponent<GamePlayComponent>();
 
             await Game.EventSystem.PublishAsync(new EventType.SceneChangeLoginBegin() { });
 
@@ -75,7 +74,7 @@
             currentScenesComponent.Scene?.Dispose(); // 删除之前的CurrentScene，创建新的
 
             Scene currentScene = SceneFactory.CreateCurrentScene(sceneInstanceId, zoneScene.Zone, sceneName, currentScenesComponent);
-            currentScenesComponent.AddComponent<GamePlayComponent>();
+            GamePlayComponent gamePlayComponent = currentScene.AddComponent<GamePlayComponent>();
 
             await Game.EventSystem.PublishAsync(new EventType.SceneChangeChessMapStart() { ZoneScene = zoneScene, Name = sceneName });
 

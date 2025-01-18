@@ -84,13 +84,13 @@ namespace ET
 		public int Id { get; set; }
 		/// <summary>羁绊触发所需人数</summary>
 		[ProtoMember(2)]
-		public string championCount { get; set; }
+		public int championCount { get; set; }
 		/// <summary>羁绊效果类型</summary>
 		[ProtoMember(3)]
-		public string championBonusType { get; set; }
+		public ChampionBonusType championBonusType { get; set; }
 		/// <summary>羁绊效果目标</summary>
 		[ProtoMember(4)]
-		public string bonusTarget { get; set; }
+		public BonusTarget bonusTarget { get; set; }
 		/// <summary>羁绊效果数值</summary>
 		[ProtoMember(5)]
 		public int bonusValue { get; set; }

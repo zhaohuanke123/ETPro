@@ -32,12 +32,14 @@ namespace ET
             }
 
             // 加角色
-            ChampionInfo championInfo = championArrayComponent.AddChild<ChampionInfo>();
-            championInfo.configId = id;
-            if (!championArrayComponent.TryAdd(player, championInfo))
+            // ChampionInfo championInfo = championArrayComponent.AddChild<ChampionInfo>();
+            // NumericComponent numericComponent = championInfo.AddComponent<NumericComponent>();
+            // numericComponent.Set(NumericType.Lv, 1);
+
+            // numericComponent.Set();
+            if (!championArrayComponent.TryAdd(player, id))
             {
                 response.Error = ErrorCode.ChampionArrayFull;
-                championInfo.Dispose();
                 reply();
                 return;
             }
@@ -45,8 +47,10 @@ namespace ET
             // 扣钱
             shopComponent.SubPlayerGold(player, config.cost);
 
-            response.CPId = id;
-            response.InventoryIndex = championInfo.gridPositionX;
+            response.CPInfos = championArrayComponent.GetAllInventoryChampionInfo(player);
+
+            // response.CPId = id;
+            // response.InventoryIndex = championInfo.gridPositionX;
             reply();
             await ETTask.CompletedTask;
         }

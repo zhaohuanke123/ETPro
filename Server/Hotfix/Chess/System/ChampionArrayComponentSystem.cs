@@ -54,22 +54,133 @@ namespace ET
             return emptyIndex;
         }
 
-        public static bool TryAdd(this ChampionArrayComponent self, Player player, ChampionInfo championInfo)
+        public static bool TryAdd(this ChampionArrayComponent self, Player player, int configId)
         {
             if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
             {
                 list = self.InitPlayerArray(player.Id);
             }
 
+            // 先看看能不能合并升级
+            if (self.TryUpgrade(list, configId))
+            {
+                return true;
+            }
+
+            // 找到空位
             int index = self.FindEmptyIndex(player);
             if (index == -1)
             {
                 return false;
             }
 
+            ChampionInfo championInfo = self.AddChild<ChampionInfo>();
+            championInfo.configId = configId;
+            NumericComponent numericComponent = championInfo.AddComponent<NumericComponent>();
+            numericComponent.Set(NumericType.Lv, 1);
+
             championInfo.gridType = GridType.OwnInventory;
             championInfo.gridPositionX = index;
             list[index] = championInfo;
+            return true;
+        }
+
+        public static bool TryUpgrade(this ChampionArrayComponent self, List<ChampionInfo> list, int configId)
+        {
+            var championList_lvl_1 = new List<ChampionInfo>();
+            var championList_lvl_2 = new List<ChampionInfo>();
+
+            foreach (ChampionInfo info in list)
+            {
+                if (info != null)
+                {
+                    if (info.configId == configId)
+                    {
+                        int lv = info.GetComponent<NumericComponent>().GetAsInt(NumericType.Lv);
+                        if (lv == 1)
+                        {
+                            championList_lvl_1.Add(info);
+                        }
+                        else if (lv == 2)
+                        {
+                            championList_lvl_2.Add(info);
+                        }
+                    }
+                }
+            }
+
+            // 3个1 级合成 1个2级
+            if (championList_lvl_1.Count == 2)
+            {
+                NumericComponent numericComponent = championList_lvl_1[0].GetComponent<NumericComponent>();
+                numericComponent.Set(NumericType.Lv, 2);
+
+                int index = championList_lvl_1[1].gridPositionX;
+                ChampionInfo info = list[index];
+                info.Dispose();
+                list[index] = null;
+
+                // 3个2级合成1个3级
+                if (championList_lvl_2.Count == 2)
+                {
+                    numericComponent.Set(NumericType.Lv, 3);
+
+                    index = championList_lvl_2[0].gridPositionX;
+                    info = list[index];
+                    info.Dispose();
+                    list[index] = null;
+
+                    index = championList_lvl_2[1].gridPositionX;
+                    info = list[index];
+                    info.Dispose();
+                    list[index] = null;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public static List<ChampionInfoPB> GetAllInventoryChampionInfo(this ChampionArrayComponent self, Player player)
+        {
+            var res = new List<ChampionInfoPB>();
+            if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
+            {
+                list = self.InitPlayerArray(player.Id);
+                return res;
+            }
+
+            foreach (ChampionInfo info in list)
+            {
+                if (info != null)
+                {
+                    ChampionInfoPB championInfoPb = new ChampionInfoPB();
+                    championInfoPb.Lv = info.GetComponent<NumericComponent>().GetAsInt(NumericType.Lv);
+                    championInfoPb.ConfigId = info.configId;
+                    championInfoPb.GridPositionX = info.gridPositionX;
+                    championInfoPb.Type = info.gridType;
+                    res.Add(championInfoPb);
+                }
+            }
+
+            return res;
+        }
+
+        public static bool Remove(this ChampionArrayComponent self, Player player, int index)
+        {
+            if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
+            {
+                return false;
+            }
+
+            ChampionInfo championInfo = list[index];
+            if (championInfo == null)
+            {
+                return false;
+            }
+
+            list[index] = null;
             return true;
         }
     }

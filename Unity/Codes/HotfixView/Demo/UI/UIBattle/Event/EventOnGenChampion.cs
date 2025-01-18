@@ -1,26 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ET
 {
-    public class EventOnGenChampion: AEventAsync<EventType.GenChampion>
+    public class EventOnGenChampion: AEventAsync<EventType.GenChampions>
     {
-        protected override async ETTask Run(EventType.GenChampion args)
+        protected override async ETTask Run(EventType.GenChampions args)
         {
-            ChampionConfig config = ChampionConfigCategory.Instance.Get(args.cPId);
-            GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(config.prefab);
-            Scene currentScene = args.zoneScene.CurrentScene();
-            GameObjectComponent showView = currentScene.AddChild<GameObjectComponent, GameObject, Action>(go,
-                () => { GameObjectPoolComponent.Instance.RecycleGameObject(go); });
+            List<ChampionInfoPB> list = args.CPInfos;
 
-            ChampionController controller = go.GetComponent<ChampionController>();
+            ChessBattleViewComponent.Instance.Clear();
+            foreach (ChampionInfoPB infoPb in list)
+            {
+                ChampionConfig config = ChampionConfigCategory.Instance.Get(infoPb.ConfigId);
+                GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(config.prefab);
+                Scene currentScene = args.zoneScene.CurrentScene();
+                int index = infoPb.GridPositionX;
+                GameObjectComponent showView = currentScene.AddChild<GameObjectComponent, GameObject, Action>(go,
+                    () =>
+                    {
+                        GameObjectPoolComponent.Instance.RecycleGameObject(go);
+                        GamePlayController.Instance.ownChampionInventoryArray[infoPb.GridPositionX] = null;
+                    });
+                ChessBattleViewComponent.Instance.Replace(showView, index);
 
-            controller.Init(null, ChampionController.TEAMID_PLAYER);
-            controller.gridType = Map.GRIDTYPE_OWN_INVENTORY;
-            controller.gridPositionX = args.index;
-            controller.SetWorldPosition();
-            controller.SetWorldRotation();
-            GamePlayController.Instance.ownChampionInventoryArray[args.index] = go;
+                ChampionControllerComponent championControllerComponent =
+                        showView.AddComponent<ChampionControllerComponent, GameObjectComponent>(showView);
+                championControllerComponent.Init(index);
+                championControllerComponent.SetLevel(infoPb.Lv);
+            }
 
             await ETTask.CompletedTask;
         }

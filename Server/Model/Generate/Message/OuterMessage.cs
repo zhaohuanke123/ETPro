@@ -1037,6 +1037,27 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.ChampionInfoPB)]
+	[ProtoContract]
+	public partial class ChampionInfoPB: Object
+	{
+		[ProtoMember(1)]
+		public int ConfigId { get; set; }
+
+		[ProtoMember(2)]
+		public int GridPositionX { get; set; }
+
+		[ProtoMember(3)]
+		public int GridPositionY { get; set; }
+
+		[ProtoMember(4)]
+		public GridType Type { get; set; }
+
+		[ProtoMember(5)]
+		public int Lv { get; set; }
+
+	}
+
 	[Message(OuterOpcode.G2C_BuyChampion)]
 	[ProtoContract]
 	public partial class G2C_BuyChampion: Object, IResponse
@@ -1051,10 +1072,19 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(1)]
-		public int CPId { get; set; }
+		public List<ChampionInfoPB> CPInfos = new List<ChampionInfoPB>();
 
-		[ProtoMember(2)]
-		public int InventoryIndex { get; set; }
+	}
+
+	[Message(OuterOpcode.G2C_UpdateBonus)]
+	[ProtoContract]
+	public partial class G2C_UpdateBonus: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public List<int> BonusIdList = new List<int>();
+
+		[ProtoMember(1)]
+		public List<int> CountList = new List<int>();
 
 	}
 

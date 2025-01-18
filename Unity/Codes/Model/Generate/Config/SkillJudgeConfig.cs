@@ -94,9 +94,11 @@ namespace ET
 		/// <summary>碰撞体形状(0.立即判断;1.矩形;2.圆形；3.扇形)</summary>
 		[ProtoMember(5)]
 		public int ColliderShape { get; set; }
+		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
 		/// <summary>碰撞体形状参数(m)</summary>
 		[ProtoMember(6)]
 		public float[] ColliderPara { get; set; }
+		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
 		/// <summary>速度（m/s）</summary>
 		[ProtoMember(7)]
 		public float Speed { get; set; }

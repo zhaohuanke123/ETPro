@@ -22,8 +22,8 @@ public class ChampionController: MonoBehaviour
     [HideInInspector]
     public int teamID = 0;
 
-    [HideInInspector]
-    public Champion champion;
+    // [HideInInspector]
+    // public Champion champion;
 
     [HideInInspector]
     public float maxHealth = 0;
@@ -65,7 +65,7 @@ public class ChampionController: MonoBehaviour
 
     public void Init(Champion _champion, int _teamID)
     {
-        champion = _champion;
+        // champion = _champion;
         teamID = _teamID;
 
         map = GameObject.Find("Scripts").GetComponent<Map>();
@@ -196,8 +196,8 @@ public class ChampionController: MonoBehaviour
     {
         this.gameObject.SetActive(true);
 
-        maxHealth = champion.health * lvl;
-        currentHealth = champion.health * lvl;
+        // maxHealth = champion.health * lvl;
+        // currentHealth = champion.health * lvl;
         isDead = false;
         isInCombat = false;
         target = null;
@@ -268,35 +268,35 @@ public class ChampionController: MonoBehaviour
 
     public void UpgradeLevel()
     {
-        lvl++;
-
-        float newSize = 1;
-        maxHealth = champion.health;
-        currentHealth = champion.health;
-
-        if (lvl == 2)
-        {
-            newSize = 1.5f;
-            maxHealth = champion.health * 2;
-            currentHealth = champion.health * 2;
-            currentDamage = champion.damage * 2;
-        }
-
-        if (lvl == 3)
-        {
-            newSize = 2f;
-            maxHealth = champion.health * 3;
-            currentHealth = champion.health * 3;
-            currentDamage = champion.damage * 3;
-        }
-
-        this.transform.localScale = new Vector3(newSize, newSize, newSize);
-
-        GameObject levelupEffect = Instantiate(levelupEffectPrefab);
-
-        levelupEffect.transform.position = this.transform.position;
-
-        Destroy(levelupEffect, 1.0f);
+        // lvl++;
+        //
+        // float newSize = 1;
+        // maxHealth = champion.health;
+        // currentHealth = champion.health;
+        //
+        // if (lvl == 2)
+        // {
+        //     newSize = 1.5f;
+        //     // maxHealth = champion.health * 2;
+        //     // currentHealth = champion.health * 2;
+        //     // currentDamage = champion.damage * 2;
+        // }
+        //
+        // if (lvl == 3)
+        // {
+        //     newSize = 2f;
+        //     // maxHealth = champion.health * 3;
+        //     // currentHealth = champion.health * 3;
+        //     // currentDamage = champion.damage * 3;
+        // }
+        //
+        // this.transform.localScale = new Vector3(newSize, newSize, newSize);
+        //
+        // GameObject levelupEffect = Instantiate(levelupEffectPrefab);
+        //
+        // levelupEffect.transform.position = this.transform.position;
+        //
+        // Destroy(levelupEffect, 1.0f);
     }
 
     private GameObject target;
@@ -400,36 +400,36 @@ public class ChampionController: MonoBehaviour
     {
         isAttacking = false;
 
-        if (target != null)
-        {
-            ChampionController targetChamoion = target.GetComponent<ChampionController>();
-
-            List<ChampionBonus> activeBonuses = null;
-
-            if (teamID == TEAMID_PLAYER)
-                activeBonuses = gamePlayController.activeBonusList;
-            else if (teamID == TEAMID_AI)
-                activeBonuses = aIopponent.activeBonusList;
-
-            float d = 0;
-            foreach (ChampionBonus b in activeBonuses)
-            {
-                d += b.ApplyOnAttack(this, targetChamoion);
-            }
-
-            bool isTargetDead = targetChamoion.OnGotHit(d + currentDamage);
-
-            if (isTargetDead)
-                TryAttackNewTarget();
-
-            if (champion.attackProjectile != null && projectileStart != null)
-            {
-                GameObject projectile = Instantiate(champion.attackProjectile);
-                projectile.transform.position = projectileStart.transform.position;
-
-                projectile.GetComponent<Projectile>().Init(target);
-            }
-        }
+        // if (target != null)
+        // {
+        //     ChampionController targetChamoion = target.GetComponent<ChampionController>();
+        //
+        //     List<ChampionBonus> activeBonuses = null;
+        //
+        //     if (teamID == TEAMID_PLAYER)
+        //         activeBonuses = gamePlayController.activeBonusList;
+        //     else if (teamID == TEAMID_AI)
+        //         activeBonuses = aIopponent.activeBonusList;
+        //
+        //     float d = 0;
+        //     foreach (ChampionBonus b in activeBonuses)
+        //     {
+        //         d += b.ApplyOnAttack(this, targetChamoion);
+        //     }
+        //
+        //     bool isTargetDead = targetChamoion.OnGotHit(d + currentDamage);
+        //
+        //     if (isTargetDead)
+        //         TryAttackNewTarget();
+        //
+        //     if (champion.attackProjectile != null && projectileStart != null)
+        //     {
+        //         GameObject projectile = Instantiate(champion.attackProjectile);
+        //         projectile.transform.position = projectileStart.transform.position;
+        //
+        //         projectile.GetComponent<Projectile>().Init(target);
+        //     }
+        // }
     }
 
     public bool OnGotHit(float damage)

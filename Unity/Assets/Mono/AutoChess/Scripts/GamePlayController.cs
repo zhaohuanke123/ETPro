@@ -45,7 +45,7 @@ public class GamePlayController: MonoBehaviour
     public GameObject[,] gridChampionsArray;
 
     public GameStage currentGameStage;
-    private float timer = 0;
+    public float timer = 0;
 
     public int PreparationStageDuration = 16;
 
@@ -71,7 +71,7 @@ public class GamePlayController: MonoBehaviour
     public Dictionary<ChampionType, int> championTypeCount;
     public List<ChampionBonus> activeBonusList;
 
-    private void Start()
+    public void Start()
     {
         currentGameStage = GameStage.Preparation;
 
@@ -80,7 +80,7 @@ public class GamePlayController: MonoBehaviour
         gridChampionsArray = new GameObject[Map.hexMapSizeX, Map.hexMapSizeZ / 2];
     }
 
-    private void Update()
+    public void Update()
     {
         // if (currentGameStage == GameStage.Preparation)
         // {
@@ -127,79 +127,78 @@ public class GamePlayController: MonoBehaviour
         return true;
     }
 
-    private void TryUpgradeChampion(Champion champion)
+    public void TryUpgradeChampion(Champion champion)
     {
-        List<ChampionController> championList_lvl_1 = new List<ChampionController>();
-        List<ChampionController> championList_lvl_2 = new List<ChampionController>();
-
-        for (int i = 0; i < ownChampionInventoryArray.Length; i++)
-        {
-            if (ownChampionInventoryArray[i] != null)
-            {
-                ChampionController championController = ownChampionInventoryArray[i].GetComponent<ChampionController>();
-
-                if (championController.champion == champion)
-                {
-                    if (championController.lvl == 1)
-                        championList_lvl_1.Add(championController);
-                    else if (championController.lvl == 2)
-                        championList_lvl_2.Add(championController);
-                }
-            }
-        }
-
-        for (int x = 0; x < Map.hexMapSizeX; x++)
-        {
-            for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
-            {
-                if (gridChampionsArray[x, z] != null)
-                {
-                    ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
-
-                    if (championController.champion == champion)
-                    {
-                        if (championController.lvl == 1)
-                            championList_lvl_1.Add(championController);
-                        else if (championController.lvl == 2)
-                            championList_lvl_2.Add(championController);
-                    }
-                }
-            }
-        }
-
-        if (championList_lvl_1.Count > 2)
-        {
-            championList_lvl_1[2].UpgradeLevel();
-
-            RemoveChampionFromArray(championList_lvl_1[0].gridType, championList_lvl_1[0].gridPositionX, championList_lvl_1[0].gridPositionZ);
-            RemoveChampionFromArray(championList_lvl_1[1].gridType, championList_lvl_1[1].gridPositionX, championList_lvl_1[1].gridPositionZ);
-
-            Destroy(championList_lvl_1[0].gameObject);
-            Destroy(championList_lvl_1[1].gameObject);
-
-            if (championList_lvl_2.Count > 1)
-            {
-                championList_lvl_1[2].UpgradeLevel();
-
-                RemoveChampionFromArray(championList_lvl_2[0].gridType, championList_lvl_2[0].gridPositionX, championList_lvl_2[0].gridPositionZ);
-                RemoveChampionFromArray(championList_lvl_2[1].gridType, championList_lvl_2[1].gridPositionX, championList_lvl_2[1].gridPositionZ);
-
-                Destroy(championList_lvl_2[0].gameObject);
-                Destroy(championList_lvl_2[1].gameObject);
-            }
-        }
-
-        currentChampionCount = GetChampionCountOnHexGrid();
+        // List<ChampionController> championList_lvl_1 = new List<ChampionController>();
+        // List<ChampionController> championList_lvl_2 = new List<ChampionController>();
+        //
+        // for (int i = 0; i < ownChampionInventoryArray.Length; i++)
+        // {
+        //     if (ownChampionInventoryArray[i] != null)
+        //     {
+        //         ChampionController championController = ownChampionInventoryArray[i].GetComponent<ChampionController>();
+        //
+        //         if (championController.champion == champion)
+        //         {
+        //             if (championController.lvl == 1)
+        //                 championList_lvl_1.Add(championController);
+        //             else if (championController.lvl == 2)
+        //                 championList_lvl_2.Add(championController);
+        //         }
+        //     }
+        // }
+        //
+        // for (int x = 0; x < Map.hexMapSizeX; x++)
+        // {
+        //     for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
+        //     {
+        //         if (gridChampionsArray[x, z] != null)
+        //         {
+        //             ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
+        //
+        //             if (championController.champion == champion)
+        //             {
+        //                 if (championController.lvl == 1)
+        //                     championList_lvl_1.Add(championController);
+        //                 else if (championController.lvl == 2)
+        //                     championList_lvl_2.Add(championController);
+        //             }
+        //         }
+        //     }
+        // }
+        //
+        // if (championList_lvl_1.Count > 2)
+        // {
+        //     championList_lvl_1[2].UpgradeLevel();
+        //
+        //     RemoveChampionFromArray(championList_lvl_1[0].gridType, championList_lvl_1[0].gridPositionX, championList_lvl_1[0].gridPositionZ);
+        //     RemoveChampionFromArray(championList_lvl_1[1].gridType, championList_lvl_1[1].gridPositionX, championList_lvl_1[1].gridPositionZ);
+        //
+        //     Destroy(championList_lvl_1[0].gameObject);
+        //     Destroy(championList_lvl_1[1].gameObject);
+        //
+        //     if (championList_lvl_2.Count > 1)
+        //     {
+        //         championList_lvl_1[2].UpgradeLevel();
+        //
+        //         RemoveChampionFromArray(championList_lvl_2[0].gridType, championList_lvl_2[0].gridPositionX, championList_lvl_2[0].gridPositionZ);
+        //         RemoveChampionFromArray(championList_lvl_2[1].gridType, championList_lvl_2[1].gridPositionX, championList_lvl_2[1].gridPositionZ);
+        //
+        //         Destroy(championList_lvl_2[0].gameObject);
+        //         Destroy(championList_lvl_2[1].gameObject);
+        //     }
+        // }
+        //
+        // currentChampionCount = GetChampionCountOnHexGrid();
 
         // uIController.UpdateUI();
     }
 
-    private GameObject draggedChampion = null;
-    private TriggerInfo dragStartTrigger = null;
+    public GameObject draggedChampion = null;
+    public TriggerInfo dragStartTrigger = null;
 
     public void StartDrag()
     {
-        // Debug.Log("Start Drag");
         // if (currentGameStage != GameStage.Preparation)
         //     return;
 
@@ -219,7 +218,6 @@ public class GamePlayController: MonoBehaviour
                 //isDragging = true;
 
                 championGO.GetComponent<ChampionController>().IsDragged = true;
-                // Debug.Log("STARTDRAG");
             }
         }
     }
@@ -272,7 +270,7 @@ public class GamePlayController: MonoBehaviour
                 }
             }
 
-            // CalculateBonuses();
+            CalculateBonuses();
 
             currentChampionCount = GetChampionCountOnHexGrid();
 
@@ -282,7 +280,7 @@ public class GamePlayController: MonoBehaviour
         }
     }
 
-    private GameObject GetChampionFromTriggerInfo(TriggerInfo triggerinfo)
+    public GameObject GetChampionFromTriggerInfo(TriggerInfo triggerinfo)
     {
         GameObject championGO = null;
 
@@ -302,7 +300,7 @@ public class GamePlayController: MonoBehaviour
         return championGO;
     }
 
-    private void StoreChampionInArray(int gridType, int gridX, int gridZ, GameObject champion)
+    public void StoreChampionInArray(int gridType, int gridX, int gridZ, GameObject champion)
     {
         ChampionController championController = champion.GetComponent<ChampionController>();
         championController.SetGridPosition(gridType, gridX, gridZ);
@@ -317,7 +315,7 @@ public class GamePlayController: MonoBehaviour
         }
     }
 
-    private void RemoveChampionFromArray(int type, int gridX, int gridZ)
+    public void RemoveChampionFromArray(int type, int gridX, int gridZ)
     {
         if (type == Map.GRIDTYPE_OWN_INVENTORY)
         {
@@ -329,14 +327,17 @@ public class GamePlayController: MonoBehaviour
         }
     }
 
-    private int GetChampionCountOnHexGrid()
+    /// <summary>
+    /// 计算在地图有多少个角色
+    /// </summary>
+    /// <returns></returns>
+    public int GetChampionCountOnHexGrid()
     {
         int count = 0;
         for (int x = 0; x < Map.hexMapSizeX; x++)
         {
             for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
             {
-                //there is a champion
                 if (gridChampionsArray[x, z] != null)
                 {
                     count++;
@@ -347,63 +348,63 @@ public class GamePlayController: MonoBehaviour
         return count;
     }
 
-    private void CalculateBonuses()
+    public void CalculateBonuses()
     {
-        championTypeCount = new Dictionary<ChampionType, int>();
-
-        for (int x = 0; x < Map.hexMapSizeX; x++)
-        {
-            for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
-            {
-                if (gridChampionsArray[x, z] != null)
-                {
-                    Champion c = gridChampionsArray[x, z].GetComponent<ChampionController>().champion;
-
-                    if (championTypeCount.ContainsKey(c.type1))
-                    {
-                        int cCount = 0;
-                        championTypeCount.TryGetValue(c.type1, out cCount);
-
-                        cCount++;
-
-                        championTypeCount[c.type1] = cCount;
-                    }
-                    else
-                    {
-                        championTypeCount.Add(c.type1, 1);
-                    }
-
-                    if (championTypeCount.ContainsKey(c.type2))
-                    {
-                        int cCount = 0;
-                        championTypeCount.TryGetValue(c.type2, out cCount);
-
-                        cCount++;
-
-                        championTypeCount[c.type2] = cCount;
-                    }
-                    else
-                    {
-                        championTypeCount.Add(c.type2, 1);
-                    }
-                }
-            }
-        }
-
-        activeBonusList = new List<ChampionBonus>();
-
-        foreach (KeyValuePair<ChampionType, int> m in championTypeCount)
-        {
-            ChampionBonus championBonus = m.Key.championBonus;
-
-            if (m.Value >= championBonus.championCount)
-            {
-                activeBonusList.Add(championBonus);
-            }
-        }
+        // championTypeCount = new Dictionary<ChampionType, int>();
+        //
+        // for (int x = 0; x < Map.hexMapSizeX; x++)
+        // {
+        //     for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
+        //     {
+        //         if (gridChampionsArray[x, z] != null)
+        //         {
+        //             Champion c = gridChampionsArray[x, z].GetComponent<ChampionController>().champion;
+        //
+        //             if (championTypeCount.ContainsKey(c.type1))
+        //             {
+        //                 int cCount = 0;
+        //                 championTypeCount.TryGetValue(c.type1, out cCount);
+        //
+        //                 cCount++;
+        //
+        //                 championTypeCount[c.type1] = cCount;
+        //             }
+        //             else
+        //             {
+        //                 championTypeCount.Add(c.type1, 1);
+        //             }
+        //
+        //             if (championTypeCount.ContainsKey(c.type2))
+        //             {
+        //                 int cCount = 0;
+        //                 championTypeCount.TryGetValue(c.type2, out cCount);
+        //
+        //                 cCount++;
+        //
+        //                 championTypeCount[c.type2] = cCount;
+        //             }
+        //             else
+        //             {
+        //                 championTypeCount.Add(c.type2, 1);
+        //             }
+        //         }
+        //     }
+        // }
+        //
+        // activeBonusList = new List<ChampionBonus>();
+        //
+        // foreach (KeyValuePair<ChampionType, int> m in championTypeCount)
+        // {
+        //     ChampionBonus championBonus = m.Key.championBonus;
+        //
+        //     if (m.Value >= championBonus.championCount)
+        //     {
+        //         activeBonusList.Add(championBonus);
+        //     }
+        // }
     }
 
-    private void ResetChampions()
+    public void ResetChampions()
     {
         for (int x = 0; x < Map.hexMapSizeX; x++)
         {
@@ -419,7 +420,7 @@ public class GamePlayController: MonoBehaviour
         }
     }
 
-    private void OnGameStageComplicate()
+    public void OnGameStageComplicate()
     {
         aIopponent.OnGameStageComplate(currentGameStage);
 
@@ -490,7 +491,7 @@ public class GamePlayController: MonoBehaviour
         }
     }
 
-    private int CalculateIncome()
+    public int CalculateIncome()
     {
         int income = 0;
 
@@ -578,7 +579,7 @@ public class GamePlayController: MonoBehaviour
             EndRound();
     }
 
-    private bool IsAllChampionDead()
+    public bool IsAllChampionDead()
     {
         int championCount = 0;
         int championDead = 0;

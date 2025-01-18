@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET
 {
@@ -141,11 +142,10 @@ namespace ET
             public Entity Parent;
         }
 
-        public struct GenChampion
+        public struct GenChampions
         {
-            public int cPId;
-            public int index;
             public Scene zoneScene;
+            public List<ChampionInfoPB> CPInfos;
         }
     }
 }

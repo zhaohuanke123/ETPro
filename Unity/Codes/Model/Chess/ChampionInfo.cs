@@ -2,10 +2,10 @@
 {
     public enum GridType
     {
-        OwnInventory,
+        OwnInventory = 0,
 
         // Oponent_Inventory,
-        ChessMap,
+        ChessMap = 1,
     }
 
     [ChildOf]

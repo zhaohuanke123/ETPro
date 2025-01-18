@@ -28,11 +28,9 @@
                 return;
             }
 
-            int responseCpId = response.CPId;
-            await Game.EventSystem.PublishAsync(new EventType.GenChampion()
-            {
-                zoneScene = zoneScene, cPId = responseCpId, index = response.InventoryIndex
-            });
+            // int responseCpId = response.CPId;
+
+            await Game.EventSystem.PublishAsync(new EventType.GenChampions() { zoneScene = zoneScene, CPInfos = response.CPInfos });
         }
     }
 }
