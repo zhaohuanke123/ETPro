@@ -28,6 +28,12 @@
         <Compile Include="..\..\Server\Model\Config\ConfigLoader.cs">
           <Link>Config\ConfigLoader.cs</Link>
         </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\Chess\ChampionInfo.cs">
+          <Link>Chess\ChampionInfo.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\Chess\GamePlayComponent.cs">
+          <Link>Chess\GamePlayComponent.cs</Link>
+        </Compile>
         <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>

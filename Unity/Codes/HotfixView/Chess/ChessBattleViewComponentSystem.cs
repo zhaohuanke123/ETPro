@@ -95,12 +95,12 @@ namespace ET
                         self.StoreChampionInArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX, self.dragStartTrigger.gridZ,
                             currentChampion);
                         self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
-                        
+
                         ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
                     }
                     else
                     {
-                        if (triggerInfo.gridType == Map.GRIDTYPE_HEXA_MAP)
+                        if (triggerInfo.gridType == GamePlayComponent.GridTypeMap)
                         {
                             // if (championsOnField < currentChampionLimit || dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
                             // if (true || self.dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
@@ -115,7 +115,7 @@ namespace ET
                             ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
                             // }
                         }
-                        else if (triggerInfo.gridType == Map.GRIDTYPE_OWN_INVENTORY)
+                        else if (triggerInfo.gridType == GamePlayComponent.GridTypeOwnInventory)
                         {
                             self.RemoveChampionFromArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX, self.dragStartTrigger.gridZ);
 
@@ -135,12 +135,12 @@ namespace ET
 
         public static GameObjectComponent GetChampionFromTriggerInfo(this ChessBattleViewComponent self, TriggerInfo triggerInfo)
         {
-            if (triggerInfo.gridType == Map.GRIDTYPE_OWN_INVENTORY)
+            if (triggerInfo.gridType == GamePlayComponent.GridTypeOwnInventory)
             {
                 return self.ownChampionInventoryArray[triggerInfo.gridX];
             }
 
-            if (triggerInfo.gridType == Map.GRIDTYPE_HEXA_MAP)
+            if (triggerInfo.gridType == GamePlayComponent.GridTypeMap)
             {
                 return self.gridChampionsArray[triggerInfo.gridX, triggerInfo.gridZ];
             }
@@ -155,11 +155,11 @@ namespace ET
             championController.SetGridPosition(gridType, gridX, gridZ);
             // Log.Warning($"StoreChampionInArray : {gridType} {gridX} {gridZ}");
 
-            if (gridType == Map.GRIDTYPE_OWN_INVENTORY)
+            if (gridType == GamePlayComponent.GridTypeOwnInventory)
             {
                 self.ownChampionInventoryArray[gridX] = champion;
             }
-            else if (gridType == Map.GRIDTYPE_HEXA_MAP)
+            else if (gridType == GamePlayComponent.GridTypeMap)
             {
                 self.gridChampionsArray[gridX, gridZ] = champion;
             }

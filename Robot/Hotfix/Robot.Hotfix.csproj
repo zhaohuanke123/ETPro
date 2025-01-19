@@ -101,5 +101,9 @@
             <Link>Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Chess\" />
+    </ItemGroup>
    
 </Project>
