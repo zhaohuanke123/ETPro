@@ -1,16 +1,18 @@
-﻿namespace ET
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace ET
 {
     public enum GridType
     {
         OwnInventory = 0,
-
-        // Oponent_Inventory,
         ChessMap = 1,
+        // Oponent_Inventory,
     }
 
     [ChildOf]
     public class ChampionInfo: Entity, IAwake, IDestroy
     {
+        [BsonIgnore]
         public ChampionConfig config => ChampionConfigCategory.Instance.Get(this.configId);
 
         public int configId;

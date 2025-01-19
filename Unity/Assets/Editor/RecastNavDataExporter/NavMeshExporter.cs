@@ -24,9 +24,9 @@ namespace ETEditor
             public float y;
             public float z;
 
-            public UnityEngine.Vector3 ToVector3()
+            public Vector3 ToVector3()
             {
-                return new UnityEngine.Vector3(x, y, z);
+                return new Vector3(x, y, z);
             }
         }
 
@@ -72,7 +72,7 @@ namespace ETEditor
         [MenuItem("Tools/NavMesh/ExportSceneObj")]
         public static void ExportScene()
         {
-            NavMeshTriangulation triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
+            NavMeshTriangulation triangulation = NavMesh.CalculateTriangulation();
             if (triangulation.indices.Length < 3)
             {
                 Debug.LogError($"NavMeshExporter ExportScene Error - 场景里没有需要被导出的物体，请先用NavMesh进行Bake。");
@@ -96,7 +96,7 @@ namespace ETEditor
             // 导出Recast可用的*.Obj文件
             WriteRecastObjFile();
             // 拷贝Obj和Bytes文件到服务器目录下 TODO 暂不需要
-            //CopyObjFiles();
+            CopyObjFiles();
 
             Debug.Log($"NavMesh Output Info - Vertices:[{vertList.Count}] - Faces:[{faceList.Count}]");
         }
@@ -393,9 +393,9 @@ namespace ETEditor
 
         private static void WriteFile()
         {
-            if (!System.IO.Directory.Exists(outputClientFolder))
+            if (!Directory.Exists(outputClientFolder))
             {
-                System.IO.Directory.CreateDirectory(outputClientFolder);
+                Directory.CreateDirectory(outputClientFolder);
             }
 
             var path = outputClientFolder + SceneManager.GetActiveScene().name + ".bytes";
@@ -457,7 +457,7 @@ namespace ETEditor
             var path = outputClientFolder + SceneManager.GetActiveScene().name + "_internal.obj";
             StreamWriter tmpStreamWriter = new StreamWriter(path);
 
-            NavMeshTriangulation tmpNavMeshTriangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
+            NavMeshTriangulation tmpNavMeshTriangulation = NavMesh.CalculateTriangulation();
 
             //顶点
             for (int i = 0; i < tmpNavMeshTriangulation.vertices.Length; i++)
@@ -497,9 +497,9 @@ namespace ETEditor
         /// </summary>
         private static void WriteRecastObjFile()
         {
-            if (!System.IO.Directory.Exists(outputClientFolder))
+            if (!Directory.Exists(outputClientFolder))
             {
-                System.IO.Directory.CreateDirectory(outputClientFolder);
+                Directory.CreateDirectory(outputClientFolder);
             }
 
             var filename = SceneManager.GetActiveScene().name;
@@ -722,23 +722,23 @@ namespace ETEditor
 
             // 拷贝到RecastDemo配置路径
             {
-                string[] files = System.IO.Directory.GetFiles(sourceFolder);
+                string[] files = Directory.GetFiles(sourceFolder);
                 //如果目标路径不存在,则创建目标路径
-                if (!System.IO.Directory.Exists(outputServerFolder))
+                if (!Directory.Exists(outputServerFolder))
                 {
-                    System.IO.Directory.CreateDirectory(outputServerFolder);
+                    Directory.CreateDirectory(outputServerFolder);
                 }
 
                 foreach (string file in files)
                 {
-                    string name = System.IO.Path.GetFileName(file);
+                    string name = Path.GetFileName(file);
                     // 仅拷贝bytes文件和obj文件，但是不包括文件名里包含“internal”字样的obj文件。
                     var ext = Path.GetExtension(file);
                     if (ext == ".obj" && !file.Contains("_internal."))
                     {
-                        string dest = System.IO.Path.Combine(outputServerFolder, name);
-                        System.IO.File.Copy(file, dest, true); //复制文件
-                        UnityEngine.Debug.Log($"Recast：从{file}复制obj文件到{dest}成功");
+                        string dest = Path.Combine(outputServerFolder, name);
+                        File.Copy(file, dest, true); //复制文件
+                        Debug.Log($"Recast：从{file}复制obj文件到{dest}成功");
                     }
                 }
             }

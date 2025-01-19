@@ -5,9 +5,9 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class AOIUnitComponentAwakeSystem : AwakeSystem<AOIUnitComponent,Vector3,Quaternion, UnitType,int>
+    public class AOIUnitComponentAwakeSystem: AwakeSystem<AOIUnitComponent, Vector3, Quaternion, UnitType, int>
     {
-        public override void Awake(AOIUnitComponent self,Vector3 pos,Quaternion rota, UnitType type,int range)
+        public override void Awake(AOIUnitComponent self, Vector3 pos, Quaternion rota, UnitType type, int range)
         {
             self.Position = pos;
             self.Rotation = rota;
@@ -21,10 +21,11 @@ namespace ET
             aoiScene.RegisterUnit(self).Coroutine();
         }
     }
+
     [ObjectSystem]
-    public class AOIUnitComponentAwakeSystem2 : AwakeSystem<AOIUnitComponent,Vector3,Quaternion, UnitType>
+    public class AOIUnitComponentAwakeSystem2: AwakeSystem<AOIUnitComponent, Vector3, Quaternion, UnitType>
     {
-        public override void Awake(AOIUnitComponent self,Vector3 pos,Quaternion rota, UnitType type)
+        public override void Awake(AOIUnitComponent self, Vector3 pos, Quaternion rota, UnitType type)
         {
             self.Position = pos;
             self.Rotation = rota;
@@ -71,7 +72,7 @@ namespace ET
     }
 #endif
     [ObjectSystem]
-    public class AOIUnitComponentDestroySystem : DestroySystem<AOIUnitComponent>
+    public class AOIUnitComponentDestroySystem: DestroySystem<AOIUnitComponent>
     {
         public override void Destroy(AOIUnitComponent self)
         {
@@ -79,12 +80,12 @@ namespace ET
             self.Scene.RemoveUnit(self);
         }
     }
-    [FriendClass(typeof(AOIUnitComponent))]
-    [FriendClass(typeof(AOICell))]
-    [FriendClass(typeof(AOITrigger))]
+
+    [FriendClass(typeof (AOIUnitComponent))]
+    [FriendClass(typeof (AOICell))]
+    [FriendClass(typeof (AOITrigger))]
     public static class AOIUnitComponentSystem
     {
-
         /// <summary>
         /// 获取周围指定圈数指定类型AOI对象
         /// </summary>
@@ -92,70 +93,75 @@ namespace ET
         /// <param name="turnNum"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOIUnitComponent self,int turnNum= 1, UnitType type = UnitType.ALL)
+        public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOIUnitComponent self, int turnNum = 1, UnitType type = UnitType.ALL)
         {
             if (turnNum < 0) turnNum = self.Range;
-            if (self.Cell!=null)
+            if (self.Cell != null)
                 return self.Cell.GetNearbyUnit(turnNum, type);
             return ListComponent<AOIUnitComponent>.Create();
         }
+
         /// <summary>
         /// 获取周围指定圈数指定类型AOI对象
         /// </summary>
         /// <param name="self"></param>
         /// <param name="turnNum"></param>
         /// <returns></returns>
-        public static ListComponent<AOICell> GetNearbyGrid(this AOIUnitComponent self,int turnNum= 1)
+        public static ListComponent<AOICell> GetNearbyGrid(this AOIUnitComponent self, int turnNum = 1)
         {
             if (turnNum < 0) turnNum = self.Range;
-            if (self.Cell!=null)
+            if (self.Cell != null)
                 return self.Cell.GetNearbyGrid(turnNum);
             return ListComponent<AOICell>.Create();
         }
+
         /// <summary>
         /// 移动一个 AOI 对象, 设置新的 (2D / 3D) 坐标
         /// </summary>
         /// <param name="self"></param>
         /// <param name="position"></param>
-        public static async ETTask Move(this AOIUnitComponent self,Vector3 position)
+        public static async ETTask Move(this AOIUnitComponent self, Vector3 position)
         {
             var oldpos = self.Position;
             self.Position = position;
-            AOICell cell = self.Scene.GetAOICell(position);
-            var oldCell = self.Cell;
-            var changeCell = cell != oldCell;
-            if (changeCell)//跨格子了：AOI刷新
-            {
-                self.ChangeTo(cell);
-            }
+            // AOICell cell = self.Scene.GetAOICell(position);
+            // var oldCell = self.Cell;
+            // var changeCell = cell != oldCell;
+            var changeCell = false;
+            // if (changeCell) //跨格子了：AOI刷新
+            // {
+            //     self.ChangeTo(cell);
+            // }
+
             //“碰撞器”刷新 自己进入或离开别人的
-            if (self.Collider != null&&self.Collider.Enable)
+            if (self.Collider != null && self.Collider.Enable)
             {
-                self.Collider.AfterColliderChangeBroadcastToOther(self.Collider.GetRealPos(oldpos),self.Collider.GetRealRot(),changeCell);
+                self.Collider.AfterColliderChangeBroadcastToOther(self.Collider.GetRealPos(oldpos), self.Collider.GetRealRot(), changeCell);
             }
-            
+
             //触发器刷新 别人进入或离开自己的
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
-                if (item.IsCollider ||!item.Enable|| item.Selecter == null || item.Selecter.Count == 0) continue;
-                item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos),changeCell);
+                if (item.IsCollider || !item.Enable || item.Selecter == null || item.Selecter.Count == 0) continue;
+                item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos), changeCell);
             }
 #if SERVER
             if (self.GetComponent<GhostComponent>() != null)
             {
-                if (cell.TryGetCellMap(out var newSceneId))
-                {
-                    await self.GetComponent<GhostComponent>().CheckAreaTransfer(newSceneId, position);
-                }
-                else//玩家去到了未开放区域
-                {
-                    //todo:倒计时拉回复活点
-                }
+                // if (cell.TryGetCellMap(out var newSceneId))
+                // {
+                //     await self.GetComponent<GhostComponent>().CheckAreaTransfer(newSceneId, position);
+                // }
+                // else//玩家去到了未开放区域
+                // {
+                //     //todo:倒计时拉回复活点
+                // }
             }
 #endif
             await ETTask.CompletedTask;
         }
+
         /// <summary>
         /// 旋转一个 AOI 对象, 设置新的 (2D / 3D) 方向
         /// </summary>
@@ -169,7 +175,7 @@ namespace ET
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
-                if (item.IsCollider||!item.Enable||item.Selecter == null || item.Selecter.Count == 0) continue;
+                if (item.IsCollider || !item.Enable || item.Selecter == null || item.Selecter.Count == 0) continue;
                 item.AfterTriggerChangeRotationBroadcastToMe(oldRotation);
             }
         }
@@ -184,21 +190,23 @@ namespace ET
             {
                 // 把周围的人通知给自己
                 var units = self.GetNearbyUnit(self.Range);
-                Game.EventSystem.Publish(new AOIRegisterUnit(){Receive = self,Units = units});
+                Game.EventSystem.Publish(new AOIRegisterUnit() { Receive = self, Units = units });
                 units.Dispose();
             }
         }
-        
+
         /// <summary>
         /// 改变格子
         /// </summary>
         /// <param name="self"></param>
         /// <param name="newgrid"></param>
-        public static void ChangeTo(this AOIUnitComponent self,AOICell newgrid)
+        public static void ChangeTo(this AOIUnitComponent self, AOICell newgrid)
         {
             AOICell oldgrid = self.Cell;
             // Log.Info(self.Id+"From: "+"  grid x:"+ oldgrid.posx+",y:"+ oldgrid.posy+ "  ChangeTo:grid x:"+ newgrid.posx+",y:"+ newgrid.posy);
+
             #region 广播给别人
+
             using (DictionaryComponent<AOIUnitComponent, int> dic = DictionaryComponent<AOIUnitComponent, int>.Create())
             {
                 //Remove
@@ -207,7 +215,7 @@ namespace ET
                     for (int i = 0; i < oldgrid.ListenerUnits.Count; i++)
                     {
                         var item = oldgrid.ListenerUnits[i];
-                        if (item.Type == UnitType.Player&&item!=self)
+                        if (item.Type == UnitType.Player && item != self)
                         {
                             dic.Add(item, -1);
                         }
@@ -227,11 +235,12 @@ namespace ET
                 {
                     Log.Error("newgrid.idUnits[self.Type].Contains(self)");
                 }
+
                 newgrid.typeUnits[self.Type].Add(self);
                 for (int i = 0; i < newgrid.ListenerUnits.Count; i++)
                 {
                     var item = newgrid.ListenerUnits[i];
-                    if (item.Type == UnitType.Player&&item!=self)
+                    if (item.Type == UnitType.Player && item != self)
                     {
                         if (dic.ContainsKey(item))
                             dic[item] += 1;
@@ -246,26 +255,21 @@ namespace ET
                 {
                     if (item.Value > 0)
                     {
-                        Game.EventSystem.Publish(new EventType.AOIRegisterUnit()
-                        {
-                            Receive = item.Key,
-                            Units = list,
-                        });
+                        Game.EventSystem.Publish(new EventType.AOIRegisterUnit() { Receive = item.Key, Units = list, });
                     }
                     else if (item.Value < 0)
                     {
-                        Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
-                        {
-                            Receive = item.Key,
-                            Units = list
-                        });
-                        
+                        Game.EventSystem.Publish(new EventType.AOIRemoveUnit() { Receive = item.Key, Units = list });
                     }
                 }
+
                 list.Dispose();
             }
+
             #endregion
+
             #region 广播给自己 && 刷新监听
+
             if (self.Type == UnitType.Player)
             {
                 var older = oldgrid.GetNearbyGrid(self.Range);
@@ -303,29 +307,20 @@ namespace ET
                 }
 
                 adder.Remove(self);
-                Game.EventSystem.Publish(new EventType.AOIRegisterUnit
-                {
-                    Receive = self,
-                    Units = adder
-                });
+                Game.EventSystem.Publish(new EventType.AOIRegisterUnit { Receive = self, Units = adder });
                 remover.Remove(self);
-                Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
-                {
-                    Receive = self,
-                    Units = remover
-                });
+                Game.EventSystem.Publish(new EventType.AOIRemoveUnit() { Receive = self, Units = remover });
 
                 temp.Dispose();
                 newer.Dispose();
                 older.Dispose();
                 adder.Dispose();
                 remover.Dispose();
-
-                
             }
-            #endregion
 
+            #endregion
         }
+
         /// <summary>
         /// 获取自己能被谁看到
         /// </summary>
@@ -354,5 +349,4 @@ namespace ET
         }
 #endif
     }
-    
 }

@@ -37,17 +37,17 @@ public class ChampionController: MonoBehaviour
     [HideInInspector]
     public int lvl = 1;
 
-    private Map map;
-    private GamePlayController gamePlayController;
-    private AIopponent aIopponent;
-    private ChampionAnimation championAnimation;
-    private WorldCanvasController worldCanvasController;
+    public Map map;
+    public GamePlayController gamePlayController;
+    public AIopponent aIopponent;
+    public ChampionAnimation championAnimation;
+    public WorldCanvasController worldCanvasController;
 
-    private NavMeshAgent navMeshAgent;
+    public NavMeshAgent navMeshAgent;
 
-    private Vector3 gridTargetPosition;
+    public Vector3 gridTargetPosition;
 
-    private bool _isDragged = false;
+    public bool _isDragged = false;
 
     [HideInInspector]
     public bool isAttacking = false;
@@ -55,13 +55,13 @@ public class ChampionController: MonoBehaviour
     [HideInInspector]
     public bool isDead = false;
 
-    private bool isInCombat = false;
-    private float combatTimer = 0;
+    public bool isInCombat = false;
+    public float combatTimer = 0;
 
-    private bool isStuned = false;
-    private float stunTimer = 0;
+    public bool isStuned = false;
+    public float stunTimer = 0;
 
-    private List<Effect> effects;
+    public List<Effect> effects;
 
     public void Init(Champion _champion, int _teamID)
     {
@@ -86,7 +86,7 @@ public class ChampionController: MonoBehaviour
         effects = new List<Effect>();
     }
 
-    private void Update()
+    public void Update()
     {
         if (_isDragged)
         {
@@ -106,16 +106,16 @@ public class ChampionController: MonoBehaviour
         {
             // if (gamePlayController.currentGameStage == GameStage.Preparation)
             // {
-                float distance = Vector3.Distance(gridTargetPosition, this.transform.position);
+            float distance = Vector3.Distance(gridTargetPosition, this.transform.position);
 
-                if (distance > 0.25f)
-                {
-                    this.transform.position = Vector3.Lerp(this.transform.position, gridTargetPosition, 0.1f);
-                }
-                else
-                {
-                    this.transform.position = gridTargetPosition;
-                }
+            if (distance > 0.25f)
+            {
+                this.transform.position = Vector3.Lerp(this.transform.position, gridTargetPosition, 0.1f);
+            }
+            else
+            {
+                this.transform.position = gridTargetPosition;
+            }
             // }
         }
 
@@ -299,9 +299,9 @@ public class ChampionController: MonoBehaviour
         // Destroy(levelupEffect, 1.0f);
     }
 
-    private GameObject target;
+    public GameObject target;
 
-    private GameObject FindTarget()
+    public GameObject FindTarget()
     {
         GameObject closestEnemy = null;
         float bestDistance = 1000;
@@ -359,7 +359,7 @@ public class ChampionController: MonoBehaviour
         return closestEnemy;
     }
 
-    private void TryAttackNewTarget()
+    public void TryAttackNewTarget()
     {
         target = FindTarget();
 
@@ -387,7 +387,7 @@ public class ChampionController: MonoBehaviour
         }
     }
 
-    private void DoAttack()
+    public void DoAttack()
     {
         isAttacking = true;
 
