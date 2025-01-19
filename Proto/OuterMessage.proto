@@ -524,6 +524,6 @@ message G2C_BuyChampion // IResponse
 
 message G2C_UpdateBonus // IMessage
 {
-	repeated int32 BonusIdList = 1;
+	repeated int32 TypeIdList = 1;
 	repeated int32 CountList = 1;
 }

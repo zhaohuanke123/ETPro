@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIBonus: Entity, IAwake, ILoad, IOnCreate, IOnEnable
+    [UIComponent]
+    public class UIBonus: Entity, IAwake, ILoad, IOnCreate<int>, IOnEnable
     {
         public static string PrefabPath => "UI/UIBattle/Prefabs/UIBonus.prefab";
         public UIImage icon;
         public UIText name;
         public UIText count;
+        public int index;
     }
 }

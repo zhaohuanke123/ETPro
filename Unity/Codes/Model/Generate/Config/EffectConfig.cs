@@ -94,11 +94,9 @@ namespace ET
 		/// <summary>是否挂载，为0的话在被挂载者挂载当时所在位置播放</summary>
 		[ProtoMember(5)]
 		public int IsMount { get; set; }
-		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
 		/// <summary>相对位置</summary>
 		[ProtoMember(6)]
 		public float[] RelativePos { get; set; }
-		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
 		/// <summary>偏转角度</summary>
 		[ProtoMember(7)]
 		public float[] RelativeRotation { get; set; }

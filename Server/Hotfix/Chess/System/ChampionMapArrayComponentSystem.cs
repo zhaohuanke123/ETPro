@@ -111,7 +111,7 @@ namespace ET
             }
 
             G2C_UpdateBonus message = new G2C_UpdateBonus();
-            message.BonusIdList = championTypeCount.Keys.ToList();
+            message.TypeIdList = championTypeCount.Keys.ToList();
             message.CountList = championTypeCount.Values.ToList();
             player.Session.Send(message);
         }

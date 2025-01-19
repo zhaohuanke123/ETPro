@@ -12,7 +12,7 @@ namespace ET
         {
             self.GoldText = self.AddUIComponent<UIText>("Gold/CostGo/cost");
             self.CountDownText = self.AddUIComponent<UIText>("Placement/Timer/Text");
-            self.allCoin = self.AddUIComponent<UICostIN>("Gold/CostGo");
+            // self.allCoin = self.AddUIComponent<UICostIN>("Gold/CostGo");
             self.championLimitText = self.AddUIComponent<UIText>("championLimit/Text");
             self.HpText = self.AddUIComponent<UIText>("Hp/Text");
 
@@ -27,6 +27,13 @@ namespace ET
             for (int i = 0; i < self.cContainers.Length; i++)
             {
                 self.cContainers[i] = self.AddUIComponent<UIChampionContainer, int>($"Shop/Layout/CC{i}", i);
+            }
+
+            const int bonusCount = 6;
+            self.bonusList = new UIBonus[bonusCount];
+            for (int i = 0; i < self.bonusList.Length; i++)
+            {
+                self.bonusList[i] = self.AddUIComponent<UIBonus, int>($"BonusContainer/UIBonus_{i}", i);
             }
         }
     }
@@ -85,6 +92,21 @@ namespace ET
         public static async ETTask OnRefreshShopBtnClick(this UIBattle self)
         {
             await ChessBattleHelper.RefreshShopChampionList(self.ZoneScene());
+        }
+
+        public static void SetBonusList(this UIBattle self, List<int> messageTypeIdList, List<int> messageCountList)
+        {
+            for (int i = 0; i < self.bonusList.Length; i++)
+            {
+                if (i < messageTypeIdList.Count)
+                {
+                    self.bonusList[i].SetBonus(messageTypeIdList[i], messageCountList[i]);
+                }
+                else
+                {
+                    self.bonusList[i].SetBonus(-1, 0);
+                }
+            }
         }
     }
 }

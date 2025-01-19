@@ -1081,7 +1081,7 @@ namespace ET
 	public partial class G2C_UpdateBonus: Object, IMessage
 	{
 		[ProtoMember(1)]
-		public List<int> BonusIdList = new List<int>();
+		public List<int> TypeIdList = new List<int>();
 
 		[ProtoMember(1)]
 		public List<int> CountList = new List<int>();

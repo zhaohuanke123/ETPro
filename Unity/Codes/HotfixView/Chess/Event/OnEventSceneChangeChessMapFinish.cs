@@ -6,6 +6,7 @@
         {
             GamePlayComponent gamePlayComponent = args.CurrentScene.GetComponent<GamePlayComponent>();
             gamePlayComponent.AddComponent<ChessBattleViewComponent>();
+            gamePlayComponent.AddComponent<InputControlComponent>();
             await ETTask.CompletedTask;
         }
     }

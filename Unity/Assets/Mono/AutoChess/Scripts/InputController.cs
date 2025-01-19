@@ -36,12 +36,12 @@ public class InputController: MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            gamePlayController.StartDrag();
+            gamePlayController.StartDrag(this.triggerInfo);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            gamePlayController.StopDrag();
+            gamePlayController.StopDrag(this.triggerInfo);
         }
 
         mousePosition = Input.mousePosition;

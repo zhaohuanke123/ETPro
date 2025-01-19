@@ -9,13 +9,15 @@ namespace ET
 {
     [UISystem]
     [FriendClass(typeof (UIBonus))]
-    public class UIBonusOnCreateSystem: OnCreateSystem<UIBonus>
+    public class UIBonusOnCreateSystem: OnCreateSystem<UIBonus, int>
     {
-        public override void OnCreate(UIBonus self)
+        public override void OnCreate(UIBonus self, int index)
         {
+            self.index = index;
             self.icon = self.AddUIComponent<UIImage>("icon");
             self.name = self.AddUIComponent<UIText>("name");
             self.count = self.AddUIComponent<UIText>("count");
+            self.SetActive(false);
         }
     }
 
@@ -31,5 +33,22 @@ namespace ET
     [FriendClass(typeof (UIBonus))]
     public static class UIBonusSystem
     {
+        public static void SetBonus(this UIBonus self, int bonusId, int count)
+        {
+            if (bonusId != -1)
+            {
+                ChampionTypeConfig championTypeConfig = ChampionTypeConfigCategory.Instance.Get(bonusId);
+                ChampionBonusConfig championBonusConfig = ChampionBonusConfigCategory.Instance.Get(championTypeConfig.championBonusId);
+
+                self.SetActive(true);
+                self.icon.SetSpritePath(championTypeConfig.icon).Coroutine();
+                self.name.SetText(championTypeConfig.displayName);
+                self.count.SetText($"{count}/{championBonusConfig.championCount}");
+            }
+            else
+            {
+                self.SetActive(false);
+            }
+        }
     }
 }

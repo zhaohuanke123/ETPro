@@ -197,12 +197,12 @@ public class GamePlayController: MonoBehaviour
     public GameObject draggedChampion = null;
     public TriggerInfo dragStartTrigger = null;
 
-    public void StartDrag()
+    public void StartDrag(TriggerInfo triggerInfo)
     {
         // if (currentGameStage != GameStage.Preparation)
         //     return;
 
-        TriggerInfo triggerInfo = inputController.triggerInfo;
+        // TriggerInfo triggerInfo = inputController.triggerInfo;
         if (triggerInfo != null)
         {
             dragStartTrigger = triggerInfo;
@@ -222,7 +222,7 @@ public class GamePlayController: MonoBehaviour
         }
     }
 
-    public void StopDrag()
+    public void StopDrag(TriggerInfo triggerInfo)
     {
         Map.Instance.HideIndicators();
 
@@ -232,37 +232,37 @@ public class GamePlayController: MonoBehaviour
         {
             draggedChampion.GetComponent<ChampionController>().IsDragged = false;
 
-            TriggerInfo triggerinfo = inputController.triggerInfo;
+            // TriggerInfo triggerinfo = inputController.triggerInfo;
 
-            if (triggerinfo != null)
+            if (triggerInfo != null)
             {
-                GameObject currentTriggerChampion = GetChampionFromTriggerInfo(triggerinfo);
+                GameObject currentTriggerChampion = GetChampionFromTriggerInfo(triggerInfo);
 
                 if (currentTriggerChampion != null)
                 {
                     StoreChampionInArray(dragStartTrigger.gridType, dragStartTrigger.gridX, dragStartTrigger.gridZ, currentTriggerChampion);
 
-                    StoreChampionInArray(triggerinfo.gridType, triggerinfo.gridX, triggerinfo.gridZ, draggedChampion);
+                    StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, draggedChampion);
                 }
                 else
                 {
-                    if (triggerinfo.gridType == Map.GRIDTYPE_HEXA_MAP)
+                    if (triggerInfo.gridType == Map.GRIDTYPE_HEXA_MAP)
                     {
                         if (championsOnField < currentChampionLimit || dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
                         {
                             RemoveChampionFromArray(dragStartTrigger.gridType, dragStartTrigger.gridX, dragStartTrigger.gridZ);
 
-                            StoreChampionInArray(triggerinfo.gridType, triggerinfo.gridX, triggerinfo.gridZ, draggedChampion);
+                            StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, draggedChampion);
 
                             if (dragStartTrigger.gridType != Map.GRIDTYPE_HEXA_MAP)
                                 championsOnField++;
                         }
                     }
-                    else if (triggerinfo.gridType == Map.GRIDTYPE_OWN_INVENTORY)
+                    else if (triggerInfo.gridType == Map.GRIDTYPE_OWN_INVENTORY)
                     {
                         RemoveChampionFromArray(dragStartTrigger.gridType, dragStartTrigger.gridX, dragStartTrigger.gridZ);
 
-                        StoreChampionInArray(triggerinfo.gridType, triggerinfo.gridX, triggerinfo.gridZ, draggedChampion);
+                        StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, draggedChampion);
 
                         if (dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
                             championsOnField--;

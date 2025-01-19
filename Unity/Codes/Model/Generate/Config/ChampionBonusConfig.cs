@@ -87,14 +87,13 @@ namespace ET
 		public int championCount { get; set; }
 		/// <summary>羁绊效果类型</summary>
 		[ProtoMember(3)]
-		public ChampionBonusType championBonusType { get; set; }
+		public int championBonusType { get; set; }
 		/// <summary>羁绊效果目标</summary>
 		[ProtoMember(4)]
-		public BonusTarget bonusTarget { get; set; }
+		public int bonusTarget { get; set; }
 		/// <summary>羁绊效果数值</summary>
 		[ProtoMember(5)]
 		public int bonusValue { get; set; }
-		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
 		/// <summary>效果持续时间</summary>
 		[ProtoMember(6)]
 		public float duration { get; set; }
