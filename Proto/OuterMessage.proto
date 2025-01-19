@@ -525,5 +525,25 @@ message G2C_BuyChampion // IResponse
 message G2C_UpdateBonus // IMessage
 {
 	repeated int32 TypeIdList = 1;
-	repeated int32 CountList = 1;
+	repeated int32 CountList = 2;
+}
+
+//ResponseType G2C_DragChampion
+message C2G_DragChampion // IRequest
+{
+	int32 RpcId = 90;
+	int32 OldGridType = 1;
+	int32 OldGridPositionX = 2;
+	int32 OldGridPositionZ = 3;
+
+	int32 NewGridType = 4;
+	int32 NewGridPositionX = 5;
+	int32 NewGridPositionZ = 6;
+}
+
+message G2C_DragChampion // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
 }

@@ -1083,8 +1083,51 @@ namespace ET
 		[ProtoMember(1)]
 		public List<int> TypeIdList = new List<int>();
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public List<int> CountList = new List<int>();
+
+	}
+
+	[ResponseType(nameof(G2C_DragChampion))]
+	[Message(OuterOpcode.C2G_DragChampion)]
+	[ProtoContract]
+	public partial class C2G_DragChampion: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int OldGridType { get; set; }
+
+		[ProtoMember(2)]
+		public int OldGridPositionX { get; set; }
+
+		[ProtoMember(3)]
+		public int OldGridPositionZ { get; set; }
+
+		[ProtoMember(4)]
+		public int NewGridType { get; set; }
+
+		[ProtoMember(5)]
+		public int NewGridPositionX { get; set; }
+
+		[ProtoMember(6)]
+		public int NewGridPositionZ { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_DragChampion)]
+	[ProtoContract]
+	public partial class G2C_DragChampion: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
 
 	}
 

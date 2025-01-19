@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ET.Chess;
+using UnityEngine;
 
 namespace ET
 {
@@ -8,8 +9,6 @@ namespace ET
         public override void Awake(ChampionControllerComponent self, GameObjectComponent gameObjectComponent)
         {
             self.championController = gameObjectComponent.GameObject.GetComponent<ChampionController>();
-            self.championController.Init(null, ChampionController.TEAMID_PLAYER);
-            self.championController.gridType = Map.GRIDTYPE_OWN_INVENTORY;
         }
     }
 
@@ -27,7 +26,8 @@ namespace ET
     {
         public static void Init(this ChampionControllerComponent self, int index)
         {
-            self.championController.Init(null, ChampionController.TEAMID_PLAYER);
+            self.championController.gridType = GamePlayComponent.GridTypeOwnInventory;
+            self.championController.Init(null, GamePlayComponent.TeamId_Player);
             self.championController.gridPositionX = index;
             self.championController.SetWorldPosition();
             self.championController.SetWorldRotation();

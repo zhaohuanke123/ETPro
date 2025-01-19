@@ -12,6 +12,12 @@ namespace ET
     [ComponentOf]
     public class GamePlayComponent: Entity, IAwake, IUpdate, IDestroy
     {
+        public static readonly int GridTypeOwnInventory = 0;
+        public static readonly int GridTypeMap = 2;
+
+        public static readonly int TeamId_Player = 0;
+        public static readonly int TeamId_AI = 1;
+
         public GameStage currentGameStage;
 
         /// <summary>

@@ -17,7 +17,9 @@ namespace ET
             session.RemoveComponent<GamePlayComponent>();
             GamePlayComponent gamePlayComponent = session.AddComponent<GamePlayComponent>();
             ShopComponent shopComponent = gamePlayComponent.AddComponent<ShopComponent>();
-            ChampionArrayComponent championArrayComponent = gamePlayComponent.AddComponent<ChampionArrayComponent>();
+            gamePlayComponent.AddComponent<ChampionArrayComponent>();
+            ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.AddComponent<ChampionMapArrayComponent>();
+            championMapArrayComponent.AddComponent<BattleChampionBonusComponent>();
             shopComponent.AddPlayerGold(player, 100);
 
             response.SceneInstanceId = 123;

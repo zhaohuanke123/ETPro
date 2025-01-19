@@ -38,7 +38,7 @@ namespace ET
 
         public static Dictionary<int, int> GetPlayerChampionTypeCount(this BattleChampionBonusComponent self, Player player)
         {
-            if (self.playersChampionTypeCount.TryGetValue(player.Id, out var typeCount))
+            if (!self.playersChampionTypeCount.TryGetValue(player.Id, out var typeCount))
             {
                 var tmp = self.Init(player);
                 typeCount = tmp.typeCount;
@@ -49,7 +49,7 @@ namespace ET
 
         public static List<ChampionBonusConfig> GetPlayerActiveBonus(this BattleChampionBonusComponent self, Player player)
         {
-            if (self.playersActiveBonus.TryGetValue(player.Id, out var activeBonus))
+            if (!self.playersActiveBonus.TryGetValue(player.Id, out var activeBonus))
             {
                 var tmp = self.Init(player);
                 activeBonus = tmp.activeBonus;

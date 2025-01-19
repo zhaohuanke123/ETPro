@@ -69,5 +69,7 @@ namespace ET
 		 public const ushort ChampionInfoPB = 10071;
 		 public const ushort G2C_BuyChampion = 10070;
 		 public const ushort G2C_UpdateBonus = 10072;
+		 public const ushort C2G_DragChampion = 10073;
+		 public const ushort G2C_DragChampion = 10074;
 	}
 }

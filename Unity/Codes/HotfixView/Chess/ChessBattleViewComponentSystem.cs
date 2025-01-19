@@ -41,12 +41,15 @@ namespace ET
 
         public static void Clear(this ChessBattleViewComponent self)
         {
-            foreach (GameObjectComponent goComponent in self.ownChampionInventoryArray)
+            for (int i = 0; i < self.ownChampionInventoryArray.Length; i++)
             {
+                GameObjectComponent goComponent = self.ownChampionInventoryArray[i];
                 if (goComponent != null)
                 {
                     goComponent.Dispose();
                 }
+
+                self.ownChampionInventoryArray[i] = null;
             }
         }
 
@@ -80,30 +83,37 @@ namespace ET
 
                 if (triggerInfo != null)
                 {
-                    GameObjectComponent currentTriggerChampion = self.GetChampionFromTriggerInfo(triggerInfo);
+                    if (self.dragStartTrigger.Equals(triggerInfo))
+                    {
+                        return;
+                    }
 
-                    if (currentTriggerChampion != null)
+                    GameObjectComponent currentChampion = self.GetChampionFromTriggerInfo(triggerInfo);
+
+                    if (currentChampion != null)
                     {
                         self.StoreChampionInArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX, self.dragStartTrigger.gridZ,
-                            currentTriggerChampion);
-
+                            currentChampion);
                         self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
+                        
+                        ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
                     }
                     else
                     {
                         if (triggerInfo.gridType == Map.GRIDTYPE_HEXA_MAP)
                         {
                             // if (championsOnField < currentChampionLimit || dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
-                            if (true || self.dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
-                            {
-                                self.RemoveChampionFromArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX,
-                                    self.dragStartTrigger.gridZ);
+                            // if (true || self.dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
+                            // {
+                            self.RemoveChampionFromArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX,
+                                self.dragStartTrigger.gridZ);
+                            self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
 
-                                self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
+                            // if (dragStartTrigger.gridType != Map.GRIDTYPE_HEXA_MAP)
+                            //     championsOnField++;
 
-                                // if (dragStartTrigger.gridType != Map.GRIDTYPE_HEXA_MAP)
-                                //     championsOnField++;
-                            }
+                            ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
+                            // }
                         }
                         else if (triggerInfo.gridType == Map.GRIDTYPE_OWN_INVENTORY)
                         {
@@ -113,6 +123,8 @@ namespace ET
 
                             // if (dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
                             //     championsOnField--;
+
+                            ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
                         }
                     }
                 }
@@ -141,7 +153,7 @@ namespace ET
         {
             var championController = champion.GetComponent<ChampionControllerComponent>();
             championController.SetGridPosition(gridType, gridX, gridZ);
-            Log.Warning($"StoreChampionInArray : {gridType} {gridX} {gridZ}");
+            // Log.Warning($"StoreChampionInArray : {gridType} {gridX} {gridZ}");
 
             if (gridType == Map.GRIDTYPE_OWN_INVENTORY)
             {
@@ -155,11 +167,11 @@ namespace ET
 
         public static void RemoveChampionFromArray(this ChessBattleViewComponent self, int type, int gridX, int gridZ)
         {
-            if (type == Map.GRIDTYPE_OWN_INVENTORY)
+            if (type == GamePlayComponent.GridTypeOwnInventory)
             {
                 self.ownChampionInventoryArray[gridX] = null;
             }
-            else if (type == Map.GRIDTYPE_HEXA_MAP)
+            else if (type == GamePlayComponent.GridTypeMap)
             {
                 self.gridChampionsArray[gridX, gridZ] = null;
             }

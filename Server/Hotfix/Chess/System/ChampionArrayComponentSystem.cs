@@ -85,6 +85,30 @@ namespace ET
             return true;
         }
 
+        public static bool AddToArray(this ChampionArrayComponent self, Player player, ChampionInfo championInfo)
+        {
+            if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
+            {
+                list = self.InitPlayerArray(player.Id);
+            }
+
+            self.AddChild(championInfo);
+            int index = championInfo.gridPositionX;
+            list[index] = championInfo;
+            return true;
+        }
+
+        public static bool Replace(this ChampionArrayComponent self, Player player, ChampionInfo championInfo)
+        {
+            if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
+            {
+                list = self.InitPlayerArray(player.Id);
+            }
+
+            list[championInfo.gridPositionX] = championInfo;
+            return true;
+        }
+
         public static bool TryUpgrade(this ChampionArrayComponent self, List<ChampionInfo> list, int configId)
         {
             var championList_lvl_1 = new List<ChampionInfo>();
@@ -167,21 +191,26 @@ namespace ET
             return res;
         }
 
-        public static bool Remove(this ChampionArrayComponent self, Player player, int index)
+        public static ChampionInfo RemoveFromArray(this ChampionArrayComponent self, Player player, int index, out bool res)
         {
             if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
             {
-                return false;
+                res = false;
+                return null;
             }
 
             ChampionInfo championInfo = list[index];
             if (championInfo == null)
             {
-                return false;
+                res = false;
+            }
+            else
+            {
+                res = true;
+                list[index] = null;
             }
 
-            list[index] = null;
-            return true;
+            return championInfo;
         }
     }
 }

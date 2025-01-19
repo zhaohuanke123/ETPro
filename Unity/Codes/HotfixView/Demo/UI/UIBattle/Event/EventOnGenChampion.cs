@@ -17,7 +17,7 @@ namespace ET
                 GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(config.prefab);
                 Scene currentScene = args.zoneScene.CurrentScene();
                 int index = infoPb.GridPositionX;
-                GameObjectComponent showView = currentScene.AddChild<GameObjectComponent, GameObject, Action>(go,
+                GameObjectComponent showView = ChessBattleViewComponent.Instance.AddChild<GameObjectComponent, GameObject, Action>(go,
                     () =>
                     {
                         GameObjectPoolComponent.Instance.RecycleGameObject(go);

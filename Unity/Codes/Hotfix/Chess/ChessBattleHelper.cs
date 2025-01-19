@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
     public static class ChessBattleHelper
     {
@@ -31,6 +33,29 @@
             // int responseCpId = response.CPId;
 
             await Game.EventSystem.PublishAsync(new EventType.GenChampions() { zoneScene = zoneScene, CPInfos = response.CPInfos });
+        }
+
+        // champion 位置修改后发送request到服务器， 使用C2G_DragChampion,
+        public static async ETTask SendDragMessage(Scene zoneScene, TriggerInfo preInfo, TriggerInfo newInfo)
+        {
+            Session session = zoneScene.GetComponent<SessionComponent>().Session;
+
+            C2G_DragChampion request = new C2G_DragChampion();
+            request.OldGridType = preInfo.gridType;
+            request.OldGridPositionX = preInfo.gridX;
+            request.OldGridPositionZ = preInfo.gridZ;
+            request.NewGridType = newInfo.gridType;
+            request.NewGridPositionX = newInfo.gridX;
+            request.NewGridPositionZ = newInfo.gridZ;
+
+            try
+            {
+                G2C_DragChampion response = await session.Call(request) as G2C_DragChampion;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
     }
 }

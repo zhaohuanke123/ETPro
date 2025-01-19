@@ -17,6 +17,7 @@ namespace ET
             self.icon = self.AddUIComponent<UIImage>("icon");
             self.name = self.AddUIComponent<UIText>("name");
             self.count = self.AddUIComponent<UIText>("count");
+            self.activeBg = self.AddUIComponent<UIImage>("ActiveBG");
             self.SetActive(false);
         }
     }
@@ -43,7 +44,10 @@ namespace ET
                 self.SetActive(true);
                 self.icon.SetSpritePath(championTypeConfig.icon).Coroutine();
                 self.name.SetText(championTypeConfig.displayName);
-                self.count.SetText($"{count}/{championBonusConfig.championCount}");
+
+                int curCount = Math.Min(count, championBonusConfig.championCount);
+                self.count.SetText($"{curCount}/{championBonusConfig.championCount}");
+                self.activeBg.SetActive(curCount >= championBonusConfig.championCount);
             }
             else
             {

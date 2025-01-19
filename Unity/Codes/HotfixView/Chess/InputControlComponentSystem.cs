@@ -35,7 +35,7 @@ namespace ET
             if (UnityEngine.Physics.Raycast(ray, out hit, 100f, self.triggerLayer, QueryTriggerInteraction.Collide))
             {
                 self.triggerInfo = hit.collider.gameObject.GetComponent<TriggerInfo>();
-                Log.Warning($"this.triggerInfo : {self.triggerInfo}");
+                // Log.Warning($"this.triggerInfo : {self.triggerInfo}");
 
                 if (self.triggerInfo != null)
                 {

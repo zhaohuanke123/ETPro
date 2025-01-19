@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Schema;
 
 namespace ET
 {
@@ -21,6 +22,7 @@ namespace ET
     }
 
     [FriendClass(typeof (ChampionMapArrayComponent))]
+    [FriendClassAttribute(typeof (ET.ChampionInfo))]
     public static partial class ChampionMapArrayComponentSystem
     {
         public const int hexMapSizeX = 7;
@@ -40,17 +42,39 @@ namespace ET
                 grids = self.Init(player.Id);
             }
 
+            self.AddChild(championInfo);
+            championInfo.gridPositionX = gridX;
+            championInfo.gridPositionZ = gridZ;
             grids[gridX, gridZ] = championInfo;
+            // self.CalculateBonuses(player);
         }
 
-        public static void RemoveFromGird(this ChampionMapArrayComponent self, Player player, int gridX, int gridZ)
+        public static void Replace(this ChampionMapArrayComponent self, Player player, ChampionInfo championInfo, int gridX, int gridZ)
         {
             if (!self.playersGridArray.TryGetValue(player.Id, out var grids))
             {
                 grids = self.Init(player.Id);
             }
 
+            championInfo.gridPositionX = gridX;
+            championInfo.gridPositionZ = gridZ;
+            grids[gridX, gridZ] = championInfo;
+            // self.CalculateBon
+        }
+
+        public static ChampionInfo RemoveFromGird(this ChampionMapArrayComponent self, Player player, int gridX, int gridZ)
+        {
+            if (!self.playersGridArray.TryGetValue(player.Id, out var grids))
+            {
+                grids = self.Init(player.Id);
+            }
+
+            ChampionInfo championInfo = grids[gridX, gridZ];
             grids[gridX, gridZ] = null;
+
+            //TODO 临时
+            // self.CalculateBonuses(player);
+            return championInfo;
         }
 
         public static void CalculateBonuses(this ChampionMapArrayComponent self, Player player)
