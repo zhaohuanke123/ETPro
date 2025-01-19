@@ -4,18 +4,22 @@ using UnityEngine;
 
 namespace ET
 {
-    [FriendClass(typeof(MoveComponent))]
+    [FriendClass(typeof (MoveComponent))]
     public static class MoveComponentSystem
     {
         [Timer(TimerType.MoveTimer)]
-        [FriendClass(typeof(MoveComponent))]
+        [FriendClass(typeof (MoveComponent))]
         public class MoveTimer: ATimer<MoveComponent>
         {
             public override void Run(MoveComponent self)
             {
                 try
                 {
-                    if (self.IsDisposed) return;
+                    if (self.IsDisposed)
+                    {
+                        return;
+                    }
+
                     self.MoveForward(false);
                 }
                 catch (Exception e)
@@ -24,7 +28,7 @@ namespace ET
                 }
             }
         }
-    
+
         [ObjectSystem]
         public class DestroySystem: DestroySystem<MoveComponent>
         {
@@ -51,7 +55,7 @@ namespace ET
                 self.TurnTime = 0;
             }
         }
-        
+
         public static bool IsArrived(this MoveComponent self)
         {
             return self.Targets.Count == 0;
@@ -68,18 +72,19 @@ namespace ET
             {
                 return false;
             }
-            
+
             Unit unit = self.GetParent<Unit>();
 
             using ListComponent<Vector3> path = ListComponent<Vector3>.Create();
-            
+
             self.MoveForward(false);
-                
+
             path.Add(unit.Position); // 第一个是Unit的pos
             for (int i = self.N; i < self.Targets.Count; ++i)
             {
                 path.Add(self.Targets[i]);
             }
+
             self.MoveToAsync(path, speed).Coroutine();
             return true;
         }
@@ -99,16 +104,17 @@ namespace ET
             self.Speed = speed;
             self.tcs = ETTask<bool>.Create(true);
 
-            Game.EventSystem.Publish(new EventType.MoveStart(){Unit = self.GetParent<Unit>()});
-            
+            Game.EventSystem.Publish(new EventType.MoveStart() { Unit = self.GetParent<Unit>() });
+
             self.StartMove();
-            
+
             bool moveRet = await self.tcs;
 
             if (moveRet)
             {
-                Game.EventSystem.Publish(new EventType.MoveStop(){Unit = self.GetParent<Unit>()});
+                Game.EventSystem.Publish(new EventType.MoveStop() { Unit = self.GetParent<Unit>() });
             }
+
             return moveRet;
         }
 
@@ -120,12 +126,12 @@ namespace ET
             if (!self.Enable)
             {
                 self.StartTime += self.UpdateTime - lastUpdateTime;
-                
+
                 return;
             }
+
             Unit unit = self.GetParent<Unit>();
-            
-            
+
             long moveTime = self.UpdateTime - self.StartTime;
 
             while (true)
@@ -134,7 +140,7 @@ namespace ET
                 {
                     return;
                 }
-                
+
                 // 计算位置插值
                 if (moveTime >= self.NeedTime)
                 {
@@ -153,7 +159,7 @@ namespace ET
                         Vector3 newPos = Vector3.Lerp(self.StartPos, self.NextTarget, amount);
                         unit.Position = newPos;
                     }
-                    
+
                     // 计算方向插值
                     if (self.TurnTime > 0)
                     {
@@ -162,6 +168,7 @@ namespace ET
                         {
                             amount = 1f;
                         }
+
                         Quaternion q = Quaternion.Slerp(self.From, self.To, amount);
                         unit.Rotation = q;
                     }
@@ -174,9 +181,9 @@ namespace ET
                 {
                     return;
                 }
-                
+
                 // 到这里说明这个点已经走完
-                
+
                 // 如果是最后一个点
                 if (self.N >= self.Targets.Count - 1)
                 {
@@ -202,7 +209,6 @@ namespace ET
 
         private static void SetNextTarget(this MoveComponent self)
         {
-
             Unit unit = self.GetParent<Unit>();
 
             ++self.N;
@@ -210,14 +216,14 @@ namespace ET
             // 时间计算用服务端的位置, 但是移动要用客户端的位置来插值
             Vector3 v = self.GetFaceV();
             float distance = v.magnitude;
-            
+
             // 插值的起始点要以unit的真实位置来算
             self.StartPos = unit.Position;
 
             self.StartTime += self.NeedTime;
-            
-            self.NeedTime = (long) (distance / self.Speed * 1000);
-            
+
+            self.NeedTime = (long)(distance / self.Speed * 1000);
+
             if (self.TurnTime > 0)
             {
                 // 要用unit的位置
@@ -226,8 +232,9 @@ namespace ET
                 {
                     return;
                 }
+
                 self.From = unit.Rotation;
-                
+
                 if (self.IsTurnHorizontal)
                 {
                     faceV.y = 0;
@@ -240,7 +247,7 @@ namespace ET
 
                 return;
             }
-            
+
             if (self.TurnTime == 0) // turn time == 0 立即转向
             {
                 Vector3 faceV = self.GetFaceV();
@@ -286,7 +293,7 @@ namespace ET
             {
                 return;
             }
-            
+
             self.StartTime = 0;
             self.StartPos = Vector3.zero;
             self.BeginTime = 0;

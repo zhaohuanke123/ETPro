@@ -134,6 +134,17 @@ namespace ET
 
                     return unit;
                 }
+                case UnitType.Monster:
+                {
+                    Unit unit = unitComponent.AddChildWithId<Unit, int>(id, 2);
+                    unit.AddComponent<MoveComponent>();
+                    NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+                    numericComponent.Set(NumericType.Lv, 1);
+                    numericComponent.Set(NumericType.Speed, 6f);
+                    unit.Position = new Vector3(0, 0, 0);
+                    return unit;
+                }
+
                 default:
                     throw new Exception($"not such unit type: {unitType}");
             }

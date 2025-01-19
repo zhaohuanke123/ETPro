@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET
 {
@@ -52,6 +54,12 @@ namespace ET
             // response.CPId = id;
             // response.InventoryIndex = championInfo.gridPositionX;
             reply();
+
+            Unit unit = UnitFactory.Create(session.DomainScene(), player.Id, UnitType.Monster);
+            MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
+            await moveComponent.MoveToAsync(new List<Vector3>() { new Vector3(0, 0, 0), new Vector3(0, 5, 0), new Vector3(0, 10, 0) }, 1);
+            Log.Warning(unit.Position.ToString());
+
             await ETTask.CompletedTask;
         }
     }

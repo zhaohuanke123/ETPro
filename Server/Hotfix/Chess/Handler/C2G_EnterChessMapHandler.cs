@@ -18,6 +18,7 @@ namespace ET
             GamePlayComponent gamePlayComponent = session.AddComponent<GamePlayComponent>();
             ShopComponent shopComponent = gamePlayComponent.AddComponent<ShopComponent>();
             gamePlayComponent.AddComponent<ChampionArrayComponent>();
+            session.DomainScene().AddComponent<UnitComponent>();
             ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.AddComponent<ChampionMapArrayComponent>();
             championMapArrayComponent.AddComponent<BattleChampionBonusComponent>();
             shopComponent.AddPlayerGold(player, 100);

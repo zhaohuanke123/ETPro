@@ -124,14 +124,13 @@ namespace ET
         {
             var oldpos = self.Position;
             self.Position = position;
-            // AOICell cell = self.Scene.GetAOICell(position);
-            // var oldCell = self.Cell;
-            // var changeCell = cell != oldCell;
-            var changeCell = false;
-            // if (changeCell) //跨格子了：AOI刷新
-            // {
-            //     self.ChangeTo(cell);
-            // }
+            AOICell cell = self.Scene.GetAOICell(position);
+            var oldCell = self.Cell;
+            var changeCell = cell != oldCell;
+            if (changeCell) //跨格子了：AOI刷新
+            {
+                self.ChangeTo(cell);
+            }
 
             //“碰撞器”刷新 自己进入或离开别人的
             if (self.Collider != null && self.Collider.Enable)
@@ -149,14 +148,14 @@ namespace ET
 #if SERVER
             if (self.GetComponent<GhostComponent>() != null)
             {
-                // if (cell.TryGetCellMap(out var newSceneId))
-                // {
-                //     await self.GetComponent<GhostComponent>().CheckAreaTransfer(newSceneId, position);
-                // }
-                // else//玩家去到了未开放区域
-                // {
-                //     //todo:倒计时拉回复活点
-                // }
+                if (cell.TryGetCellMap(out var newSceneId))
+                {
+                    await self.GetComponent<GhostComponent>().CheckAreaTransfer(newSceneId, position);
+                }
+                else//玩家去到了未开放区域
+                {
+                    //todo:倒计时拉回复活点
+                }
             }
 #endif
             await ETTask.CompletedTask;
