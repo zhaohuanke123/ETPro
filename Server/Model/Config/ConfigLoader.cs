@@ -12,16 +12,26 @@ namespace ET
                 string key = Path.GetFileNameWithoutExtension(file);
                 output[key] = File.ReadAllBytes(file);
             }
+
             output["StartMachineConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartMachineConfigCategory.bytes");
             output["StartProcessConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartProcessConfigCategory.bytes");
             output["StartSceneConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartSceneConfigCategory.bytes");
             output["StartZoneConfigCategory"] = File.ReadAllBytes($"../Config/{Game.Options.StartConfig}/StartZoneConfigCategory.bytes");
         }
-        
+
         public byte[] GetOneConfigBytes(string configName)
         {
             byte[] configBytes = File.ReadAllBytes($"../Config/{configName}.bytes");
             return configBytes;
+        }
+
+        public List<string> GetMapData()
+        {
+            List<string> res = new List<string>(3);
+            res.Add(File.ReadAllText($"../Config/Map/mapGridPositions.txt"));
+            res.Add(File.ReadAllText($"../Config/Map/mapStartPosition.txt"));
+
+            return res;
         }
     }
 }

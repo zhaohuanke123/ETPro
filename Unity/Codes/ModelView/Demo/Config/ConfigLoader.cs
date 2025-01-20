@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-       public class ConfigLoader: IConfigLoader
+    public class ConfigLoader: IConfigLoader
     {
         public void GetAllConfigBytes(Dictionary<string, byte[]> output)
         {
@@ -20,8 +20,13 @@ namespace ET
 
         public byte[] GetOneConfigBytes(string configName)
         {
-            TextAsset v = YooAssetsMgr.Instance.LoadTextAsset("Config/"+configName+".bytes") as TextAsset;
+            TextAsset v = YooAssetsMgr.Instance.LoadTextAsset("Config/" + configName + ".bytes") as TextAsset;
             return v.bytes;
+        }
+
+        public List<string> GetMapData()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

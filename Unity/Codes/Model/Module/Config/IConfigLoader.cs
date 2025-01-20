@@ -6,5 +6,6 @@ namespace ET
     {
         void GetAllConfigBytes(Dictionary<string, byte[]> output);
         byte[] GetOneConfigBytes(string configName);
+        List<string> GetMapData();
     }
 }

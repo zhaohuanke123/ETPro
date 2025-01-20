@@ -1,5 +1,6 @@
 ﻿using System;
 using MongoDB.Driver.Core.Events;
+using UnityEngine;
 
 namespace ET
 {
@@ -16,8 +17,10 @@ namespace ET
 
             session.RemoveComponent<GamePlayComponent>();
             GamePlayComponent gamePlayComponent = session.AddComponent<GamePlayComponent>();
+            gamePlayComponent.AddComponent<MapComponent>();
             ShopComponent shopComponent = gamePlayComponent.AddComponent<ShopComponent>();
             gamePlayComponent.AddComponent<ChampionArrayComponent>();
+            session.DomainScene().RemoveComponent<UnitComponent>();
             session.DomainScene().AddComponent<UnitComponent>();
             ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.AddComponent<ChampionMapArrayComponent>();
             championMapArrayComponent.AddComponent<BattleChampionBonusComponent>();

@@ -17,6 +17,9 @@ namespace ET
 
         public static readonly int TeamId_Player = 0;
         public static readonly int TeamId_AI = 1;
+        public static readonly int InventorySize = 9;
+        public static readonly int HexMapSizeX = 7;
+        public static readonly int HexMapSizeZ = 8;
 
         public GameStage currentGameStage;
 

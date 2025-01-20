@@ -22,6 +22,9 @@
     <Compile Include="..\..\Unity\Codes\Hotfix\Chess\GamePlayComponentSystem.cs">
       <Link>Chess\System\GamePlayComponentSystem.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Codes\Hotfix\Chess\MapComponentSystem.cs">
+      <Link>Chess\System\MapComponentSystem.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Codes\Hotfix\Demo\Move\MoveComponentSystem.cs">
       <Link>Demo\Move\MoveComponentSystem.cs</Link>
     </Compile>

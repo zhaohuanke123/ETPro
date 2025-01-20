@@ -1,0 +1,1 @@
+{ "_t" : "UnityEngine.Vector3, UnityEngine.CoreModule", "_v" : { "x" : 7.5000038146972656, "y" : -5.7220458984375E-06, "z" : 8.7499923706054688 } }
