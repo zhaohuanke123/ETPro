@@ -10,11 +10,11 @@
     }
 
     [ObjectSystem]
-    public class GamePlayUpdateSystem: UpdateSystem<GamePlayComponent>
+    public class GamePlayFixedUpdateSystem: FixedUpdateSystem<GamePlayComponent>
     {
-        public override void Update(GamePlayComponent self)
+        public override void FixedUpdate(GamePlayComponent self)
         {
-    
+            Log.Warning("GamePlayComponent FixedUpdate");
         }
     }
 
@@ -29,6 +29,5 @@
     [FriendClass(typeof (GamePlayComponent))]
     public static class GamePlayComponentSystemSystem
     {
-    
     }
 }
