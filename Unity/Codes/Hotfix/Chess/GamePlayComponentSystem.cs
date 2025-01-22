@@ -14,7 +14,7 @@
     {
         public override void FixedUpdate(GamePlayComponent self)
         {
-            Log.Warning("GamePlayComponent FixedUpdate");
+            // Log.Warning("GamePlayComponent FixedUpdate");
         }
     }
 

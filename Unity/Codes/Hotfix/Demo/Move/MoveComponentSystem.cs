@@ -118,6 +118,33 @@ namespace ET
             return moveRet;
         }
 
+        public static async ETTask<bool> MoveToAsync(this MoveComponent self, Vector3 target, float speed, int turnTime = 100)
+        {
+            self.Stop(false);
+
+            self.Targets.Clear();
+
+            self.Targets.Add(self.GetParent<Unit>().Position);
+            self.Targets.Add(target);
+
+            self.IsTurnHorizontal = true;
+            self.TurnTime = turnTime;
+            self.Speed = speed;
+            self.tcs = ETTask<bool>.Create(true);
+
+            Game.EventSystem.Publish(new EventType.MoveStart() { Unit = self.GetParent<Unit>() });
+
+            self.StartMove();
+
+            bool moveRet = await self.tcs;
+            if (moveRet)
+            {
+                Game.EventSystem.Publish(new EventType.MoveStop() { Unit = self.GetParent<Unit>() });
+            }
+
+            return moveRet;
+        }
+
         // ret: 停止的时候，移动协程的返回值
         private static void MoveForward(this MoveComponent self, bool ret)
         {

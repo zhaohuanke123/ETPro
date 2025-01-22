@@ -499,6 +499,15 @@ message C2G_BuyChampion // IRequest
 	int32 SlopIndex = 1;
 }
 
+message G2C_BuyChampion // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	repeated ChampionInfoPB CPInfos = 1;
+	UnitInfo UnitInfo  = 2;
+}
+
 enum GridType
 {
 	OwnInventory = 0;
@@ -512,14 +521,6 @@ message ChampionInfoPB
 	int32 GridPositionY = 3; 
 	GridType Type = 4; 
 	int32 Lv = 5;
-}
-
-message G2C_BuyChampion // IResponse
-{
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-	repeated ChampionInfoPB CPInfos = 1;
 }
 
 message G2C_UpdateBonus // IMessage
@@ -546,4 +547,12 @@ message G2C_DragChampion // IResponse
 	int32 RpcId = 90;
 	int32 Error = 91;
 	string Message = 92;
+}
+
+message G2C_SyncUnitPos // IMessage
+{
+	long UnitId = 1;
+	float X = 2;
+	float Y = 3;
+	float Z = 4;
 }

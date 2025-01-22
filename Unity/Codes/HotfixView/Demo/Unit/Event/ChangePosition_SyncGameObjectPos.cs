@@ -6,14 +6,16 @@ namespace ET
     {
         protected override void Run(object changePosition)
         {
-            EventType.ChangePosition args = changePosition as EventType.ChangePosition;;
+            EventType.ChangePosition args = changePosition as EventType.ChangePosition;
+            ;
             GameObjectComponent gameObjectComponent = args.Unit.GetComponent<GameObjectComponent>();
             if (gameObjectComponent == null)
             {
                 return;
             }
+
             Transform transform = gameObjectComponent.GameObject.transform;
-            transform.position = args.Unit.Position;
+            transform.position = Vector3.Lerp(transform.position, args.Unit.Position, 0.5f);
         }
     }
 }

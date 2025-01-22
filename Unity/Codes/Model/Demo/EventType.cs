@@ -146,6 +146,7 @@ namespace ET
         {
             public Scene zoneScene;
             public List<ChampionInfoPB> CPInfos;
+            public Unit unit;
         }
     }
 }

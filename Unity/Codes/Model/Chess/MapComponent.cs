@@ -5,6 +5,7 @@ namespace ET
     [ComponentOf]
     public class MapComponent: Entity, IAwake, IDestroy
     {
+        public static MapComponent Instance;
         public Vector3[] ownInventoryGridPositions;
 
         // public Vector3[] oponentInventoryGridPositions;

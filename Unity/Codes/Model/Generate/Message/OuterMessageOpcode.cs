@@ -66,10 +66,11 @@ namespace ET
 		 public const ushort G2C_RefreshShop = 10067;
 		 public const ushort C2G_EnterChessMapFinish = 10064;
 		 public const ushort C2G_BuyChampion = 10069;
-		 public const ushort ChampionInfoPB = 10071;
 		 public const ushort G2C_BuyChampion = 10070;
+		 public const ushort ChampionInfoPB = 10071;
 		 public const ushort G2C_UpdateBonus = 10072;
 		 public const ushort C2G_DragChampion = 10073;
 		 public const ushort G2C_DragChampion = 10074;
+		 public const ushort G2C_SyncUnitPos = 10075;
 	}
 }

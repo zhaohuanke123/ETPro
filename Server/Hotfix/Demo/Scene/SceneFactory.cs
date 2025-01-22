@@ -48,7 +48,7 @@ namespace ET
                     scene.AddComponent<TokenComponent>();
                     scene.AddComponent<AccountSessionsComponent>();
                     scene.AddComponent<PlayerComponent>();
-                    scene.AddComponent<GamePlayComponent>();
+                    // scene.AddComponent<GamePlayComponent>();
                     break;
                 case SceneType.LoginCenter:
                     scene.AddComponent<LoginInfoRecordComponent>();

@@ -1037,6 +1037,27 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_BuyChampion)]
+	[ProtoContract]
+	public partial class G2C_BuyChampion: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public List<ChampionInfoPB> CPInfos = new List<ChampionInfoPB>();
+
+		[ProtoMember(2)]
+		public UnitInfo UnitInfo { get; set; }
+
+	}
+
 	[Message(OuterOpcode.ChampionInfoPB)]
 	[ProtoContract]
 	public partial class ChampionInfoPB: Object
@@ -1055,24 +1076,6 @@ namespace ET
 
 		[ProtoMember(5)]
 		public int Lv { get; set; }
-
-	}
-
-	[Message(OuterOpcode.G2C_BuyChampion)]
-	[ProtoContract]
-	public partial class G2C_BuyChampion: Object, IResponse
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(91)]
-		public int Error { get; set; }
-
-		[ProtoMember(92)]
-		public string Message { get; set; }
-
-		[ProtoMember(1)]
-		public List<ChampionInfoPB> CPInfos = new List<ChampionInfoPB>();
 
 	}
 
@@ -1128,6 +1131,24 @@ namespace ET
 
 		[ProtoMember(92)]
 		public string Message { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_SyncUnitPos)]
+	[ProtoContract]
+	public partial class G2C_SyncUnitPos: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(2)]
+		public float X { get; set; }
+
+		[ProtoMember(3)]
+		public float Y { get; set; }
+
+		[ProtoMember(4)]
+		public float Z { get; set; }
 
 	}
 

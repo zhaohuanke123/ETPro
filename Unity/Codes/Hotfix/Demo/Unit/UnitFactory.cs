@@ -14,12 +14,43 @@ namespace ET
             Vector3 pos = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
             unit.Position = pos;
             unit.Forward = new Vector3(unitInfo.ForwardX, unitInfo.ForwardY, unitInfo.ForwardZ);
+            NumericComponent numericComponent;
             switch (unit.Type)
             {
                 case UnitType.Monster:
+                    numericComponent = unit.AddComponent<NumericComponent>();
+                    unit.AddComponent<ChessChampionGameComponent>();
+                    for (int i = 0; i < unitInfo.Ks.Count; ++i)
+                    {
+                        if (unitInfo.Ks[i] > NumericType.Max) //不需要同步最终值
+                        {
+                            numericComponent.Set(unitInfo.Ks[i], unitInfo.Vs[i], true);
+                        }
+                    }
+
+                    unit.AddComponent<MoveComponent>();
+                    if (unitInfo.MoveInfo != null)
+                    {
+                        if (unitInfo.MoveInfo.X.Count > 0)
+                        {
+                            using (ListComponent<Vector3> list = ListComponent<Vector3>.Create())
+                            {
+                                list.Add(pos);
+                                for (int i = 0; i < unitInfo.MoveInfo.X.Count; ++i)
+                                {
+                                    list.Add(new Vector3(unitInfo.MoveInfo.X[i], unitInfo.MoveInfo.Y[i], unitInfo.MoveInfo.Z[i]));
+                                }
+
+                                unit.MoveToAsync(list).Coroutine();
+                            }
+                        }
+                    }
+
+                    unit.Position = pos; //触发客户端加载场景预制体
+                    break;
                 case UnitType.Player:
                 {
-                    NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+                    numericComponent = unit.AddComponent<NumericComponent>();
                     for (int i = 0; i < unitInfo.Ks.Count; ++i)
                     {
                         if (unitInfo.Ks[i] > NumericType.Max) //不需要同步最终值
@@ -71,7 +102,7 @@ namespace ET
                 }
                 case UnitType.Skill:
                 {
-                    NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+                    numericComponent = unit.AddComponent<NumericComponent>();
                     if (unitInfo.Ks != null && unitInfo.Ks.Count > 0)
                     {
                         for (int i = 0; i < unitInfo.Ks.Count; ++i)

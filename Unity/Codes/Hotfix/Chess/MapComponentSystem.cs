@@ -11,6 +11,7 @@ namespace ET
     {
         public override void Awake(MapComponent self)
         {
+            MapComponent.Instance = self;
 #if !SERVER
             self.mapGridPositions = Map.Instance.mapGridPositions;
             self.ownInventoryGridPositions = Map.Instance.ownInventoryGridPositions;

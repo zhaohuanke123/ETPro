@@ -109,6 +109,9 @@ namespace ET
 		/// <summary>攻击范围</summary>
 		[ProtoMember(10)]
 		public int attackRange { get; set; }
+		/// <summary>UnitId</summary>
+		[ProtoMember(11)]
+		public int unitId { get; set; }
 
 	}
 }

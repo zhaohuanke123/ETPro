@@ -10,7 +10,8 @@ namespace ET
     }
 
     [ComponentOf]
-    public class GamePlayComponent: Entity, IAwake, IFixedUpdate, IDestroy
+    public class GamePlayComponent: Entity, IAwake, IDestroy
+    // ,IFixedUpdate
     {
         public static readonly int GridTypeOwnInventory = 0;
         public static readonly int GridTypeMap = 2;

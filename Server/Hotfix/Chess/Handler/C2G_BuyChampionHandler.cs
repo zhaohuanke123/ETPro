@@ -5,6 +5,8 @@ using UnityEngine;
 namespace ET
 {
     [FriendClassAttribute(typeof (ET.ChampionInfo))]
+    [FriendClassAttribute(typeof (ET.MapComponent))]
+    [FriendClassAttribute(typeof (ET.Unit))]
     public class C2G_BuyChampionHandler: AMRpcHandler<C2G_BuyChampion, G2C_BuyChampion>
     {
         protected override async ETTask Run(Session session, C2G_BuyChampion request, G2C_BuyChampion response, Action reply)
@@ -53,12 +55,20 @@ namespace ET
 
             // response.CPId = id;
             // response.InventoryIndex = championInfo.gridPositionX;
+
+            Unit unit = UnitFactory.Create(session.DomainScene(), 1, UnitType.Monster);
+            unit.ConfigId = config.unitId;
+
+            Log.Warning($"unitID : {unit.Id.ToString()}");
+            MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
+            unit.Position = MapComponent.Instance.mapGridPositions[0, 0];
+            unit.AddComponent<SendUniPosComponent, Player>(player);
+            Log.Warning($"unitPos : {unit.Position.ToString()}");
+            response.UnitInfo = UnitHelper.CreateUnitInfo(unit);
             reply();
 
-            Unit unit = UnitFactory.Create(session.DomainScene(), player.Id, UnitType.Monster);
-            MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
-            await moveComponent.MoveToAsync(new List<Vector3>() { new Vector3(0, 0, 0), new Vector3(0, 5, 0), new Vector3(0, 10, 0) }, 1);
-            Log.Warning(unit.Position.ToString());
+            await TimerComponent.Instance.WaitAsync(2);
+            await moveComponent.MoveToAsync(MapComponent.Instance.mapGridPositions[4, 4], 6);
 
             await ETTask.CompletedTask;
         }

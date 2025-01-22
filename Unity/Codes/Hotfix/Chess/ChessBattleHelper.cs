@@ -31,8 +31,11 @@ namespace ET
             }
 
             // int responseCpId = response.CPId;
+            CurrentScenesComponent currentScenesComponent = zoneScene.GetComponent<CurrentScenesComponent>();
+            Scene currentScene = currentScenesComponent.Scene;
+            Unit unit = UnitFactory.Create(currentScene, response.UnitInfo);
 
-            await Game.EventSystem.PublishAsync(new EventType.GenChampions() { zoneScene = zoneScene, CPInfos = response.CPInfos });
+            await Game.EventSystem.PublishAsync(new EventType.GenChampions() { zoneScene = zoneScene, CPInfos = response.CPInfos, unit = unit });
         }
 
         // champion 位置修改后发送request到服务器， 使用C2G_DragChampion,

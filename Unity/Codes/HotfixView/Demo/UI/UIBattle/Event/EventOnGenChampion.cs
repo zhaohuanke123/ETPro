@@ -24,11 +24,12 @@ namespace ET
                         GamePlayController.Instance.ownChampionInventoryArray[infoPb.GridPositionX] = null;
                     });
                 ChessBattleViewComponent.Instance.Replace(showView, index);
+                args.unit.AddComponent(showView);
 
-                ChampionControllerComponent championControllerComponent =
-                        showView.AddComponent<ChampionControllerComponent, GameObjectComponent>(showView);
-                championControllerComponent.Init(index);
-                championControllerComponent.SetLevel(infoPb.Lv);
+                // ChampionControllerComponent championControllerComponent =
+                //         showView.AddComponent<ChampionControllerComponent, GameObjectComponent>(showView);
+                // championControllerComponent.Init(index);
+                // championControllerComponent.SetLevel(infoPb.Lv);
             }
 
             await ETTask.CompletedTask;
