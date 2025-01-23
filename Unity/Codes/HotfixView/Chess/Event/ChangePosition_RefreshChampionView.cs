@@ -1,15 +1,20 @@
 ﻿using ET.EventType;
+using UnityEngine;
 
 namespace ET
 {
-    public class ChangePosition_RefreshChampionView: AEventClass<EventType.ChangePosition>
+    public class ChangePosition_RefreshChampionView: AEvent<CPChangePosition>
     {
-        protected override void Run(object changePosition)
+        protected override void Run(CPChangePosition args)
         {
-            if (changePosition is ChangePosition posInfo)
+            GameObjectComponent gameObjectComponent = args.Unit.GetComponent<GameObjectComponent>();
+            if (gameObjectComponent == null)
             {
-                Unit unit = posInfo.Unit;
+                return;
             }
+
+            Transform transform = gameObjectComponent.GameObject.transform;
+            transform.position = args.Unit.ViewPosition;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ET
         /// <summary>
         /// 固定间隔的目标FPS
         /// </summary>
-        public const int FixedUpdateTargetFPS = 30;
+        public const int FixedUpdateTargetFPS = 24;
 
         public const float FixedUpdateTargetDTTime_Float = 1f / FixedUpdateTargetFPS;
 

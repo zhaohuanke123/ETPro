@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Schema;
 
@@ -25,55 +26,50 @@ namespace ET
     [FriendClassAttribute(typeof (ET.ChampionInfo))]
     public static partial class ChampionMapArrayComponentSystem
     {
-        public const int hexMapSizeX = 7;
-        public const int hexMapSizeZ = 8;
-
-        public static ChampionInfo[,] Init(this ChampionMapArrayComponent self, long playerId)
+        public static void AddPlayer(this ChampionMapArrayComponent self, Player player)
         {
-            ChampionInfo[,] grids = new ChampionInfo[hexMapSizeX, hexMapSizeZ];
-            self.playersGridArray[playerId] = grids;
-            return grids;
+            if (!self.playersGridArray.TryAdd(player.Id, new ChampionInfo[GamePlayComponent.HexMapSizeX, GamePlayComponent.HexMapSizeZ]))
+            {
+                Log.Error("ChampionMapArrayComponent AddPlayer 玩家已经存在");
+            }
+
+            BattleChampionBonusComponent battleChampionBonusComponent = self.GetComponent<BattleChampionBonusComponent>();
+            battleChampionBonusComponent.AddPlayer(player);
         }
 
         public static void AddToGrid(this ChampionMapArrayComponent self, Player player, ChampionInfo championInfo, int gridX, int gridZ)
         {
             if (!self.playersGridArray.TryGetValue(player.Id, out var grids))
             {
-                grids = self.Init(player.Id);
             }
 
             self.AddChild(championInfo);
             championInfo.gridPositionX = gridX;
             championInfo.gridPositionZ = gridZ;
             grids[gridX, gridZ] = championInfo;
-            // self.CalculateBonuses(player);
         }
 
         public static void Replace(this ChampionMapArrayComponent self, Player player, ChampionInfo championInfo, int gridX, int gridZ)
         {
             if (!self.playersGridArray.TryGetValue(player.Id, out var grids))
             {
-                grids = self.Init(player.Id);
             }
 
             championInfo.gridPositionX = gridX;
             championInfo.gridPositionZ = gridZ;
             grids[gridX, gridZ] = championInfo;
-            // self.CalculateBon
         }
 
         public static ChampionInfo RemoveFromGird(this ChampionMapArrayComponent self, Player player, int gridX, int gridZ)
         {
             if (!self.playersGridArray.TryGetValue(player.Id, out var grids))
             {
-                grids = self.Init(player.Id);
+                throw new ArgumentException("玩家不存在");
             }
 
             ChampionInfo championInfo = grids[gridX, gridZ];
             grids[gridX, gridZ] = null;
 
-            //TODO 临时
-            // self.CalculateBonuses(player);
             return championInfo;
         }
 
@@ -81,16 +77,16 @@ namespace ET
         {
             if (!self.playersGridArray.TryGetValue(player.Id, out var grids))
             {
-                return;
+                throw new ArgumentException("玩家不存在");
             }
 
             BattleChampionBonusComponent battleChampionBonusComponent = self.GetComponent<BattleChampionBonusComponent>();
 
             Dictionary<int, int> championTypeCount = battleChampionBonusComponent.GetPlayerChampionTypeCount(player);
             championTypeCount.Clear();
-            for (int x = 0; x < hexMapSizeX; x++)
+            for (int x = 0; x < GamePlayComponent.HexMapSizeX; x++)
             {
-                for (int z = 0; z < hexMapSizeZ / 2; z++)
+                for (int z = 0; z < GamePlayComponent.HexMapSizeZ / 2; z++)
                 {
                     if (grids[x, z] != null)
                     {

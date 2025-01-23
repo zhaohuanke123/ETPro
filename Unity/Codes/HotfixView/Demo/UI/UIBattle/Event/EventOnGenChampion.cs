@@ -24,7 +24,10 @@ namespace ET
                         GamePlayController.Instance.ownChampionInventoryArray[infoPb.GridPositionX] = null;
                     });
                 ChessBattleViewComponent.Instance.Replace(showView, index);
-                args.unit.AddComponent(showView);
+
+                Unit unit = args.unit;
+                unit.AddComponent(showView);
+                unit.AddComponent<MoveViewComponent>();
 
                 // ChampionControllerComponent championControllerComponent =
                 //         showView.AddComponent<ChampionControllerComponent, GameObjectComponent>(showView);

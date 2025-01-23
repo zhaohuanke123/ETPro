@@ -41,6 +41,16 @@ namespace ET
             public Scene CurrentScene;
         }
 
+        public struct CPChangePosition
+        {
+            public Unit Unit;
+        }
+
+        public struct CPChangeRotate
+        {
+            public Unit Unit;
+        }
+
         public class ChangePosition: DisposeObject
         {
             public static readonly ChangePosition Instance = new ChangePosition();

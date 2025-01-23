@@ -7,7 +7,6 @@ namespace ET
         protected override void Run(object changePosition)
         {
             EventType.ChangePosition args = changePosition as EventType.ChangePosition;
-            ;
             GameObjectComponent gameObjectComponent = args.Unit.GetComponent<GameObjectComponent>();
             if (gameObjectComponent == null)
             {
@@ -15,7 +14,7 @@ namespace ET
             }
 
             Transform transform = gameObjectComponent.GameObject.transform;
-            transform.position = Vector3.Lerp(transform.position, args.Unit.Position, 0.5f);
+            transform.position = args.Unit.ViewPosition;
         }
     }
 }

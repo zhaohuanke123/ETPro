@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ET
@@ -24,24 +25,33 @@ namespace ET
     [FriendClass(typeof (BattleChampionBonusComponent))]
     public static partial class BattleChampionBonusComponentSystem
     {
-        public static (Dictionary<int, int> typeCount, List<ChampionBonusConfig> activeBonus)
-                Init(this BattleChampionBonusComponent self, Player player)
+        public static void AddPlayer(this BattleChampionBonusComponent self, Player player)
         {
-            var typeCount = new Dictionary<int, int>();
-            var activeBonus = new List<ChampionBonusConfig>();
+            if (!self.playersChampionTypeCount.TryAdd(player.Id, new Dictionary<int, int>()))
+            {
+                Log.Error("BattleChampionBonusComponent AddPlayer 玩家已经存在");
+            }
 
-            self.playersActiveBonus[player.Id] = activeBonus;
-            self.playersChampionTypeCount[player.Id] = typeCount;
-
-            return (typeCount, activeBonus);
+            if (!self.playersActiveBonus.TryAdd(player.Id, new List<ChampionBonusConfig>()))
+            {
+                Log.Error("BattleChampionBonusComponent AddPlayer 玩家已经存在");
+            }
         }
+
+        // public static void Init(this BattleChampionBonusComponent self, Player player)
+        // {
+        //     var typeCount = new Dictionary<int, int>();
+        //     var activeBonus = new List<ChampionBonusConfig>();
+        //
+        //     self.playersActiveBonus[player.Id] = activeBonus;
+        //     self.playersChampionTypeCount[player.Id] = typeCount;
+        // }
 
         public static Dictionary<int, int> GetPlayerChampionTypeCount(this BattleChampionBonusComponent self, Player player)
         {
             if (!self.playersChampionTypeCount.TryGetValue(player.Id, out var typeCount))
             {
-                var tmp = self.Init(player);
-                typeCount = tmp.typeCount;
+                throw new ArgumentException("玩家不存在");
             }
 
             return typeCount;
@@ -51,8 +61,7 @@ namespace ET
         {
             if (!self.playersActiveBonus.TryGetValue(player.Id, out var activeBonus))
             {
-                var tmp = self.Init(player);
-                activeBonus = tmp.activeBonus;
+                throw new ArgumentException("玩家不存在");
             }
 
             return activeBonus;

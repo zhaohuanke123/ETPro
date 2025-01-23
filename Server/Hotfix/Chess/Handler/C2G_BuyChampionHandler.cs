@@ -35,12 +35,6 @@ namespace ET
                 return;
             }
 
-            // 加角色
-            // ChampionInfo championInfo = championArrayComponent.AddChild<ChampionInfo>();
-            // NumericComponent numericComponent = championInfo.AddComponent<NumericComponent>();
-            // numericComponent.Set(NumericType.Lv, 1);
-
-            // numericComponent.Set();
             if (!championArrayComponent.TryAdd(player, id))
             {
                 response.Error = ErrorCode.ChampionArrayFull;
@@ -56,19 +50,26 @@ namespace ET
             // response.CPId = id;
             // response.InventoryIndex = championInfo.gridPositionX;
 
-            Unit unit = UnitFactory.Create(session.DomainScene(), 1, UnitType.Monster);
-            unit.ConfigId = config.unitId;
+            // Unit unit = UnitFactory.Create(session.DomainScene(), IdGenerater.Instance.GenerateUnitId(session.DomainZone()), UnitType.Monster);
+            // unit.ConfigId = config.unitId;
+            //
+            // Log.Warning($"unitID : {unit.Id.ToString()}");
+            // MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
+            // unit.Position = MapComponent.Instance.mapGridPositions[0, 0];
+            // unit.AddComponent<SendUniPosComponent, Player>(player);
+            // Log.Warning($"unitPos : {unit.Position.ToString()}");
+            // response.UnitInfo = UnitHelper.CreateUnitInfo(unit);
 
-            Log.Warning($"unitID : {unit.Id.ToString()}");
-            MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
-            unit.Position = MapComponent.Instance.mapGridPositions[0, 0];
-            unit.AddComponent<SendUniPosComponent, Player>(player);
-            Log.Warning($"unitPos : {unit.Position.ToString()}");
-            response.UnitInfo = UnitHelper.CreateUnitInfo(unit);
             reply();
 
-            await TimerComponent.Instance.WaitAsync(2);
-            await moveComponent.MoveToAsync(MapComponent.Instance.mapGridPositions[4, 4], 6);
+            // await TimerComponent.Instance.WaitAsync(1);
+            // await moveComponent.MoveToAsync(MapComponent.Instance.mapGridPositions[6, 6], 6);
+            // await TimerComponent.Instance.WaitAsync(1);
+            // await moveComponent.MoveToAsync(MapComponent.Instance.mapGridPositions[1, 1], 6);
+            // await TimerComponent.Instance.WaitAsync(1);
+            // await moveComponent.MoveToAsync(MapComponent.Instance.mapGridPositions[6, 1], 6);
+            // await TimerComponent.Instance.WaitAsync(1);
+            // await moveComponent.MoveToAsync(MapComponent.Instance.mapGridPositions[1, 6], 6);
 
             await ETTask.CompletedTask;
         }

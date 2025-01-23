@@ -18,6 +18,8 @@ namespace ET
         /// </summary>
         public Dictionary<long, List<int>> availableChampionIdArray;
 
+        public Dictionary<long, int> playerCurrentChampionLimit;
+
         /// <summary>
         ///  所有的英雄
         /// </summary>

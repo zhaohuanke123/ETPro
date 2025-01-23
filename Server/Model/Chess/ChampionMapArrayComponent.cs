@@ -9,6 +9,5 @@ namespace ET
         /// 地图中的
         /// </summary>
         public Dictionary<long, ChampionInfo[,]> playersGridArray;
-
     }
 }

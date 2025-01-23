@@ -21,24 +21,29 @@ namespace ET
     }
 
     [FriendClass(typeof (ChampionArrayComponent))]
-    [FriendClassAttribute(typeof (ET.ChampionInfo))]
-    public static partial class ChampionArrayComponentSystem
+    [FriendClass(typeof (ET.ChampionInfo))]
+    public static class ChampionArrayComponentSystem
     {
-        private const int InventorySize = 9;
-
-        public static List<ChampionInfo> InitPlayerArray(this ChampionArrayComponent self, long playerId)
+        public static void AddPlayer(this ChampionArrayComponent self, Player player)
         {
-            var list = new List<ChampionInfo>(InventorySize);
-            list.AddMany(null, InventorySize);
-            self.playersInventoryArr[playerId] = list;
-            return list;
+            if (!self.playersInventoryArr.TryAdd(player.Id, new List<ChampionInfo>(new ChampionInfo[GamePlayComponent.InventorySize])))
+            {
+                Log.Error("ChampionArray AddPlayer 玩家已经存在");
+            }
         }
+
+        // public static List<ChampionInfo> InitPlayerArray(this ChampionArrayComponent self, long playerId)
+        // {
+        //     var list = new List<ChampionInfo>(new ChampionInfo[GamePlayComponent.InventorySize]);
+        //     self.playersInventoryArr[playerId] = list;
+        //     return list;
+        // }
 
         public static int FindEmptyIndex(this ChampionArrayComponent self, Player player)
         {
             if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
             {
-                list = self.InitPlayerArray(player.Id);
+                throw new ArgumentException("玩家不存在");
             }
 
             int emptyIndex = -1;
@@ -58,7 +63,7 @@ namespace ET
         {
             if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
             {
-                list = self.InitPlayerArray(player.Id);
+                throw new ArgumentException("玩家不存在");
             }
 
             // 先看看能不能合并升级
@@ -89,7 +94,7 @@ namespace ET
         {
             if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
             {
-                list = self.InitPlayerArray(player.Id);
+                throw new ArgumentException("玩家不存在");
             }
 
             self.AddChild(championInfo);
@@ -102,7 +107,7 @@ namespace ET
         {
             if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
             {
-                list = self.InitPlayerArray(player.Id);
+                throw new ArgumentException("玩家不存在");
             }
 
             list[championInfo.gridPositionX] = championInfo;
@@ -171,8 +176,7 @@ namespace ET
             var res = new List<ChampionInfoPB>();
             if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
             {
-                list = self.InitPlayerArray(player.Id);
-                return res;
+                throw new ArgumentException("玩家不存在");
             }
 
             foreach (ChampionInfo info in list)
@@ -195,8 +199,7 @@ namespace ET
         {
             if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
             {
-                res = false;
-                return null;
+                throw new ArgumentException("玩家不存在");
             }
 
             ChampionInfo championInfo = list[index];

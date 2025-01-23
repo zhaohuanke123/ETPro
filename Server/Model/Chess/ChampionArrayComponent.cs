@@ -9,6 +9,5 @@ namespace ET
         /// 就绪
         /// </summary>
         public Dictionary<long, List<ChampionInfo>> playersInventoryArr;
-
     }
 }

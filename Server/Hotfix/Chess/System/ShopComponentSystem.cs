@@ -11,8 +11,9 @@ namespace ET
         public override void Awake(ShopComponent self)
         {
             self.availableChampionIdArray = new Dictionary<long, List<int>>();
-            self.championIdsArray = ChampionConfigCategory.Instance.GetAll().Keys.ToArray();
             self.playersGoldDict = new Dictionary<long, int>();
+            self.playerCurrentChampionLimit = new Dictionary<long, int>();
+            self.championIdsArray = ChampionConfigCategory.Instance.GetAll().Keys.ToArray();
             self.championTypeIdsArray = ChampionTypeConfigCategory.Instance.GetAll().Keys.ToArray();
         }
     }
@@ -31,14 +32,34 @@ namespace ET
         // public static void Test(this ShopComponent self)
         // {
         // }
-        public static void AddPlayerGold(this ShopComponent self, Player player, int gold)
+        public static void AddPlayer(this ShopComponent self, Player player)
         {
-            if (!self.playersGoldDict.TryAdd(player.Id, gold))
+            if (!self.availableChampionIdArray.TryAdd(player.Id, new List<int>()))
             {
-                self.playersGoldDict[player.Id] += gold;
+                Log.Error("ShopComponent AddPlayer 玩家已经存在");
+                return;
             }
 
-            self.SendRefreshGold(player, gold);
+            if (!self.playersGoldDict.TryAdd(player.Id, GamePlayComponent.InitGold))
+            {
+            }
+
+            if (!self.playerCurrentChampionLimit.TryAdd(player.Id, GamePlayComponent.InitChampionLimit))
+            {
+            }
+        }
+
+        public static void AddPlayerGold(this ShopComponent self, Player player, int gold)
+        {
+            if (!self.playersGoldDict.TryGetValue(player.Id, out int count))
+            {
+                Log.Error("ShopComponent AddPlayerGold 玩家不存在");
+            }
+
+            int res = count + gold;
+            self.playersGoldDict[player.Id] = res;
+
+            self.SendRefreshGold(player, count + res);
         }
 
         public static void SubPlayerGold(this ShopComponent self, Player player, int gold)
@@ -78,12 +99,12 @@ namespace ET
 
         public static bool IsEnoughGold(this ShopComponent self, long playerId, int gold)
         {
-            if (self.playersGoldDict.TryGetValue(playerId, out int value))
+            if (!self.playersGoldDict.TryGetValue(playerId, out int value))
             {
-                return value >= gold;
+                return false;
             }
 
-            return false;
+            return value >= gold;
         }
 
         /// <summary>
@@ -168,19 +189,17 @@ namespace ET
 
         public static int GetIdByIndex(this ShopComponent self, Player player, int index)
         {
-            if (self.availableChampionIdArray.TryGetValue(player.Id, out var availableList))
+            if (!self.availableChampionIdArray.TryGetValue(player.Id, out var availableList))
             {
-                if (index >= availableList.Count)
-                {
-                    return -1;
-                }
-                else
-                {
-                    return availableList[index];
-                }
+                return -1;
             }
 
-            return -1;
+            if (index >= availableList.Count)
+            {
+                return -1;
+            }
+
+            return availableList[index];
         }
     }
 }

@@ -33,7 +33,9 @@ namespace ET
         public int CombatStageDuration = 60;
         public int baseGoldIncome = 5;
 
-        public int currentChampionLimit = 3;
+        public const int InitChampionLimit = 3;
+        public const int InitGold = 10;
+        
         public int currentChampionCount = 0;
         public int currentGold = 5;
         public int currentHP = 100;
