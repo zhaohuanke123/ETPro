@@ -3,6 +3,7 @@
     [ChildOf(typeof (PlayerComponent))]
     public sealed class Player: Entity, IAwake<string>
     {
+        public GamePlayComponent gamePlayRoom;
         public string Account { get; set; }
 
         public long UnitId { get; set; }

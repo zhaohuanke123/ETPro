@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    [FriendClassAttribute(typeof (ET.Player))]
     public static class UnitFactory
     {
         public static void AfterCreateUnitFromMsg(Unit unit, CreateUnitFromMsgType type)
@@ -148,6 +149,19 @@ namespace ET
                 default:
                     throw new Exception($"not such unit type: {unitType}");
             }
+        }
+
+        public static Unit CreateChampionUnit(Player player)
+        {
+            UnitComponent unitComponent = player.gamePlayRoom.GetComponent<UnitComponent>();
+            Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), 2);
+            unit.AddComponent<MoveComponent>();
+            unit.AddComponent<CpCombatComponent>();
+            NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+            numericComponent.Set(NumericType.Lv, 1);
+            numericComponent.Set(NumericType.Speed, 6f);
+            unit.Position = new Vector3(0, 0, 0);
+            return unit;
         }
 
         public static Unit CreateSkillCollider(Scene currentScene, int configId, Vector3 pos, Quaternion rota, SkillPara para)

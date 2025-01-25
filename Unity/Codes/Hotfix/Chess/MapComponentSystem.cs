@@ -54,8 +54,9 @@ namespace ET
     [FriendClass(typeof (MapComponent))]
     public static partial class MapComponentSystem
     {
-        public static void Test(this MapComponent self)
+        public static Vector3 GetMapPosition(this MapComponent self, int x, int y)
         {
+            return self.mapGridPositions[x, y];
         }
     }
 }

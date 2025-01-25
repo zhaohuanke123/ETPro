@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ET
 {
     public enum GameStage
     {
+        BeforeGame,
         Preparation,
         Combat,
         Loss
     }
 
     [ComponentOf]
-    public class GamePlayComponent: Entity, IAwake, IDestroy
+    public class GamePlayComponent: Entity, IAwake, IDestroy, IFixedUpdate
     // ,IFixedUpdate
     {
         public static readonly int GridTypeOwnInventory = 0;
@@ -24,26 +26,27 @@ namespace ET
 
         public GameStage currentGameStage;
 
+#if SERVER
+        public Dictionary<Player, List<Unit>> playerChampionDict;
+        public Dictionary<long, bool> playerReadyDict;
+#endif
         /// <summary>
         /// 计时 
         /// </summary>
-        public float timer = 0;
+        public long timer = 0;
 
-        public int PreparationStageDuration = 16;
+        public long preTime = 0;
+
+        public long PreparationStageDuration = 12 * 1000;
         public int CombatStageDuration = 60;
         public int baseGoldIncome = 5;
 
         public const int InitChampionLimit = 3;
         public const int InitGold = 10;
-        
+
         public int currentChampionCount = 0;
         public int currentGold = 5;
         public int currentHP = 100;
         public int timerDisplay = 0;
-
-        public Dictionary<ChampionTypeConfig, int> championTypeCount;
-
-        public List<ChampionBonusConfig> activeBonusList;
-        // Other necessary fie
     }
 }

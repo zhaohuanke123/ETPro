@@ -3,23 +3,24 @@
 namespace ET
 {
     [ObjectSystem]
-    public class SkillAbilityAwakeSystem : AwakeSystem<SkillAbility,int>
+    public class SkillAbilityAwakeSystem: AwakeSystem<SkillAbility, int>
     {
         public override void Awake(SkillAbility self, int a)
         {
             self.ConfigId = a;
             self.Groups = new Dictionary<string, long>();
-            self.LastSpellOverTime = TimeHelper.ServerNow()-self.SkillConfig.CDTime;
-            self.LastSpellTime = TimeHelper.ServerNow()-self.SkillConfig.CDTime;
-            var groups = SkillStepConfigCategory.Instance.GetSkillGroups(self.ConfigId); 
+            self.LastSpellOverTime = TimeHelper.ServerNow() - self.SkillConfig.CDTime;
+            self.LastSpellTime = TimeHelper.ServerNow() - self.SkillConfig.CDTime;
+            var groups = SkillStepConfigCategory.Instance.GetSkillGroups(self.ConfigId);
             for (int i = 0; i < groups.Count; i++)
             {
                 var group = self.AddChild<SkillAbilityGroup, int>(groups[i].Id);
-                self.Groups.Add(groups[i].Group,group.Id);
+                self.Groups.Add(groups[i].Group, group.Id);
             }
         }
     }
-    [FriendClass(typeof(SkillAbility))]
+
+    [FriendClass(typeof (SkillAbility))]
     public static class SkillAbilitySystem
     {
         /// <summary>
@@ -31,7 +32,8 @@ namespace ET
         {
             return true;
         }
-        public static SkillAbilityGroup GetGroup(this SkillAbility self,string group)
+
+        public static SkillAbilityGroup GetGroup(this SkillAbility self, string group)
         {
             if (self.Groups.TryGetValue(group, out var res))
             {

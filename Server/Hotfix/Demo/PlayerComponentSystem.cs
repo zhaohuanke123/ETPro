@@ -9,6 +9,7 @@ namespace ET
         {
             public override void Awake(PlayerComponent self)
             {
+                PlayerComponent.Instance = self;
             }
         }
 

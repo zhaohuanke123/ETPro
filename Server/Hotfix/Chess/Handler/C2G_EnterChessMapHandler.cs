@@ -1,4 +1,5 @@
 ﻿using System;
+using ET.Chess;
 using MongoDB.Driver.Core.Events;
 using UnityEngine;
 
@@ -17,9 +18,9 @@ namespace ET
 
             session.RemoveComponent<GamePlayComponent>();
             GamePlayComponent gamePlayComponent = session.AddComponent<GamePlayComponent>();
+            
             gamePlayComponent.AddComponent<MapComponent>();
             ShopComponent shopComponent = gamePlayComponent.AddComponent<ShopComponent>();
-            shopComponent.AddPlayer(player);
 
             gamePlayComponent.AddComponent<ChampionArrayComponent>();
             session.DomainScene().RemoveComponent<UnitComponent>();
@@ -27,6 +28,9 @@ namespace ET
 
             ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.AddComponent<ChampionMapArrayComponent>();
             championMapArrayComponent.AddComponent<BattleChampionBonusComponent>();
+            gamePlayComponent.AddPlayer(player);
+
+            // TODO 临时
             shopComponent.AddPlayerGold(player, 100);
 
             response.SceneInstanceId = 123;

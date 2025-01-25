@@ -556,3 +556,8 @@ message G2C_SyncUnitPos // IMessage
 	float Y = 3;
 	float Z = 4;
 }
+
+message G2C_SyncTimer // IMessage
+{
+	int64 timer = 1;
+}

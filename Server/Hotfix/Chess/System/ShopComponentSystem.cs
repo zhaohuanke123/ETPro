@@ -36,8 +36,7 @@ namespace ET
         {
             if (!self.availableChampionIdArray.TryAdd(player.Id, new List<int>()))
             {
-                Log.Error("ShopComponent AddPlayer 玩家已经存在");
-                return;
+                throw new ArgumentException("玩家已存在");
             }
 
             if (!self.playersGoldDict.TryAdd(player.Id, GamePlayComponent.InitGold))
@@ -53,7 +52,7 @@ namespace ET
         {
             if (!self.playersGoldDict.TryGetValue(player.Id, out int count))
             {
-                Log.Error("ShopComponent AddPlayerGold 玩家不存在");
+                throw new ArgumentException("玩家不存在");
             }
 
             int res = count + gold;

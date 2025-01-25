@@ -13,6 +13,7 @@
         public const int GenerateSkillCollider = 1008; //延时生成触发器
         public const int DestroyGameObject = 1009; //移除GameObject
         public const int LoginTimeOut = 1010; //登录超时
+        public const int SyncTime = 1011; //登录超时
 
         public const int AccountSessionCheckoutTime = 1011;
         // 不能超过10000

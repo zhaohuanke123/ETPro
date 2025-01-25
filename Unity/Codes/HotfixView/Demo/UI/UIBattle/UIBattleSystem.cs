@@ -76,6 +76,11 @@ namespace ET
                 Log.Info("SetShopChampionList :: championIds is null");
             }
         }
+        
+        public static void SetTimer(this UIBattle self, int timer)
+        {
+            self.CountDownText.SetText(timer.ToString());
+        }
 
         public static void SetChampionLimit(this UIBattle self, int championLimit)
         {

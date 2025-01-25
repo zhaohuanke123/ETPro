@@ -23,5 +23,8 @@ namespace ET
         public int gridPositionX = 0;
         public int gridPositionZ = 0;
         public GridType gridType;
+        
+        public int X => gridPositionX;
+        public int Z => gridPositionZ;
     }
 }

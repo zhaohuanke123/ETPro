@@ -1152,4 +1152,13 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_SyncTimer)]
+	[ProtoContract]
+	public partial class G2C_SyncTimer: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long timer { get; set; }
+
+	}
+
 }

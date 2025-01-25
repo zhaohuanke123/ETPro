@@ -30,7 +30,7 @@ namespace ET
         {
             if (!self.playersGridArray.TryAdd(player.Id, new ChampionInfo[GamePlayComponent.HexMapSizeX, GamePlayComponent.HexMapSizeZ]))
             {
-                Log.Error("ChampionMapArrayComponent AddPlayer 玩家已经存在");
+                throw new ArgumentException("玩家已存在");
             }
 
             BattleChampionBonusComponent battleChampionBonusComponent = self.GetComponent<BattleChampionBonusComponent>();

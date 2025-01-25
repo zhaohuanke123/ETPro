@@ -72,5 +72,6 @@ namespace ET
 		 public const ushort C2G_DragChampion = 10073;
 		 public const ushort G2C_DragChampion = 10074;
 		 public const ushort G2C_SyncUnitPos = 10075;
+		 public const ushort G2C_SyncTimer = 10076;
 	}
 }
