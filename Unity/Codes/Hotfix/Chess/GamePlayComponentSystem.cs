@@ -125,12 +125,19 @@ namespace ET.Chess
                 }
             }
 
+            G2C_CreateCpUnits message = new G2C_CreateCpUnits();
+            foreach (var units in self.playerChampionDict.Values)
+            {
+                foreach (Unit unit in units)
+                {
+                    UnitInfo unitInfo = UnitHelper.CreateUnitInfo(unit);
+                    message.Units.Add(unitInfo);
+                }
+            }
+
             foreach (Player player in self.playerChampionDict.Keys)
             {
-                foreach (var units in self.playerChampionDict.Values)
-                {
-                    
-                }
+                player.SendMessage(message);
             }
         }
     }

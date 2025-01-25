@@ -561,3 +561,8 @@ message G2C_SyncTimer // IMessage
 {
 	int64 timer = 1;
 }
+
+message G2C_CreateCpUnits // IMessage
+{
+	repeated UnitInfo Units = 1;
+}

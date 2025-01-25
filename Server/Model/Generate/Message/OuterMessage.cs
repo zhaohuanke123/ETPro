@@ -1161,4 +1161,13 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_CreateCpUnits)]
+	[ProtoContract]
+	public partial class G2C_CreateCpUnits: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public List<UnitInfo> Units = new List<UnitInfo>();
+
+	}
+
 }

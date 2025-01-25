@@ -25,14 +25,14 @@ namespace ET
                     });
                 ChessBattleViewComponent.Instance.Replace(showView, index);
 
-                Unit unit = args.unit;
-                unit.AddComponent(showView);
-                unit.AddComponent<MoveViewComponent>();
+                // Unit unit = args.unit;
+                // unit.AddComponent(showView);
+                // unit.AddComponent<MoveViewComponent>();
 
-                // ChampionControllerComponent championControllerComponent =
-                //         showView.AddComponent<ChampionControllerComponent, GameObjectComponent>(showView);
-                // championControllerComponent.Init(index);
-                // championControllerComponent.SetLevel(infoPb.Lv);
+                ChampionControllerComponent championControllerComponent =
+                        showView.AddComponent<ChampionControllerComponent, GameObjectComponent>(showView);
+                championControllerComponent.Init(index);
+                championControllerComponent.SetLevel(infoPb.Lv);
             }
 
             await ETTask.CompletedTask;
