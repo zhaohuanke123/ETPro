@@ -21,6 +21,7 @@ namespace ET
 
 	public enum Camp
 	{
+		None,
 		Player1,
 		Player2,
 	}
@@ -58,6 +59,9 @@ namespace ET
 
 		[BsonIgnore]
 		public List<ChampionInfo> player2ChampionInfos;
+		
+		// [BsonIgnore]
+		// public Queue<Unit> 
 #endif
 		/// <summary>
 		/// 计时 

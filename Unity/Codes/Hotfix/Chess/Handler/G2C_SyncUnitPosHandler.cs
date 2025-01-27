@@ -26,7 +26,7 @@ namespace ET
 
 			MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
 			Log.Warning("收到同步位置消息:{0}", unit.Position);
-			unit.Forward = new Vector3(message.ForwardX, message.ForwardY, message.ForwardZ);
+			// unit.Forward = new Vector3(message.ForwardX, message.ForwardY, message.ForwardZ);
 			await moveComponent.MoveToAsync(new Vector3(message.X, message.Y, message.Z), 10);
 		}
 	}

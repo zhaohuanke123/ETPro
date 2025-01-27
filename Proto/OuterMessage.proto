@@ -551,6 +551,8 @@ message G2C_DragChampion // IResponse
 
 message G2C_SyncUnitPos // IMessage
 {
+	repeated long UnitIds = 1;
+	repeated MoveInfo MoveInfos = 2;
 	long UnitId = 1;
 	float X = 2;
 	float Y = 3;
@@ -591,6 +593,29 @@ message G2C_AttackDamage // IMessage
 	int64 FromId = 1;
 	int64 ToId = 2;
 	int32 Damage = 3;
-	bool IsDead = 4;
-	int64 attackTime = 5;
+	int32 Helath = 4;
+	bool IsDead = 5;
+	int64 attackTime = 6;
+}
+
+//ResponseType G2C_StartMatch
+message C2G_StartMatch // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message G2C_StartMatch // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
+message G2C_MatchSuccess // IMessage
+{
+	int64 RoomId = 1;
+}
+
+message G2C_MatchFail // IMessage
+{
 }

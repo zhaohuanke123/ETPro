@@ -24,7 +24,7 @@ namespace ET
 			CpAnimatorComponent cpAnimatorComponent = gameObjectComponent.GetComponent<CpAnimatorComponent>();
 			cpAnimatorComponent.DoAttack(true);
 			await TimerComponent.Instance.WaitAsync(message.attackTime);
-			cpAnimatorComponent.DoAttack(false);
+			cpAnimatorComponent?.DoAttack(false);
 		}
 	}
 }

@@ -53,6 +53,12 @@ namespace ET
 
 				// 移动到两个人直线上的攻击范围内
 				Vector3 targetPos = nearestTarget.Position - (nearestTarget.Position - selfUnit.Position).normalized * config.attackRange / 2;
+				G2C_SyncUnitPos message = new G2C_SyncUnitPos();
+				message.UnitId = selfUnit.Id;
+				message.X = targetPos.x;
+				message.Y = targetPos.y;
+				message.Z = targetPos.z;
+				gamePlayComponent.Broadcast(message);
 				await moveComponent.MoveToAsync(targetPos, numericComponent.GetAsInt(NumericType.Speed));
 			}
 
@@ -93,8 +99,8 @@ namespace ET
 
 		public static async ETTask Attack(this CpCombatComponent self, GamePlayComponent gamePlayComponent, long attacktime)
 		{
+			DamageHelper.Damage(gamePlayComponent, self.GetParent<Unit>(), self.target, 5, attacktime);
 			await TimerComponent.Instance.WaitAsync(attacktime);
-			DamageHelper.Damage(gamePlayComponent, self.GetParent<Unit>(), self.target, 5, attacktime + 1000);
 		}
 	}
 }

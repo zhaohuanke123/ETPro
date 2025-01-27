@@ -7,5 +7,6 @@
         public UIButton EnterBtn;
         public UIButton ReturnLoginBtn;
         public UIButton EnterChessMapBtn;
+        public UIButton StartMatchBtn;
     }
 }

@@ -34,7 +34,7 @@ namespace ET
             ChampionTypeConfig type2Config = ChampionTypeConfigCategory.Instance.Get(type2Id);
 
             self.Sk1.SetIconAndName(type1Config.icon, type1Config.displayName);
-            self.Sk2.SetIconAndName(type2Config.icon, type1Config.displayName);
+            self.Sk2.SetIconAndName(type2Config.icon, type2Config.displayName);
             self.cost.SetNumber(config.cost);
         }
 

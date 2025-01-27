@@ -78,5 +78,9 @@ namespace ET
 		 public const ushort C2G_ExitChessMap = 10079;
 		 public const ushort G2C_OneCpBattleEnd = 10080;
 		 public const ushort G2C_AttackDamage = 10081;
+		 public const ushort C2G_StartMatch = 10082;
+		 public const ushort G2C_StartMatch = 10083;
+		 public const ushort G2C_MatchSuccess = 10084;
+		 public const ushort G2C_MatchFail = 10085;
 	}
 }

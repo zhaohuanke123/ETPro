@@ -22,9 +22,11 @@ namespace ET
 			}
 			else
 			{
+				Log.Info($"{unit.Id} attack {target.Id} damage {damage}");
+				Log.Info($"{target.Id} hp is {target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp)}");
 				message.IsDead = false;
 			}
-			
+
 			gamePlayComponent.Broadcast(message);
 		}
 	}

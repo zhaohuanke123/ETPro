@@ -1139,6 +1139,12 @@ namespace ET
 	public partial class G2C_SyncUnitPos: Object, IMessage
 	{
 		[ProtoMember(1)]
+		public List<long> UnitIds = new List<long>();
+
+		[ProtoMember(2)]
+		public List<MoveInfo> MoveInfos = new List<MoveInfo>();
+
+		[ProtoMember(1)]
 		public long UnitId { get; set; }
 
 		[ProtoMember(2)]
@@ -1217,11 +1223,54 @@ namespace ET
 		public int Damage { get; set; }
 
 		[ProtoMember(4)]
-		public bool IsDead { get; set; }
+		public int Helath { get; set; }
 
 		[ProtoMember(5)]
+		public bool IsDead { get; set; }
+
+		[ProtoMember(6)]
 		public long attackTime { get; set; }
 
+	}
+
+	[ResponseType(nameof(G2C_StartMatch))]
+	[Message(OuterOpcode.C2G_StartMatch)]
+	[ProtoContract]
+	public partial class C2G_StartMatch: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_StartMatch)]
+	[ProtoContract]
+	public partial class G2C_StartMatch: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_MatchSuccess)]
+	[ProtoContract]
+	public partial class G2C_MatchSuccess: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long RoomId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_MatchFail)]
+	[ProtoContract]
+	public partial class G2C_MatchFail: Object, IMessage
+	{
 	}
 
 }

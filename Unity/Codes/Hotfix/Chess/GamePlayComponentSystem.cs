@@ -29,6 +29,11 @@ namespace ET
 		{
 			if (self.currentGameStage == GameStage.BeforeGame)
 			{
+				if (self.playerReadyDict.Count < 2)
+				{
+					return;
+				}
+				
 				foreach (bool isReady in self.playerReadyDict.Values)
 				{
 					if (isReady == false)
@@ -161,7 +166,7 @@ namespace ET
 				{
 					Unit unit = UnitFactory.CreateChampionUnit(unitComponent, championInfo);
 					units.Add(unit);
-					unit.AddComponent<SendUniPosComponent, Player>(player);
+					// unit.AddComponent<SendUniPosComponent, Player>(player);
 					ChampionInfoPB championInfoPb = championInfo.GetChampionInfoPb();
 					championInfoPb.Lv = unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Lv);
 					championInfoPbs.Add(championInfoPb);
@@ -234,7 +239,7 @@ namespace ET
 			{
 				if (self.CheckBattleEnd())
 				{
-					await TimerComponent.Instance.WaitAsync(1500);
+					await TimerComponent.Instance.WaitAsync(1000);
 					foreach (var kv in self.playerChampionDict)
 					{
 						Player player = kv.Key;

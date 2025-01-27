@@ -27,6 +27,7 @@ namespace ET
 			ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.AddComponent<ChampionMapArrayComponent>();
 			championMapArrayComponent.AddComponent<BattleChampionBonusComponent>();
 			gamePlayComponent.AddPlayer(player);
+			gamePlayComponent.AddComponent<SendUniPosComponent>();
 
 			// TODO 临时
 			player.SetCamp(Camp.Player1);
