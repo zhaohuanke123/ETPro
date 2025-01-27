@@ -1168,6 +1168,9 @@ namespace ET
 		[ProtoMember(1)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
 
+		[ProtoMember(2)]
+		public List<ChampionInfoPB> ChampionInfoPBList = new List<ChampionInfoPB>();
+
 	}
 
 }

@@ -21,6 +21,5 @@
                 if(buff!=null)buffC.RemoveByOther(buff.Id,true);
             }
         }
-
     }
 }

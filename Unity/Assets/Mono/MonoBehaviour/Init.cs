@@ -110,7 +110,11 @@ namespace ET
 
 		private void Update()
 		{
-			if (!IsInit) return;
+			if (!IsInit)
+			{
+				return;
+			}
+
 			CodeLoader.Instance.Update?.Invoke();
 			if (CodeLoader.Instance.isReStart)
 			{

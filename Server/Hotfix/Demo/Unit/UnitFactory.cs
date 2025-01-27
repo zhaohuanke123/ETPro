@@ -151,10 +151,9 @@ namespace ET
             }
         }
 
-        public static Unit CreateChampionUnit(Player player)
+        public static Unit CreateChampionUnit(UnitComponent unitComponent, ChampionInfo championInfo)
         {
-            UnitComponent unitComponent = player.gamePlayRoom.GetComponent<UnitComponent>();
-            Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), 2);
+            Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), championInfo.config.unitId);
             unit.AddComponent<MoveComponent>();
             unit.AddComponent<CpCombatComponent>();
             NumericComponent numericComponent = unit.AddComponent<NumericComponent>();

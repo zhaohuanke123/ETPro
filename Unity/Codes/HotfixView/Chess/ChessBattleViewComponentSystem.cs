@@ -2,179 +2,205 @@
 
 namespace ET
 {
-    [ObjectSystem]
-    public class ChessBattleViewComponentAwakeSystem: AwakeSystem<ChessBattleViewComponent>
-    {
-        public override void Awake(ChessBattleViewComponent self)
-        {
-            ChessBattleViewComponent.Instance = self;
-            self.ownChampionInventoryArray = new GameObjectComponent[9];
-            self.gridChampionsArray = new GameObjectComponent[Map.hexMapSizeX, Map.hexMapSizeZ / 2];
-        }
-    }
+	[ObjectSystem]
+	public class ChessBattleViewComponentAwakeSystem: AwakeSystem<ChessBattleViewComponent>
+	{
+		public override void Awake(ChessBattleViewComponent self)
+		{
+			ChessBattleViewComponent.Instance = self;
+			self.ownChampionInventoryArray = new GameObjectComponent[9];
+			self.gridChampionsArray = new GameObjectComponent[Map.hexMapSizeX, Map.hexMapSizeZ / 2];
+		}
+	}
 
-    [ObjectSystem]
-    public class ChessBattleViewComponentDestroySystem: DestroySystem<ChessBattleViewComponent>
-    {
-        public override void Destroy(ChessBattleViewComponent self)
-        {
-        }
-    }
+	[ObjectSystem]
+	public class ChessBattleViewComponentDestroySystem: DestroySystem<ChessBattleViewComponent>
+	{
+		public override void Destroy(ChessBattleViewComponent self)
+		{
+		}
+	}
 
-    [FriendClass(typeof (ChessBattleViewComponent))]
-    public static partial class ChessBattleViewComponentSystem
-    {
-        // public static void Test(this ChessBattleViewComponent self)
-        // {
-        // }
+	[FriendClass(typeof (ChessBattleViewComponent))]
+	public static partial class ChessBattleViewComponentSystem
+	{
+		// public static void Test(this ChessBattleViewComponent self)
+		// {
+		// }
 
-        public static void Replace(this ChessBattleViewComponent self, GameObjectComponent showView, int index)
-        {
-            ref GameObjectComponent gameObjectComponent = ref self.ownChampionInventoryArray[index];
-            if (gameObjectComponent != null)
-            {
-                gameObjectComponent.Dispose();
-            }
+		public static void Replace(this ChessBattleViewComponent self, GameObjectComponent showView, int index)
+		{
+			ref GameObjectComponent gameObjectComponent = ref self.ownChampionInventoryArray[index];
+			if (gameObjectComponent != null)
+			{
+				gameObjectComponent.Dispose();
+			}
 
-            gameObjectComponent = showView;
-        }
+			gameObjectComponent = showView;
+		}
 
-        public static void Clear(this ChessBattleViewComponent self)
-        {
-            for (int i = 0; i < self.ownChampionInventoryArray.Length; i++)
-            {
-                GameObjectComponent goComponent = self.ownChampionInventoryArray[i];
-                if (goComponent != null)
-                {
-                    goComponent.Dispose();
-                }
+		public static void Clear(this ChessBattleViewComponent self)
+		{
+			for (int i = 0; i < self.ownChampionInventoryArray.Length; i++)
+			{
+				GameObjectComponent goComponent = self.ownChampionInventoryArray[i];
+				if (goComponent != null)
+				{
+					goComponent.Dispose();
+				}
 
-                self.ownChampionInventoryArray[i] = null;
-            }
-        }
+				self.ownChampionInventoryArray[i] = null;
+			}
+		}
 
-        public static void StartDrag(this ChessBattleViewComponent self, TriggerInfo triggerInfo)
-        {
-            if (triggerInfo != null)
-            {
-                self.dragStartTrigger = triggerInfo;
+		public static void HideAll(this ChessBattleViewComponent self)
+		{
+			for (int i = 0; i < self.ownChampionInventoryArray.Length; i++)
+			{
+				GameObjectComponent goComponent = self.ownChampionInventoryArray[i];
+				if (goComponent == null)
+				{
+					continue;
+				}
 
-                GameObjectComponent championGO = self.GetChampionFromTriggerInfo(triggerInfo);
+				goComponent.GameObject.SetActive(false);
+			}
+			foreach (GameObjectComponent gameObjectComponent in self.gridChampionsArray)
+			{
+				if (gameObjectComponent == null)
+				{
+					continue;
+				}
 
-                if (championGO != null)
-                {
-                    Map.Instance.ShowIndicators();
+				gameObjectComponent.GameObject.SetActive(false);
+			}
+		}
 
-                    self.draggedChampion = championGO;
+		public static void StartDrag(this ChessBattleViewComponent self, TriggerInfo triggerInfo)
+		{
+			if (triggerInfo != null)
+			{
+				self.dragStartTrigger = triggerInfo;
 
-                    ChampionControllerComponent championControllerComponent = championGO.GetComponent<ChampionControllerComponent>();
-                    championControllerComponent.SetDrag(true);
-                }
-            }
-        }
+				GameObjectComponent championGO = self.GetChampionFromTriggerInfo(triggerInfo);
 
-        public static void EndDrag(this ChessBattleViewComponent self, TriggerInfo triggerInfo)
-        {
-            Map.Instance.HideIndicators();
+				if (championGO != null)
+				{
+					Map.Instance.ShowIndicators();
 
-            if (self.draggedChampion != null)
-            {
-                self.draggedChampion.GetComponent<ChampionControllerComponent>().SetDrag(false);
+					self.draggedChampion = championGO;
 
-                if (triggerInfo != null)
-                {
-                    if (self.dragStartTrigger.Equals(triggerInfo))
-                    {
-                        return;
-                    }
+					ChampionControllerComponent championControllerComponent = championGO.GetComponent<ChampionControllerComponent>();
+					championControllerComponent.SetDrag(true);
+				}
+			}
+		}
 
-                    GameObjectComponent currentChampion = self.GetChampionFromTriggerInfo(triggerInfo);
+		public static void EndDrag(this ChessBattleViewComponent self, TriggerInfo triggerInfo)
+		{
+			Map.Instance.HideIndicators();
 
-                    if (currentChampion != null)
-                    {
-                        self.StoreChampionInArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX, self.dragStartTrigger.gridZ,
-                            currentChampion);
-                        self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
+			if (self.draggedChampion != null)
+			{
+				self.draggedChampion.GetComponent<ChampionControllerComponent>().SetDrag(false);
 
-                        ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
-                    }
-                    else
-                    {
-                        if (triggerInfo.gridType == GamePlayComponent.GridTypeMap)
-                        {
-                            // if (championsOnField < currentChampionLimit || dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
-                            // if (true || self.dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
-                            // {
-                            self.RemoveChampionFromArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX,
-                                self.dragStartTrigger.gridZ);
-                            self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
+				if (triggerInfo != null)
+				{
+					if (self.dragStartTrigger.Equals(triggerInfo))
+					{
+						return;
+					}
 
-                            // if (dragStartTrigger.gridType != Map.GRIDTYPE_HEXA_MAP)
-                            //     championsOnField++;
+					GameObjectComponent currentChampion = self.GetChampionFromTriggerInfo(triggerInfo);
 
-                            ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
-                            // }
-                        }
-                        else if (triggerInfo.gridType == GamePlayComponent.GridTypeOwnInventory)
-                        {
-                            self.RemoveChampionFromArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX, self.dragStartTrigger.gridZ);
+					if (currentChampion != null)
+					{
+						self.StoreChampionInArray(self.dragStartTrigger.gridType,
+						self.dragStartTrigger.gridX,
+						self.dragStartTrigger.gridZ,
+						currentChampion);
+						self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
 
-                            self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
+						ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
+					}
+					else
+					{
+						if (triggerInfo.gridType == GPDefine.GridTypeMap)
+						{
+							// if (championsOnField < currentChampionLimit || dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
+							// if (true || self.dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
+							// {
+							self.RemoveChampionFromArray(self.dragStartTrigger.gridType,
+							self.dragStartTrigger.gridX,
+							self.dragStartTrigger.gridZ);
+							self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
 
-                            // if (dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
-                            //     championsOnField--;
+							// if (dragStartTrigger.gridType != Map.GRIDTYPE_HEXA_MAP)
+							//     championsOnField++;
 
-                            ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
-                        }
-                    }
-                }
-            }
+							ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
+							// }
+						}
+						else if (triggerInfo.gridType == GPDefine.GridTypeOwnInventory)
+						{
+							self.RemoveChampionFromArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX, self.dragStartTrigger.gridZ);
 
-            self.draggedChampion = null;
-        }
+							self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
 
-        public static GameObjectComponent GetChampionFromTriggerInfo(this ChessBattleViewComponent self, TriggerInfo triggerInfo)
-        {
-            if (triggerInfo.gridType == GamePlayComponent.GridTypeOwnInventory)
-            {
-                return self.ownChampionInventoryArray[triggerInfo.gridX];
-            }
+							// if (dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
+							//     championsOnField--;
 
-            if (triggerInfo.gridType == GamePlayComponent.GridTypeMap)
-            {
-                return self.gridChampionsArray[triggerInfo.gridX, triggerInfo.gridZ];
-            }
+							ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
+						}
+					}
+				}
+			}
 
-            Log.Error($"GetChampionFromTriggerInfo error : {triggerInfo}");
-            return null;
-        }
+			self.draggedChampion = null;
+		}
 
-        public static void StoreChampionInArray(this ChessBattleViewComponent self, int gridType, int gridX, int gridZ, GameObjectComponent champion)
-        {
-            var championController = champion.GetComponent<ChampionControllerComponent>();
-            championController.SetGridPosition(gridType, gridX, gridZ);
-            // Log.Warning($"StoreChampionInArray : {gridType} {gridX} {gridZ}");
+		public static GameObjectComponent GetChampionFromTriggerInfo(this ChessBattleViewComponent self, TriggerInfo triggerInfo)
+		{
+			if (triggerInfo.gridType == GPDefine.GridTypeOwnInventory)
+			{
+				return self.ownChampionInventoryArray[triggerInfo.gridX];
+			}
 
-            if (gridType == GamePlayComponent.GridTypeOwnInventory)
-            {
-                self.ownChampionInventoryArray[gridX] = champion;
-            }
-            else if (gridType == GamePlayComponent.GridTypeMap)
-            {
-                self.gridChampionsArray[gridX, gridZ] = champion;
-            }
-        }
+			if (triggerInfo.gridType == GPDefine.GridTypeMap)
+			{
+				return self.gridChampionsArray[triggerInfo.gridX, triggerInfo.gridZ];
+			}
 
-        public static void RemoveChampionFromArray(this ChessBattleViewComponent self, int type, int gridX, int gridZ)
-        {
-            if (type == GamePlayComponent.GridTypeOwnInventory)
-            {
-                self.ownChampionInventoryArray[gridX] = null;
-            }
-            else if (type == GamePlayComponent.GridTypeMap)
-            {
-                self.gridChampionsArray[gridX, gridZ] = null;
-            }
-        }
-    }
+			Log.Error($"GetChampionFromTriggerInfo error : {triggerInfo}");
+			return null;
+		}
+
+		public static void StoreChampionInArray(this ChessBattleViewComponent self, int gridType, int gridX, int gridZ, GameObjectComponent champion)
+		{
+			var championController = champion.GetComponent<ChampionControllerComponent>();
+			championController.SetGridPosition(gridType, gridX, gridZ);
+			// Log.Warning($"StoreChampionInArray : {gridType} {gridX} {gridZ}");
+
+			if (gridType == GPDefine.GridTypeOwnInventory)
+			{
+				self.ownChampionInventoryArray[gridX] = champion;
+			}
+			else if (gridType == GPDefine.GridTypeMap)
+			{
+				self.gridChampionsArray[gridX, gridZ] = champion;
+			}
+		}
+
+		public static void RemoveChampionFromArray(this ChessBattleViewComponent self, int type, int gridX, int gridZ)
+		{
+			if (type == GPDefine.GridTypeOwnInventory)
+			{
+				self.ownChampionInventoryArray[gridX] = null;
+			}
+			else if (type == GPDefine.GridTypeMap)
+			{
+				self.gridChampionsArray[gridX, gridZ] = null;
+			}
+		}
+	}
 }

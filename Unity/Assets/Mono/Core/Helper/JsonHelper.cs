@@ -17,7 +17,6 @@ namespace ET
 #if NOT_UNITY
             return MongoDB.Bson.BsonExtensionMethods.ToJson(message, logDefineSettings);
 #else
-            return MongoDB.Bson.BsonExtensionMethods.ToJson(message, logDefineSettings);
             return LitJson.JsonMapper.ToJson(message);
 #endif
         }

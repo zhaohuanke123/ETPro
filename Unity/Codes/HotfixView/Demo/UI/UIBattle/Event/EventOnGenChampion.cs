@@ -15,7 +15,7 @@ namespace ET
             {
                 ChampionConfig config = ChampionConfigCategory.Instance.Get(infoPb.ConfigId);
                 GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(config.prefab);
-                Scene currentScene = args.zoneScene.CurrentScene();
+                // Scene currentScene = args.zoneScene.CurrentScene();
                 int index = infoPb.GridPositionX;
                 GameObjectComponent showView = ChessBattleViewComponent.Instance.AddChild<GameObjectComponent, GameObject, Action>(go,
                     () =>

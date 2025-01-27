@@ -38,10 +38,6 @@
       <Link>Chess\MapComponent.cs</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Codes\Model\Chess\Vec3.cs">
-      <Link>Chess\Vec3.cs</Link>
-    </Compile>
-
     <Compile Include="..\..\Unity\Codes\Model\Core\**\*.cs"> 
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>

@@ -30,7 +30,7 @@ namespace ET
 #else
             var mapData = ConfigComponent.Instance.ConfigLoader.GetMapData();
 
-            self.mapGridPositions = new Vector3[GamePlayComponent.HexMapSizeX, GamePlayComponent.HexMapSizeZ];
+            self.mapGridPositions = new Vector3[GPDefine.HexMapSizeX, GPDefine.HexMapSizeZ];
             var map = JsonHelper.FromJson<List<List<Vector3>>>(mapData[0]);
             for (int i = 0; i < map.Count; i++)
             {

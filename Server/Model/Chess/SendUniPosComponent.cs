@@ -5,5 +5,6 @@
     {
         public Unit selfUnit;
         public Player toPlayer;
+        public bool isSendArrived = false;
     }
 }

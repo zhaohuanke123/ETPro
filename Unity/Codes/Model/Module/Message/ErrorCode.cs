@@ -35,5 +35,6 @@ namespace ET
         public const int ArgumentNotRight = 200017;
         public const int GoldNotEnough = 200018;
         public const int ChampionArrayFull = 200019;
+        public const int CannotDragChampionToOrFormMapInCombat = 200020;
     }
 }

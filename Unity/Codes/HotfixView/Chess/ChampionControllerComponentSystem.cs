@@ -65,8 +65,8 @@ namespace ET
     {
         public static void Init(this ChampionControllerComponent self, int index)
         {
-            self.teamID = GamePlayComponent.TeamId_Player;
-            self.gridType = GamePlayComponent.GridTypeOwnInventory;
+            self.teamID = GPDefine.TeamId_Player;
+            self.gridType = GPDefine.GridTypeOwnInventory;
             self.gridPositionX = index;
             self.SetWorldPosition();
             self.SetWorldRotation();
@@ -114,11 +114,11 @@ namespace ET
         {
             Vector3 worldPosition = Vector3.zero;
 
-            if (self.gridType == GamePlayComponent.GridTypeOwnInventory)
+            if (self.gridType == GPDefine.GridTypeOwnInventory)
             {
                 worldPosition = Map.Instance.ownInventoryGridPositions[self.gridPositionX];
             }
-            else if (self.gridType == GamePlayComponent.GridTypeMap)
+            else if (self.gridType == GPDefine.GridTypeMap)
             {
                 worldPosition = Map.Instance.mapGridPositions[self.gridPositionX, self.gridPositionZ];
             }

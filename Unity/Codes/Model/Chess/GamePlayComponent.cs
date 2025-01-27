@@ -1,52 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
-    public enum GameStage
-    {
-        BeforeGame,
-        Preparation,
-        Combat,
-        Loss
-    }
+	public static class GPDefine
+	{
+		public static readonly int GridTypeOwnInventory = 0;
+		public static readonly int GridTypeMap = 2;
 
-    [ComponentOf]
-    public class GamePlayComponent: Entity, IAwake, IDestroy, IFixedUpdate
-    // ,IFixedUpdate
-    {
-        public static readonly int GridTypeOwnInventory = 0;
-        public static readonly int GridTypeMap = 2;
+		public static readonly int TeamId_Player = 0;
+		public static readonly int TeamId_AI = 1;
+		public static readonly int InventorySize = 9;
+		public static readonly int HexMapSizeX = 7;
+		public static readonly int HexMapSizeZ = 8;
+		public const int InitChampionLimit = 3;
+		public const int InitGold = 10;
+	}
 
-        public static readonly int TeamId_Player = 0;
-        public static readonly int TeamId_AI = 1;
-        public static readonly int InventorySize = 9;
-        public static readonly int HexMapSizeX = 7;
-        public static readonly int HexMapSizeZ = 8;
+	public enum Camp
+	{
+		Player1,
+		Player2,
+	}
 
-        public GameStage currentGameStage;
+	public enum GameStage
+	{
+		BeforeGame,
+		Preparation,
+		Combat,
+		Loss
+	}
+
+	[ComponentOf]
+	public class GamePlayComponent: Entity, IAwake, IDestroy, IFixedUpdate
+	// ,IFixedUpdate
+	{
+		[BsonIgnore]
+		public GameStage currentGameStage;
 
 #if SERVER
-        public Dictionary<Player, List<Unit>> playerChampionDict;
-        public Dictionary<long, bool> playerReadyDict;
+		[BsonIgnore]
+		public Dictionary<Player, List<Unit>> playerChampionDict;
+
+		[BsonIgnore]
+		public Dictionary<long, bool> playerReadyDict;
 #endif
-        /// <summary>
-        /// 计时 
-        /// </summary>
-        public long timer = 0;
+		/// <summary>
+		/// 计时 
+		/// </summary>
+		[BsonIgnore]
+		public long timer = 0;
 
-        public long preTime = 0;
+		[BsonIgnore]
+		public long preTime = 0;
 
-        public long PreparationStageDuration = 12 * 1000;
-        public int CombatStageDuration = 60;
-        public int baseGoldIncome = 5;
-
-        public const int InitChampionLimit = 3;
-        public const int InitGold = 10;
-
-        public int currentChampionCount = 0;
-        public int currentGold = 5;
-        public int currentHP = 100;
-        public int timerDisplay = 0;
-    }
+		[BsonIgnore]
+		public long PreparationStageDuration = 12 * 1000;
+	}
 }

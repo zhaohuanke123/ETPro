@@ -39,11 +39,11 @@ namespace ET
                 throw new ArgumentException("玩家已存在");
             }
 
-            if (!self.playersGoldDict.TryAdd(player.Id, GamePlayComponent.InitGold))
+            if (!self.playersGoldDict.TryAdd(player.Id, GPDefine.InitGold))
             {
             }
 
-            if (!self.playerCurrentChampionLimit.TryAdd(player.Id, GamePlayComponent.InitChampionLimit))
+            if (!self.playerCurrentChampionLimit.TryAdd(player.Id, GPDefine.InitChampionLimit))
             {
             }
         }
@@ -183,7 +183,7 @@ namespace ET
 
         public static void SendRefreshGold(this ShopComponent self, Player player, int goldCount)
         {
-            player.Session.Send(new G2C_RefreshGold() { GlodCount = goldCount });
+            player.SendMessage(new G2C_RefreshGold() {GlodCount = goldCount});
         }
 
         public static int GetIdByIndex(this ShopComponent self, Player player, int index)

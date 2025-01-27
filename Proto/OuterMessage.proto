@@ -565,4 +565,5 @@ message G2C_SyncTimer // IMessage
 message G2C_CreateCpUnits // IMessage
 {
 	repeated UnitInfo Units = 1;
+	repeated ChampionInfoPB ChampionInfoPBList = 2;
 }

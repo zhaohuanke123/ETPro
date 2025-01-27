@@ -43,6 +43,11 @@ namespace ET
     {
         public static void FindTarget(this CpCombatComponent self, List<Unit> targets)
         {
+            if (self.target != null)
+            {
+                return;
+            }
+            
             // foreach 对比距离，找最近的目标
             Unit target = null;
             Unit parent = self.GetParent<Unit>();
