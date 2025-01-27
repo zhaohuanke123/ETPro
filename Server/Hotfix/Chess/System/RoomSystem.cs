@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ET
 {
@@ -29,14 +30,18 @@ namespace ET
 				throw new ArgumentException("玩家不在房间中");
 			}
 
+			Log.Info($"玩家 {player.Id} 离开房间 {self.Id}");
 			self.ContainsPlayers.Remove(player.Id);
 			player.RoomId = 0;
 			player.SetCamp(Camp.None);
 
-			if (self.ContainsPlayers.Count == 0)
+			if (self.ContainsPlayers.Count != 0)
 			{
-				self.Dispose();
+				Player first = self.ContainsPlayers.Values.First();
+				first.SendMessage(new G2C_MatchFail());
 			}
+
+			self.Dispose();
 		}
 
 		public static void JoinRoom(this Room self, Player player)
@@ -50,12 +55,15 @@ namespace ET
 			{
 				throw new ArgumentException("玩家已经在房间中");
 			}
+			
+			Log.Info($"玩家 {player.Id} 加入房间 {self.Id}");
 
 			player.RoomId = self.Id;
 			player.SetCamp(self.RoomHolder == player? Camp.Player1 : Camp.Player2);
 
 			if (self.ContainsPlayers.Count == 2)
 			{
+				Log.Info($" 房间 {self.Id}  匹配成功");
 				self.gamePlayComponent = self.AddComponent<GamePlayComponent>();
 				foreach (Player p in self.ContainsPlayers.Values)
 				{

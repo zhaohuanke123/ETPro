@@ -6,13 +6,14 @@ using UnityEngine.UI;
 
 namespace ET
 {
-	public class UIComfirmDialog : Entity, IAwake, ILoad, IOnCreate, IOnEnable
+	[ChildOf(typeof (ToastComponent))]
+	public class UIComfirmDialog: Entity, IAwake, IOnCreate
 	{
 		public static string PrefabPath => "UI/UIComfirmDialog/Prefabs/UIComfirmDialog.prefab";
 		public UITextmesh Title;
 		public UIButton ComfirmBtn;
 		public UIButton CancelBtn;
-		 
-
+		public Action OnConfirm;
+		public Action OnCancel;
 	}
 }

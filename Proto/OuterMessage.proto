@@ -611,6 +611,10 @@ message G2C_StartMatch // IResponse
 	string Message = 92;
 }
 
+message C2G_LeaveMatch // IMessage
+{
+}
+
 message G2C_MatchSuccess // IMessage
 {
 	int64 RoomId = 1;

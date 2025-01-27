@@ -14,7 +14,7 @@
 			// Panel/EnterChessMap
 			self.EnterChessMapBtn = self.AddUIComponent<UIButton>("Panel/EnterChessMap");
 			self.EnterChessMapBtn.SetOnClickAsync(self.OnEnterChessMapBtnClick);
-			
+
 			// Panel/StartMatch
 			self.StartMatchBtn = self.AddUIComponent<UIButton>("Panel/StartMatch");
 			self.StartMatchBtn.SetOnClickAsync(self.OnStartMatchBtnClick);
@@ -48,9 +48,17 @@
 		{
 			await EnterMapHelper.EnterChessMapAsync(self.ZoneScene());
 		}
-		
+
 		public static async ETTask OnStartMatchBtnClick(this UILobbyView self)
 		{
+			Game.EventSystem.PublishAsync(new UIEventType.ShowDialog()
+			{
+				Text = "匹配中，请稍等...",
+				OnCancel = () =>
+				{
+					MatchHelper.LevelMatch(self.ZoneScene()).Coroutine();
+				},
+			}).Coroutine();
 			await MatchHelper.StartMatch(self.ZoneScene());
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ET
 {
@@ -49,6 +50,14 @@ namespace ET
 		{
 			public Scene Scene;
 			public string Text;
+		}
+
+		public struct ShowDialog
+		{
+			public Scene Scene;
+			public string Text;
+			public Action OnConfirm;
+			public Action OnCancel;
 		}
 
 		public struct ShowErrorToast

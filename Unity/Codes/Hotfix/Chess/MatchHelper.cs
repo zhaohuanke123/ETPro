@@ -24,5 +24,11 @@ namespace ET
 				return;
 			}
 		}
+
+		public static async ETTask LevelMatch(Scene zoneScene)
+		{
+			zoneScene.GetComponent<SessionComponent>().Session.Send(new C2G_LeaveMatch());
+			await ETTask.CompletedTask;
+		}
 	}
 }

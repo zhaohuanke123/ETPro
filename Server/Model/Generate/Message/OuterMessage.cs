@@ -1258,6 +1258,12 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.C2G_LeaveMatch)]
+	[ProtoContract]
+	public partial class C2G_LeaveMatch: Object, IMessage
+	{
+	}
+
 	[Message(OuterOpcode.G2C_MatchSuccess)]
 	[ProtoContract]
 	public partial class G2C_MatchSuccess: Object, IMessage
