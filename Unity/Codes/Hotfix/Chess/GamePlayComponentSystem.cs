@@ -5,7 +5,7 @@ using UnityEngine;
 using MongoDB.Driver.Core.Events;
 #endif
 
-namespace ET.Chess
+namespace ET
 {
 	[ObjectSystem]
 	public class GamePlayAwakeSystem: AwakeSystem<GamePlayComponent>
@@ -42,6 +42,7 @@ namespace ET.Chess
 				self.timer = self.PreparationStageDuration;
 
 				self.StartPrepareTimer().Coroutine();
+				Log.Info("所有玩家准备完毕，开始准备阶段");
 			}
 			else if (self.currentGameStage == GameStage.Preparation)
 			{
@@ -56,35 +57,12 @@ namespace ET.Chess
 				{
 					self.currentGameStage = GameStage.Combat;
 					self.StartNewBattle();
+					self.CombatLoop().Coroutine();
 				}
 			}
 			else if (self.currentGameStage == GameStage.Combat)
 			{
-				List<Unit> unit1 = null;
-				List<Unit> unit2 = null;
-				foreach (KeyValuePair<Player, List<Unit>> kv in self.playerChampionDict)
-				{
-					Player player = kv.Key;
-					if (player.camp == Camp.Player1)
-					{
-						unit1 = kv.Value;
-					}
-					else
-					{
-						unit2 = kv.Value;
-					}
-				}
 
-				foreach (Unit unit in unit1)
-				{
-					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-					cpCombatComponent.FindTarget(unit2);
-				}
-				foreach (Unit unit in unit2)
-				{
-					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-					cpCombatComponent.FindTarget(unit1);
-				}
 			}
 		}
 	}
@@ -99,6 +77,8 @@ namespace ET.Chess
 			{
 				player.gamePlayRoom = null;
 			}
+			self.playerChampionDict.Clear();
+			self.playerReadyDict.Clear();
 		}
 	}
 
@@ -107,7 +87,7 @@ namespace ET.Chess
 	[FriendClassAttribute(typeof (ET.ChampionMapArrayComponent))]
 	public static class GamePlayComponentSystemSystem
 	{
-		public static void AddPlayer(this GamePlayComponent self, Player player)
+		public static void AddPlayer(this GamePlayComponent self, Player player, bool isReady = false)
 		{
 			ShopComponent shopComponent = self.GetComponent<ShopComponent>();
 			ChampionArrayComponent championArrayComponent = self.GetComponent<ChampionArrayComponent>();
@@ -118,8 +98,17 @@ namespace ET.Chess
 
 			player.gamePlayRoom = self;
 			self.playerChampionDict.Add(player, new List<Unit>());
-			// TODO 先默认准备好
-			self.playerReadyDict.Add(player.Id, true);
+			self.playerReadyDict.Add(player.Id, isReady);
+		}
+
+		public static void SetReady(this GamePlayComponent self, Player player, bool isReady)
+		{
+			if (!self.playerChampionDict.ContainsKey(player))
+			{
+				throw new ArgumentException("player not in room");
+			}
+
+			self.playerReadyDict[player.Id] = isReady;
 		}
 
 		public static void SendSyncTimerToAllPlayer(this GamePlayComponent self)
@@ -145,6 +134,8 @@ namespace ET.Chess
 		public static void StartNewBattle(this GamePlayComponent self)
 		{
 			ChampionMapArrayComponent championMapArrayComponent = self.GetComponent<ChampionMapArrayComponent>();
+
+			// 临时AI
 			TmpAiChampionComponentComponent tmpAiChampionComponentComponent = self.GetComponent<TmpAiChampionComponentComponent>();
 			if (tmpAiChampionComponentComponent != null)
 			{
@@ -178,6 +169,17 @@ namespace ET.Chess
 					unit.Position = MapComponent.Instance.GetMapPosition(championInfo.X, championInfo.Z);
 					unit.Rotation = championMapArrayComponent.GetPlayerChampionRotate(player);
 				}
+
+				if (player.camp == Camp.Player1)
+				{
+					self.player1Units = units;
+					self.player1ChampionInfos = championInfos;
+				}
+				else
+				{
+					self.player2Units = units;
+					self.player2ChampionInfos = championInfos;
+				}
 			}
 
 			G2C_CreateCpUnits message = new G2C_CreateCpUnits();
@@ -192,6 +194,81 @@ namespace ET.Chess
 			}
 
 			foreach (Player player in self.playerChampionDict.Keys)
+			{
+				player.SendMessage(message);
+			}
+		}
+
+		public static bool CheckBattleEnd(this GamePlayComponent self)
+		{
+			List<Unit> unit1 = self.player1Units;
+			List<Unit> unit2 = self.player2Units;
+			for (int i = unit1.Count - 1; i >= 0; i--)
+			{
+				NumericComponent numericComponent = unit1[i].GetComponent<NumericComponent>();
+				if (numericComponent.GetAsInt(NumericType.Hp) <= 0)
+				{
+					Log.Info($"{unit1[i].Id} 死亡");
+					unit1.RemoveAt(i);
+				}
+			}
+			for (int i = unit2.Count - 1; i >= 0; i--)
+			{
+				NumericComponent numericComponent = unit2[i].GetComponent<NumericComponent>();
+				if (numericComponent.GetAsInt(NumericType.Hp) <= 0)
+				{
+					Log.Info($"{unit2[i].Id} 死亡");
+					unit2.RemoveAt(i);
+				}
+			}
+
+			return unit1.Count == 0 || unit2.Count == 0;
+		}
+
+		public static async ETTask CombatLoop(this GamePlayComponent self)
+		{
+			List<Unit> unit1 = self.player1Units;
+			List<Unit> unit2 = self.player2Units;
+
+			while (true)
+			{
+				if (self.CheckBattleEnd())
+				{
+					await TimerComponent.Instance.WaitAsync(1500);
+					foreach (var kv in self.playerChampionDict)
+					{
+						Player player = kv.Key;
+						List<Unit> units = kv.Value;
+						player.SendMessage(new G2C_OneCpBattleEnd()
+						{
+							Result = units.Count > 0? 1 : 0
+						});
+					}
+					Log.Info("战斗结束");
+					self.currentGameStage = GameStage.BeforeGame;
+					return;
+				}
+
+				for (var i = 0; i < unit1.Count; i++)
+				{
+					Unit unit = unit1[i];
+					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
+					await cpCombatComponent.CombatLoop(self, unit, self.player1ChampionInfos[i], unit2);
+				}
+				for (var i = 0; i < unit2.Count; i++)
+				{
+					Unit unit = unit2[i];
+					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
+					await cpCombatComponent.CombatLoop(self, unit, self.player2ChampionInfos[i], unit1);
+				}
+
+				await ETTask.CompletedTask;
+			}
+		}
+
+		public static void Broadcast(this GamePlayComponent self, IMessage message)
+		{
+			foreach (var player in self.playerChampionDict.Keys)
 			{
 				player.SendMessage(message);
 			}

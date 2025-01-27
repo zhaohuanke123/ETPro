@@ -8,7 +8,7 @@ namespace ET
 	{
 		protected override async ETTask Run(EventType.GenChampionView args)
 		{
-			ChessBattleViewComponent.Instance.HideAll();
+			ChessBattleViewComponent.Instance.HideAllInMap();
 
 			ChampionInfoPB infoPb = args.ChampionInfoPb;
 
@@ -25,6 +25,8 @@ namespace ET
 			unit.ViewRotation = unit.Rotation;
 			unit.AddComponent(showView);
 			unit.AddComponent<MoveViewComponent>();
+			showView.AddComponent<CpAnimatorComponent>();
+			// unit.AddComponent<AnimatorComponent>();
 
 			await ETTask.CompletedTask;
 		}

@@ -112,6 +112,9 @@ namespace ET
 		/// <summary>UnitId</summary>
 		[ProtoMember(11)]
 		public int unitId { get; set; }
+		/// <summary>攻击动画时间（ms）</summary>
+		[ProtoMember(12)]
+		public long attacktime { get; set; }
 
 	}
 }

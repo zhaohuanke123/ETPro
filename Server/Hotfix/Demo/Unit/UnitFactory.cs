@@ -153,12 +153,13 @@ namespace ET
 
         public static Unit CreateChampionUnit(UnitComponent unitComponent, ChampionInfo championInfo)
         {
-            Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), championInfo.config.unitId);
+            Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), championInfo.Config.unitId);
             unit.AddComponent<MoveComponent>();
             unit.AddComponent<CpCombatComponent>();
             NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
             numericComponent.Set(NumericType.Lv, 1);
-            numericComponent.Set(NumericType.Speed, 6f);
+            numericComponent.Set(NumericType.Speed, 7f);
+            numericComponent.Set(NumericType.Hp, 10);
             unit.Position = new Vector3(0, 0, 0);
             return unit;
         }

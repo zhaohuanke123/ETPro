@@ -67,5 +67,13 @@ namespace ET
 				Log.Error(e);
 			}
 		}
+
+		public static async ETTask SendExitChessMap(Scene zoneScene)
+		{
+			Session session = zoneScene.GetComponent<SessionComponent>().Session;
+			session.Send(new C2G_ExitChessMap());
+
+			await SceneChangeHelper.SceneChangeToLogin(zoneScene);
+		}
 	}
 }

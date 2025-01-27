@@ -1,5 +1,4 @@
-﻿using ET.Chess;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ET
 {

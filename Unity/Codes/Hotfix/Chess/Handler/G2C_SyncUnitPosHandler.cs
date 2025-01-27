@@ -6,7 +6,7 @@ namespace ET
 	[MessageHandler]
 	public class G2C_SyncUnitPosHandler: AMHandler<G2C_SyncUnitPos>
 	{
-		protected override void Run(Session session, G2C_SyncUnitPos message)
+		protected override async void Run(Session session, G2C_SyncUnitPos message)
 		{
 			Scene zoneScene = session.ZoneScene();
 			CurrentScenesComponent currentScenesComponent = zoneScene.GetComponent<CurrentScenesComponent>();
@@ -25,8 +25,9 @@ namespace ET
 			}
 
 			MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
-			moveComponent.MoveToAsync(new Vector3(message.X, message.Y, message.Z), 6).Coroutine();
 			Log.Warning("收到同步位置消息:{0}", unit.Position);
+			unit.Forward = new Vector3(message.ForwardX, message.ForwardY, message.ForwardZ);
+			await moveComponent.MoveToAsync(new Vector3(message.X, message.Y, message.Z), 10);
 		}
 	}
 }

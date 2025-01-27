@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
@@ -45,6 +46,18 @@ namespace ET
 
 		[BsonIgnore]
 		public Dictionary<long, bool> playerReadyDict;
+
+		[BsonIgnore]
+		public List<Unit> player1Units;
+
+		[BsonIgnore]
+		public List<ChampionInfo> player1ChampionInfos;
+
+		[BsonIgnore]
+		public List<Unit> player2Units;
+
+		[BsonIgnore]
+		public List<ChampionInfo> player2ChampionInfos;
 #endif
 		/// <summary>
 		/// 计时 

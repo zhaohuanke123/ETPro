@@ -555,6 +555,9 @@ message G2C_SyncUnitPos // IMessage
 	float X = 2;
 	float Y = 3;
 	float Z = 4;
+	float ForwardX = 5;
+	float ForwardY = 6;
+	float ForwardZ = 7;
 }
 
 message G2C_SyncTimer // IMessage
@@ -566,4 +569,28 @@ message G2C_CreateCpUnits // IMessage
 {
 	repeated UnitInfo Units = 1;
 	repeated ChampionInfoPB ChampionInfoPBList = 2;
+}
+
+message C2G_SceneReady // IMessage
+{
+
+}
+
+message C2G_ExitChessMap // IMessage
+{
+
+}
+
+message G2C_OneCpBattleEnd // IMessage
+{
+	int32 Result = 1;
+}
+
+message G2C_AttackDamage // IMessage
+{
+	int64 FromId = 1;
+	int64 ToId = 2;
+	int32 Damage = 3;
+	bool IsDead = 4;
+	int64 attackTime = 5;
 }

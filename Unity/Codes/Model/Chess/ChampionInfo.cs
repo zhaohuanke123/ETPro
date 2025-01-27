@@ -13,7 +13,7 @@ namespace ET
     public class ChampionInfo: Entity, IAwake, IDestroy
     {
         [BsonIgnore]
-        public ChampionConfig config => ChampionConfigCategory.Instance.Get(this.configId);
+        public ChampionConfig Config => ChampionConfigCategory.Instance.Get(this.configId);
 
         public int configId;
 

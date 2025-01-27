@@ -53,18 +53,8 @@ namespace ET
 			}
 		}
 
-		public static void HideAll(this ChessBattleViewComponent self)
+		public static void HideAllInMap(this ChessBattleViewComponent self)
 		{
-			for (int i = 0; i < self.ownChampionInventoryArray.Length; i++)
-			{
-				GameObjectComponent goComponent = self.ownChampionInventoryArray[i];
-				if (goComponent == null)
-				{
-					continue;
-				}
-
-				goComponent.GameObject.SetActive(false);
-			}
 			foreach (GameObjectComponent gameObjectComponent in self.gridChampionsArray)
 			{
 				if (gameObjectComponent == null)
@@ -73,6 +63,19 @@ namespace ET
 				}
 
 				gameObjectComponent.GameObject.SetActive(false);
+			}
+		}
+		
+		public static void ShowAllInMap(this ChessBattleViewComponent self)
+		{
+			foreach (GameObjectComponent gameObjectComponent in self.gridChampionsArray)
+			{
+				if (gameObjectComponent == null)
+				{
+					continue;
+				}
+
+				gameObjectComponent.GameObject.SetActive(true);
 			}
 		}
 

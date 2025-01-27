@@ -74,5 +74,9 @@ namespace ET
 		 public const ushort G2C_SyncUnitPos = 10075;
 		 public const ushort G2C_SyncTimer = 10076;
 		 public const ushort G2C_CreateCpUnits = 10077;
+		 public const ushort C2G_SceneReady = 10078;
+		 public const ushort C2G_ExitChessMap = 10079;
+		 public const ushort G2C_OneCpBattleEnd = 10080;
+		 public const ushort G2C_AttackDamage = 10081;
 	}
 }

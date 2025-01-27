@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ET.Chess;
 
 namespace ET
 {
@@ -14,7 +13,7 @@ namespace ET
 			self.player = player;
 
 			GamePlayComponent gamePlayComponent = self.GetParent<GamePlayComponent>();
-			gamePlayComponent.AddPlayer(self.aiPlayer);
+			gamePlayComponent.AddPlayer(self.aiPlayer, true);
 		}
 	}
 
@@ -35,7 +34,6 @@ namespace ET
 			ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.GetComponent<ChampionMapArrayComponent>();
 			ShopComponent shopComponent = gamePlayComponent.GetComponent<ShopComponent>();
 
-			ChampionInfo championInfo = new ChampionInfo();
 			(int x, int z) = championMapArrayComponent.GetEmptyPos(self.aiPlayer);
 			if (x == -1)
 			{
@@ -43,10 +41,10 @@ namespace ET
 			}
 
 			int randomChampionId = shopComponent.GetRandomChampionId();
+			ChampionInfo championInfo = championMapArrayComponent.AddNewToGrid(self.aiPlayer, x, z);
 			championInfo.SetConfigId(randomChampionId);
-			championMapArrayComponent.AddToGrid(self.player, championInfo, x, z);
 			self.aiCp.Add(championInfo);
-			Log.Info($"AI生成了一个{championInfo}");
+			Log.Info($"AI生成了一个{championInfo} 位置 {x} | {z}");
 		}
 	}
 }

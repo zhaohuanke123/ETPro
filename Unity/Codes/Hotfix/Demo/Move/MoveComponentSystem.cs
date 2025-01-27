@@ -313,6 +313,11 @@ namespace ET
 
             self.MoveFinish(ret);
         }
+        
+        public static bool IsStop (this MoveComponent self)
+        {
+            return self.StartTime == 0;
+        }
 
         private static void MoveFinish(this MoveComponent self, bool ret)
         {

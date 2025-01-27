@@ -35,6 +35,21 @@ namespace ET
 			battleChampionBonusComponent.AddPlayer(player);
 		}
 
+		public static ChampionInfo AddNewToGrid(this ChampionMapArrayComponent self, Player player, int x, int z)
+		{
+			if (player.camp != Camp.Player1)
+			{
+				x = GPDefine.HexMapSizeX - 1 - x;
+				z = GPDefine.HexMapSizeZ - 1 - z;
+			}
+
+			ChampionInfo championInfo = self.AddChild<ChampionInfo>();
+			championInfo.gridPositionX = x;
+			championInfo.gridPositionZ = z;
+			self.grid[x, z] = championInfo;
+			return championInfo;
+		}
+
 		public static void AddToGrid(this ChampionMapArrayComponent self, Player player, ChampionInfo championInfo, int gridX, int gridZ)
 		{
 			if (player.camp != Camp.Player1)
@@ -137,8 +152,8 @@ namespace ET
 					if (self.grid[x, z] != null)
 					{
 						ChampionInfo championInfo = self.grid[x, z];
-						int id1 = championInfo.config.type1Id;
-						int id2 = championInfo.config.type2Id;
+						int id1 = championInfo.Config.type1Id;
+						int id2 = championInfo.Config.type2Id;
 
 						if (!championTypeCount.TryAdd(id1, 1))
 						{
@@ -223,7 +238,12 @@ namespace ET
 						continue;
 					}
 
-					return (x, z);
+					if (player.camp == Camp.Player1)
+					{
+						return (x, z);
+					}
+					
+					return (GPDefine.HexMapSizeX - 1 - x, GPDefine.HexMapSizeZ - 1 - z);
 				}
 			}
 			return (-1, -1);

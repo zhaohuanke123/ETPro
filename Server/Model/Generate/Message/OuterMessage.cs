@@ -1150,6 +1150,15 @@ namespace ET
 		[ProtoMember(4)]
 		public float Z { get; set; }
 
+		[ProtoMember(5)]
+		public float ForwardX { get; set; }
+
+		[ProtoMember(6)]
+		public float ForwardY { get; set; }
+
+		[ProtoMember(7)]
+		public float ForwardZ { get; set; }
+
 	}
 
 	[Message(OuterOpcode.G2C_SyncTimer)]
@@ -1170,6 +1179,48 @@ namespace ET
 
 		[ProtoMember(2)]
 		public List<ChampionInfoPB> ChampionInfoPBList = new List<ChampionInfoPB>();
+
+	}
+
+	[Message(OuterOpcode.C2G_SceneReady)]
+	[ProtoContract]
+	public partial class C2G_SceneReady: Object, IMessage
+	{
+	}
+
+	[Message(OuterOpcode.C2G_ExitChessMap)]
+	[ProtoContract]
+	public partial class C2G_ExitChessMap: Object, IMessage
+	{
+	}
+
+	[Message(OuterOpcode.G2C_OneCpBattleEnd)]
+	[ProtoContract]
+	public partial class G2C_OneCpBattleEnd: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public int Result { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_AttackDamage)]
+	[ProtoContract]
+	public partial class G2C_AttackDamage: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long FromId { get; set; }
+
+		[ProtoMember(2)]
+		public long ToId { get; set; }
+
+		[ProtoMember(3)]
+		public int Damage { get; set; }
+
+		[ProtoMember(4)]
+		public bool IsDead { get; set; }
+
+		[ProtoMember(5)]
+		public long attackTime { get; set; }
 
 	}
 

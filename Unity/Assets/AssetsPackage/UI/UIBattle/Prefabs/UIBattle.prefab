@@ -2038,9 +2038,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '20
-
-'
+  m_Text: "\u7B49\u5F85\u5BF9\u9762\u5C31\u7EEA"
 --- !u!114 &1655495732468550568
 MonoBehaviour:
   m_ObjectHideFlags: 0

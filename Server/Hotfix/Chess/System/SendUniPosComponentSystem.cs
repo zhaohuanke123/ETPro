@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using UnityEngine;
+
+namespace ET
 {
 	[ObjectSystem]
 	public class SendUniPosComponentAwakeSystem: AwakeSystem<SendUniPosComponent, Player>
@@ -33,6 +35,7 @@
 			G2C_SyncUnitPos message = new G2C_SyncUnitPos();
 			Unit unit = self.selfUnit;
 			MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
+			Vector3 foward = unit.Forward;
 			if (moveComponent.IsArrived())
 			{
 				if (self.isSendArrived == false)
@@ -42,6 +45,9 @@
 					message.X = unit.Position.x;
 					message.Y = unit.Position.y;
 					message.Z = unit.Position.z;
+					message.ForwardX = foward.x;
+					message.ForwardY = foward.y;
+					message.ForwardZ = foward.z;
 					// Log.Warning($"SendUniPosComponentFixedUpdateSystem:{message.ToString()}");
 					self.toPlayer.SendMessage(message);
 				}
@@ -53,6 +59,9 @@
 			message.X = unit.Position.x;
 			message.Y = unit.Position.y;
 			message.Z = unit.Position.z;
+			message.ForwardX = foward.x;
+			message.ForwardY = foward.y;
+			message.ForwardZ = foward.z;
 			// Log.Warning($"SendUniPosComponentFixedUpdateSystem:{message.ToString()}");
 			self.toPlayer.SendMessage(message);
 		}

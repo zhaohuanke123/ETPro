@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ET
 {
 	[ObjectSystem]
-	public class AnimatorComponentAwakeSystem : AwakeSystem<AnimatorComponent>
+	public class AnimatorComponentAwakeSystem: AwakeSystem<AnimatorComponent>
 	{
 		public override void Awake(AnimatorComponent self)
 		{
@@ -13,16 +13,16 @@ namespace ET
 	}
 
 	[ObjectSystem]
-	public class AnimatorComponentUpdateSystem : UpdateSystem<AnimatorComponent>
+	public class AnimatorComponentUpdateSystem: UpdateSystem<AnimatorComponent>
 	{
 		public override void Update(AnimatorComponent self)
 		{
 			self.Update();
 		}
 	}
-	
+
 	[ObjectSystem]
-	public class AnimatorComponentDestroySystem : DestroySystem<AnimatorComponent>
+	public class AnimatorComponentDestroySystem: DestroySystem<AnimatorComponent>
 	{
 		public override void Destroy(AnimatorComponent self)
 		{
@@ -32,12 +32,12 @@ namespace ET
 		}
 	}
 
-	[FriendClass(typeof(AnimatorComponent))]
+	[FriendClass(typeof (AnimatorComponent))]
 	public static class AnimatorComponentSystem
 	{
 		public static void Awake(this AnimatorComponent self)
 		{
-			Animator animator = self.Parent.GetComponent<GameObjectComponent>().GameObject.GetComponent<Animator>();
+			Animator animator = self.Parent.GetComponent<GameObjectComponent>().GameObject.GetComponentInChildren<Animator>();
 
 			if (animator == null)
 			{

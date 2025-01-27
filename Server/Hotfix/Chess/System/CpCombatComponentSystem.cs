@@ -1,74 +1,100 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Schema;
 using UnityEngine;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class CpCombatComponentAwakeSystem: AwakeSystem<CpCombatComponent>
-    {
-        public override void Awake(CpCombatComponent self)
-        {
-        }
-    }
+	[ObjectSystem]
+	public class CpCombatComponentAwakeSystem: AwakeSystem<CpCombatComponent>
+	{
+		public override void Awake(CpCombatComponent self)
+		{
+		}
+	}
 
-    [ObjectSystem]
-    public class CpCombatComponentFixedUpdateSystem: FixedUpdateSystem<CpCombatComponent>
-    {
-        public override void FixedUpdate(CpCombatComponent self)
-        {
-            if (self.target == null)
-            {
-                return;
-            }
+	[ObjectSystem]
+	public class CpCombatComponentFixedUpdateSystem: FixedUpdateSystem<CpCombatComponent>
+	{
+		public override void FixedUpdate(CpCombatComponent self)
+		{
+		}
+	}
 
-            float distance = Vector3.Distance(self.GetParent<Unit>().Position, self.target.Position);
-            if (distance < 1f)
-            {
-                self.GetParent<Unit>().GetComponent<MoveComponent>().Stop(true);
-                return;
-            }
-        }
-    }
+	[ObjectSystem]
+	public class CpCombatComponentDestroySystem: DestroySystem<CpCombatComponent>
+	{
+		public override void Destroy(CpCombatComponent self)
+		{
+		}
+	}
 
-    [ObjectSystem]
-    public class CpCombatComponentDestroySystem: DestroySystem<CpCombatComponent>
-    {
-        public override void Destroy(CpCombatComponent self)
-        {
-        }
-    }
+	[FriendClass(typeof (CpCombatComponent))]
+	public static partial class CpCombatComponentSystem
+	{
+		public static async ETTask CombatLoop(this CpCombatComponent self, GamePlayComponent gamePlayComponent, Unit selfUnit, ChampionInfo info,
+		List<Unit> targets)
+		{
+			ChampionConfig config = info.Config;
+			Unit nearestTarget = self.FindTarget(targets, config);
+			Log.Info($"{selfUnit.Id} 回合");
 
-    [FriendClass(typeof (CpCombatComponent))]
-    public static partial class CpCombatComponentSystem
-    {
-        public static void FindTarget(this CpCombatComponent self, List<Unit> targets)
-        {
-            if (self.target != null)
-            {
-                return;
-            }
-            
-            // foreach 对比距离，找最近的目标
-            Unit target = null;
-            Unit parent = self.GetParent<Unit>();
-            foreach (Unit unit in targets)
-            {
-                if (target == null)
-                {
-                    target = unit;
-                    continue;
-                }
+			// 有攻击目标
+			if (self.target != null)
+			{
+				Log.Info($"{selfUnit.Id} 攻击 {self.target.Id}");
+				await self.Attack(gamePlayComponent, config.attacktime);
+				self.target = null;
+			} // 没有攻击目标，移动到最近的目标
+			else if (nearestTarget != null)
+			{
+				Log.Info($"{selfUnit.Id} 移动到 {nearestTarget.Id}");
+				MoveComponent moveComponent = selfUnit.GetComponent<MoveComponent>();
+				NumericComponent numericComponent = selfUnit.GetComponent<NumericComponent>();
 
-                if (Vector3.Distance(parent.Position, unit.Position) < Vector3.Distance(parent.Position, target.Position))
-                {
-                    target = unit;
-                }
-            }
+				// 移动到两个人直线上的攻击范围内
+				Vector3 targetPos = nearestTarget.Position - (nearestTarget.Position - selfUnit.Position).normalized * config.attackRange / 2;
+				await moveComponent.MoveToAsync(targetPos, numericComponent.GetAsInt(NumericType.Speed));
+			}
 
-            self.target = target;
-            MoveComponent moveComponent = parent.GetComponent<MoveComponent>();
-            NumericComponent numericComponent = parent.GetComponent<NumericComponent>();
-            moveComponent.MoveToAsync(target.Position, numericComponent.GetAsInt(NumericType.Speed)).Coroutine();
-        }
-    }
+			await ETTask.CompletedTask;
+		}
+
+		public static Unit FindTarget(this CpCombatComponent self, List<Unit> targets, ChampionConfig config)
+		{
+			Unit selfUnit = self.GetParent<Unit>();
+			Unit nearestTarget = null;
+			foreach (Unit unit in targets)
+			{
+				if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+				{
+					continue;
+				}
+
+				if (Vector3.Distance(selfUnit.Position, unit.Position) < config.attackRange)
+				{
+					self.target = unit;
+					break;
+				}
+
+				if (nearestTarget == null)
+				{
+					nearestTarget = unit;
+					continue;
+				}
+
+				if (Vector3.Distance(selfUnit.Position, unit.Position) < Vector3.Distance(selfUnit.Position, nearestTarget.Position))
+				{
+					nearestTarget = unit;
+				}
+			}
+
+			return nearestTarget;
+		}
+
+		public static async ETTask Attack(this CpCombatComponent self, GamePlayComponent gamePlayComponent, long attacktime)
+		{
+			await TimerComponent.Instance.WaitAsync(attacktime);
+			DamageHelper.Damage(gamePlayComponent, self.GetParent<Unit>(), self.target, 5, attacktime + 1000);
+		}
+	}
 }

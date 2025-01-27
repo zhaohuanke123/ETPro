@@ -164,5 +164,10 @@ namespace ET
 			public Unit unit;
 			public ChampionInfoPB ChampionInfoPb;
 		}
+
+		public struct OneCpBattleEnd
+		{
+			public Scene zoneScene;
+		}
 	}
 }
