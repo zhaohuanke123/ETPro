@@ -86,5 +86,6 @@ namespace ET
 		 public const ushort G2C_MatchSuccess = 10084;
 		 public const ushort G2C_MatchFail = 10085;
 		 public const ushort G2C_SyncPlayerHp = 10090;
+		 public const ushort G2C_ChessGameOver = 10091;
 	}
 }

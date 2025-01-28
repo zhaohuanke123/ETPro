@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44396722, g: 0.49335706, b: 0.57282865, a: 1}
+  m_IndirectSpecularColor: {r: 0.44396678, g: 0.49335635, b: 0.5728274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -239,12 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 27158422}
   - component: {fileID: 27158421}
-  - component: {fileID: 27158424}
   - component: {fileID: 27158428}
-  - component: {fileID: 27158423}
-  - component: {fileID: 27158426}
-  - component: {fileID: 27158427}
-  - component: {fileID: 27158429}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -293,85 +288,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &27158423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27158420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a9c9b3f8c466d4495e73cb5c7b72b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputController: {fileID: 27158424}
-  gameData: {fileID: 27158428}
-  aIopponent: {fileID: 27158427}
-  championShop: {fileID: 27158426}
-  ownChampionInventoryArray: []
-  oponentChampionInventoryArray: []
-  currentGameStage: 0
-  timer: 0
-  PreparationStageDuration: 16
-  CombatStageDuration: 60
-  baseGoldIncome: 5
-  currentChampionLimit: 3
-  currentChampionCount: 0
-  currentGold: 5
-  currentHP: 100
-  timerDisplay: 0
-  activeBonusList: []
-  draggedChampion: {fileID: 0}
-  dragStartTrigger: {fileID: 0}
---- !u!114 &27158424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27158420}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9cfe741a652aae48b50863ce44fb02f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gamePlayController: {fileID: 0}
-  triggerLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  triggerInfo: {fileID: 0}
---- !u!114 &27158426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27158420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5f05b424d9916f479b891ecca9fcd82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gamePlayController: {fileID: 27158423}
-  gameData: {fileID: 27158428}
---- !u!114 &27158427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27158420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55b0f55d5c2e2564cab59b5b3734505f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  championShop: {fileID: 27158426}
-  map: {fileID: 27158421}
-  gamePlayController: {fileID: 27158423}
-  activeBonusList: []
-  championDamage: 2
 --- !u!114 &27158428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,23 +317,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3c4644fba6daec0469d795ae15fcc92e, type: 2}
   - {fileID: 11400000, guid: d190cf551b5d25645b384a58df4154a0, type: 2}
   - {fileID: 11400000, guid: 200e54a10084f3941a1f2a3354741fb1, type: 2}
---- !u!114 &27158429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27158420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 334caa5acc530cf47b6bfe3f902bb51c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  worldCanvas: {fileID: 767787644}
-  floatingTextPrefab: {fileID: 8129387455952600272, guid: 43cd32aafdfaf8948b32cb5e0ff0d391,
-    type: 3}
-  healthBarPrefab: {fileID: 7923784903547799821, guid: 1d6a954fe5c7aaf4dac9e594db9585b4,
-    type: 3}
 --- !u!1001 &58867809
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4903,7 +4802,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1702208226}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11334,12 +11234,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1702208222}
-  m_LocalRotation: {x: 0, y: 0.8870109, z: -0.46174863, w: 0}
+  m_LocalRotation: {x: -0, y: 0.8870109, z: -0.46174863, w: 0}
   m_LocalPosition: {x: 0, y: 26.51, z: 23.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 767787648}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 55, y: 180, z: 0}
 --- !u!4 &1702859816 stripped
 Transform:
@@ -14600,7 +14500,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1627757731706572569}
   m_LocalRotation: {x: -0.00087437034, y: -0.9093802, z: 0.4159608, w: -0.0019115098}
-  m_LocalPosition: {x: -1.7088665, y: 18.460464, z: 18.94242}
+  m_LocalPosition: {x: -0.87, y: 16.06, z: 19.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -14631,7 +14531,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 55.3
   orthographic: 0
   orthographic size: 100
   m_Depth: -1
@@ -14642,8 +14542,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 0
-  m_AllowMSAA: 0
+  m_HDR: 1
+  m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -14681,8 +14581,7 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras:
-  - {fileID: 1702208225}
+  m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -14690,8 +14589,8 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
+  m_Antialiasing: 1
+  m_AntialiasingQuality: 1
   m_StopNaN: 0
   m_Dithering: 0
   m_ClearDepth: 1

@@ -115,6 +115,9 @@ namespace ET
 		/// <summary>攻击动画时间（ms）</summary>
 		[ProtoMember(12)]
 		public long attacktime { get; set; }
+		/// <summary>移动范围</summary>
+		[ProtoMember(13)]
+		public int moveRange { get; set; }
 
 	}
 }

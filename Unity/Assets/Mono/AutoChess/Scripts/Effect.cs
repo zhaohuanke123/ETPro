@@ -22,8 +22,7 @@ public class Effect: MonoBehaviour
         duration = _duration;
         championGO = _championGO;
 
-        effectGO = Instantiate(effectPrefab);
-        effectGO.transform.SetParent(championGO.transform);
+        effectGO = Instantiate(effectPrefab, championGO.transform, true);
         effectGO.transform.localPosition = Vector3.zero;
     }
 

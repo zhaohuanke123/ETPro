@@ -12,12 +12,14 @@ namespace ET
 			message.FromId = unit.Id;
 			message.ToId = target.Id;
 			message.Damage = damage;
-			message.attackTime = attacktime;
+			message.AttackTime = attacktime;
+			message.HP = target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp);
+			message.MaxHP = target.GetComponent<NumericComponent>().GetAsInt(NumericType.MaxHp);
 			gamePlayComponent.Broadcast(message);
 
+			await TimerComponent.Instance.WaitAsync(attacktime);
 			if (target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
 			{
-				await TimerComponent.Instance.WaitAsync(attacktime);
 				gamePlayComponent.Broadcast(new G2C_UnitDead()
 				{
 					UnitId = target.Id

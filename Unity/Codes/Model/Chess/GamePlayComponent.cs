@@ -28,6 +28,7 @@ namespace ET
 
 	public enum GameStage
 	{
+		None,
 		BeforeGame,
 		Preparation,
 		Combat,

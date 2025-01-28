@@ -42,7 +42,7 @@ namespace ET
 			if (self.target != null)
 			{
 				Log.Info($"{selfUnit.Id} 攻击 {self.target.Id}");
-				await self.Attack(gamePlayComponent, config.attacktime);
+				await self.Attack(gamePlayComponent,selfUnit.GetComponent<NumericComponent>().GetAsInt(NumericType.ATK),  config);
 				self.target = null;
 			} // 没有攻击目标，移动到最近的目标
 			else if (nearestTarget != null)
@@ -99,9 +99,9 @@ namespace ET
 			return nearestTarget;
 		}
 
-		public static async ETTask Attack(this CpCombatComponent self, GamePlayComponent gamePlayComponent, long attackTime)
+		public static async ETTask Attack(this CpCombatComponent self, GamePlayComponent gamePlayComponent,  int damage, ChampionConfig config)
 		{
-			await DamageHelper.Damage(gamePlayComponent, self.GetParent<Unit>(), self.target, 5, attackTime);
+			await DamageHelper.Damage(gamePlayComponent, self.GetParent<Unit>(), self.target, damage, config.attacktime);
 		}
 	}
 }

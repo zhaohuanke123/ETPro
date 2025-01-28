@@ -164,10 +164,13 @@ namespace ET
 			unit.AddComponent<CpCombatComponent>();
 			NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
 			int lv = championInfo.GetComponent<NumericComponent>().GetAsInt(NumericType.Lv);
+			ChampionConfig config = championInfo.Config;
 
 			numericComponent.Set(NumericType.Lv, lv);
 			numericComponent.Set(NumericType.Speed, 7f);
-			numericComponent.Set(NumericType.Hp, 10 * lv);
+			numericComponent.Set(NumericType.MaxHp, config.health + 10 * (lv - 1));
+			numericComponent.Set(NumericType.Hp, numericComponent.GetAsInt(NumericType.MaxHp));
+			numericComponent.Set(NumericType.ATK, config.damage + 2 * (lv - 1));
 			unit.Position = new Vector3(0, 0, 0);
 			return unit;
 		}

@@ -1234,10 +1234,13 @@ namespace ET
 		public int Damage { get; set; }
 
 		[ProtoMember(4)]
-		public int Helath { get; set; }
+		public int HP { get; set; }
 
 		[ProtoMember(5)]
-		public long attackTime { get; set; }
+		public int MaxHP { get; set; }
+
+		[ProtoMember(6)]
+		public long AttackTime { get; set; }
 
 	}
 
@@ -1302,6 +1305,15 @@ namespace ET
 	{
 		[ProtoMember(1)]
 		public int Hp { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_ChessGameOver)]
+	[ProtoContract]
+	public partial class G2C_ChessGameOver: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public bool Result { get; set; }
 
 	}
 

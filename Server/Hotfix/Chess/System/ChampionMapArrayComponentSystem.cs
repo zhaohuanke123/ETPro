@@ -44,6 +44,8 @@ namespace ET
 			}
 
 			ChampionInfo championInfo = self.AddChild<ChampionInfo>();
+			NumericComponent numericComponent = championInfo.AddComponent<NumericComponent>();
+			numericComponent.Set(NumericType.Lv, RandomHelper.RandomNumber(1, 2));
 			championInfo.gridPositionX = x;
 			championInfo.gridPositionZ = z;
 			self.grid[x, z] = championInfo;

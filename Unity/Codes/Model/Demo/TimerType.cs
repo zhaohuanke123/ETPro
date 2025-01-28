@@ -15,7 +15,9 @@
         public const int LoginTimeOut = 1010; //登录超时
         public const int SyncTime = 1011; //登录超时
 
-        public const int AccountSessionCheckoutTime = 1011;
+        public const int AccountSessionCheckoutTime = 1012;
+
+        public const int FloatTextMoveTimer = 1013;
         // 不能超过10000
     }
 }

@@ -69,9 +69,26 @@ namespace ET
 			}
 			else if (self.currentGameStage == GameStage.Combat)
 			{
-				
-			} else if (self.currentGameStage == GameStage.GameOver)
+
+			}
+			else if (self.currentGameStage == GameStage.GameOver)
 			{
+				G2C_ChessGameOver message = new G2C_ChessGameOver();
+
+				long roomId = 0;
+				foreach (var kv in self.playerChampionDict)
+				{
+					Player player = kv.Key;
+					List<Unit> units = kv.Value;
+					bool isWin = units.Count > 0;
+
+					message.Result = isWin;
+					player.SendMessage(message);
+					roomId = player.RoomId;
+				}
+
+				RoomComponent.Instance.RemoveRoom(roomId);
+				self.currentGameStage = GameStage.None;
 			}
 		}
 	}
@@ -88,6 +105,8 @@ namespace ET
 			}
 			self.playerChampionDict.Clear();
 			self.playerReadyDict.Clear();
+
+			self.currentGameStage = GameStage.None;
 		}
 	}
 
@@ -109,6 +128,7 @@ namespace ET
 			self.playerChampionDict.Add(player, new List<Unit>());
 			self.playerReadyDict.Add(player.Id, isReady);
 
+			player.RemoveComponent<NumericComponent>();
 			NumericComponent numericComponent = player.AddComponent<NumericComponent>();
 			numericComponent.Set(NumericType.Hp, 50);
 		}
@@ -121,6 +141,12 @@ namespace ET
 			}
 
 			self.playerReadyDict[player.Id] = isReady;
+
+			NumericComponent numericComponent = player.GetComponent<NumericComponent>();
+			player.SendMessage(new G2C_SyncPlayerHp()
+			{
+				Hp = numericComponent.GetAsInt(NumericType.Hp)
+			});
 		}
 
 		public static void SendSyncTimerToAllPlayer(this GamePlayComponent self)
@@ -394,13 +420,16 @@ namespace ET
 
 					NumericComponent numericComponent = player.GetComponent<NumericComponent>();
 					int hp = numericComponent.GetAsInt(NumericType.Hp);
-					hp -= 3 * self.GetPlayerUnits(player).Count;
+					hp -= 3 * self.GetOpponentUnits(player).Count;
 					hp = hp < 0? 0 : hp;
-					
+
 					// 根据对面剩余的单位数量减少血量
 					numericComponent.Set(NumericType.Hp, hp);
 
-					player.SendMessage(new G2C_SyncPlayerHp(){Hp = hp});
+					player.SendMessage(new G2C_SyncPlayerHp()
+					{
+						Hp = hp
+					});
 					//  一个玩家的血量小于等于0，游戏结束
 					if (hp <= 0)
 					{
@@ -451,6 +480,19 @@ namespace ET
 			}
 
 			return value;
+		}
+
+		public static List<Unit> GetOpponentUnits(this GamePlayComponent self, Player player)
+		{
+			foreach (var kv in self.playerChampionDict)
+			{
+				if (kv.Key != player)
+				{
+					return kv.Value;
+				}
+			}
+
+			throw new ArgumentException("玩家不存在");
 		}
 	}
 #endif

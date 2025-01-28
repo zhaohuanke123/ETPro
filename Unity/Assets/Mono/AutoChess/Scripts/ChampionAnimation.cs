@@ -10,10 +10,10 @@ public class ChampionAnimation: MonoBehaviour
 
 	private void Start()
 	{
-		characterModel = this.transform.Find("character").gameObject;
+		// characterModel = this.transform.Find("character").gameObject;
 
-		animator = characterModel.GetComponent<Animator>();
-		championController = this.transform.GetComponent<ChampionController>();
+		animator = GetComponentInChildren<Animator>();
+		// championController = this.transform.GetComponent<ChampionController>();
 	}
 
 	// private void Update()

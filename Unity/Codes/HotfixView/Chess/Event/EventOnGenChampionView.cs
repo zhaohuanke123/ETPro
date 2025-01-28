@@ -9,7 +9,9 @@ namespace ET
 		protected override async ETTask Run(EventType.GenChampionView args)
 		{
 			ChessBattleViewComponent.Instance.HideAllInMap();
-
+			Unit unit = args.unit;
+			unit.ViewPosition = unit.Position;
+			unit.ViewRotation = unit.Rotation;
 			ChampionInfoPB infoPb = args.ChampionInfoPb;
 			ChampionConfig config = ChampionConfigCategory.Instance.Get(infoPb.ConfigId);
 			GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(config.prefab);
@@ -19,11 +21,9 @@ namespace ET
 				GameObjectPoolComponent.Instance.RecycleGameObject(go);
 			});
 
-			Unit unit = args.unit;
-			unit.ViewPosition = unit.Position;
-			unit.ViewRotation = unit.Rotation;
 			unit.AddComponent(showView);
 			unit.AddComponent<MoveViewComponent>();
+			unit.AddComponent<CharacterControlComponent, GameObject>(go);
 			showView.AddComponent<CpAnimatorComponent>();
 
 			int lv = infoPb.Lv;
@@ -38,6 +38,7 @@ namespace ET
 			}
 
 			go.transform.localScale = new Vector3(newScale, newScale, newScale);
+			go.transform.position = unit.ViewPosition;
 
 			await ETTask.CompletedTask;
 		}

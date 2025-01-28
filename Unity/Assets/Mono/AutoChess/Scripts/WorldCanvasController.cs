@@ -8,16 +8,14 @@ public class WorldCanvasController: MonoBehaviour
 
     public void AddDamageText(Vector3 position, float v)
     {
-        GameObject go = Instantiate(floatingTextPrefab);
-        go.transform.SetParent(worldCanvas.transform);
+        GameObject go = Instantiate(floatingTextPrefab, worldCanvas.transform, true);
 
         go.GetComponent<FloatingText>().Init(position, v);
     }
 
     public void AddHealthBar(GameObject championGO)
     {
-        GameObject go = Instantiate(healthBarPrefab);
-        go.transform.SetParent(worldCanvas.transform);
+        GameObject go = Instantiate(healthBarPrefab, worldCanvas.transform, true);
 
         go.GetComponent<HealthBar>().Init(championGO);
     }

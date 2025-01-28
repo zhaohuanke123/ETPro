@@ -3,35 +3,37 @@ using UnityEngine.UI;
 
 public class FloatingText: MonoBehaviour
 {
-    private CanvasGroup canvasGroup;
-    private Vector3 moveDirection;
-    private float timer = 0;
+	private CanvasGroup canvasGroup;
+	private Vector3 moveDirection;
+	private float timer = 0;
 
-    public float speed = 3;
+	public float speed = 3;
 
-    public float fadeOutTime = 1f;
+	public float fadeOutTime = 1f;
 
-    private void Update()
-    {
-        this.transform.position = this.transform.position + moveDirection * speed * Time.deltaTime;
+	private void Update()
+	{
+		this.transform.position += moveDirection * (speed * Time.deltaTime);
 
-        timer += Time.deltaTime;
-        float fade = (fadeOutTime - timer) / fadeOutTime;
+		timer += Time.deltaTime;
+		float fade = (fadeOutTime - timer) / fadeOutTime;
 
-        canvasGroup.alpha = fade;
+		canvasGroup.alpha = fade;
 
-        if (fade <= 0)
-            Destroy(this.gameObject);
-    }
+		if (fade <= 0)
+		{
+			Destroy(this.gameObject);
+		}
+	}
 
-    public void Init(Vector3 startPosition, float v)
-    {
-        this.transform.position = startPosition;
+	public void Init(Vector3 startPosition, float v)
+	{
+		this.transform.position = startPosition;
 
-        canvasGroup = this.GetComponent<CanvasGroup>();
+		canvasGroup = this.GetComponent<CanvasGroup>();
 
-        this.GetComponent<Text>().text = Mathf.Round(v).ToString();
+		this.GetComponent<Text>().text = Mathf.Round(v).ToString();
 
-        moveDirection = new Vector3(Random.Range(-0.5f, 0.5f), 1, Random.Range(-0.5f, 0.5f)).normalized;
-    }
+		moveDirection = new Vector3(Random.Range(-0.5f, 0.5f), 1, Random.Range(-0.5f, 0.5f)).normalized;
+	}
 }

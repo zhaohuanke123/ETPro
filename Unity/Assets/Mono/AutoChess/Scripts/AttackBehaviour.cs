@@ -17,7 +17,7 @@ public class AttackBehaviour: StateMachineBehaviour
     {
         //Debug.Log("attack anim finished");
 
-        animator.gameObject.transform.parent.GetComponent<ChampionAnimation>().OnAttackAnimationFinished();
+        // animator.gameObject.transform.parent.GetComponent<ChampionAnimation>().OnAttackAnimationFinished();
     }
 
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
