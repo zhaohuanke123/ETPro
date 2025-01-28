@@ -2,29 +2,36 @@
 
 namespace ET
 {
-    [ObjectSystem]
-    public class InputControlComponentAwakeSystem: AwakeSystem<InputControlComponent>
-    {
-        public override void Awake(InputControlComponent self)
-        {
-            self.mainCamera = Camera.main;
-            self.triggerLayer = 1 << 10;
-        }
-    }
+	[ObjectSystem]
+	public class InputControlComponentAwakeSystem: AwakeSystem<InputControlComponent>
+	{
+		public override void Awake(InputControlComponent self)
+		{
+			self.mainCamera = Camera.main;
+			self.triggerLayer = 1 << 10;
+		}
+	}
+
+	[ObjectSystem]
+	public class InputControlComponentDestroySystem: DestroySystem<InputControlComponent>
+	{
+		public override void Destroy(InputControlComponent self)
+		{
+		}
+	}
 
     [ObjectSystem]
-    public class InputControlComponentDestroySystem: DestroySystem<InputControlComponent>
-    {
-        public override void Destroy(InputControlComponent self)
-        {
-        }
-    }
-
-    [ObjectSystem]
-    public class InputControlComponentUpdateSystem: UpdateSystem<InputControlComponent>
+    [FriendClassAttribute(typeof(ET.GamePlayComponent))]
+    public class InputControlComponentUpdateSystem : UpdateSystem<InputControlComponent>
     {
         public override void Update(InputControlComponent self)
         {
+            GamePlayComponent gamePlayComponent = self.GetParent<GamePlayComponent>();
+            if (gamePlayComponent.currentGameStage == GameStage.Combat)
+            {
+                return;
+            }
+
             self.triggerInfo = null;
             Map.Instance.resetIndicators();
 
@@ -64,10 +71,10 @@ namespace ET
     }
 
     [FriendClass(typeof (InputControlComponent))]
-    public static partial class InputControlComponentSystem
-    {
-        public static void Test(this InputControlComponent self)
-        {
-        }
-    }
+	public static partial class InputControlComponentSystem
+	{
+		public static void Test(this InputControlComponent self)
+		{
+		}
+	}
 }

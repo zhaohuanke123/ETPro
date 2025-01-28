@@ -10,7 +10,16 @@ namespace ET
 		{
 			Player player = session.GetComponent<SessionPlayerComponent>().GetMyPlayer();
 			GamePlayComponent gamePlayComponent = session.GetComponent<GamePlayComponent>();
-
+			if (gamePlayComponent == null)
+			{
+				Room room = RoomComponent.Instance.GetRoom(player.RoomId);
+				if (room == null)
+				{
+					throw new ArgumentException("room is null");
+				}
+				gamePlayComponent = room.GetComponent<GamePlayComponent>();
+			}
+			
 			if (gamePlayComponent.currentGameStage != GameStage.Preparation)
 			{
 				if (request.OldGridType == GPDefine.GridTypeMap || request.NewGridType == GPDefine.GridTypeMap)

@@ -4,6 +4,7 @@
     [ComponentOf(typeof(Scene))]
     public class CurrentScenesComponent: Entity, IAwake
     {
+        public Camp Camp { get; set; }
         public Scene Scene { get; set; }
     }
 }

@@ -59,6 +59,10 @@ namespace ET
 			public Action OnConfirm;
 			public Action OnCancel;
 		}
+		
+		public struct CloseDialog
+		{
+		}
 
 		public struct ShowErrorToast
 		{

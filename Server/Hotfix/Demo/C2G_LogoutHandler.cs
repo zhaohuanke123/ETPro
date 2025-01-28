@@ -32,6 +32,12 @@ namespace ET
                 player.Dispose(); // 清理玩家数据
             }
 
+            Room room = RoomComponent.Instance.GetRoom(player.RoomId);
+            if (room != null)
+            {
+                room.LeaveRoom(player);
+            }
+
             // 返回响应
             response.Message = "登出成功!";
             reply();

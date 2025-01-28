@@ -8,7 +8,7 @@ namespace ET
 		{
 			self.aiCp = new List<ChampionInfo>();
 			self.aiPlayer = PlayerComponent.Instance.AddChild<Player, string>("AI");
-			self.aiPlayer.SetCamp(Camp.Player2);
+			self.aiPlayer.SetCamp(Camp.Player1);
 			PlayerComponent.Instance.Add(self.aiPlayer);
 			self.player = player;
 

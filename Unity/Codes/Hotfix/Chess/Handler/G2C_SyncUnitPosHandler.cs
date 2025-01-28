@@ -26,8 +26,21 @@ namespace ET
 
 			MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
 			Log.Warning("收到同步位置消息:{0}", unit.Position);
+
+			long messageMoveToUnitId = message.MoveToUnitId;
+			Unit moveToUnit = unitComponent.Get(messageMoveToUnitId);
+
+			if (moveToUnit == null)
+			{
+				Log.Error("收到同步位置消息, moveToUnit为空");
+				return;
+			}
+			ChampionConfig config = ChampionConfigCategory.Instance.Get(message.ChampionConfigId);
+
+			Vector3 targetPos = moveToUnit.Position - (moveToUnit.Position - unit.Position).normalized * (0.5f * config.attackRange);
+			await moveComponent.MoveToAsync(targetPos, 10);
 			// unit.Forward = new Vector3(message.ForwardX, message.ForwardY, message.ForwardZ);
-			await moveComponent.MoveToAsync(new Vector3(message.X, message.Y, message.Z), 10);
+			// await moveComponent.MoveToAsync(new Vector3(message.X, message.Y, message.Z), 10);
 		}
 	}
 }

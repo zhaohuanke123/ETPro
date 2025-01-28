@@ -52,9 +52,11 @@ namespace ET
 				NumericComponent numericComponent = selfUnit.GetComponent<NumericComponent>();
 
 				// 移动到两个人直线上的攻击范围内
-				Vector3 targetPos = nearestTarget.Position - (nearestTarget.Position - selfUnit.Position).normalized * config.attackRange / 2;
+				Vector3 targetPos = nearestTarget.Position - (nearestTarget.Position - selfUnit.Position).normalized * (0.5f * config.attackRange);
 				G2C_SyncUnitPos message = new G2C_SyncUnitPos();
 				message.UnitId = selfUnit.Id;
+				message.MoveToUnitId = nearestTarget.Id;
+				message.ChampionConfigId = info.Config.Id;
 				message.X = targetPos.x;
 				message.Y = targetPos.y;
 				message.Z = targetPos.z;
@@ -97,10 +99,9 @@ namespace ET
 			return nearestTarget;
 		}
 
-		public static async ETTask Attack(this CpCombatComponent self, GamePlayComponent gamePlayComponent, long attacktime)
+		public static async ETTask Attack(this CpCombatComponent self, GamePlayComponent gamePlayComponent, long attackTime)
 		{
-			DamageHelper.Damage(gamePlayComponent, self.GetParent<Unit>(), self.target, 5, attacktime);
-			await TimerComponent.Instance.WaitAsync(attacktime);
+			await DamageHelper.Damage(gamePlayComponent, self.GetParent<Unit>(), self.target, 5, attackTime);
 		}
 	}
 }

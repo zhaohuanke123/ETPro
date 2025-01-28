@@ -2,16 +2,17 @@
 
 namespace ET
 {
-    [ComponentOf]
-    public class InputControlComponent: Entity, IAwake, IDestroy, IUpdate
-    {
-        public int triggerLayer;
+	[ComponentOf]
+	public class InputControlComponent: Entity, IAwake, IDestroy, IUpdate
+	{
+		public int triggerLayer;
 
-        public Camera mainCamera;
-        public TriggerInfo triggerInfo = null;
+		public Camera mainCamera;
+		public TriggerInfo triggerInfo = null;
 
-        public Vector3 rayCastStartPosition;
+		public Vector3 rayCastStartPosition;
 
-        public Vector3 mousePosition;
-    }
+		public Vector3 mousePosition;
+		public bool enable = false;
+	}
 }

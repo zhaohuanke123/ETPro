@@ -31,7 +31,13 @@ namespace ET
 		BeforeGame,
 		Preparation,
 		Combat,
-		Loss
+		GameOver,
+	}
+
+	public struct UnitState
+	{
+		public Camp camp;
+		public ChampionInfo championInfo;
 	}
 
 	[ComponentOf]
@@ -40,6 +46,8 @@ namespace ET
 	{
 		[BsonIgnore]
 		public GameStage currentGameStage;
+		[BsonIgnore]
+		public int CombatRound = 1;
 
 #if SERVER
 		[BsonIgnore]
@@ -59,9 +67,12 @@ namespace ET
 
 		[BsonIgnore]
 		public List<ChampionInfo> player2ChampionInfos;
-		
-		// [BsonIgnore]
-		// public Queue<Unit> 
+
+		[BsonIgnore]
+		public LinkedList<Unit> combatQueue;
+
+		[BsonIgnore]
+		public Dictionary<Unit, UnitState> unitStateDict;
 #endif
 		/// <summary>
 		/// 计时 

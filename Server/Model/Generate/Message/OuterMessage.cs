@@ -1069,7 +1069,7 @@ namespace ET
 		public int GridPositionX { get; set; }
 
 		[ProtoMember(3)]
-		public int GridPositionY { get; set; }
+		public int GridPositionZ { get; set; }
 
 		[ProtoMember(4)]
 		public GridType Type { get; set; }
@@ -1138,12 +1138,8 @@ namespace ET
 	[ProtoContract]
 	public partial class G2C_SyncUnitPos: Object, IMessage
 	{
-		[ProtoMember(1)]
-		public List<long> UnitIds = new List<long>();
-
-		[ProtoMember(2)]
-		public List<MoveInfo> MoveInfos = new List<MoveInfo>();
-
+// repeated long UnitIds = 1;
+// repeated MoveInfo MoveInfos = 2;
 		[ProtoMember(1)]
 		public long UnitId { get; set; }
 
@@ -1164,6 +1160,12 @@ namespace ET
 
 		[ProtoMember(7)]
 		public float ForwardZ { get; set; }
+
+		[ProtoMember(8)]
+		public long MoveToUnitId { get; set; }
+
+		[ProtoMember(9)]
+		public int ChampionConfigId { get; set; }
 
 	}
 
@@ -1186,6 +1188,9 @@ namespace ET
 		[ProtoMember(2)]
 		public List<ChampionInfoPB> ChampionInfoPBList = new List<ChampionInfoPB>();
 
+		[ProtoMember(3)]
+		public bool IsPlayer1 { get; set; }
+
 	}
 
 	[Message(OuterOpcode.C2G_SceneReady)]
@@ -1197,6 +1202,12 @@ namespace ET
 	[Message(OuterOpcode.C2G_ExitChessMap)]
 	[ProtoContract]
 	public partial class C2G_ExitChessMap: Object, IMessage
+	{
+	}
+
+	[Message(OuterOpcode.G2C_ExitChessMap)]
+	[ProtoContract]
+	public partial class G2C_ExitChessMap: Object, IMessage
 	{
 	}
 
@@ -1226,10 +1237,16 @@ namespace ET
 		public int Helath { get; set; }
 
 		[ProtoMember(5)]
-		public bool IsDead { get; set; }
-
-		[ProtoMember(6)]
 		public long attackTime { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_UnitDead)]
+	[ProtoContract]
+	public partial class G2C_UnitDead: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
 
 	}
 
@@ -1277,6 +1294,15 @@ namespace ET
 	[ProtoContract]
 	public partial class G2C_MatchFail: Object, IMessage
 	{
+	}
+
+	[Message(OuterOpcode.G2C_SyncPlayerHp)]
+	[ProtoContract]
+	public partial class G2C_SyncPlayerHp: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public int Hp { get; set; }
+
 	}
 
 }

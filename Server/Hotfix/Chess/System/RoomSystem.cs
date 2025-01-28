@@ -41,7 +41,7 @@ namespace ET
 				first.SendMessage(new G2C_MatchFail());
 			}
 
-			self.Dispose();
+			RoomComponent.Instance.RemoveRoom(self.Id);
 		}
 
 		public static void JoinRoom(this Room self, Player player)
@@ -55,7 +55,7 @@ namespace ET
 			{
 				throw new ArgumentException("玩家已经在房间中");
 			}
-			
+
 			Log.Info($"玩家 {player.Id} 加入房间 {self.Id}");
 
 			player.RoomId = self.Id;
@@ -64,7 +64,17 @@ namespace ET
 			if (self.ContainsPlayers.Count == 2)
 			{
 				Log.Info($" 房间 {self.Id}  匹配成功");
-				self.gamePlayComponent = self.AddComponent<GamePlayComponent>();
+				GamePlayComponent gamePlayComponent = self.AddComponent<GamePlayComponent>();
+				self.gamePlayComponent = gamePlayComponent;
+
+				gamePlayComponent.AddComponent<MapComponent>();
+				gamePlayComponent.AddComponent<ShopComponent>();
+				gamePlayComponent.AddComponent<ChampionArrayComponent>();
+				gamePlayComponent.AddComponent<UnitComponent>();
+
+				ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.AddComponent<ChampionMapArrayComponent>();
+				championMapArrayComponent.AddComponent<BattleChampionBonusComponent>();
+				gamePlayComponent.AddComponent<SendUniPosComponent>();
 				foreach (Player p in self.ContainsPlayers.Values)
 				{
 					self.gamePlayComponent.AddPlayer(p);

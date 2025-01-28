@@ -16,6 +16,8 @@ namespace ET
 #if SERVER
 			self.playerChampionDict = new Dictionary<Player, List<Unit>>();
 			self.playerReadyDict = new Dictionary<long, bool>();
+			self.combatQueue = new LinkedList<Unit>();
+			self.unitStateDict = new Dictionary<Unit, UnitState>();
 #endif
 		}
 	}
@@ -33,7 +35,7 @@ namespace ET
 				{
 					return;
 				}
-				
+
 				foreach (bool isReady in self.playerReadyDict.Values)
 				{
 					if (isReady == false)
@@ -67,7 +69,9 @@ namespace ET
 			}
 			else if (self.currentGameStage == GameStage.Combat)
 			{
-
+				
+			} else if (self.currentGameStage == GameStage.GameOver)
+			{
 			}
 		}
 	}
@@ -104,6 +108,9 @@ namespace ET
 			player.gamePlayRoom = self;
 			self.playerChampionDict.Add(player, new List<Unit>());
 			self.playerReadyDict.Add(player.Id, isReady);
+
+			NumericComponent numericComponent = player.AddComponent<NumericComponent>();
+			numericComponent.Set(NumericType.Hp, 50);
 		}
 
 		public static void SetReady(this GamePlayComponent self, Player player, bool isReady)
@@ -138,6 +145,7 @@ namespace ET
 
 		public static void StartNewBattle(this GamePlayComponent self)
 		{
+			self.ResetCombatGame();
 			ChampionMapArrayComponent championMapArrayComponent = self.GetComponent<ChampionMapArrayComponent>();
 
 			// 临时AI
@@ -148,25 +156,25 @@ namespace ET
 			}
 
 			UnitComponent unitComponent = self.GetComponent<UnitComponent>();
-
 			List<ChampionInfoPB> championInfoPbs = new List<ChampionInfoPB>();
 
 			foreach (KeyValuePair<Player, List<Unit>> kv in self.playerChampionDict)
 			{
 				Player player = kv.Key;
 				List<Unit> units = kv.Value;
-				foreach (Unit unit in units)
-				{
-					unitComponent.Remove(unit.Id);
-				}
-				units.Clear();
-				List<ChampionInfo> championInfos = championMapArrayComponent.GetChampionInfos(player);
 
+				List<ChampionInfo> championInfos = championMapArrayComponent.GetChampionInfos(player);
 				foreach (ChampionInfo championInfo in championInfos)
 				{
 					Unit unit = UnitFactory.CreateChampionUnit(unitComponent, championInfo);
 					units.Add(unit);
-					// unit.AddComponent<SendUniPosComponent, Player>(player);
+					self.unitStateDict.Add(unit,
+					new UnitState()
+					{
+						camp = player.camp,
+						championInfo = championInfo
+					});
+
 					ChampionInfoPB championInfoPb = championInfo.GetChampionInfoPb();
 					championInfoPb.Lv = unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Lv);
 					championInfoPbs.Add(championInfoPb);
@@ -200,6 +208,15 @@ namespace ET
 
 			foreach (Player player in self.playerChampionDict.Keys)
 			{
+				if (player.camp == Camp.Player1)
+				{
+					message.IsPlayer1 = true;
+				}
+				else
+				{
+					message.IsPlayer1 = false;
+				}
+
 				player.SendMessage(message);
 			}
 		}
@@ -208,12 +225,15 @@ namespace ET
 		{
 			List<Unit> unit1 = self.player1Units;
 			List<Unit> unit2 = self.player2Units;
+			UnitComponent unitComponent = self.GetComponent<UnitComponent>();
 			for (int i = unit1.Count - 1; i >= 0; i--)
 			{
 				NumericComponent numericComponent = unit1[i].GetComponent<NumericComponent>();
 				if (numericComponent.GetAsInt(NumericType.Hp) <= 0)
 				{
 					Log.Info($"{unit1[i].Id} 死亡");
+
+					unitComponent.Remove(unit1[i].Id);
 					unit1.RemoveAt(i);
 				}
 			}
@@ -239,35 +259,179 @@ namespace ET
 			{
 				if (self.CheckBattleEnd())
 				{
-					await TimerComponent.Instance.WaitAsync(1000);
-					foreach (var kv in self.playerChampionDict)
-					{
-						Player player = kv.Key;
-						List<Unit> units = kv.Value;
-						player.SendMessage(new G2C_OneCpBattleEnd()
-						{
-							Result = units.Count > 0? 1 : 0
-						});
-					}
 					Log.Info("战斗结束");
-					self.currentGameStage = GameStage.BeforeGame;
+
+					await TimerComponent.Instance.WaitAsync(1000);
+
+					self.CalAndSendResult();
+
 					return;
 				}
 
+				List<ETTask> tasks = new List<ETTask>();
 				for (var i = 0; i < unit1.Count; i++)
 				{
 					Unit unit = unit1[i];
+					if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+					{
+						continue;
+					}
 					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-					await cpCombatComponent.CombatLoop(self, unit, self.player1ChampionInfos[i], unit2);
+					tasks.Add(cpCombatComponent.CombatLoop(self, unit, self.player1ChampionInfos[i], unit2));
 				}
+
+				await ETTaskHelper.WaitAll(tasks);
+				tasks.Clear();
+
 				for (var i = 0; i < unit2.Count; i++)
 				{
 					Unit unit = unit2[i];
+					if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+					{
+						continue;
+					}
 					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-					await cpCombatComponent.CombatLoop(self, unit, self.player2ChampionInfos[i], unit1);
+					tasks.Add(cpCombatComponent.CombatLoop(self, unit, self.player2ChampionInfos[i], unit1));
 				}
+				await ETTaskHelper.WaitAll(tasks);
+				tasks.Clear();
+
+				#region 双方轮流出手的模式
+
+				// var combatQ = self.combatQueue;
+				// combatQ.Clear();
+				// int i = 0;
+				// int j = 0;
+				//
+				// while (i < unit1.Count && j < unit2.Count)
+				// {
+				// 	if (RandomHelper.RandomNumber(0, 2) >= 1)
+				// 	{
+				// 		if (unit1[i].GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+				// 		{
+				// 			i++;
+				// 			continue;
+				// 		}
+				// 		combatQ.AddLast(unit1[i]);
+				// 		i++;
+				// 	}
+				// 	else
+				// 	{
+				// 		if (unit2[j].GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+				// 		{
+				// 			j++;
+				// 			continue;
+				// 		}
+				// 		combatQ.AddLast(unit2[j]);
+				// 		j++;
+				// 	}
+				// }
+				//
+				// while (i < unit1.Count)
+				// {
+				// 	if (unit1[i].GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+				// 	{
+				// 		i++;
+				// 		continue;
+				// 	}
+				// 	combatQ.AddLast(unit1[i]);
+				// 	i++;
+				// }
+				//
+				// while (j < unit2.Count)
+				// {
+				// 	if (unit2[j].GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+				// 	{
+				// 		j++;
+				// 		continue;
+				// 	}
+				// 	combatQ.AddLast(unit2[j]);
+				// 	j++;
+				// }
+				//
+				// foreach (var unit in combatQ)
+				// {
+				// 	CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
+				// 	UnitState unitState = self.unitStateDict[unit];
+				// 	List<Unit> tarList = unitState.camp == Camp.Player1? unit2 : unit1;
+				// 	// await cpCombatComponent.CombatLoop(self, unit, unitState.championInfo, tarList);
+				// 	await cpCombatComponent.CombatLoop(self, unit, unitState.championInfo, tarList);
+				// }
+				//
+				// for (var i = 0; i < unit1.Count; i++)
+				// {
+				// 	Unit unit = unit1[i];
+				// 	CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
+				// 	await cpCombatComponent.CombatLoop(self, unit, self.player1ChampionInfos[i], unit2);
+				// }
+				// for (var i = 0; i < unit2.Count; i++)
+				// {
+				// 	Unit unit = unit2[i];
+				// 	CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
+				// 	await cpCombatComponent.CombatLoop(self, unit, self.player2ChampionInfos[i], unit1);
+				// }
+
+				#endregion
 
 				await ETTask.CompletedTask;
+			}
+		}
+
+		public static void CalAndSendResult(this GamePlayComponent self)
+		{
+			ShopComponent shopComponent = self.GetComponent<ShopComponent>();
+			G2C_OneCpBattleEnd message = new G2C_OneCpBattleEnd();
+
+			self.currentGameStage = GameStage.BeforeGame;
+			foreach (var kv in self.playerChampionDict)
+			{
+				Player player = kv.Key;
+				List<Unit> units = kv.Value;
+
+				if (units.Count == 0)
+				{
+					message.Result = 0;
+
+					NumericComponent numericComponent = player.GetComponent<NumericComponent>();
+					int hp = numericComponent.GetAsInt(NumericType.Hp);
+					hp -= 3 * self.GetPlayerUnits(player).Count;
+					hp = hp < 0? 0 : hp;
+					
+					// 根据对面剩余的单位数量减少血量
+					numericComponent.Set(NumericType.Hp, hp);
+
+					player.SendMessage(new G2C_SyncPlayerHp(){Hp = hp});
+					//  一个玩家的血量小于等于0，游戏结束
+					if (hp <= 0)
+					{
+						self.currentGameStage = GameStage.GameOver;
+					}
+				}
+				// 胜利 的 Player
+				else
+				{
+					message.Result = 1;
+
+					shopComponent.AddPlayerGold(player, 5);
+				}
+
+				player.SendMessage(message);
+			}
+		}
+
+		public static void ResetCombatGame(this GamePlayComponent self)
+		{
+			self.unitStateDict.Clear();
+
+			UnitComponent unitComponent = self.GetComponent<UnitComponent>();
+			foreach (KeyValuePair<Player, List<Unit>> kv in self.playerChampionDict)
+			{
+				List<Unit> units = kv.Value;
+				foreach (Unit unit in units)
+				{
+					unitComponent.Remove(unit.Id);
+				}
+				units.Clear();
 			}
 		}
 
@@ -277,6 +441,16 @@ namespace ET
 			{
 				player.SendMessage(message);
 			}
+		}
+
+		public static List<Unit> GetPlayerUnits(this GamePlayComponent self, Player player)
+		{
+			if (!self.playerChampionDict.TryGetValue(player, out List<Unit> value))
+			{
+				throw new ArgumentException("玩家不存在");
+			}
+
+			return value;
 		}
 	}
 #endif

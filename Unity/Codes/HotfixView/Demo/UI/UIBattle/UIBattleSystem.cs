@@ -50,7 +50,7 @@ namespace ET
 	{
 		public static async ETTask OnReturnBtnClick(this UIBattle self)
 		{
-			ChessBattleHelper.SendExitChessMap(self.ZoneScene()).Coroutine();
+			await ChessBattleHelper.SendExitChessMap(self.ZoneScene());
 			await UIManagerComponent.Instance.DestroyWindow<UIBattle>();
 		}
 

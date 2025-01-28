@@ -11,7 +11,6 @@ namespace ET
 			ChessBattleViewComponent.Instance.HideAllInMap();
 
 			ChampionInfoPB infoPb = args.ChampionInfoPb;
-
 			ChampionConfig config = ChampionConfigCategory.Instance.Get(infoPb.ConfigId);
 			GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(config.prefab);
 			GameObjectComponent showView = ChessBattleViewComponent.Instance.AddChild<GameObjectComponent, GameObject, Action>(go,
@@ -26,7 +25,19 @@ namespace ET
 			unit.AddComponent(showView);
 			unit.AddComponent<MoveViewComponent>();
 			showView.AddComponent<CpAnimatorComponent>();
-			// unit.AddComponent<AnimatorComponent>();
+
+			int lv = infoPb.Lv;
+			float newScale = 1;
+			if (lv == 2)
+			{
+				newScale = 1.5f;
+			}
+			else if (lv == 3)
+			{
+				newScale = 2f;
+			}
+
+			go.transform.localScale = new Vector3(newScale, newScale, newScale);
 
 			await ETTask.CompletedTask;
 		}

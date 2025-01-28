@@ -19,6 +19,7 @@
 			ChampionInfoPB championInfoPb = new ChampionInfoPB();
 			championInfoPb.ConfigId = self.configId;
 			championInfoPb.GridPositionX = self.gridPositionX;
+			championInfoPb.GridPositionZ = self.gridPositionZ;
 			championInfoPb.Type = self.gridType;
 			return championInfoPb;
 		}

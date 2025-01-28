@@ -24,9 +24,6 @@ namespace ET
                     vec3s[i].Add(self.mapGridPositions[i, j]);
                 }
             }
-
-            string json = JsonHelper.ToJson(vec3s);
-            Debug.Log(json);
 #else
             var mapData = ConfigComponent.Instance.ConfigLoader.GetMapData();
 

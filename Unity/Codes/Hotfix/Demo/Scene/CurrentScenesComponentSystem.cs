@@ -14,5 +14,10 @@
         {
             return zoneScene.GetComponent<CurrentScenesComponent>()?.Scene;
         }
+        
+        public static CurrentScenesComponent CurrentScenesComponent(this Scene zoneScene)
+        {
+            return zoneScene.GetComponent<CurrentScenesComponent>();
+        }
     }
 }

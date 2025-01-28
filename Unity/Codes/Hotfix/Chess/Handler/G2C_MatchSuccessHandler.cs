@@ -6,6 +6,7 @@ namespace ET
 	{
 		protected override void Run(Session session, G2C_MatchSuccess message)
 		{
+			Game.EventSystem.PublishAsync(new UIEventType.CloseDialog()).Coroutine();
 			Game.EventSystem.PublishAsync(new UIEventType.ShowDialog()
 			{
 				Text = "匹配成功. 是否进入匹配棋盘?",

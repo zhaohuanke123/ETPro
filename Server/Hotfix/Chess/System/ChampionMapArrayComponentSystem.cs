@@ -242,11 +242,16 @@ namespace ET
 					{
 						return (x, z);
 					}
-					
+
 					return (GPDefine.HexMapSizeX - 1 - x, GPDefine.HexMapSizeZ - 1 - z);
 				}
 			}
 			return (-1, -1);
+		}
+
+		public static Vector3 GetUnitPos(this ChampionMapArrayComponent self, Player player, int gridX, int gridZ)
+		{
+			return new Vector3();
 		}
 	}
 }

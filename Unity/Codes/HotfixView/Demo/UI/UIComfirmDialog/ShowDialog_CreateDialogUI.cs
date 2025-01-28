@@ -12,6 +12,8 @@ namespace ET
 			string Content = args.Text;
 			GameObject gameObject = await GameObjectPoolComponent.Instance.GetGameObjectAsync(UIComfirmDialog.PrefabPath);
 			UIComfirmDialog ui = ToastComponent.Instance.AddChild<UIComfirmDialog>();
+			UIComfirmDialog.go = gameObject;
+			UIComfirmDialog.Instance = ui;
 			var transform = gameObject.transform;
 			ui.AddUIComponent<UITransform, Transform>("", transform);
 			transform = gameObject.transform;
@@ -25,6 +27,10 @@ namespace ET
 			if (args.OnConfirm == null)
 			{
 				ui.ComfirmBtn.SetActive(false);
+			}
+			else
+			{
+				ui.ComfirmBtn.SetActive(true);
 			}
 
 			ui.SetTitle(args.Text);

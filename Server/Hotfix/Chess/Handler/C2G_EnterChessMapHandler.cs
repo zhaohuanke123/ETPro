@@ -30,12 +30,9 @@ namespace ET
 			gamePlayComponent.AddComponent<SendUniPosComponent>();
 
 			// TODO 临时
-			player.SetCamp(Camp.Player1);
-
-			// 添加空的player，作为人机
+			player.SetCamp(Camp.Player2);
+			// 人机
 			gamePlayComponent.AddComponent<TmpAiChampionComponentComponent, Player>(player);
-			// TODO 临时
-			shopComponent.AddPlayerGold(player, 100);
 
 			response.SceneInstanceId = 123;
 			response.SceneName = map;

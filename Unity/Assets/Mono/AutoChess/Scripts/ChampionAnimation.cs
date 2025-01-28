@@ -16,14 +16,14 @@ public class ChampionAnimation: MonoBehaviour
 		championController = this.transform.GetComponent<ChampionController>();
 	}
 
-	private void Update()
-	{
-		float movementSpeed = (this.transform.position - lastFramePosition).magnitude / Time.deltaTime;
-
-		animator.SetFloat("movementSpeed", movementSpeed);
-
-		lastFramePosition = this.transform.position;
-	}
+	// private void Update()
+	// {
+	// 	float movementSpeed = (this.transform.position - lastFramePosition).magnitude / Time.deltaTime;
+	//
+	// 	animator.SetFloat("movementSpeed", movementSpeed);
+	//
+	// 	lastFramePosition = this.transform.position;
+	// }
 
 	public void DoAttack(bool b)
 	{
@@ -34,7 +34,7 @@ public class ChampionAnimation: MonoBehaviour
 	{
 		animator.SetBool("isAttacking", false);
 
-		championController.OnAttackAnimationFinished();
+		// championController.OnAttackAnimationFinished();
 
 		//Debug.Log("OnAttackAnimationFinished");
 	}

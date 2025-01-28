@@ -72,8 +72,7 @@ namespace ET
 		{
 			Session session = zoneScene.GetComponent<SessionComponent>().Session;
 			session.Send(new C2G_ExitChessMap());
-
-			await SceneChangeHelper.SceneChangeToLogin(zoneScene);
+			await TimerComponent.Instance.WaitAsync(1000);
 		}
 	}
 }
