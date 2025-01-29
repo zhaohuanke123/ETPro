@@ -1,4 +1,5 @@
-﻿namespace ET
+﻿
+namespace ET
 {
 	[UISystem]
 	[FriendClass(typeof (UILobbyView))]
@@ -8,7 +9,6 @@
 		{
 			self.EnterBtn = self.AddUIComponent<UIButton>("Panel/EnterMap");
 			self.EnterBtn.SetOnClick(self.OnEnterBtnClick);
-			// self.EnterBtn.GetGameObject().SetActive(false);
 			self.ReturnLoginBtn = self.AddUIComponent<UIButton>("Panel/ReturnLogin");
 			self.ReturnLoginBtn.SetOnClickAsync(self.OnReturnLoginBtnClick);
 			// Panel/EnterChessMap
@@ -26,7 +26,7 @@
 	{
 		public static void OnEnterBtnClick(this UILobbyView self)
 		{
-			EnterMapHelper.EnterMapAsync(self.ZoneScene()).Coroutine();
+			GalGameEngineComponent.Instance.PlayChapterByName("StartChapter").Coroutine();
 			// GuidanceComponent.Instance.NoticeEvent("Click_EnterMap");
 		}
 
