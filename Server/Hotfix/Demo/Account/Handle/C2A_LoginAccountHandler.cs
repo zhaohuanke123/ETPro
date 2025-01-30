@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using MongoDB.Bson.Serialization.Conventions;
 
 namespace ET.Account.Handle
 {
@@ -51,12 +53,13 @@ namespace ET.Account.Handle
 			}
 
 			AccountInfo accountInfo = null;
+			DBComponent dbComponent = DBManagerComponent.Instance.GetZoneDB(session.DomainZone());
 			using (session.AddComponent<SessionLockingComponent>())
 			{
 				//  协程锁，防止多个人同时登录一个账号
 				using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoginAccount, request.AccountName.Trim().GetHashCode()))
 				{
-					var accountInfos = await DBManagerComponent.Instance.GetZoneDB(session.DomainZone())
+					var accountInfos = await dbComponent
 							.Query<AccountInfo>(d => d.Account.Equals(request.AccountName.Trim()));
 
 					if (accountInfos != null && accountInfos.Count > 0)
@@ -91,6 +94,22 @@ namespace ET.Account.Handle
 				}
 			}
 
+			// 数据库版本差异
+			BagComponent bagComponent = null;
+			if (accountInfo.BagId == 0)
+			{
+				Log.Info($"发现账号:{accountInfo.Id}的背包为空，创建一个");
+				bagComponent = accountInfo.AddComponent<BagComponent>();
+				await dbComponent.Save(bagComponent);
+				accountInfo.BagId = bagComponent.Id;
+				await dbComponent.Save(accountInfo);
+			}
+			else
+			{
+				List<BagComponent> bagComponents = await dbComponent.Query<BagComponent>(d => d.Id == accountInfo.BagId);
+				bagComponent = bagComponents[0];
+			}
+
 			// 账号服务器请求登录中心服
 			// StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
 			// long loginCenterInstanceId = startSceneConfig.InstanceId;
@@ -118,7 +137,7 @@ namespace ET.Account.Handle
 				{
 					room.LeaveRoom(otherPlayer);
 				}
-				
+
 				otherSession.Send(new A2C_Disconnect()
 				{
 					Error = 0
@@ -157,6 +176,10 @@ namespace ET.Account.Handle
 			player.Session = session;
 			session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
 			session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
+
+			player.AddComponent(bagComponent);
+
+			//TODO 临时
 
 			reply();
 		}

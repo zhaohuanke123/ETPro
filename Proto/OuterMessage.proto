@@ -646,3 +646,19 @@ message G2C_ChessGameOver // IMessage
 {
 	bool Result = 1;
 }
+
+//ResponseType G2C_GetItem
+message C2G_GetItem // IRequest
+{
+	int32 RpcId = 90;
+	int32 ItemId = 1;
+}	
+
+message G2C_GetItem // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	int32 ItemId = 1;
+	int32 Count = 2;
+}

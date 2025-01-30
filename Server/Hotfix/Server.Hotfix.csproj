@@ -19,6 +19,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Codes\Hotfix\Bag\BagComponentSystem.cs">
+      <Link>Bag\BagComponentSystem.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Codes\Hotfix\Chess\GamePlayComponentSystem.cs">
       <Link>Chess\System\GamePlayComponentSystem.cs</Link>
     </Compile>

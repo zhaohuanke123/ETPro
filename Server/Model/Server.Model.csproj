@@ -22,6 +22,18 @@
   </PropertyGroup>
   <ItemGroup>
 
+    <Compile Include="..\..\Unity\Codes\Model\Bag\BagComponent.cs">
+      <Link>Bag\BagComponent.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Codes\Model\Bag\Hero.cs">
+      <Link>Bag\Hero.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Codes\Model\Bag\Item.cs">
+      <Link>Bag\Item.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Model\Chess\BonusTarget.cs">
       <Link>Chess\BonusTarget.cs</Link>
     </Compile>
@@ -79,7 +91,7 @@
     <Compile Include="..\..\Unity\Codes\Model\Module\CoroutineLock\**\*.cs">
       <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
-    
+
     <Compile Remove="Libs\**" />
     
     <Compile Include="..\..\Unity\Codes\Model\Module\ActorLocation\ActorResponse.cs">

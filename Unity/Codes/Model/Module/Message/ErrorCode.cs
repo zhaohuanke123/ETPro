@@ -36,5 +36,6 @@ namespace ET
         public const int GoldNotEnough = 200018;
         public const int ChampionArrayFull = 200019;
         public const int CannotDragChampionToOrFormMapInCombat = 200020;
+        public const int ERR_ItemNotFound = 200021;
     }
 }

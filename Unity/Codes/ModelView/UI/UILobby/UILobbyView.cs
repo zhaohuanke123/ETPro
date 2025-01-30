@@ -8,5 +8,6 @@
         public UIButton ReturnLoginBtn;
         public UIButton EnterChessMapBtn;
         public UIButton StartMatchBtn;
+        public UIItem PointItem;
     }
 }

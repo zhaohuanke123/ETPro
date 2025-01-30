@@ -1,5 +1,4 @@
-﻿
-namespace ET
+﻿namespace ET
 {
 	[UISystem]
 	[FriendClass(typeof (UILobbyView))]
@@ -18,6 +17,8 @@ namespace ET
 			// Panel/StartMatch
 			self.StartMatchBtn = self.AddUIComponent<UIButton>("Panel/StartMatch");
 			self.StartMatchBtn.SetOnClickAsync(self.OnStartMatchBtnClick);
+
+			self.PointItem = self.AddUIComponent<UIItem, int>("Panel/PointItem", ItemDefine.PointId);
 		}
 	}
 
