@@ -7,9 +7,10 @@ namespace ET
     {
         public static string PrefabPath => "UI/UIBattle/Prefabs/UIBattle.prefab";
         public UIText GoldText;
-        public UIText CountDownText;
+        public UITextmesh UITimerText;
         // public UICostIN allCoin;
         public UIText HpText;
+        public UISlider HpSlider;
         public UIButton returnBtn;
         public UIText championLimitText;
         public UIChampionContainer[] cContainers;

@@ -47,6 +47,7 @@ namespace ET
 	{
 		[BsonIgnore]
 		public GameStage currentGameStage;
+
 		[BsonIgnore]
 		public int CombatRound = 1;
 
@@ -74,6 +75,8 @@ namespace ET
 
 		[BsonIgnore]
 		public Dictionary<Unit, UnitState> unitStateDict;
+#else
+		public static GamePlayComponent Instance;
 #endif
 		/// <summary>
 		/// 计时 

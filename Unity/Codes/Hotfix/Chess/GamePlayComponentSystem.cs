@@ -18,6 +18,8 @@ namespace ET
 			self.playerReadyDict = new Dictionary<long, bool>();
 			self.combatQueue = new LinkedList<Unit>();
 			self.unitStateDict = new Dictionary<Unit, UnitState>();
+#else
+			GamePlayComponent.Instance = self;
 #endif
 		}
 	}

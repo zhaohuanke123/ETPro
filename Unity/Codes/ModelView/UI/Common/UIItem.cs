@@ -1,10 +1,7 @@
 ﻿namespace ET
 {
-	[UIComponent]
-	public class UIItem: Entity, IAwake, IDestroy, IOnCreate<int>, IOnEnable
+	public partial class UIItem
 	{
-		public UIImage icon;
-		public UITextmesh numText;
-		public UIButton tryAddBtn;
+		
 	}
 }

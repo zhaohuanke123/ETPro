@@ -18,7 +18,7 @@ namespace ET
 			gamePlayComponent.Broadcast(message);
 
 			await TimerComponent.Instance.WaitAsync(attacktime);
-			if (target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+			if (message.HP <= 0)
 			{
 				gamePlayComponent.Broadcast(new G2C_UnitDead()
 				{

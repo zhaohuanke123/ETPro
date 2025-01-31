@@ -1,7 +1,7 @@
 {
 	"Channel" : "googleplay",
 	"Resver" :  10,
-	"Dllver" :  12,
+	"Dllver" :  13,
 	"RemoteCdnUrl" : "http://117.72.91.228/cdn",
 	"RemoteCdnUrl2" : "http://117.72.91.228/cdn"
 }

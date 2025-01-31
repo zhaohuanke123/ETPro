@@ -9,10 +9,12 @@ namespace ET
 		public override void OnCreate(UIBattle self)
 		{
 			self.GoldText = self.AddUIComponent<UIText>("Gold/CostGo/cost");
-			self.CountDownText = self.AddUIComponent<UIText>("Placement/Timer/Text");
+			self.UITimerText = self.AddUIComponent<UITextmesh>("UITimer/Content/Label_Time");
 			// self.allCoin = self.AddUIComponent<UICostIN>("Gold/CostGo");
 			self.championLimitText = self.AddUIComponent<UIText>("championLimit/Text");
 			self.HpText = self.AddUIComponent<UIText>("Hp/Text");
+
+			self.HpSlider = self.AddUIComponent<UISlider>("HpBar/Slider");
 
 			self.refreshShopButton = self.AddUIComponent<UIButton>("Shop/left menu/refresh");
 			self.refreshShopButton.SetOnClickAsync(self.OnRefreshShopBtnClick);
@@ -76,7 +78,7 @@ namespace ET
 
 		public static void SetTimer(this UIBattle self, int timer)
 		{
-			self.CountDownText.SetText(timer.ToString());
+			self.UITimerText.SetText(timer.ToString());
 		}
 
 		public static void SetChampionLimit(this UIBattle self, int championLimit)
@@ -86,7 +88,8 @@ namespace ET
 
 		public static void SetHp(this UIBattle self, int hp)
 		{
-			self.HpText.SetText($"HP {hp.ToString()}");
+			self.HpText.SetText($"{hp.ToString()}");
+			self.HpSlider.SetValue(hp);
 		}
 
 		public static async ETTask OnRefreshShopBtnClick(this UIBattle self)

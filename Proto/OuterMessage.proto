@@ -662,3 +662,37 @@ message G2C_GetItem // IResponse
 	int32 ItemId = 1;
 	int32 Count = 2;
 }
+
+//ResponseType G2C_AddItem
+message C2G_AddItem // IRequest
+{
+	int32 RpcId = 90;
+	int32 ItemId = 1;
+	int32 Count = 2;
+}
+
+message G2C_AddItem // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	int32 ItemId = 1;
+	int32 Count = 2;
+}
+
+//ResponseType G2C_UseItem
+message C2G_UseItem // IRequest
+{
+	int32 RpcId = 90;
+	int32 ItemId = 1;
+	int32 Count = 2;
+}
+
+message G2C_UseItem // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	int32 ItemId = 1;
+	int32 Count = 2;
+}

@@ -14,6 +14,7 @@ namespace ET
         public UIImage icon;
         public UIText name;
         public UIText count;
+        public UISlider slider;
         public int index;
     }
 }

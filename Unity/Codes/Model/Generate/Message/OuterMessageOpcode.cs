@@ -89,5 +89,9 @@ namespace ET
 		 public const ushort G2C_ChessGameOver = 10091;
 		 public const ushort C2G_GetItem = 10092;
 		 public const ushort G2C_GetItem = 10093;
+		 public const ushort C2G_AddItem = 10094;
+		 public const ushort G2C_AddItem = 10095;
+		 public const ushort C2G_UseItem = 10096;
+		 public const ushort G2C_UseItem = 10097;
 	}
 }

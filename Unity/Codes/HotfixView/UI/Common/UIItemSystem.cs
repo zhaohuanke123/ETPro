@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
 	[UISystem]
 	[FriendClass(typeof (UIItem))]
@@ -12,8 +14,11 @@
 			self.tryAddBtn = self.AddUIComponent<UIButton>("TryAddBtn");
 			self.numText = self.AddUIComponent<UITextmesh>("numText");
 
+			self.itemId = itemId;
 			int itemCount = await ItemHelper.GetItemCount(self.ZoneScene(), itemId);
 			self.SetItemCount(itemCount);
+
+			self.tryAddBtn.SetOnClickAsync(self.TryAddItem);
 		}
 	}
 
@@ -49,10 +54,17 @@
 			self.icon.SetSpritePath(icon).Coroutine();
 		}
 
-		public static async ETTask TryAddItem(this UIItem self, int itemId)
+		public static async ETTask TryAddItem(this UIItem self)
 		{
-
-			await ETTask.CompletedTask;
+			try
+			{
+				int newCount = await ItemHelper.AddItem(self.ZoneScene(), self.itemId);
+				self.SetItemCount(newCount);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+			}
 		}
 	}
 }

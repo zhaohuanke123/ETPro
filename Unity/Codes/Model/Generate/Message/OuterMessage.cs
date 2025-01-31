@@ -1351,4 +1351,78 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(G2C_AddItem))]
+	[Message(OuterOpcode.C2G_AddItem)]
+	[ProtoContract]
+	public partial class C2G_AddItem: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int ItemId { get; set; }
+
+		[ProtoMember(2)]
+		public int Count { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_AddItem)]
+	[ProtoContract]
+	public partial class G2C_AddItem: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int ItemId { get; set; }
+
+		[ProtoMember(2)]
+		public int Count { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_UseItem))]
+	[Message(OuterOpcode.C2G_UseItem)]
+	[ProtoContract]
+	public partial class C2G_UseItem: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int ItemId { get; set; }
+
+		[ProtoMember(2)]
+		public int Count { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_UseItem)]
+	[ProtoContract]
+	public partial class G2C_UseItem: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int ItemId { get; set; }
+
+		[ProtoMember(2)]
+		public int Count { get; set; }
+
+	}
+
 }

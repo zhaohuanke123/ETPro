@@ -47,7 +47,7 @@ namespace ET
 
             if (item == null)
             {
-                throw new ArgumentException($"配置找不到，配置表名: {nameof (ItemConfig)}，配置id: {id}");
+                throw new Exception($"配置找不到，配置表名: {nameof (ItemConfig)}，配置id: {id}");
             }
 
             return item;

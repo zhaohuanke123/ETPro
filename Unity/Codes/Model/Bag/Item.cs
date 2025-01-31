@@ -4,7 +4,7 @@ namespace ET
 {
 	public static class ItemDefine
 	{
-		public const int PointId = 1001;
+		public const int PointId = 1000;
 	}
 
 	public class Item: Entity, IAwake, IDestroy

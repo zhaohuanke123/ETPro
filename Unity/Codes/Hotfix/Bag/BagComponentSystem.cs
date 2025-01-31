@@ -19,7 +19,7 @@ namespace ET
 	{
 		public override void Destroy(BagComponent self)
 		{
-
+			
 		}
 	}
 

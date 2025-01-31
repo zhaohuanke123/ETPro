@@ -13,6 +13,7 @@ namespace ET
 			Scene currentScene = session.ZoneScene().CurrentScene();
 			GamePlayComponent gamePlayComponent = currentScene.GetComponent<GamePlayComponent>();
 			gamePlayComponent.currentGameStage = GameStage.Combat;
+			Map.Instance.HideIndicators();
 			
 			List<UnitInfo> units = message.Units;
 			for (int i = 0; i < units.Count; i++)
