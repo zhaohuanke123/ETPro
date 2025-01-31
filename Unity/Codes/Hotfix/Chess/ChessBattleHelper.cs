@@ -74,5 +74,16 @@ namespace ET
 			session.Send(new C2G_ExitChessMap());
 			await TimerComponent.Instance.WaitAsync(1000);
 		}
+
+		public static async ETTask<int> SendLevelUp(Scene zoneScene)
+		{
+			C2G_LevelUp c2GLevelUp = new C2G_LevelUp();
+			G2C_LevelUp response = await zoneScene.GetComponent<SessionComponent>().Session.Call(c2GLevelUp) as G2C_LevelUp;
+			if (response.Error != ErrorCode.ERR_Success)
+			{
+				return response.Error;
+			}
+			return ErrorCode.ERR_Success;
+		}
 	}
 }

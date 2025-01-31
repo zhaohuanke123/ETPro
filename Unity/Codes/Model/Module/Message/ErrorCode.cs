@@ -37,5 +37,9 @@ namespace ET
         public const int ChampionArrayFull = 200019;
         public const int CannotDragChampionToOrFormMapInCombat = 200020;
         public const int ERR_ItemNotFound = 200021;
+        public const int ERR_RoomNotFound = 200022;
+        public const int ERR_InvalidPosition = 200023;
+        public const int ERR_ChampionLimitReached = 200024;
+        public const int ERR_ChampionPosNotExist = 200025;
     }
 }

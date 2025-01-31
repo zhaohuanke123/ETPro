@@ -232,6 +232,9 @@ namespace ET
 		[ProtoMember(16)]
 		public List<long> BuffSourceIds = new List<long>();
 
+		[ProtoMember(17)]
+		public int Camp { get; set; }
+
 	}
 
 	[Message(OuterOpcode.M2C_CreateUnits)]
@@ -1422,6 +1425,47 @@ namespace ET
 
 		[ProtoMember(2)]
 		public int Count { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_UpdateLevel)]
+	[ProtoContract]
+	public partial class G2C_UpdateLevel: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public int Level { get; set; }
+
+		[ProtoMember(2)]
+		public int ChampionLimit { get; set; }
+
+		///<summary>新增字段:下一级所需费用</summary>
+		[ProtoMember(3)]
+		public int NextLevelCost { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_LevelUp))]
+	[Message(OuterOpcode.C2G_LevelUp)]
+	[ProtoContract]
+	public partial class C2G_LevelUp: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_LevelUp)]
+	[ProtoContract]
+	public partial class G2C_LevelUp: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
 
 	}
 

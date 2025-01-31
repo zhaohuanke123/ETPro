@@ -305,6 +305,8 @@ namespace ET
 					return false;
 				}
 			}
+			self.SetTitleText("正在计算需要下载的资源数");
+			await TimerComponent.Instance.WaitAsync(100);
 
 			Log.Info("创建补丁下载器.");
 			int downloadingMaxNum = 10;
@@ -312,6 +314,7 @@ namespace ET
 			self.Downloader = YooAssets.CreatePatchDownloader(downloadingMaxNum, failedTryAgain);
 			if (self.Downloader.TotalDownloadCount == 0)
 			{
+				self.SetTitleText("没有发现需要下载的资源");
 				Log.Info("没有发现需要下载的资源");
 				return false;
 			}
@@ -323,6 +326,8 @@ namespace ET
 			double size_mb = size / (1024f * 1024f);
 			Log.Info("CheckResUpdate res size_mb is " + size_mb); //不屏蔽
 			if (size_mb > 0 && size_mb < 0.01) size_mb = 0.01;
+			self.SetTitleText($"需要下载的资源: {size_mb:0.00} MB");
+			await TimerComponent.Instance.WaitAsync(100);
 
 			// var ct = I18NComponent.Instance.I18NGetParamText("Update_Info", size_mb.ToString("0.00"));
 			// btnState = await self.ShowMsgBoxView(ct, "Global_Btn_Confirm", self.ForceUpdate? "Btn_Exit" : "Update_Skip");

@@ -9,6 +9,12 @@ namespace ET
 		{
 		}
 
+		public struct UpdateChampionLimit
+		{
+			public int CurrentCount;
+			public int MaxLimit;
+		}
+
 		public struct InnerDestroyWindow
 		{
 			public UIWindow target;
@@ -50,6 +56,7 @@ namespace ET
 		{
 			public Scene Scene;
 			public string Text;
+			public int showTime;
 		}
 
 		public struct ShowDialog
@@ -59,7 +66,7 @@ namespace ET
 			public Action OnConfirm;
 			public Action OnCancel;
 		}
-		
+
 		public struct CloseDialog
 		{
 		}

@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using UnityEngine;
+
+namespace ET
 {
 	[UISystem]
 	[FriendClass(typeof (UIToast))]
@@ -8,6 +10,7 @@
 		{
 			self.Text = self.AddUIComponent<UITextmesh>("Content/Text/Label_Action");
 			self.Content = self.AddUIComponent<UITransform>("Content");
+			self.animator = self.GetMonoComponent<Animator>("");
 		}
 	}
 
@@ -18,6 +21,17 @@
 		public override void OnEnable(UIToast self, string param1)
 		{
 			self.Text.SetText(param1);
+			self.animator.SetBool(UIToast.Active, true);
+		}
+	}
+
+	[UISystem]
+	[FriendClass(typeof (UIToast))]
+	public class UIToastOnDisableSystem: OnDisableSystem<UIToast>
+	{
+		public override void OnDisable(UIToast self)
+		{
+			self.animator.SetBool(UIToast.Active, false);
 		}
 	}
 }

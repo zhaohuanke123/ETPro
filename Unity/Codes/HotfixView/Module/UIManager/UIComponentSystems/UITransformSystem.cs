@@ -72,5 +72,18 @@ namespace ET
 			uitrans.ActivatingComponent();
 			return uitrans.transform?.gameObject;
 		}
+
+		public static T GetMonoComponent<T>(this Entity self, string path = "") where T : Component
+		{
+			GameObject gameObject = self.GetGameObject();
+			Transform transform = gameObject.transform.Find(path);
+			if (transform == null)
+			{
+				Log.Error("GetComponent is null Path:" + path);
+				return null;
+			}
+
+			return transform.GetComponent<T>();
+		}
 	}
 }

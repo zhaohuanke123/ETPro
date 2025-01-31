@@ -54,15 +54,18 @@ namespace ET
 
 		public static void AddToGrid(this ChampionMapArrayComponent self, Player player, ChampionInfo championInfo, int gridX, int gridZ)
 		{
-			if (player.camp != Camp.Player1)
+			(gridX, gridZ) = self.TransformCoordinates(player, gridX, gridZ);
+
+			if (gridX < 0 || gridX >= GPDefine.HexMapSizeX ||
+			    gridZ < 0 || gridZ >= GPDefine.HexMapSizeZ)
 			{
-				gridX = GPDefine.HexMapSizeX - 1 - gridX;
-				gridZ = GPDefine.HexMapSizeZ - 1 - gridZ;
+				throw new ArgumentException($"Invalid grid position: ({gridX}, {gridZ})");
 			}
 
 			self.AddChild(championInfo);
 			championInfo.gridPositionX = gridX;
 			championInfo.gridPositionZ = gridZ;
+			Log.Info($"地图Add champion to grid: ({gridX}, {gridZ}) {championInfo.Id}");
 			self.grid[gridX, gridZ] = championInfo;
 		}
 
@@ -76,19 +79,26 @@ namespace ET
 
 			championInfo.gridPositionX = gridX;
 			championInfo.gridPositionZ = gridZ;
+			Log.Info($"地图Replace champion to grid: ({gridX}, {gridZ}) {championInfo.Id}");
 			self.grid[gridX, gridZ] = championInfo;
 		}
 
-		public static ChampionInfo RemoveFromGird(this ChampionMapArrayComponent self, Player player, int gridX, int gridZ)
+		public static ChampionInfo RemoveFromGrid(this ChampionMapArrayComponent self, Player player, int gridX, int gridZ)
 		{
-			if (player.camp != Camp.Player1)
+			(gridX, gridZ) = self.TransformCoordinates(player, gridX, gridZ);
+
+			if (gridX < 0 || gridX >= GPDefine.HexMapSizeX ||
+			    gridZ < 0 || gridZ >= GPDefine.HexMapSizeZ)
 			{
-				gridX = GPDefine.HexMapSizeX - 1 - gridX;
-				gridZ = GPDefine.HexMapSizeZ - 1 - gridZ;
+				return null;
 			}
 
 			ChampionInfo championInfo = self.grid[gridX, gridZ];
-			self.grid[gridX, gridZ] = null;
+			if (championInfo != null)
+			{
+				Log.Info($"地图Remove champion from grid: ({gridX}, {gridZ}) {championInfo.Id}");
+				self.grid[gridX, gridZ] = null;
+			}
 			return championInfo;
 		}
 
@@ -254,6 +264,15 @@ namespace ET
 		public static Vector3 GetUnitPos(this ChampionMapArrayComponent self, Player player, int gridX, int gridZ)
 		{
 			return new Vector3();
+		}
+
+		private static (int x, int z) TransformCoordinates(this ChampionMapArrayComponent self, Player player, int x, int z)
+		{
+			if (player.camp != Camp.Player1)
+			{
+				return (GPDefine.HexMapSizeX - 1 - x, GPDefine.HexMapSizeZ - 1 - z);
+			}
+			return (x, z);
 		}
 	}
 }

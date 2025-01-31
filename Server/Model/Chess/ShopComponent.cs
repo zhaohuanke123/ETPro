@@ -29,5 +29,12 @@ namespace ET
         /// 羁绊配置
         /// </summary>
         public int[] championTypeIdsArray;
+
+        /// <summary>
+        /// 玩家等级字典
+        /// </summary>
+        public Dictionary<long, int> playerLevelDict;
+        
+ 
     }
 }

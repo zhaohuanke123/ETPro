@@ -111,12 +111,16 @@ namespace ET
 			self.currentGameStage = GameStage.None;
 		}
 	}
+#endif
 
 	[FriendClass(typeof (GamePlayComponent))]
+#if SERVER
 	[FriendClass(typeof (ET.Player))]
 	[FriendClassAttribute(typeof (ET.ChampionMapArrayComponent))]
+#endif
 	public static class GamePlayComponentSystemSystem
 	{
+#if SERVER
 		public static void AddPlayer(this GamePlayComponent self, Player player, bool isReady = false)
 		{
 			ShopComponent shopComponent = self.GetComponent<ShopComponent>();
@@ -174,6 +178,19 @@ namespace ET
 		public static void StartNewBattle(this GamePlayComponent self)
 		{
 			self.ResetCombatGame();
+
+			// 决定先手方
+			if (self.lastWinnerCamp == Camp.None)
+			{
+				// 第一回合随机选择先手
+				self.firstAttackCamp = RandomHelper.RandomNumber(0, 2) == 0? Camp.Player1 : Camp.Player2;
+			}
+			else
+			{
+				// 后续回合胜者先手
+				self.firstAttackCamp = self.lastWinnerCamp;
+			}
+
 			ChampionMapArrayComponent championMapArrayComponent = self.GetComponent<ChampionMapArrayComponent>();
 
 			// 临时AI
@@ -225,11 +242,15 @@ namespace ET
 
 			G2C_CreateCpUnits message = new G2C_CreateCpUnits();
 			message.ChampionInfoPBList = championInfoPbs;
-			foreach (var units in self.playerChampionDict.Values)
+			foreach (var kv in self.playerChampionDict)
 			{
+				Player player = kv.Key;
+				List<Unit> units = kv.Value;
+
 				foreach (Unit unit in units)
 				{
 					UnitInfo unitInfo = UnitHelper.CreateUnitInfo(unit);
+					unitInfo.Camp = (int)player.camp;
 					message.Units.Add(unitInfo);
 				}
 			}
@@ -288,118 +309,48 @@ namespace ET
 				if (self.CheckBattleEnd())
 				{
 					Log.Info("战斗结束");
-
 					await TimerComponent.Instance.WaitAsync(1000);
-
 					self.CalAndSendResult();
-
 					return;
 				}
 
 				List<ETTask> tasks = new List<ETTask>();
-				for (var i = 0; i < unit1.Count; i++)
+
+				// 根据firstAttackCamp决定战斗顺序
+				var firstUnits = self.firstAttackCamp == Camp.Player1? unit1 : unit2;
+				var secondUnits = self.firstAttackCamp == Camp.Player1? unit2 : unit1;
+				var firstInfos = self.firstAttackCamp == Camp.Player1? self.player1ChampionInfos : self.player2ChampionInfos;
+				var secondInfos = self.firstAttackCamp == Camp.Player1? self.player2ChampionInfos : self.player1ChampionInfos;
+
+				// 先手方行动
+				for (var i = 0; i < firstUnits.Count; i++)
 				{
-					Unit unit = unit1[i];
+					Unit unit = firstUnits[i];
 					if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
 					{
 						continue;
 					}
 					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-					tasks.Add(cpCombatComponent.CombatLoop(self, unit, self.player1ChampionInfos[i], unit2));
+					tasks.Add(cpCombatComponent.CombatLoop(self, unit, firstInfos[i], secondUnits));
 				}
 
 				await ETTaskHelper.WaitAll(tasks);
 				tasks.Clear();
 
-				for (var i = 0; i < unit2.Count; i++)
+				// 后手方行动
+				for (var i = 0; i < secondUnits.Count; i++)
 				{
-					Unit unit = unit2[i];
+					Unit unit = secondUnits[i];
 					if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
 					{
 						continue;
 					}
 					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-					tasks.Add(cpCombatComponent.CombatLoop(self, unit, self.player2ChampionInfos[i], unit1));
+					tasks.Add(cpCombatComponent.CombatLoop(self, unit, secondInfos[i], firstUnits));
 				}
+
 				await ETTaskHelper.WaitAll(tasks);
 				tasks.Clear();
-
-				#region 双方轮流出手的模式
-
-				// var combatQ = self.combatQueue;
-				// combatQ.Clear();
-				// int i = 0;
-				// int j = 0;
-				//
-				// while (i < unit1.Count && j < unit2.Count)
-				// {
-				// 	if (RandomHelper.RandomNumber(0, 2) >= 1)
-				// 	{
-				// 		if (unit1[i].GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
-				// 		{
-				// 			i++;
-				// 			continue;
-				// 		}
-				// 		combatQ.AddLast(unit1[i]);
-				// 		i++;
-				// 	}
-				// 	else
-				// 	{
-				// 		if (unit2[j].GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
-				// 		{
-				// 			j++;
-				// 			continue;
-				// 		}
-				// 		combatQ.AddLast(unit2[j]);
-				// 		j++;
-				// 	}
-				// }
-				//
-				// while (i < unit1.Count)
-				// {
-				// 	if (unit1[i].GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
-				// 	{
-				// 		i++;
-				// 		continue;
-				// 	}
-				// 	combatQ.AddLast(unit1[i]);
-				// 	i++;
-				// }
-				//
-				// while (j < unit2.Count)
-				// {
-				// 	if (unit2[j].GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
-				// 	{
-				// 		j++;
-				// 		continue;
-				// 	}
-				// 	combatQ.AddLast(unit2[j]);
-				// 	j++;
-				// }
-				//
-				// foreach (var unit in combatQ)
-				// {
-				// 	CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-				// 	UnitState unitState = self.unitStateDict[unit];
-				// 	List<Unit> tarList = unitState.camp == Camp.Player1? unit2 : unit1;
-				// 	// await cpCombatComponent.CombatLoop(self, unit, unitState.championInfo, tarList);
-				// 	await cpCombatComponent.CombatLoop(self, unit, unitState.championInfo, tarList);
-				// }
-				//
-				// for (var i = 0; i < unit1.Count; i++)
-				// {
-				// 	Unit unit = unit1[i];
-				// 	CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-				// 	await cpCombatComponent.CombatLoop(self, unit, self.player1ChampionInfos[i], unit2);
-				// }
-				// for (var i = 0; i < unit2.Count; i++)
-				// {
-				// 	Unit unit = unit2[i];
-				// 	CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-				// 	await cpCombatComponent.CombatLoop(self, unit, self.player2ChampionInfos[i], unit1);
-				// }
-
-				#endregion
 
 				await ETTask.CompletedTask;
 			}
@@ -419,30 +370,29 @@ namespace ET
 				if (units.Count == 0)
 				{
 					message.Result = 0;
+					// 记录获胜方
+					self.lastWinnerCamp = player.camp == Camp.Player1? Camp.Player2 : Camp.Player1;
 
 					NumericComponent numericComponent = player.GetComponent<NumericComponent>();
 					int hp = numericComponent.GetAsInt(NumericType.Hp);
 					hp -= 3 * self.GetOpponentUnits(player).Count;
 					hp = hp < 0? 0 : hp;
 
-					// 根据对面剩余的单位数量减少血量
 					numericComponent.Set(NumericType.Hp, hp);
 
 					player.SendMessage(new G2C_SyncPlayerHp()
 					{
 						Hp = hp
 					});
-					//  一个玩家的血量小于等于0，游戏结束
+
 					if (hp <= 0)
 					{
 						self.currentGameStage = GameStage.GameOver;
 					}
 				}
-				// 胜利 的 Player
 				else
 				{
 					message.Result = 1;
-
 					shopComponent.AddPlayerGold(player, 5);
 				}
 
@@ -496,6 +446,10 @@ namespace ET
 
 			throw new ArgumentException("玩家不存在");
 		}
-	}
 #endif
+		public static int GetCurrentLimit(this GamePlayComponent self)
+		{
+			return self.currentChampionLimit;
+		}
+	}
 }

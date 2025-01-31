@@ -50,7 +50,7 @@ namespace ET
 					self.transform.position += self.moveDirection * (self.speed * deltaTime);
 
 					self.timer += deltaTime;
-					Log.Info($"timer {self.timer}");
+					// Log.Info($"timer {self.timer}");
 					float fade = (self.fadeOutTime - self.timer) / self.fadeOutTime;
 
 					self.canvasGroup.alpha = fade;

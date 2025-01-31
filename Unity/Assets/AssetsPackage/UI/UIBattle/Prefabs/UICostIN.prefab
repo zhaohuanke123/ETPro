@@ -233,6 +233,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: coin
       objectReference: {fileID: 0}
+    - target: {fileID: 7877961564880553142, guid: 7ce2a8e1f0c9bff4291061bd2c9562dd,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ce2a8e1f0c9bff4291061bd2c9562dd, type: 3}
 --- !u!224 &5792949340011278662 stripped

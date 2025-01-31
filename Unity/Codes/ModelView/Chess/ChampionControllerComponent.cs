@@ -6,6 +6,7 @@ namespace ET
     public class ChampionControllerComponent: Entity, IAwake<GameObjectComponent>, IDestroy, IUpdate
     {
         public Transform transform;
+        public Transform rotateTransform;
         public Vector3 gridTargetPosition;
         public bool _isDragged;
 

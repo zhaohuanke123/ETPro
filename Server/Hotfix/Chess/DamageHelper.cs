@@ -8,17 +8,20 @@ namespace ET
 		public static async ETTask Damage(GamePlayComponent gamePlayComponent, Unit unit, Unit target, int damage, long attacktime)
 		{
 			target.GetComponent<NumericComponent>().Set(NumericType.Hp, target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) - damage);
+
+			int hp = target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp);
+
 			G2C_AttackDamage message = new G2C_AttackDamage();
 			message.FromId = unit.Id;
 			message.ToId = target.Id;
 			message.Damage = damage;
 			message.AttackTime = attacktime;
-			message.HP = target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp);
+			message.HP = hp;
 			message.MaxHP = target.GetComponent<NumericComponent>().GetAsInt(NumericType.MaxHp);
 			gamePlayComponent.Broadcast(message);
 
 			await TimerComponent.Instance.WaitAsync(attacktime);
-			if (message.HP <= 0)
+			if (hp <= 0)
 			{
 				gamePlayComponent.Broadcast(new G2C_UnitDead()
 				{
@@ -30,8 +33,11 @@ namespace ET
 			}
 			else
 			{
-				Log.Info($"{unit.Id} attack {target.Id} damage {damage}");
-				Log.Info($"{target.Id} hp is {target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp)}");
+				if (!unit.IsDisposed)
+				{
+					Log.Info($"{unit.Id} attack {target.Id} damage {damage}");
+					Log.Info($"{target.Id} hp is {hp}");
+				}
 			}
 		}
 	}

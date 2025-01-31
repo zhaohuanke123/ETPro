@@ -9,54 +9,55 @@ namespace ET
 		{
 			// self.championController = gameObjectComponent.GameObject.GetComponent<ChampionController>();
 			self.transform = gameObjectComponent.GameObject.transform;
+			self.rotateTransform = gameObjectComponent.GameObject.transform.Find("Model");
 		}
 	}
 
-    [ObjectSystem]
-    [FriendClassAttribute(typeof(ET.GamePlayComponent))]
-    public class ChampionControllerComponentUpdateSystem : UpdateSystem<ChampionControllerComponent>
-    {
-        public override void Update(ChampionControllerComponent self)
-        {
-            if (GamePlayComponent.Instance.currentGameStage == GameStage.Combat)
-            {
-                self.SetDrag(false);
-            }
+	[ObjectSystem]
+	[FriendClassAttribute(typeof (ET.GamePlayComponent))]
+	public class ChampionControllerComponentUpdateSystem: UpdateSystem<ChampionControllerComponent>
+	{
+		public override void Update(ChampionControllerComponent self)
+		{
+			if (GamePlayComponent.Instance.currentGameStage == GameStage.Combat)
+			{
+				self.SetDrag(false);
+			}
 
-            if (self._isDragged)
-            {
-                UnityEngine.Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if (self._isDragged)
+			{
+				UnityEngine.Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                float enter = 100.0f;
-                if (Map.Instance.m_Plane.Raycast(ray, out enter))
-                {
-                    Vector3 hitPoint = ray.GetPoint(enter);
+				float enter = 100.0f;
+				if (Map.Instance.m_Plane.Raycast(ray, out enter))
+				{
+					Vector3 hitPoint = ray.GetPoint(enter);
 
-                    Vector3 p = new Vector3(hitPoint.x, 1.0f, hitPoint.z);
+					Vector3 p = new Vector3(hitPoint.x, 1.0f, hitPoint.z);
 
-                    self.transform.position = Vector3.Lerp(self.transform.position, p, 0.1f);
-                }
-            }
-            else
-            {
-                // if (gamePlayController.currentGameStage == GameStage.Preparation)
-                // {
-                float distance = Vector3.Distance(self.gridTargetPosition, self.transform.position);
+					self.transform.position = Vector3.Lerp(self.transform.position, p, 0.1f);
+				}
+			}
+			else
+			{
+				// if (gamePlayController.currentGameStage == GameStage.Preparation)
+				// {
+				float distance = Vector3.Distance(self.gridTargetPosition, self.transform.position);
 
-                if (distance > 0.25f)
-                {
-                    self.transform.position = Vector3.Lerp(self.transform.position, self.gridTargetPosition, 0.1f);
-                }
-                else
-                {
-                    self.transform.position = self.gridTargetPosition;
-                }
-                // }
-            }
-        }
-    }
+				if (distance > 0.25f)
+				{
+					self.transform.position = Vector3.Lerp(self.transform.position, self.gridTargetPosition, 0.1f);
+				}
+				else
+				{
+					self.transform.position = self.gridTargetPosition;
+				}
+				// }
+			}
+		}
+	}
 
-    [ObjectSystem]
+	[ObjectSystem]
 	public class ChampionControllerComponentDestroySystem: DestroySystem<ChampionControllerComponent>
 	{
 		public override void Destroy(ChampionControllerComponent self)
@@ -143,7 +144,7 @@ namespace ET
 		public static void SetWorldRotation(this ChampionControllerComponent self)
 		{
 			Vector3 rotation = new Vector3(0, 200, 0);
-			self.transform.rotation = Quaternion.Euler(rotation);
+			self.rotateTransform.rotation = Quaternion.Euler(rotation);
 		}
 	}
 }

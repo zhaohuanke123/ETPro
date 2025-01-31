@@ -105,6 +105,7 @@ message UnitInfo
 	repeated int32 BuffIds = 14;
 	repeated int64 BuffTimestamp = 15;
 	repeated int64 BuffSourceIds = 16;
+	int32 Camp = 17;
 }
 
 message M2C_CreateUnits // IActorMessage
@@ -695,4 +696,24 @@ message G2C_UseItem // IResponse
 	string Message = 92;
 	int32 ItemId = 1;
 	int32 Count = 2;
+}
+
+message G2C_UpdateLevel // IMessage
+{
+	int32 Level = 1;
+	int32 ChampionLimit = 2;
+ 	int32 NextLevelCost = 3; // 新增字段:下一级所需费用
+}
+
+//ResponseType G2C_LevelUp
+message C2G_LevelUp // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message G2C_LevelUp // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
 }

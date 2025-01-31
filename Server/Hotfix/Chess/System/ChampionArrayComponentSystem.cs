@@ -90,7 +90,7 @@ namespace ET
 			return true;
 		}
 
-		public static bool AddToArray(this ChampionArrayComponent self, Player player, ChampionInfo championInfo)
+		public static bool AddToArray(this ChampionArrayComponent self, Player player, ChampionInfo championInfo, int x)
 		{
 			if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
 			{
@@ -98,20 +98,40 @@ namespace ET
 			}
 
 			self.AddChild(championInfo);
-			int index = championInfo.gridPositionX;
-			list[index] = championInfo;
+			championInfo.gridPositionX = x;
+			list[x] = championInfo;
+			Log.Info($"仓库Add champion to grid: ({x}, {x}) {championInfo.Id}");
 			return true;
 		}
 
-		public static bool Replace(this ChampionArrayComponent self, Player player, ChampionInfo championInfo)
+		public static bool Replace(this ChampionArrayComponent self, Player player, ChampionInfo championInfo, int x)
 		{
 			if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
 			{
 				throw new ArgumentException("玩家不存在");
 			}
 
+			championInfo.gridPositionX = x;
 			list[championInfo.gridPositionX] = championInfo;
+			Log.Info($"仓库Replace champion to grid: ({x}, {x}) {championInfo.Id}");
 			return true;
+		}
+
+		public static ChampionInfo RemoveFromArray(this ChampionArrayComponent self, Player player, int index)
+		{
+			if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
+			{
+				throw new ArgumentException("玩家不存在");
+			}
+
+			ChampionInfo championInfo = list[index];
+			if (championInfo != null)
+			{
+				Log.Info($"仓库Remove champion from grid: ({index}, {index}) {championInfo.Id}");
+			}
+			list[index] = null;
+
+			return championInfo;
 		}
 
 		public static bool TryUpgrade(this ChampionArrayComponent self, List<ChampionInfo> list, int configId)
@@ -193,27 +213,6 @@ namespace ET
 			}
 
 			return res;
-		}
-
-		public static ChampionInfo RemoveFromArray(this ChampionArrayComponent self, Player player, int index, out bool res)
-		{
-			if (!self.playersInventoryArr.TryGetValue(player.Id, out var list))
-			{
-				throw new ArgumentException("玩家不存在");
-			}
-
-			ChampionInfo championInfo = list[index];
-			if (championInfo == null)
-			{
-				res = false;
-			}
-			else
-			{
-				res = true;
-				list[index] = null;
-			}
-
-			return championInfo;
 		}
 	}
 }

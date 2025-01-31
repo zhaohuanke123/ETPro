@@ -9,7 +9,8 @@ namespace ET
 		{
 			Game.EventSystem.PublishAsync(new UIEventType.ShowToast()
 			{
-				Text = "战斗" + (message.Result == 1? "胜利" : "失败")
+				Text = "战斗" + (message.Result == 1? "胜利" : "失败"),
+				showTime = 1,
 			}).Coroutine();
 
 			Scene currentScene = session.ZoneScene().CurrentScene();

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ET.UIEventType;
 
 namespace ET
 {
@@ -11,7 +13,7 @@ namespace ET
 			self.GoldText = self.AddUIComponent<UIText>("Gold/CostGo/cost");
 			self.UITimerText = self.AddUIComponent<UITextmesh>("UITimer/Content/Label_Time");
 			// self.allCoin = self.AddUIComponent<UICostIN>("Gold/CostGo");
-			self.championLimitText = self.AddUIComponent<UIText>("championLimit/Text");
+			self.championLimitText = self.AddUIComponent<UIText>("championLimit/CostGo/cost");
 			self.HpText = self.AddUIComponent<UIText>("Hp/Text");
 
 			self.HpSlider = self.AddUIComponent<UISlider>("HpBar/Slider");
@@ -21,6 +23,15 @@ namespace ET
 
 			self.returnBtn = self.AddUIComponent<UIButton>("ReturnBtn");
 			self.returnBtn.SetOnClickAsync(self.OnReturnBtnClick);
+
+			self.buyLvBtn = self.AddUIComponent<UIButton>("Shop/left menu/buylvl");
+			self.buyLvBtn.SetOnClickAsync(self.OnBuyLvBtnClick);
+
+			self.buyLvCostText = self.AddUIComponent<UIText>("Shop/left menu/buylvl/CoasGo/cost");
+
+			self.uIPlayerLv = self.AddUIComponent<UIPlayerLV>("UIPlayerLV");
+
+			self.timeGo = self.GetGameObject().transform.Find("UITimer").gameObject;
 
 			const int count = 5;
 			self.cContainers = new UIChampionContainer[count];
@@ -78,12 +89,28 @@ namespace ET
 
 		public static void SetTimer(this UIBattle self, int timer)
 		{
+			if (timer <= 0)
+			{
+				// 倒计时结束，隐藏文本
+				self.timeGo.SetActive(false);
+				return;
+			}
+
+			// 确保文本显示
+			// self.UITimerText.GetGameObject().SetActive(true);
+			self.timeGo.SetActive(true);
 			self.UITimerText.SetText(timer.ToString());
 		}
 
-		public static void SetChampionLimit(this UIBattle self, int championLimit)
+		public static void SetChampionLimit(this UIBattle self, int currentCount, int maxLimit)
 		{
-			self.championLimitText.SetText(championLimit.ToString());
+			self.championLimitText.SetText($"{currentCount}/{maxLimit}");
+		}
+
+		public static void SetChampionLimit(this UIBattle self, int maxLimit)
+		{
+			int currentCount = ChessBattleViewComponent.Instance.ChampionsOnMapCount;
+			self.SetChampionLimit(currentCount, maxLimit);
 		}
 
 		public static void SetHp(this UIBattle self, int hp)
@@ -110,6 +137,38 @@ namespace ET
 					self.bonusList[i].SetBonus(-1, 0);
 				}
 			}
+		}
+
+		public static void SetLevel(this UIBattle self, int level)
+		{
+			self.uIPlayerLv.SetLevel(level);
+		}
+
+		public static async ETTask OnBuyLvBtnClick(this UIBattle self)
+		{
+			try
+			{
+				C2G_LevelUp c2GLevelUp = new C2G_LevelUp();
+				G2C_LevelUp response = await self.ZoneScene().GetComponent<SessionComponent>().Session.Call(c2GLevelUp) as G2C_LevelUp;
+
+				if (response.Error != ErrorCode.ERR_Success)
+				{
+					Game.EventSystem.PublishAsync(new ShowErrorToast()
+					{
+						Scene = self.ZoneScene(),
+						ErrorCode = response.Error
+					}).Coroutine();
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+			}
+		}
+
+		public static void SetBuyLvCost(this UIBattle self, int cost)
+		{
+			self.buyLvCostText.SetText(cost.ToString());
 		}
 	}
 }

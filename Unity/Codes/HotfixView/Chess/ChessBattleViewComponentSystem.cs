@@ -1,4 +1,6 @@
 ﻿using System.Xml.Schema;
+using ET.UIEventType;
+using UnityEngine;
 
 namespace ET
 {
@@ -65,7 +67,7 @@ namespace ET
 				gameObjectComponent.GameObject.SetActive(false);
 			}
 		}
-		
+
 		public static void ShowAllInMap(this ChessBattleViewComponent self)
 		{
 			foreach (GameObjectComponent gameObjectComponent in self.gridChampionsArray)
@@ -99,61 +101,105 @@ namespace ET
 			}
 		}
 
-		public static void EndDrag(this ChessBattleViewComponent self, TriggerInfo triggerInfo)
+		public static void EndDrag(this ChessBattleViewComponent self, TriggerInfo endTriggerInfo)
 		{
 			Map.Instance.HideIndicators();
 
-			if (self.draggedChampion != null)
+			GameObjectComponent draggedChampion = self.draggedChampion;
+			if (draggedChampion != null)
 			{
-				self.draggedChampion.GetComponent<ChampionControllerComponent>().SetDrag(false);
+				draggedChampion.GetComponent<ChampionControllerComponent>().SetDrag(false);
+				TriggerInfo startTrigger = self.dragStartTrigger;
 
-				if (triggerInfo != null)
+				if (endTriggerInfo != null)
 				{
-					if (self.dragStartTrigger.Equals(triggerInfo))
+					if (startTrigger.Equals(endTriggerInfo))
 					{
 						return;
 					}
 
-					GameObjectComponent currentChampion = self.GetChampionFromTriggerInfo(triggerInfo);
+					GameObjectComponent currentChampion = self.GetChampionFromTriggerInfo(endTriggerInfo);
+
+					// if (startTrigger.gridType == GPDefine.GridTypeOwnInventory && endTriggerInfo.gridType == GPDefine.GridTypeMap)
+					// {
+					// 	if (currentChampion == null)
+					// 	{
+					// 		if (self.championsOnMapCount >= GamePlayComponent.Instance.CurrentChampionLimit)
+					// 		{
+					// 			// 显示错误提示
+					// 			Game.EventSystem.PublishAsync(new ShowToast()
+					// 			{
+					// 				Scene = self.ZoneScene(),
+					// 				Text = $"上阵英雄数量已达上限({GamePlayComponent.Instance.CurrentChampionLimit})"
+					// 			}).Coroutine();
+					//
+					// 			// 取消拖拽操作
+					// 			self.CancelDrag();
+					// 			return;
+					// 		}
+					// 	}
+					// }
+					// // 获取目标位置的英雄
+					//
+					// // 从背包到地图，且目标位置没有英雄时，数量+1
+					// if (startTrigger.gridType == GPDefine.GridTypeOwnInventory &&
+					//     endTriggerInfo.gridType == GPDefine.GridTypeMap &&
+					//     currentChampion == null)
+					// {
+					// 	self.championsOnMapCount++;
+					// }
+					// // 从地图到背包，且不是交换（目标位置没有英雄），数量-1
+					// else if (startTrigger.gridType == GPDefine.GridTypeMap &&
+					//          endTriggerInfo.gridType == GPDefine.GridTypeOwnInventory &&
+					//          currentChampion == null)
+					// {
+					// 	self.championsOnMapCount--;
+					// }
+
+					// 发布更新事件
 
 					if (currentChampion != null)
 					{
-						self.StoreChampionInArray(self.dragStartTrigger.gridType,
-						self.dragStartTrigger.gridX,
-						self.dragStartTrigger.gridZ,
-						currentChampion);
-						self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
+						self.StoreChampionInArray(startTrigger.gridType, startTrigger.gridX, startTrigger.gridZ, currentChampion);
+						self.StoreChampionInArray(endTriggerInfo.gridType, endTriggerInfo.gridX, endTriggerInfo.gridZ, draggedChampion);
 
-						ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
+						ChessBattleHelper.SendDragMessage(self.ZoneScene(), startTrigger, endTriggerInfo).Coroutine();
 					}
 					else
 					{
-						if (triggerInfo.gridType == GPDefine.GridTypeMap)
+						if (endTriggerInfo.gridType == GPDefine.GridTypeMap)
 						{
-							// if (championsOnField < currentChampionLimit || dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
-							// if (true || self.dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
-							// {
-							self.RemoveChampionFromArray(self.dragStartTrigger.gridType,
-							self.dragStartTrigger.gridX,
-							self.dragStartTrigger.gridZ);
-							self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
+							if (startTrigger.gridType != GPDefine.GridTypeMap)
+							{
+								if (self.championsOnMapCount >= GamePlayComponent.Instance.CurrentChampionLimit)
+								{
+									Game.EventSystem.PublishAsync(new ShowToast()
+									{
+										Scene = self.ZoneScene(),
+										Text = $"上阵英雄数量已达上限({GamePlayComponent.Instance.CurrentChampionLimit})"
+									}).Coroutine();
+									self.CancelDrag();
+									return;
+								}
 
-							// if (dragStartTrigger.gridType != Map.GRIDTYPE_HEXA_MAP)
-							//     championsOnField++;
+								self.AddToChampionsOnMapCount(1);
+							}
 
-							ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
-							// }
+							self.RemoveChampionFromArray(startTrigger.gridType, startTrigger.gridX, startTrigger.gridZ);
+							self.StoreChampionInArray(endTriggerInfo.gridType, endTriggerInfo.gridX, endTriggerInfo.gridZ, draggedChampion);
+							ChessBattleHelper.SendDragMessage(self.ZoneScene(), startTrigger, endTriggerInfo).Coroutine();
 						}
-						else if (triggerInfo.gridType == GPDefine.GridTypeOwnInventory)
+						else if (endTriggerInfo.gridType == GPDefine.GridTypeOwnInventory)
 						{
-							self.RemoveChampionFromArray(self.dragStartTrigger.gridType, self.dragStartTrigger.gridX, self.dragStartTrigger.gridZ);
+							self.RemoveChampionFromArray(startTrigger.gridType, startTrigger.gridX, startTrigger.gridZ);
+							self.StoreChampionInArray(endTriggerInfo.gridType, endTriggerInfo.gridX, endTriggerInfo.gridZ, draggedChampion);
 
-							self.StoreChampionInArray(triggerInfo.gridType, triggerInfo.gridX, triggerInfo.gridZ, self.draggedChampion);
+							if (startTrigger.gridType == GPDefine.GridTypeMap)
+							{
+								self.AddToChampionsOnMapCount(-1);
+							}
 
-							// if (dragStartTrigger.gridType == Map.GRIDTYPE_HEXA_MAP)
-							//     championsOnField--;
-
-							ChessBattleHelper.SendDragMessage(self.ZoneScene(), self.dragStartTrigger, triggerInfo).Coroutine();
+							ChessBattleHelper.SendDragMessage(self.ZoneScene(), startTrigger, endTriggerInfo).Coroutine();
 						}
 					}
 				}
@@ -204,6 +250,44 @@ namespace ET
 			{
 				self.gridChampionsArray[gridX, gridZ] = null;
 			}
+		}
+
+		private static int CountChampionsOnMap(this ChessBattleViewComponent self)
+		{
+			int count = 0;
+			for (int x = 0; x < Map.hexMapSizeX; x++)
+			{
+				for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
+				{
+					if (self.gridChampionsArray[x, z] != null)
+					{
+						count++;
+					}
+				}
+			}
+			self.championsOnMapCount = count; // 更新计数器
+			return count;
+		}
+
+		// 添加取消拖拽的辅助方法
+		public static void CancelDrag(this ChessBattleViewComponent self)
+		{
+			self.draggedChampion = null;
+		}
+
+		public static void AddToChampionsOnMapCount(this ChessBattleViewComponent self, int value)
+		{
+			if (value == 0)
+			{
+				return;
+			}
+
+			self.championsOnMapCount += value;
+			Game.EventSystem.Publish(new UpdateChampionLimit
+			{
+				CurrentCount = self.championsOnMapCount,
+				MaxLimit = GamePlayComponent.Instance.CurrentChampionLimit
+			});
 		}
 	}
 }

@@ -89,5 +89,20 @@ namespace ET
 
 		[BsonIgnore]
 		public long PreparationStageDuration = 12 * 1000;
+
+		[BsonIgnore]
+		public Camp firstAttackCamp = Camp.None;  // 记录当前回合先手方
+
+		[BsonIgnore]
+		public Camp lastWinnerCamp = Camp.None;   // 记录上一回合获胜方
+
+		[BsonIgnore]
+		public int currentChampionLimit = GPDefine.InitChampionLimit;  // 当前可以放置的英雄数量限制
+
+		public int CurrentChampionLimit
+		{
+			get => currentChampionLimit;
+			set => currentChampionLimit = value;
+		}
 	}
 }
