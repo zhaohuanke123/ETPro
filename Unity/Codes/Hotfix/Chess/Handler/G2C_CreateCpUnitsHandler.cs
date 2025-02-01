@@ -15,6 +15,7 @@ namespace ET
 			{
 				Log.Error($"当前场景为空，无法创建单位");
 			}
+
 			GamePlayComponent gamePlayComponent = currentScene.GetComponent<GamePlayComponent>();
 			gamePlayComponent.currentGameStage = GameStage.Combat;
 			Map.Instance.HideIndicators();
@@ -25,12 +26,16 @@ namespace ET
 				showTime = 1,
 			}).Coroutine();
 
+			GamePlayComponent.Instance.championConfigDict.Clear();
 			List<UnitInfo> units = message.Units;
+			
 			for (int i = 0; i < units.Count; i++)
 			{
 				UnitInfo unitInfo = units[i];
 				ChampionInfoPB championInfoPb = message.ChampionInfoPBList[i];
+				ChampionConfig config = ChampionConfigCategory.Instance.Get(championInfoPb.ConfigId);
 				Unit unit = UnitFactory.Create(currentScene, unitInfo);
+				GamePlayComponent.Instance.championConfigDict[unit] = config;
 
 				//TODO 临时处理
 				if (message.IsPlayer1 == false)

@@ -10,6 +10,10 @@ namespace ET
 			self.transform = gameObject.transform;
 			self.rotateTransform = gameObject.transform.Find("Model");
 			self.AddComponent<HealBarComponent, Transform>(gameObject.transform.Find("HealthBar"));
+
+			ReferenceCollector referenceCollector = gameObject.GetComponent<ReferenceCollector>();
+			self.attackPointTs = referenceCollector.Get<GameObject>("attackPoint").transform;
+			self.hitPointTs = referenceCollector.Get<GameObject>("hitPoint").transform;
 		}
 	}
 

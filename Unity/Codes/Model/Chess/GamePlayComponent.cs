@@ -77,6 +77,7 @@ namespace ET
 		public Dictionary<Unit, UnitState> unitStateDict;
 #else
 		public static GamePlayComponent Instance;
+		public Dictionary<Unit, ChampionConfig> championConfigDict;
 #endif
 		/// <summary>
 		/// 计时 

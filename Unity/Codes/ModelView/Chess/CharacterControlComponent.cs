@@ -8,5 +8,7 @@ namespace ET
 	{
 		public Transform transform;
 		public Transform rotateTransform;
+		public Transform attackPointTs;
+		public Transform hitPointTs;
 	}
 }

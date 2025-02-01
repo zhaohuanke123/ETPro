@@ -678,11 +678,11 @@
  <Reference Include="System.Xml.XPath.XDocument">
  <HintPath>D:/Software/UntiyHub/Editor/2020.3.33f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.XPath.XDocument.dll</HintPath>
  </Reference>
- <Reference Include="UnityEngine.UI">
- <HintPath>D:/zhk02/Desktop/ETPro/Unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
- </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.UI">
+ <HintPath>D:/zhk02/Desktop/ETPro/Unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.TestRunner">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>

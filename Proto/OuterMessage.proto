@@ -717,3 +717,23 @@ message G2C_LevelUp // IResponse
 	int32 Error = 91;
 	string Message = 92;
 }
+
+message ItemInfo
+{
+	int32 ItemId = 1;
+	int32 Count = 2;
+}
+
+//ResponseType G2C_BagInfo
+message C2G_BagInfo // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message G2C_BagInfo // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	repeated ItemInfo Items = 1;
+}

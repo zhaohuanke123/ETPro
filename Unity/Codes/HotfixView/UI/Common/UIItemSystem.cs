@@ -58,7 +58,7 @@ namespace ET
 		{
 			try
 			{
-				int newCount = await ItemHelper.AddItem(self.ZoneScene(), self.itemId);
+				int newCount = await ItemHelper.AddItem(self.ZoneScene(), self.itemId, 1);
 				self.SetItemCount(newCount);
 			}
 			catch (Exception e)

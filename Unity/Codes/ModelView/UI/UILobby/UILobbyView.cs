@@ -9,5 +9,6 @@
         public UIButton EnterChessMapBtn;
         public UIButton StartMatchBtn;
         public UIItem PointItem;
+        public UIButton BtnBag;
     }
 }

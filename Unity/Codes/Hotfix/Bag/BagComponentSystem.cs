@@ -19,7 +19,7 @@ namespace ET
 	{
 		public override void Destroy(BagComponent self)
 		{
-			
+
 		}
 	}
 
@@ -44,6 +44,18 @@ namespace ET
 			ItemConfig itemConfig = ItemConfigCategory.Instance.Get(id);
 
 			return self.items.GetValueOrDefault(id, 0);
+		}
+
+		public static void GetItems(this BagComponent self, List<ItemInfo> items)
+		{
+			foreach (var item in self.items)
+			{
+				items.Add(new ItemInfo()
+				{
+					ItemId = item.Key,
+					Count = item.Value
+				});
+			}
 		}
 #endif
 	}

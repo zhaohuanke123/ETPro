@@ -96,5 +96,8 @@ namespace ET
 		 public const ushort G2C_UpdateLevel = 10098;
 		 public const ushort C2G_LevelUp = 10099;
 		 public const ushort G2C_LevelUp = 10100;
+		 public const ushort ItemInfo = 10101;
+		 public const ushort C2G_BagInfo = 10106;
+		 public const ushort G2C_BagInfo = 10107;
 	}
 }

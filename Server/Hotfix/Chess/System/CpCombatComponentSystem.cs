@@ -108,7 +108,7 @@ namespace ET
 			// 计算最终伤害
 			int finalDamage = self.CalculateFinalDamage(gamePlayComponent, attacker, baseDamage);
 
-			await DamageHelper.Damage(gamePlayComponent, attacker, self.target, finalDamage, config.attacktime);
+			await DamageHelper.Damage(gamePlayComponent, attacker, self.target, finalDamage, config);
 		}
 
 		private static int CalculateFinalDamage(this CpCombatComponent self, GamePlayComponent gamePlayComponent, Unit attacker, int baseDamage)

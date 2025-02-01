@@ -18,6 +18,9 @@
 			self.StartMatchBtn = self.AddUIComponent<UIButton>("Panel/StartMatch");
 			self.StartMatchBtn.SetOnClickAsync(self.OnStartMatchBtnClick);
 
+			self.BtnBag = self.AddUIComponent<UIButton>("Panel/BrnBag");
+			self.BtnBag.SetOnClickAsync(self.OnBtnBagClick);
+
 			self.PointItem = self.AddUIComponent<UIItem, int>("Panel/PointItem", ItemDefine.PointId);
 		}
 	}
@@ -61,6 +64,11 @@
 				},
 			}).Coroutine();
 			await MatchHelper.StartMatch(self.ZoneScene());
+		}
+
+		public static async ETTask OnBtnBagClick(this UILobbyView self)
+		{
+			await UIManagerComponent.Instance.OpenWindow<UIBag>(UIBag.PrefabPath);
 		}
 	}
 }

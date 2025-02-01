@@ -88,35 +88,38 @@ namespace ET
 		/// <summary>攻击投射物</summary>
 		[ProtoMember(3)]
 		public string attackProjectile { get; set; }
-		/// <summary>英雄名称</summary>
+		/// <summary>飞行速度</summary>
 		[ProtoMember(4)]
+		public float projSpeed { get; set; }
+		/// <summary>英雄名称</summary>
+		[ProtoMember(5)]
 		public string uiname { get; set; }
 		/// <summary>消耗</summary>
-		[ProtoMember(5)]
+		[ProtoMember(6)]
 		public int cost { get; set; }
 		/// <summary>主羁绊类型</summary>
-		[ProtoMember(6)]
+		[ProtoMember(7)]
 		public int type1Id { get; set; }
 		/// <summary>副羁绊类型</summary>
-		[ProtoMember(7)]
+		[ProtoMember(8)]
 		public int type2Id { get; set; }
 		/// <summary>血量</summary>
-		[ProtoMember(8)]
+		[ProtoMember(9)]
 		public int health { get; set; }
 		/// <summary>攻击力</summary>
-		[ProtoMember(9)]
+		[ProtoMember(10)]
 		public int damage { get; set; }
 		/// <summary>攻击范围</summary>
-		[ProtoMember(10)]
+		[ProtoMember(11)]
 		public int attackRange { get; set; }
 		/// <summary>UnitId</summary>
-		[ProtoMember(11)]
+		[ProtoMember(12)]
 		public int unitId { get; set; }
 		/// <summary>攻击动画时间（ms）</summary>
-		[ProtoMember(12)]
+		[ProtoMember(13)]
 		public long attacktime { get; set; }
 		/// <summary>移动范围</summary>
-		[ProtoMember(13)]
+		[ProtoMember(14)]
 		public int moveRange { get; set; }
 
 	}

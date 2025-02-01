@@ -20,6 +20,7 @@ namespace ET
 			self.unitStateDict = new Dictionary<Unit, UnitState>();
 #else
 			GamePlayComponent.Instance = self;
+			self.championConfigDict = new Dictionary<Unit, ChampionConfig>();
 #endif
 		}
 	}
@@ -445,6 +446,17 @@ namespace ET
 			}
 
 			throw new ArgumentException("玩家不存在");
+		}
+#else
+		public static ChampionConfig GetChampionConfig(this GamePlayComponent self, Unit unit)
+		{
+			if (!self.championConfigDict.TryGetValue(unit, out ChampionConfig value))
+			{
+				Log.Error($"找不到{unit.Id}的配置");
+				return null;
+			}
+
+			return value;
 		}
 #endif
 		public static int GetCurrentLimit(this GamePlayComponent self)

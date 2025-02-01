@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -29,11 +30,11 @@ namespace SuperScrollView
 
     public class LoopGridViewSettingParam
     {
-        public object mItemSize = null;
-        public object mPadding = null;
-        public object mItemPadding = null;
-        public object mGridFixedType = null;
-        public object mFixedRowOrColumnCount = null;
+        public Vector2? mItemSize = null;
+        public RectOffset mPadding = null;
+        public Vector2? mItemPadding = null;
+        public GridFixedType? mGridFixedType = null;
+        public int? mFixedRowOrColumnCount = null;
     }
 
 

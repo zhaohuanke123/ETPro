@@ -1469,4 +1469,44 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.ItemInfo)]
+	[ProtoContract]
+	public partial class ItemInfo: Object
+	{
+		[ProtoMember(1)]
+		public int ItemId { get; set; }
+
+		[ProtoMember(2)]
+		public int Count { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_BagInfo))]
+	[Message(OuterOpcode.C2G_BagInfo)]
+	[ProtoContract]
+	public partial class C2G_BagInfo: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_BagInfo)]
+	[ProtoContract]
+	public partial class G2C_BagInfo: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public List<ItemInfo> Items = new List<ItemInfo>();
+
+	}
+
 }
