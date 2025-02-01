@@ -26,7 +26,8 @@ namespace ET
 
 			if (self._isDragged)
 			{
-				UnityEngine.Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				Camera mainCamera = CameraManagerComponent.Instance.MainCamera();
+				UnityEngine.Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
 				float enter = 100.0f;
 				if (Map.Instance.m_Plane.Raycast(ray, out enter))

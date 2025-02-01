@@ -9,9 +9,6 @@
 			gamePlayComponent.AddComponent<InputControlComponent>();
 			gamePlayComponent.AddComponent<MapComponent>();
 
-			C2G_SceneReady c2GSceneReady = new C2G_SceneReady();
-			args.ZoneScene.GetComponent<SessionComponent>().Session.Send(c2GSceneReady);
-
 			await ETTask.CompletedTask;
 		}
 	}

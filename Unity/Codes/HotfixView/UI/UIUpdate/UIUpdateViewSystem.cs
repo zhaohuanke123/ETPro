@@ -160,6 +160,7 @@ namespace ET
 		/// <param name="self"></param>
 		private static async ETTask CheckUpdateList(this UIUpdateView self)
 		{
+			self.SetTitleText("正在对比版本信息");
 			var url = ServerConfigComponent.Instance.GetUpdateListCdnUrl();
 			var info = await HttpManager.Instance.HttpGetResult<UpdateConfig>(url);
 			if (info == null)
@@ -350,7 +351,12 @@ namespace ET
 			//2、更新资源
 			ETTask<bool> downloadTask = ETTask<bool>.Create(true);
 			self.Downloader.OnDownloadOverCallback += (a) => { downloadTask.SetResult(a); };
-			self.Downloader.OnDownloadProgressCallback = (a, b, c, d) => { self.SetProgress((float)d / c); };
+			self.Downloader.OnDownloadProgressCallback = (a, b, c, d) =>
+			{
+				self.SetProgress((float)d / c);
+				// 下载了多少MB
+				self.SetTitleText($"正在下载资源更新  {d / 1024f / 1024f:0.00} MB / {c / 1024f / 1024f:0.00} MB");
+			};
 			self.Downloader.BeginDownload();
 			Log.Info("CheckResUpdate DownloadContent begin");
 			bool result = await downloadTask;

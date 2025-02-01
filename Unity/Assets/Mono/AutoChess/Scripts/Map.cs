@@ -143,12 +143,6 @@ public class Map: MonoBehaviour
                 mapGridTriggerArray[x, z] = trigger.GetComponent<TriggerInfo>();
             }
         }
-
-        // 把mapGridPositions和mapGridTriggerArray写道jasn文件中
-        string json = JsonUtility.ToJson(mapGridPositions);
-        File.WriteAllText("Assets/Resources/mapGridPositions.json", json);
-        json = JsonUtility.ToJson(mapGridTriggerArray);
-        File.WriteAllText("Assets/Resources/mapGridTriggerArray.json", json);
     }
 
     public Vector3 GetMapHitPoint(Vector3 p)

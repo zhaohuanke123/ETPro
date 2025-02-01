@@ -65,15 +65,16 @@ namespace ET
 						return;
 					}
 
-					BagComponent addComponent = accountInfo.AddComponent<BagComponent>();
-					accountInfo.BagId = addComponent.Id;
-					await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(addComponent);
-
 					accountInfo = session.AddChild<AccountInfo>();
 					accountInfo.Account = request.AccountName.Trim();
 					accountInfo.Password = request.Password;
 					accountInfo.CreateTime = TimeHelper.ServerNow();
 					accountInfo.AccountType = (int)AccountType.General;
+					
+					BagComponent addComponent = accountInfo.AddComponent<BagComponent>();
+					accountInfo.BagId = addComponent.Id;
+					await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(addComponent);
+
 					await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
 				}
 

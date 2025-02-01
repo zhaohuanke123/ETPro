@@ -15,15 +15,6 @@ namespace ET
 #if !SERVER
             self.mapGridPositions = Map.Instance.mapGridPositions;
             self.ownInventoryGridPositions = Map.Instance.ownInventoryGridPositions;
-            var vec3s = new List<List<Vector3>>();
-            for (int i = 0; i < Map.hexMapSizeX; i++)
-            {
-                vec3s.Add(new List<Vector3>());
-                for (int j = 0; j < Map.hexMapSizeZ; j++)
-                {
-                    vec3s[i].Add(self.mapGridPositions[i, j]);
-                }
-            }
 #else
             var mapData = ConfigComponent.Instance.ConfigLoader.GetMapData();
 
