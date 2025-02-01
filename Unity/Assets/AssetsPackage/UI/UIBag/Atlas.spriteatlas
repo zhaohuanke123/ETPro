@@ -57,18 +57,36 @@ SpriteAtlas:
     packables:
     - {fileID: 21300000, guid: 54434c54728b5c149b9f2c06e824e9a6, type: 3}
     - {fileID: 21300000, guid: e45962a6cfcdf6a45bfad33b7e45116e, type: 3}
+    - {fileID: 21300000, guid: a8e3d345e9283604799176ff643765e0, type: 3}
+    - {fileID: 21300000, guid: 01ed339e5d211454e8dde245c9ff9c82, type: 3}
+    - {fileID: 21300000, guid: cf616f64504d28b49a328e3fc7ca7539, type: 3}
+    - {fileID: 21300000, guid: 1f282473f0b8c9f4f964b37cf4ccec49, type: 3}
+    - {fileID: 21300000, guid: cd21359e4ed53304f96a2a13c053288f, type: 3}
+    - {fileID: 21300000, guid: 95ce30bbf756a6c419b725076429a96d, type: 3}
     - {fileID: 21300000, guid: 542db7ae3ff075842ba65f9803b4d066, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 1f282473f0b8c9f4f964b37cf4ccec49, type: 3}
   - {fileID: 21300000, guid: 54434c54728b5c149b9f2c06e824e9a6, type: 3}
+  - {fileID: 21300000, guid: cf616f64504d28b49a328e3fc7ca7539, type: 3}
+  - {fileID: 21300000, guid: a8e3d345e9283604799176ff643765e0, type: 3}
   - {fileID: 21300000, guid: e45962a6cfcdf6a45bfad33b7e45116e, type: 3}
+  - {fileID: 21300000, guid: 95ce30bbf756a6c419b725076429a96d, type: 3}
+  - {fileID: 21300000, guid: 01ed339e5d211454e8dde245c9ff9c82, type: 3}
+  - {fileID: 21300000, guid: cd21359e4ed53304f96a2a13c053288f, type: 3}
   - {fileID: 21300000, guid: 542db7ae3ff075842ba65f9803b4d066, type: 3}
   m_PackedSpriteNamesToIndex:
+  - SPR_FantasyWarrior_Frame_Box16
   - backpack
+  - SPR_FantasyWarrior_Frame_Box12
+  - SPR_FantasyWarrior_Frame_Box06
   - Slot
+  - SPR_HUD_FantasyWarrior_Tracery_Circle05
+  - SPR_FantasyWarrior_Frame_Box09
+  - SPR_HUD_FantasyWarrior_Box_Background01
   - Thumb
   m_RenderDataMap: {}
   m_Tag: Atlas

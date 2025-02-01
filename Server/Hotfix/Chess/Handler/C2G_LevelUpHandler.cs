@@ -20,6 +20,8 @@ public class C2G_LevelUpHandler: AMRpcHandler<C2G_LevelUp, G2C_LevelUp>
 				return;
 			}
 
+			gamePlayComponent = room.GetComponent<GamePlayComponent>();
+
 		}
 		ShopComponent shopComponent = gamePlayComponent.GetComponent<ShopComponent>();
 

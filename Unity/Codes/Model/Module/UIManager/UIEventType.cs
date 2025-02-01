@@ -9,6 +9,11 @@ namespace ET
 		{
 		}
 
+		public struct SwitchLogin
+		{
+			public	Scene ZoneScene;
+		}
+
 		public struct UpdateChampionLimit
 		{
 			public int CurrentCount;
