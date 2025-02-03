@@ -41,5 +41,7 @@ namespace ET
         public const int ERR_InvalidPosition = 200023;
         public const int ERR_ChampionLimitReached = 200024;
         public const int ERR_ChampionPosNotExist = 200025;
+        public const int ERR_HeroAlreadyOwned =  200026;
+        public const int ERR_PointNotEnough = 200027;
     }
 }

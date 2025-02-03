@@ -68,7 +68,7 @@
 
 		public static async ETTask OnBtnBagClick(this UILobbyView self)
 		{
-			await UIManagerComponent.Instance.OpenWindow<UIBag>(UIBag.PrefabPath);
+			await UIManagerComponent.Instance.OpenWindow<UIHero>(UIHero.PrefabPath);
 		}
 	}
 }

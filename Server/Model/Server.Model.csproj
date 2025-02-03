@@ -26,10 +26,6 @@
       <Link>Bag\BagComponent.cs</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Codes\Model\Bag\Hero.cs">
-      <Link>Bag\Hero.cs</Link>
-    </Compile>
-
     <Compile Include="..\..\Unity\Codes\Model\Bag\Item.cs">
       <Link>Bag\Item.cs</Link>
     </Compile>

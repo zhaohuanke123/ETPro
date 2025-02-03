@@ -99,5 +99,9 @@ namespace ET
 		 public const ushort ItemInfo = 10101;
 		 public const ushort C2G_BagInfo = 10106;
 		 public const ushort G2C_BagInfo = 10107;
+		 public const ushort C2G_BuyHero = 10108;
+		 public const ushort G2C_BuyHero = 10109;
+		 public const ushort C2G_GetHeroList = 10110;
+		 public const ushort G2C_GetHeroList = 10111;
 	}
 }

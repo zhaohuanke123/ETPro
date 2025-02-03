@@ -1509,4 +1509,63 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(G2C_BuyHero))]
+	[Message(OuterOpcode.C2G_BuyHero)]
+	[ProtoContract]
+	public partial class C2G_BuyHero: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int HeroConfigId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_BuyHero)]
+	[ProtoContract]
+	public partial class G2C_BuyHero: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int HeroConfigId { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_GetHeroList))]
+	[Message(OuterOpcode.C2G_GetHeroList)]
+	[ProtoContract]
+	public partial class C2G_GetHeroList: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_GetHeroList)]
+	[ProtoContract]
+	public partial class G2C_GetHeroList: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public List<int> HeroIds = new List<int>();
+
+	}
+
 }

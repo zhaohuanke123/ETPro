@@ -132,6 +132,12 @@ namespace ET
 			}
 		}
 
+		public static void SetColor(this UIImage self, Color color)
+		{
+			self.ActivatingComponent();
+			self.image.color = color;
+		}
+
 		public static void SetImageColor(this UIImage self, Color color)
 		{
 			self.ActivatingComponent();

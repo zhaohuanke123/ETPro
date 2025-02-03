@@ -57,6 +57,22 @@ namespace ET
 				});
 			}
 		}
+		
+		public static async ETTask SetItemCount (this BagComponent self, int id, int count)
+		{
+			ItemConfig itemConfig = ItemConfigCategory.Instance.Get(id);
+
+			if (count <= 0)
+			{
+				self.items.Remove(id);
+			}
+			else
+			{
+				self.items[id] = count;
+			}
+
+			await DBManagerComponent.Instance.GetZoneDB(self.DomainZone()).Save(self);
+		}
 #endif
 	}
 }

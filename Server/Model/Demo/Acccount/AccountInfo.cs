@@ -22,5 +22,7 @@ namespace ET
         public int AccountType { get; set; }
         
         public long BagId { get; set; }
+        
+         public long HeroBagId { get; set; }
     }
 }

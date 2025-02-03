@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using MongoDB.Bson.Serialization.Conventions;
 
 namespace ET.Account.Handle
 {
@@ -110,6 +109,21 @@ namespace ET.Account.Handle
 				bagComponent = bagComponents[0];
 			}
 
+			HeroComponent heroComponent = null;
+			if (accountInfo.HeroBagId == 0)
+			{
+				Log.Info($"发现账号:{accountInfo.Id}的英雄背包为空，创建一个");
+				heroComponent = accountInfo.AddComponent<HeroComponent>();
+				await dbComponent.Save(heroComponent);
+				accountInfo.HeroBagId = heroComponent.Id;
+				await dbComponent.Save(accountInfo);
+			}
+			else
+			{
+				List<HeroComponent> heroComponents = await dbComponent.Query<HeroComponent>(d => d.Id == accountInfo.HeroBagId);
+				heroComponent = heroComponents[0];
+			}
+
 			// 账号服务器请求登录中心服
 			// StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
 			// long loginCenterInstanceId = startSceneConfig.InstanceId;
@@ -178,6 +192,7 @@ namespace ET.Account.Handle
 			session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
 
 			player.AddComponent(bagComponent);
+			player.AddComponent(heroComponent);
 
 			//TODO 临时
 

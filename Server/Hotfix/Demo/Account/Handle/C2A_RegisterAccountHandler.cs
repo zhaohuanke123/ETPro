@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace ET
@@ -70,12 +71,15 @@ namespace ET
 					accountInfo.Password = request.Password;
 					accountInfo.CreateTime = TimeHelper.ServerNow();
 					accountInfo.AccountType = (int)AccountType.General;
-					
-					BagComponent addComponent = accountInfo.AddComponent<BagComponent>();
-					accountInfo.BagId = addComponent.Id;
-					await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(addComponent);
 
-					await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
+					BagComponent bagComponent = accountInfo.AddComponent<BagComponent>();
+					accountInfo.BagId = bagComponent.Id;
+					HeroComponent heroComponent = accountInfo.AddComponent<HeroComponent>();
+					accountInfo.HeroBagId = heroComponent.Id;
+					ETTask t1 = DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(bagComponent);
+					ETTask t2 = DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(accountInfo);
+					ETTask t3 = DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save(heroComponent);
+					await ETTaskHelper.WaitAll(new[] { t1, t2, t3 });
 				}
 
 				reply();

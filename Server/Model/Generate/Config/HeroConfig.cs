@@ -97,11 +97,8 @@ namespace ET
 		/// <summary>战斗配置Id</summary>
 		[ProtoMember(6)]
 		public int ChampionId { get; set; }
-		/// <summary>合成的碎片道具Id</summary>
+		/// <summary>购买需要的积分</summary>
 		[ProtoMember(7)]
-		public int ItemId { get; set; }
-		/// <summary>碎片数量</summary>
-		[ProtoMember(8)]
 		public int ItemCount { get; set; }
 
 	}

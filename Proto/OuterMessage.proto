@@ -737,3 +737,32 @@ message G2C_BagInfo // IResponse
 	string Message = 92;
 	repeated ItemInfo Items = 1;
 }
+
+//ResponseType G2C_BuyHero
+message C2G_BuyHero // IRequest
+{
+    int32 RpcId = 90;
+    int32 HeroConfigId = 1;
+}
+
+message G2C_BuyHero // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+    int32 HeroConfigId = 1;
+}
+
+//ResponseType G2C_GetHeroList
+message C2G_GetHeroList // IRequest
+{
+    int32 RpcId = 90;
+}
+
+message G2C_GetHeroList // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+    repeated int32 HeroIds = 1;
+}
