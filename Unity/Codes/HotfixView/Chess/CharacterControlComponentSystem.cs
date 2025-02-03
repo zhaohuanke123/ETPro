@@ -14,6 +14,30 @@ namespace ET
 			ReferenceCollector referenceCollector = gameObject.GetComponent<ReferenceCollector>();
 			self.attackPointTs = referenceCollector.Get<GameObject>("attackPoint").transform;
 			self.hitPointTs = referenceCollector.Get<GameObject>("hitPoint").transform;
+
+			self.playableControllerData = gameObject.GetComponent<UnityPlayableController>();
+			self.playableController = new PlayableController();
+			PlayableControllerMgr.Instance.LoadPlayableData(self.playableControllerData.aniaClipLoadDatas,
+			self.playableControllerData.animationCollector,
+			data =>
+			{
+				self.playableController.Init(self.playableControllerData.animator, data);
+			});
+
+			self.PlayAnim(AnimDefine.Idle);
+		}
+	}
+
+	[ObjectSystem]
+	public class CharacterControlComponentUpdateSystem: UpdateSystem<CharacterControlComponent>
+	{
+		public override void Update(CharacterControlComponent self)
+		{
+			if (self.IsDisposed)
+			{
+				return;
+			}
+			self.playableController.Update(Time.deltaTime);
 		}
 	}
 
@@ -22,7 +46,7 @@ namespace ET
 	{
 		public override void Destroy(CharacterControlComponent self)
 		{
-
+			self.playableController.OnDestroy();
 		}
 	}
 
@@ -37,6 +61,16 @@ namespace ET
 		public static void SetRotation(this CharacterControlComponent self, Quaternion rotation)
 		{
 			self.rotateTransform.rotation = rotation;
+		}
+
+		public static void PlayAnim(this CharacterControlComponent self, string animName, float fadeTime = 0f)
+		{
+			self.playableController.Play(animName, fadeTime);
+		}
+
+		public static float GetAnimTime(this CharacterControlComponent self, string animName)
+		{
+			return self.playableController.GetAnimTime(animName);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace ET
@@ -8,5 +9,7 @@ namespace ET
 	{
 		public CanvasGroup canvasGroup;
 		public Image hpFill;
+		public TMP_Text Lv;
+		public TMP_Text Name;
 	}
 }

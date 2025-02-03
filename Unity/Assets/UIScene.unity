@@ -790,6 +790,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIBag
       objectReference: {fileID: 0}
+    - target: {fileID: 3319607670936496819, guid: e7879bc94971ef64b8b2b1f33cb9b2b7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7879bc94971ef64b8b2b1f33cb9b2b7, type: 3}
 --- !u!224 &1447769837 stripped
@@ -914,6 +919,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -56.91235
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806791725848482683, guid: a546f8f4475dd104695c9589bdcc2b46,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -6.493042
       objectReference: {fileID: 0}
     - target: {fileID: 4155967259719774788, guid: a546f8f4475dd104695c9589bdcc2b46,
         type: 3}
@@ -1661,7 +1671,7 @@ PrefabInstance:
     - target: {fileID: 2121728790225972425, guid: 84d878dd20de55646bc6e23b203315e2,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.099975586
+      value: 0.100097656
       objectReference: {fileID: 0}
     - target: {fileID: 3290556907341493837, guid: 84d878dd20de55646bc6e23b203315e2,
         type: 3}
@@ -2041,6 +2051,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UIItemTip
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592139754404986239, guid: 8fcf0104a713e3a49aac14986ad68a52,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fcf0104a713e3a49aac14986ad68a52, type: 3}

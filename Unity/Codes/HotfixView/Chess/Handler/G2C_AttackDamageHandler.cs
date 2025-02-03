@@ -20,9 +20,7 @@ namespace ET
 				return;
 			}
 
-			GameObjectComponent gameObjectComponent = fromUnit.GetComponent<GameObjectComponent>();
-			CpAnimatorComponent cpAnimatorComponent = gameObjectComponent.GetComponent<CpAnimatorComponent>();
-			cpAnimatorComponent.DoAttack(true);
+			CharacterControlComponent controlComponent = fromUnit.GetComponent<CharacterControlComponent>();
 
 			ChampionConfig config = GamePlayComponent.Instance.GetChampionConfig(fromUnit);
 			if (config == null)
@@ -30,11 +28,12 @@ namespace ET
 				return;
 			}
 
+			controlComponent.PlayAnim(AnimDefine.Attack);
 			await TimerComponent.Instance.WaitAsync(config.attacktime);
 
 			if (!fromUnit.IsDisposed)
 			{
-				cpAnimatorComponent.DoAttack(false);
+				controlComponent.PlayAnim(AnimDefine.Idle, 0.3f);
 			}
 
 			Unit toUnit = unitComponent.Get(toId);
@@ -55,7 +54,6 @@ namespace ET
 				});
 				ProjectileComponent projectileComponent =
 						projectileGameObjectComponent.AddComponent<ProjectileComponent, Unit, float>(toUnit, config.projSpeed);
-				CharacterControlComponent controlComponent = fromUnit.GetComponent<CharacterControlComponent>();
 				projectileGO.transform.position = controlComponent.attackPointTs.position;
 				trackTask = projectileComponent.StartTrack();
 			}
@@ -74,6 +72,11 @@ namespace ET
 
 			FloatTextComponent floatTextComponent = currentScene.AddChild<FloatTextComponent, GameObject>(go);
 			floatTextComponent.Init(toUnit.ViewPosition + new Vector3(0, 2.5f, 0), message.Damage);
+
+			characterControlComponent = toUnit.GetComponent<CharacterControlComponent>();
+			characterControlComponent.PlayAnim(AnimDefine.BeHit);
+			await TimerComponent.Instance.WaitAsync((long)(characterControlComponent.GetAnimTime(AnimDefine.BeHit) * 1000));
+			characterControlComponent.PlayAnim(AnimDefine.Idle, 0.3f);
 		}
 	}
 }

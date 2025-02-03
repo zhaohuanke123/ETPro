@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4be205fabbd4ec8b8589cf2d0750d91, type: 3}
+  m_Name: archerAnimationCollector
+  m_EditorClassIdentifier: 
+  datas:
+  - path: Idle
+    clip: {fileID: 7400000, guid: 840c4bf8b301ae6429573b8ba12bb3c4, type: 3}
+  - path: Run
+    clip: {fileID: 7400000, guid: 44959745a40bd814c8f98725446f08c3, type: 3}
+  - path: Attack
+    clip: {fileID: 7400000, guid: f10f30b792a580a43b19b9f4c10c7860, type: 3}
+  - path: BeHit
+    clip: {fileID: 7400000, guid: f082fe4bdaafe41419d894b21feeae8b, type: 3}
+  - path: Dead
+    clip: {fileID: 7400000, guid: 7d1c2bf09014e3042bd0c71519b415ba, type: 3}

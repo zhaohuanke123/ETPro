@@ -24,7 +24,7 @@ namespace ET
 			unit.AddComponent(showView);
 			unit.AddComponent<MoveViewComponent>();
 			unit.AddComponent<CharacterControlComponent, GameObject>(go);
-			showView.AddComponent<CpAnimatorComponent>();
+			// showView.AddComponent<CpAnimatorComponent>();
 
 			int lv = infoPb.Lv;
 			float newScale = 1;

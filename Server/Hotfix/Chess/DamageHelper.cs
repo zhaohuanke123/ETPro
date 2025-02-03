@@ -11,7 +11,7 @@ namespace ET
 			target.GetComponent<NumericComponent>().Set(NumericType.Hp, target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) - damage);
 
 			int hp = target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp);
-			long attackTime = config.attacktime;
+			long attackTime = config.allAttacktime;
 
 			G2C_AttackDamage message = new G2C_AttackDamage();
 			message.FromId = unit.Id;
@@ -23,9 +23,13 @@ namespace ET
 			gamePlayComponent.Broadcast(message);
 
 			await TimerComponent.Instance.WaitAsync(attackTime);
-			float distance = Vector3.Distance(unit.Position, target.Position);
-			float time = distance / config.projSpeed * 1000;
-			await TimerComponent.Instance.WaitAsync((long)time);
+
+			if (config.attackProjectile != "")
+			{
+				float distance = Vector3.Distance(unit.Position, target.Position);
+				float time = distance / config.projSpeed * 1000;
+				await TimerComponent.Instance.WaitAsync((long)time);
+			}
 			if (hp <= 0)
 			{
 				gamePlayComponent.Broadcast(new G2C_UnitDead()
@@ -35,6 +39,7 @@ namespace ET
 				Log.Info($"{target.Id} is dead");
 				CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
 				cpCombatComponent.target = null;
+				await TimerComponent.Instance.WaitAsync(attackTime);
 			}
 			else
 			{

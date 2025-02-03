@@ -118,8 +118,11 @@ namespace ET
 		/// <summary>攻击动画时间（ms）</summary>
 		[ProtoMember(13)]
 		public long attacktime { get; set; }
-		/// <summary>移动范围</summary>
+		/// <summary>攻击总动画时间（ms）</summary>
 		[ProtoMember(14)]
+		public long allAttacktime { get; set; }
+		/// <summary>移动范围</summary>
+		[ProtoMember(15)]
 		public int moveRange { get; set; }
 
 	}

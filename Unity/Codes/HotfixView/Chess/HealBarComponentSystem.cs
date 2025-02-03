@@ -8,8 +8,10 @@ namespace ET
 	{
 		public override void Awake(HealBarComponent self, Transform transform)
 		{
-			self.canvasGroup = transform.GetComponentInChildren<CanvasGroup>();
-			self.hpFill = transform.Find("BG/fill").GetComponent<Image>();
+			self.canvasGroup = transform.GetComponent<CanvasGroup>();
+			self.hpFill = transform.Find("HP/Fill").GetComponent<Image>();
+			// self.Lv
+			// self.Name
 			self.SetHpRatio(1f);
 			// Camera camera = Camera.main;
 			// Canvas canvas = transform.GetComponent<Canvas>();
