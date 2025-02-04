@@ -41,6 +41,13 @@ namespace ET
 		public ChampionInfo championInfo;
 	}
 
+	public struct MoveCommand
+	{
+		public Unit Unit;
+		public ChampionInfo ChampionInfo;
+		public (int x, int z) TargetGrid;
+	}
+
 	[ComponentOf]
 	public class GamePlayComponent: Entity, IAwake, IDestroy, IFixedUpdate
 	// ,IFixedUpdate
@@ -78,6 +85,7 @@ namespace ET
 #else
 		public static GamePlayComponent Instance;
 		public Dictionary<Unit, ChampionConfig> championConfigDict;
+		public ETTask isViewReadyTask;
 #endif
 		/// <summary>
 		/// 计时 
@@ -92,13 +100,13 @@ namespace ET
 		public long PreparationStageDuration = 12 * 1000;
 
 		[BsonIgnore]
-		public Camp firstAttackCamp = Camp.None;  // 记录当前回合先手方
+		public Camp firstAttackCamp = Camp.None; // 记录当前回合先手方
 
 		[BsonIgnore]
-		public Camp lastWinnerCamp = Camp.None;   // 记录上一回合获胜方
+		public Camp lastWinnerCamp = Camp.None; // 记录上一回合获胜方
 
 		[BsonIgnore]
-		public int currentChampionLimit = GPDefine.InitChampionLimit;  // 当前可以放置的英雄数量限制
+		public int currentChampionLimit = GPDefine.InitChampionLimit; // 当前可以放置的英雄数量限制
 
 		public int CurrentChampionLimit
 		{

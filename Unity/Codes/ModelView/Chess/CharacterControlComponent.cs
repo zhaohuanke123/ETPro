@@ -6,7 +6,7 @@ namespace ET
 	{
 		public const string Idle = "Idle";
 		public const string Run = "Run";
-		public const string Dead= "Dead";
+		public const string Dead = "Dead";
 		public const string BeHit = "BeHit";
 		public const string Attack = "Attack";
 	}
@@ -15,6 +15,7 @@ namespace ET
 	[ComponentOf]
 	public class CharacterControlComponent: Entity, IAwake<GameObject>, IDestroy, IUpdate
 	{
+		public bool isInit = false;
 		public Transform transform;
 		public Transform rotateTransform;
 		public Transform attackPointTs;

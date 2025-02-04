@@ -8,8 +8,9 @@ namespace ET
 	[FriendClassAttribute(typeof (ET.GamePlayComponent))]
 	public class G2C_CreateCpUnitsHandler: AMHandler<G2C_CreateCpUnits>
 	{
-		protected override void Run(Session session, G2C_CreateCpUnits message)
+		protected override async void Run(Session session, G2C_CreateCpUnits message)
 		{
+			GamePlayComponent.Instance.isViewReadyTask = ETTask.Create();
 			Scene currentScene = session.ZoneScene().CurrentScene();
 			if (currentScene == null)
 			{
@@ -28,7 +29,8 @@ namespace ET
 
 			GamePlayComponent.Instance.championConfigDict.Clear();
 			List<UnitInfo> units = message.Units;
-			
+
+			List<ETTask> tasks = new List<ETTask>();
 			for (int i = 0; i < units.Count; i++)
 			{
 				UnitInfo unitInfo = units[i];
@@ -54,12 +56,15 @@ namespace ET
 						unit.Rotation = Quaternion.Euler(new Vector3(unit.Rotation.x, 200, unit.Rotation.z));
 					}
 				}
-				EventSystem.Instance.PublishAsync(new GenChampionView()
+				tasks.Add(EventSystem.Instance.PublishAsync(new GenChampionView()
 				{
 					unit = unit,
 					ChampionInfoPb = championInfoPb
-				}).Coroutine();
+				}));
 			}
+
+			await ETTaskHelper.WaitAll(tasks);
+			GamePlayComponent.Instance.isViewReadyTask.SetResult();
 		}
 	}
 }

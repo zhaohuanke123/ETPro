@@ -15,15 +15,7 @@ namespace ET
 			self.attackPointTs = referenceCollector.Get<GameObject>("attackPoint").transform;
 			self.hitPointTs = referenceCollector.Get<GameObject>("hitPoint").transform;
 
-			self.playableControllerData = gameObject.GetComponent<UnityPlayableController>();
-			self.playableController = new PlayableController();
-			PlayableControllerMgr.Instance.LoadPlayableData(self.playableControllerData.aniaClipLoadDatas,
-			self.playableControllerData.animationCollector,
-			data =>
-			{
-				self.playableController.Init(self.playableControllerData.animator, data);
-			});
-
+			self.Init();
 			self.PlayAnim(AnimDefine.Idle);
 		}
 	}
@@ -53,6 +45,25 @@ namespace ET
 	[FriendClass(typeof (CharacterControlComponent))]
 	public static class CharacterControlComponentSystem
 	{
+		public static void Init(this CharacterControlComponent self)
+		{
+			if (self.isInit)
+			{
+				return;
+			}
+
+			self.playableControllerData = self.transform.gameObject.GetComponent<UnityPlayableController>();
+			self.playableController = new PlayableController();
+			PlayableControllerMgr.Instance.LoadPlayableData(self.playableControllerData.aniaClipLoadDatas,
+			self.playableControllerData.animationCollector,
+			data =>
+			{
+				self.playableController.Init(self.playableControllerData.animator, data);
+			});
+
+			self.isInit = true;
+		}
+
 		public static void SetPosition(this CharacterControlComponent self, Vector3 position)
 		{
 			self.transform.position = position;
@@ -65,11 +76,13 @@ namespace ET
 
 		public static void PlayAnim(this CharacterControlComponent self, string animName, float fadeTime = 0f)
 		{
+			self.Init();
 			self.playableController.Play(animName, fadeTime);
 		}
 
 		public static float GetAnimTime(this CharacterControlComponent self, string animName)
 		{
+			self.Init();
 			return self.playableController.GetAnimTime(animName);
 		}
 	}

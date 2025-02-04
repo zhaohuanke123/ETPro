@@ -42,7 +42,6 @@ namespace ET
 				UIWatcherComponent.Instance.OnDestroy(ui);
 				GameObjectPoolComponent.Instance.RecycleGameObject(gameObject);
 			};
-
 		}
 	}
 }

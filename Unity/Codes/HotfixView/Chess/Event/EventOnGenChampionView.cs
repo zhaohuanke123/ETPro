@@ -10,8 +10,11 @@ namespace ET
 		{
 			ChessBattleViewComponent.Instance.HideAllInMap();
 			Unit unit = args.unit;
+			
 			unit.ViewPosition = unit.Position;
 			unit.ViewRotation = unit.Rotation;
+			unit.AddComponent<MoveViewComponent>();
+			
 			ChampionInfoPB infoPb = args.ChampionInfoPb;
 			ChampionConfig config = ChampionConfigCategory.Instance.Get(infoPb.ConfigId);
 			GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(config.prefab);
@@ -22,7 +25,6 @@ namespace ET
 			});
 
 			unit.AddComponent(showView);
-			unit.AddComponent<MoveViewComponent>();
 			unit.AddComponent<CharacterControlComponent, GameObject>(go);
 			// showView.AddComponent<CpAnimatorComponent>();
 

@@ -4,10 +4,13 @@ using UnityEngine;
 namespace ET
 {
 	[MessageHandler]
+	[FriendClassAttribute(typeof (ET.GamePlayComponent))]
 	public class G2C_SyncUnitPosHandler: AMHandler<G2C_SyncUnitPos>
 	{
 		protected override async void Run(Session session, G2C_SyncUnitPos message)
 		{
+			await GamePlayComponent.Instance.isViewReadyTask;
+
 			Scene zoneScene = session.ZoneScene();
 			CurrentScenesComponent currentScenesComponent = zoneScene.GetComponent<CurrentScenesComponent>();
 			if (currentScenesComponent.Scene == null)
