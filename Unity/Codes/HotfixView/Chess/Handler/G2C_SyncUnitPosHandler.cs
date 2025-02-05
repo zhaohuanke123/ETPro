@@ -9,7 +9,7 @@ namespace ET
 	{
 		protected override async void Run(Session session, G2C_SyncUnitPos message)
 		{
-			await GamePlayComponent.Instance.isViewReadyTask;
+			// await GamePlayComponent.Instance.isViewReadyTask;
 
 			Scene zoneScene = session.ZoneScene();
 			CurrentScenesComponent currentScenesComponent = zoneScene.GetComponent<CurrentScenesComponent>();
@@ -39,11 +39,12 @@ namespace ET
 				return;
 			}
 			ChampionConfig config = ChampionConfigCategory.Instance.Get(message.ChampionConfigId);
-
 			Vector3 targetPos = moveToUnit.Position - (moveToUnit.Position - unit.Position).normalized * (0.5f * config.attackRange);
+			ETTask<bool> moveToAsync = moveComponent.MoveToAsync(targetPos, 10);
+
 			CharacterControlComponent characterControlComponent = unit.GetComponent<CharacterControlComponent>();
 			characterControlComponent.PlayAnim(AnimDefine.Run);
-			await moveComponent.MoveToAsync(targetPos, 10);
+			await moveToAsync;
 			characterControlComponent.PlayAnim(AnimDefine.Idle, 0.5f);
 		}
 	}

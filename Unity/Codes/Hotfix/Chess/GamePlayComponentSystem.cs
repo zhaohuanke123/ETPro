@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 #if SERVER
 using MongoDB.Driver.Core.Events;
@@ -316,153 +315,46 @@ namespace ET
 					return;
 				}
 
-				// 根据firstAttackCamp决定战斗顺序
-				var firstUnits = self.firstAttackCamp == Camp.Player1 ? unit1 : unit2;
-				var secondUnits = self.firstAttackCamp == Camp.Player1 ? unit2 : unit1;
-				var firstInfos = self.firstAttackCamp == Camp.Player1 ? self.player1ChampionInfos : self.player2ChampionInfos;
-				var secondInfos = self.firstAttackCamp == Camp.Player1 ? self.player2ChampionInfos : self.player1ChampionInfos;
+				List<ETTask> tasks = new List<ETTask>();
 
-				// 处理先手方行动
-				await ProcessTeamAction(self, firstUnits, firstInfos, secondUnits);
-				
-				// 处理后手方行动
-				await ProcessTeamAction(self, secondUnits, secondInfos, firstUnits);
+				// 根据firstAttackCamp决定战斗顺序
+				var firstUnits = self.firstAttackCamp == Camp.Player1? unit1 : unit2;
+				var secondUnits = self.firstAttackCamp == Camp.Player1? unit2 : unit1;
+				var firstInfos = self.firstAttackCamp == Camp.Player1? self.player1ChampionInfos : self.player2ChampionInfos;
+				var secondInfos = self.firstAttackCamp == Camp.Player1? self.player2ChampionInfos : self.player1ChampionInfos;
+
+				// 先手方行动
+				for (var i = 0; i < firstUnits.Count; i++)
+				{
+					Unit unit = firstUnits[i];
+					if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+					{
+						continue;
+					}
+					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
+					tasks.Add(cpCombatComponent.CombatLoop(self, unit, firstInfos[i], secondUnits));
+				}
+
+				await ETTaskHelper.WaitAll(tasks);
+				tasks.Clear();
+
+				// 后手方行动
+				for (var i = 0; i < secondUnits.Count; i++)
+				{
+					Unit unit = secondUnits[i];
+					if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+					{
+						continue;
+					}
+					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
+					tasks.Add(cpCombatComponent.CombatLoop(self, unit, secondInfos[i], firstUnits));
+				}
+
+				await ETTaskHelper.WaitAll(tasks);
+				tasks.Clear();
 
 				await ETTask.CompletedTask;
 			}
-		}
-
-		private static async ETTask ProcessTeamAction(GamePlayComponent self, List<Unit> activeUnits, List<ChampionInfo> activeInfos, List<Unit> targetUnits)
-		{
-			if (activeUnits.Count == 0 || targetUnits.Count == 0) return;
-
-			var battleGrid = self.GetComponent<BattleGridComponent>();
-			battleGrid.Reset();
-
-			// 更新当前所有单位的位置到格子系统
-			foreach (var unit in activeUnits.Concat(targetUnits))
-			{
-				var championInfo = self.unitStateDict[unit].championInfo;
-				battleGrid.SetOccupied(championInfo.gridPositionX, championInfo.gridPositionZ, true);
-			}
-
-			// 1. 找出需要移动的单位
-			List<MoveCommand> moveCommands = new List<MoveCommand>();
-			Unit mainTarget = FindMainTarget(targetUnits);
-			ChampionInfo targetInfo = self.unitStateDict[mainTarget].championInfo;
-
-			for (int i = 0; i < activeUnits.Count; i++)
-			{
-				Unit unit = activeUnits[i];
-				if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0) continue;
-
-				var attackerInfo = activeInfos[i];
-				if (!IsInAttackRange(attackerInfo, targetInfo))
-				{
-					moveCommands.Add(new MoveCommand 
-					{ 
-						Unit = unit, 
-						ChampionInfo = attackerInfo
-					});
-				}
-			}
-
-			// 2. 为每个需要移动的单位找到最佳位置并移动
-			if (moveCommands.Count > 0)
-			{
-				var targetPositions = GetAvailablePositionsAroundTarget(self, targetInfo, moveCommands.Count);
-				List<ETTask> moveTasks = new List<ETTask>();
-
-				for (int i = 0; i < moveCommands.Count && i < targetPositions.Count; i++)
-				{
-					var cmd = moveCommands[i];
-					var targetPos = targetPositions[i];
-					
-					// 使用A*寻路找到路径
-					var path = battleGrid.FindPath(
-						cmd.ChampionInfo.gridPositionX,
-						cmd.ChampionInfo.gridPositionZ,
-						targetPos.x,
-						targetPos.z
-					);
-
-					if (path.Count > 0)
-					{
-						// 获取路径上的第一个位置（或者可以移动的最远位置）
-						var moveTarget = path[Math.Min(path.Count - 1, cmd.ChampionInfo.Config.moveRange)];
-						battleGrid.SetOccupied(moveTarget.x, moveTarget.z, true);
-						
-						CpCombatComponent cpCombatComponent = cmd.Unit.GetComponent<CpCombatComponent>();
-						moveTasks.Add(cpCombatComponent.MoveToGrid(moveTarget.x, moveTarget.z));
-					}
-				}
-
-				await ETTaskHelper.WaitAll(moveTasks);
-			}
-
-			// 3. 执行攻击
-			List<ETTask> attackTasks = new List<ETTask>();
-			for (var i = 0; i < activeUnits.Count; i++)
-			{
-				Unit unit = activeUnits[i];
-				if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0) continue;
-
-				if (IsInAttackRange(activeInfos[i], targetInfo))
-				{
-					CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-					attackTasks.Add(cpCombatComponent.Attack(targetUnits));
-				}
-			}
-			await ETTaskHelper.WaitAll(attackTasks);
-		}
-
-		private static Unit FindMainTarget(List<Unit> targetUnits)
-		{
-			// 简单实现：返回第一个存活的目标
-			foreach (var unit in targetUnits)
-			{
-				if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) > 0)
-				{
-					return unit;
-				}
-			}
-			return targetUnits[0];
-		}
-
-		private static bool IsInAttackRange(ChampionInfo attacker, ChampionInfo target)
-		{
-			int distance = Math.Abs(attacker.gridPositionX - target.gridPositionX) + 
-						  Math.Abs(attacker.gridPositionZ - target.gridPositionZ);
-			return distance <= attacker.Config.attackRange;
-		}
-
-		private static List<(int x, int z)> GetAvailablePositionsAroundTarget(
-			GamePlayComponent self,
-			ChampionInfo target,
-			int count)
-		{
-			var result = new List<(int x, int z)>();
-			ChampionMapArrayComponent mapArray = self.GetComponent<ChampionMapArrayComponent>();
-
-			// 检查目标周围的8个方向
-			int[] dx = { -1, -1, -1, 0, 0, 1, 1, 1 };
-			int[] dz = { -1, 0, 1, -1, 1, -1, 0, 1 };
-
-			for (int i = 0; i < dx.Length && result.Count < count; i++)
-			{
-				int newX = target.gridPositionX + dx[i];
-				int newZ = target.gridPositionZ + dz[i];
-
-				// 检查位置是否有效且为空
-				if (newX >= 0 && newX < GPDefine.HexMapSizeX &&
-					newZ >= 0 && newZ < GPDefine.HexMapSizeZ &&
-					mapArray.grid[newX, newZ] == null)
-				{
-					result.Add((newX, newZ));
-				}
-			}
-
-			return result;
 		}
 
 		public static void CalAndSendResult(this GamePlayComponent self)
