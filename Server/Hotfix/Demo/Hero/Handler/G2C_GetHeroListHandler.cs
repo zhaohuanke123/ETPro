@@ -12,7 +12,7 @@ namespace ET
 			HeroComponent heroComponent = player.GetComponent<HeroComponent>();
 
 			// 获取玩家拥有的英雄ID列表
-			response.HeroIds = heroComponent.GetAllHeroes();
+			response.HeroIds = heroComponent.GetAllHeroIds();
 			reply();
 
 			await ETTask.CompletedTask;

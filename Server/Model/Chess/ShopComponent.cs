@@ -34,7 +34,10 @@ namespace ET
         /// 玩家等级字典
         /// </summary>
         public Dictionary<long, int> playerLevelDict;
-        
- 
+
+        /// <summary>
+        /// 玩家可获取英雄等级字典
+        /// </summary>
+        public Dictionary<long, int> playerHeroLevelDict;
     }
 }

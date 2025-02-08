@@ -5,264 +5,292 @@ using System.Xml.Schema;
 
 namespace ET
 {
-	[ObjectSystem]
-	public class ShopComponentAwakeSystem: AwakeSystem<ShopComponent>
-	{
-		public override void Awake(ShopComponent self)
-		{
-			self.availableChampionIdArray = new Dictionary<long, List<int>>();
-			self.playersGoldDict = new Dictionary<long, int>();
-			self.playerCurrentChampionLimit = new Dictionary<long, int>();
-			self.championIdsArray = ChampionConfigCategory.Instance.GetAll().Keys.ToArray();
-			self.championTypeIdsArray = ChampionTypeConfigCategory.Instance.GetAll().Keys.ToArray();
-			self.playerLevelDict = new Dictionary<long, int>();
-		}
-	}
+    [ObjectSystem]
+    public class ShopComponentAwakeSystem: AwakeSystem<ShopComponent>
+    {
+        public override void Awake(ShopComponent self)
+        {
+            self.availableChampionIdArray = new Dictionary<long, List<int>>();
+            self.playersGoldDict = new Dictionary<long, int>();
+            self.playerCurrentChampionLimit = new Dictionary<long, int>();
+            self.championIdsArray = ChampionConfigCategory.Instance.GetAll().Keys.ToArray();
+            self.championTypeIdsArray = ChampionTypeConfigCategory.Instance.GetAll().Keys.ToArray();
+            self.playerLevelDict = new Dictionary<long, int>();
+        }
+    }
 
-	[ObjectSystem]
-	public class ShopComponentDestroySystem: DestroySystem<ShopComponent>
-	{
-		public override void Destroy(ShopComponent self)
-		{
-		}
-	}
+    [ObjectSystem]
+    public class ShopComponentDestroySystem: DestroySystem<ShopComponent>
+    {
+        public override void Destroy(ShopComponent self)
+        {
+        }
+    }
 
-	[FriendClass(typeof (ShopComponent))]
-	public static partial class ShopComponentSystem
-	{
-		// public static void Test(this ShopComponent self)
-		// {
-		// }
-		public static void AddPlayer(this ShopComponent self, Player player)
-		{
-			if (!self.availableChampionIdArray.TryAdd(player.Id, new List<int>()))
-			{
-				throw new ArgumentException("玩家已存在");
-			}
+    [FriendClass(typeof (ShopComponent))]
+    public static partial class ShopComponentSystem
+    {
+        // public static void Test(this ShopComponent self)
+        // {
+        // }
+        public static void AddPlayer(this ShopComponent self, Player player)
+        {
+            if (!self.availableChampionIdArray.TryAdd(player.Id, new List<int>()))
+            {
+                throw new ArgumentException("玩家已存在");
+            }
 
-			if (!self.playersGoldDict.TryAdd(player.Id, GPDefine.InitGold))
-			{
-			}
+            if (!self.playersGoldDict.TryAdd(player.Id, GPDefine.InitGold))
+            {
+            }
 
-			if (!self.playerCurrentChampionLimit.TryAdd(player.Id, GPDefine.InitChampionLimit))
-			{
-			}
+            if (!self.playerCurrentChampionLimit.TryAdd(player.Id, GPDefine.InitChampionLimit))
+            {
+            }
 
-			// 初始等级为1
-			if (!self.playerLevelDict.TryAdd(player.Id, 1))
-			{
-				throw new ArgumentException("玩家已存在");
-			}
-		}
+            // 初始等级为1
+            if (!self.playerLevelDict.TryAdd(player.Id, 1))
+            {
+                throw new ArgumentException("玩家已存在");
+            }
 
-		public static void AddPlayerGold(this ShopComponent self, Player player, int gold)
-		{
-			if (!self.playersGoldDict.TryGetValue(player.Id, out int count))
-			{
-				throw new ArgumentException("玩家不存在");
-			}
+            self.playerHeroLevelDict.TryAdd(player.Id, 1);
+        }
 
-			int res = count + gold;
-			self.playersGoldDict[player.Id] = res;
+        public static void AddPlayerGold(this ShopComponent self, Player player, int gold)
+        {
+            if (!self.playersGoldDict.TryGetValue(player.Id, out int count))
+            {
+                throw new ArgumentException("玩家不存在");
+            }
 
-			self.SendRefreshGold(player, count + res);
-		}
+            int res = count + gold;
+            self.playersGoldDict[player.Id] = res;
 
-		public static void SubPlayerGold(this ShopComponent self, Player player, int gold)
-		{
-			if (self.playersGoldDict.TryGetValue(player.Id, out int count))
-			{
-				if (count >= gold)
-				{
-					self.playersGoldDict[player.Id] -= gold;
-					self.SendRefreshGold(player, count - gold);
-				}
-				else
-				{
-					throw new InvalidOperationException("金币不足");
-				}
-			}
-		}
+            self.SendRefreshGold(player, count + res);
+        }
 
-		public static bool TrySubPlayerGold(this ShopComponent self, Player player, int goldCount)
-		{
-			if (self.playersGoldDict.TryGetValue(player.Id, out int count))
-			{
-				if (count >= goldCount)
-				{
-					self.playersGoldDict[player.Id] -= goldCount;
-					self.SendRefreshGold(player, count - goldCount);
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
+        public static void SubPlayerGold(this ShopComponent self, Player player, int gold)
+        {
+            if (self.playersGoldDict.TryGetValue(player.Id, out int count))
+            {
+                if (count >= gold)
+                {
+                    self.playersGoldDict[player.Id] -= gold;
+                    self.SendRefreshGold(player, count - gold);
+                }
+                else
+                {
+                    throw new InvalidOperationException("金币不足");
+                }
+            }
+        }
 
-			return false;
-		}
+        public static bool TrySubPlayerGold(this ShopComponent self, Player player, int goldCount)
+        {
+            if (self.playersGoldDict.TryGetValue(player.Id, out int count))
+            {
+                if (count >= goldCount)
+                {
+                    self.playersGoldDict[player.Id] -= goldCount;
+                    self.SendRefreshGold(player, count - goldCount);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
-		public static bool IsEnoughGold(this ShopComponent self, long playerId, int gold)
-		{
-			if (!self.playersGoldDict.TryGetValue(playerId, out int value))
-			{
-				return false;
-			}
+            return false;
+        }
 
-			return value >= gold;
-		}
+        public static bool IsEnoughGold(this ShopComponent self, long playerId, int gold)
+        {
+            if (!self.playersGoldDict.TryGetValue(playerId, out int value))
+            {
+                return false;
+            }
 
-		/// <summary>
-		/// 测试，获取随机英雄
-		/// </summary>
-		/// <param name="self"></param>
-		/// <returns></returns>
-		public static int GetRandomChampionId(this ShopComponent self)
-		{
-			int rand = RandomHelper.RandomNumber(0, self.championIdsArray.Length);
+            return value >= gold;
+        }
 
-			return self.championIdsArray[rand];
-		}
+        /// <summary>
+        /// 测试，获取随机英雄
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static int GetRandomChampionId(this ShopComponent self)
+        {
+            int rand = RandomHelper.RandomNumber(0, self.championIdsArray.Length);
 
-		/// <summary>
-		/// 刷新商店
-		/// </summary>
-		/// <param name="self"></param>
-		/// <param name="player"></param>
-		/// <param name="isFree"></param>
-		public static bool RefreshShop(this ShopComponent self, Player player, bool isFree = false)
-		{
-			if (self.playersGoldDict.TryGetValue(player.Id, out int gold))
-			{
-				if (gold < 2 && isFree == false)
-				{
-					return false;
-				}
-			}
+            return self.championIdsArray[rand];
+        }
 
-			if (self.availableChampionIdArray.ContainsKey(player.Id))
-			{
-				self.availableChampionIdArray.Remove(player.Id);
-			}
+        /// <summary>
+        /// 刷新商店
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="player"></param>
+        /// <param name="isFree"></param>
+        public static bool RefreshShop(this ShopComponent self, Player player, bool isFree = false)
+        {
+            HeroComponent heroComponent = player.GetComponent<HeroComponent>();
+            if (heroComponent == null)
+            {
+                return false;
+            }
 
-			// TODO 临时
-			const int count = 5;
-			var availableChampionArray = new List<int>(count);
-			self.availableChampionIdArray.Add(player.Id, availableChampionArray);
+            if (self.playersGoldDict.TryGetValue(player.Id, out int gold))
+            {
+                if (gold < 2 && isFree == false)
+                {
+                    return false;
+                }
+            }
 
-			for (int i = 0; i < count; i++)
-			{
-				int randomChampionId = self.GetRandomChampionId();
+            if (self.availableChampionIdArray.ContainsKey(player.Id))
+            {
+                self.availableChampionIdArray.Remove(player.Id);
+            }
 
-				availableChampionArray.Add(randomChampionId);
-			}
+            int playerHeroLevel = self.playerHeroLevelDict[player.Id];
+            var selfAvailableChampions = self.availableChampionIdArray[player.Id];
+            // 遍历拥有的英雄，获取英雄等级，对比玩家英雄等级，如果等级小于等于玩家英雄等级，则将英雄id加入到availableChampionIdArray中
+            foreach (var hero in heroComponent.GetAllHeroes())
+            {
+                if (hero.Level <= playerHeroLevel)
+                {
+                    selfAvailableChampions.Add(hero.ConfigId);
+                }
+            }
 
-			if (isFree == false)
-			{
-				self.SubPlayerGold(player, 2);
-			}
+            // 随机打乱并取前5个
+            self.availableChampionIdArray[player.Id] = selfAvailableChampions.OrderBy(x => Guid.NewGuid()).Take(5).ToList();
 
-			return true;
-		}
+            // TODO 临时
+            // const int count = 5;
+            // var availableChampionArray = new List<int>(count);
+            // self.availableChampionIdArray.Add(player.Id, availableChampionArray);
 
-		public static List<int> GetAvailableChampionIdArray(this ShopComponent self, long id)
-		{
-			if (!self.availableChampionIdArray.TryGetValue(id, out List<int> value))
-			{
-				throw new ArgumentException("玩家不存在");
-			}
+            // for (int i = 0; i < count; i++)
+            // {
+            //     int randomChampionId = self.GetRandomChampionId();
 
-			return value;
-		}
+            //     availableChampionArray.Add(randomChampionId);
+            // }
 
-		public static void SendRefreshGold(this ShopComponent self, Player player)
-		{
-			if (self.playersGoldDict.TryGetValue(player.Id, out int gold))
-			{
-				self.SendRefreshGold(player, gold);
-			}
-			else
-			{
-				throw new ArgumentException("玩家不存在");
-			}
-		}
+            if (isFree == false)
+            {
+                self.SubPlayerGold(player, 2);
+            }
 
-		public static void SendRefreshGold(this ShopComponent self, Player player, int goldCount)
-		{
-			player.SendMessage(new G2C_RefreshGold()
-			{
-				GlodCount = goldCount
-			});
-		}
+            return true;
+        }
 
-		public static int GetIdByIndex(this ShopComponent self, Player player, int index)
-		{
-			if (!self.availableChampionIdArray.TryGetValue(player.Id, out var availableList))
-			{
-				return -1;
-			}
+        public static List<int> GetAvailableChampionIdArray(this ShopComponent self, long id)
+        {
+            if (!self.availableChampionIdArray.TryGetValue(id, out List<int> value))
+            {
+                throw new ArgumentException("玩家不存在");
+            }
 
-			if (index >= availableList.Count)
-			{
-				return -1;
-			}
+            return value;
+        }
 
-			return availableList[index];
-		}
+        public static void SendRefreshGold(this ShopComponent self, Player player)
+        {
+            if (self.playersGoldDict.TryGetValue(player.Id, out int gold))
+            {
+                self.SendRefreshGold(player, gold);
+            }
+            else
+            {
+                throw new ArgumentException("玩家不存在");
+            }
+        }
 
-		public static bool TryLevelUp(this ShopComponent self, Player player)
-		{
-			if (!self.playerLevelDict.TryGetValue(player.Id, out int currentLevel))
-			{
-				return false;
-			}
+        public static void SendRefreshGold(this ShopComponent self, Player player, int goldCount)
+        {
+            player.SendMessage(new G2C_RefreshGold() { GlodCount = goldCount });
+        }
 
-			// 计算升级费用
-			int levelUpCost = GetLevelUpCost(currentLevel);
+        public static int GetIdByIndex(this ShopComponent self, Player player, int index)
+        {
+            if (!self.availableChampionIdArray.TryGetValue(player.Id, out var availableList))
+            {
+                return -1;
+            }
 
-			// 检查金币是否足够
-			if (!self.TrySubPlayerGold(player, levelUpCost))
-			{
-				return false;
-			}
+            if (index >= availableList.Count)
+            {
+                return -1;
+            }
 
-			// 升级并更新英雄上限
-			currentLevel += 1;
-			self.playerLevelDict[player.Id] = currentLevel;
-			self.playerCurrentChampionLimit[player.Id] = GPDefine.InitChampionLimit + currentLevel;
+            return availableList[index];
+        }
 
-			// 计算下一级所需费用
-			int nextLevelCost = GetLevelUpCost(currentLevel);
+        public static bool TryLevelUp(this ShopComponent self, Player player)
+        {
+            if (!self.playerLevelDict.TryGetValue(player.Id, out int currentLevel))
+            {
+                return false;
+            }
 
-			// 发送更新消息
-			player.SendMessage(new G2C_UpdateLevel()
-			{
-				Level = currentLevel,
-				ChampionLimit = self.playerCurrentChampionLimit[player.Id],
-				NextLevelCost = nextLevelCost
-			});
+            // 计算升级费用
+            int levelUpCost = GetLevelUpCost(currentLevel);
 
-			return true;
-		}
+            // 检查金币是否足够
+            if (!self.TrySubPlayerGold(player, levelUpCost))
+            {
+                return false;
+            }
 
-		/// <summary>
-		/// 获取升级到下一级所需的金币
-		/// </summary>
-		public static int GetLevelUpCost(int currentLevel)
-		{
-			return currentLevel * 2 + 2; // 例如: 1级→2级需要4金币, 2级→3级需要6金币
-		}
+            // 升级并更新英雄上限
+            currentLevel += 1;
+            self.playerLevelDict[player.Id] = currentLevel;
+            self.playerCurrentChampionLimit[player.Id] = GPDefine.InitChampionLimit + currentLevel;
 
-		public static int GetPlayerLevel(this ShopComponent self, long playerId)
-		{
-			return self.playerLevelDict.GetValueOrDefault(playerId, 1);
-		}
-		
-		// GetPlayerChampionMaxLimit	
-		 public static int GetPlayerChampionMaxLimit(this ShopComponent self, long playerId)
-		 {
-			 return self.playerCurrentChampionLimit.GetValueOrDefault(playerId, GPDefine.InitChampionLimit);
-		 }
-	}
+            // 计算下一级所需费用
+            int nextLevelCost = GetLevelUpCost(currentLevel);
+
+            // 发送更新消息
+            player.SendMessage(new G2C_UpdateLevel()
+            {
+                Level = currentLevel, ChampionLimit = self.playerCurrentChampionLimit[player.Id], NextLevelCost = nextLevelCost
+            });
+
+            return true;
+        }
+
+        /// <summary>
+        /// 获取升级到下一级所需的金币
+        /// </summary>
+        public static int GetLevelUpCost(int currentLevel)
+        {
+            return currentLevel * 2 + 2; // 例如: 1级→2级需要4金币, 2级→3级需要6金币
+        }
+
+        public static int GetPlayerLevel(this ShopComponent self, long playerId)
+        {
+            return self.playerLevelDict.GetValueOrDefault(playerId, 1);
+        }
+
+        // GetPlayerChampionMaxLimit	
+        public static int GetPlayerChampionMaxLimit(this ShopComponent self, long playerId)
+        {
+            return self.playerCurrentChampionLimit.GetValueOrDefault(playerId, GPDefine.InitChampionLimit);
+        }
+
+        public static void UpgradePlayerHeroLevel(this ShopComponent self, Player player)
+        {
+            if (!self.playerHeroLevelDict.TryGetValue(player.Id, out int currentLevel))
+            {
+                return;
+            }
+
+            currentLevel += 1;
+            self.playerHeroLevelDict[player.Id] = currentLevel;
+        }
+    }
 }
