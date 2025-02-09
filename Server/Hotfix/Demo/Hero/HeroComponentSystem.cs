@@ -4,7 +4,6 @@ using System.Linq;
 namespace ET
 {
     [FriendClass(typeof (HeroComponent))]
-    [FriendClass(typeof (Hero))]
     public static class HeroComponentSystem
     {
         public static void Awake(this HeroComponent self)
@@ -20,8 +19,8 @@ namespace ET
                 return false;
             }
 
-            Hero hero = self.AddChild<Hero, int>(configId);
-            self.Heroes.Add(configId, hero);
+            // Hero hero = self.AddChild<Hero, int>(configId);
+            self.Heroes.Add(configId, configId);
 
             // 保存到数据库
             DBComponent dbComponent = DBManagerComponent.Instance.GetZoneDB(self.DomainZone());
@@ -42,9 +41,9 @@ namespace ET
             return self.Heroes.Keys.ToList();
         }
 
-        public static List<Hero> GetAllHeroes(this HeroComponent self)
-        {
-            return self.Heroes.Values.ToList();
-        }
+        // public static List<Hero> GetAllHeroes(this HeroComponent self)
+        // {
+        //     return self.Heroes.Values.ToList();
+        // }
     }
 }

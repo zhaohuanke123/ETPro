@@ -16,6 +16,7 @@ namespace ET
             self.championIdsArray = ChampionConfigCategory.Instance.GetAll().Keys.ToArray();
             self.championTypeIdsArray = ChampionTypeConfigCategory.Instance.GetAll().Keys.ToArray();
             self.playerLevelDict = new Dictionary<long, int>();
+            self.playerHeroLevelDict = new Dictionary<long, int>();
         }
     }
 
@@ -30,31 +31,35 @@ namespace ET
     [FriendClass(typeof (ShopComponent))]
     public static partial class ShopComponentSystem
     {
-        // public static void Test(this ShopComponent self)
-        // {
-        // }
         public static void AddPlayer(this ShopComponent self, Player player)
         {
-            if (!self.availableChampionIdArray.TryAdd(player.Id, new List<int>()))
+            void TryAddWithException<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, TValue value, string errorMessage)
             {
-                throw new ArgumentException("玩家已存在");
+                if (!dictionary.TryAdd(key, value))
+                {
+                    throw new ArgumentException(errorMessage);
+                }
             }
 
-            if (!self.playersGoldDict.TryAdd(player.Id, GPDefine.InitGold))
+            void TryAdd<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
             {
+                dictionary.TryAdd(key, value);
             }
 
-            if (!self.playerCurrentChampionLimit.TryAdd(player.Id, GPDefine.InitChampionLimit))
-            {
-            }
+            // 添加玩家的英雄列表
+            TryAddWithException(self.availableChampionIdArray, player.Id, new List<int>(), "玩家已存在");
 
-            // 初始等级为1
-            if (!self.playerLevelDict.TryAdd(player.Id, 1))
-            {
-                throw new ArgumentException("玩家已存在");
-            }
+            // 初始化玩家的金币
+            TryAdd(self.playersGoldDict, player.Id, GPDefine.InitGold);
 
-            self.playerHeroLevelDict.TryAdd(player.Id, 1);
+            // 初始化玩家的英雄上限
+            TryAdd(self.playerCurrentChampionLimit, player.Id, GPDefine.InitChampionLimit);
+
+            // 初始化玩家等级
+            TryAdd(self.playerLevelDict, player.Id, 1);
+
+            // 初始化玩家的英雄等级
+            TryAdd(self.playerHeroLevelDict, player.Id, 1);
         }
 
         public static void AddPlayerGold(this ShopComponent self, Player player, int gold)
@@ -149,19 +154,21 @@ namespace ET
                 }
             }
 
-            if (self.availableChampionIdArray.ContainsKey(player.Id))
-            {
-                self.availableChampionIdArray.Remove(player.Id);
-            }
+            // if (self.availableChampionIdArray.ContainsKey(player.Id))
+            // {
+            //     self.availableChampionIdArray.Remove(player.Id);
+            // }
 
             int playerHeroLevel = self.playerHeroLevelDict[player.Id];
             var selfAvailableChampions = self.availableChampionIdArray[player.Id];
+            selfAvailableChampions.Clear();
             // 遍历拥有的英雄，获取英雄等级，对比玩家英雄等级，如果等级小于等于玩家英雄等级，则将英雄id加入到availableChampionIdArray中
-            foreach (var hero in heroComponent.GetAllHeroes())
+            foreach (var id in heroComponent.GetAllHeroIds())
             {
-                if (hero.Level <= playerHeroLevel)
+                HeroConfig config = HeroConfigCategory.Instance.Get(id);
+                if (config.Lv <= playerHeroLevel)
                 {
-                    selfAvailableChampions.Add(hero.ConfigId);
+                    selfAvailableChampions.Add(config.ChampionId);
                 }
             }
 
