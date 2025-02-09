@@ -55,18 +55,21 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 21300000, guid: 1bf2b18752a41ba45886c3d8f0eee2a1, type: 3}
-    - {fileID: 21300000, guid: 5459180c2f40fac428b14eefabd33ce5, type: 3}
+    - {fileID: 21300000, guid: 728c5d2fe51effd449d9f2691a71c29c, type: 3}
+    - {fileID: 21300000, guid: 58f328f399575b24da3ebc78b0a49dd5, type: 3}
+    - {fileID: 21300000, guid: 2b54c34258a61b24c87985185674d17b, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 1bf2b18752a41ba45886c3d8f0eee2a1, type: 3}
-  - {fileID: 21300000, guid: 5459180c2f40fac428b14eefabd33ce5, type: 3}
+  - {fileID: 21300000, guid: 2b54c34258a61b24c87985185674d17b, type: 3}
+  - {fileID: 21300000, guid: 58f328f399575b24da3ebc78b0a49dd5, type: 3}
+  - {fileID: 21300000, guid: 728c5d2fe51effd449d9f2691a71c29c, type: 3}
   m_PackedSpriteNamesToIndex:
-  - ICON_FantasyWarrior_Map_Quest01_Clean
-  - SPR_FantasyWarrior_Ring_Small01_Variant03
+  - SPR_HUD_FantasyWarrior_Vignette_Box_Small01
+  - SPR_HUD_FantasyWarrior_Tracery_Diamond01
+  - SPR_HUD_FantasyWarrior_Gradient_Vertical_Smooth01
   m_RenderDataMap: {}
   m_Tag: Atlas
   m_IsVariant: 0

@@ -1061,6 +1061,15 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_UpdateShppChampion)]
+	[ProtoContract]
+	public partial class G2C_UpdateShppChampion: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public List<int> championIds = new List<int>();
+
+	}
+
 	[Message(OuterOpcode.ChampionInfoPB)]
 	[ProtoContract]
 	public partial class ChampionInfoPB: Object

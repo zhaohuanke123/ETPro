@@ -509,6 +509,11 @@ message G2C_BuyChampion // IResponse
 	UnitInfo UnitInfo  = 2;
 }
 
+message G2C_UpdateShppChampion // IMessage
+{
+	repeated int championIds = 1;
+}
+
 enum GridType
 {
 	OwnInventory = 0;
