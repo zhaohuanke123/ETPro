@@ -20,7 +20,8 @@ namespace ET
             }
 
             // Hero hero = self.AddChild<Hero, int>(configId);
-            self.Heroes.Add(configId, configId);
+            Hero hero = new Hero(){ConfigId = configId};
+            self.Heroes.Add(configId, hero);
 
             // 保存到数据库
             DBComponent dbComponent = DBManagerComponent.Instance.GetZoneDB(self.DomainZone());
