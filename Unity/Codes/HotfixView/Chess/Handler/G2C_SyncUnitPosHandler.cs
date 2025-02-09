@@ -9,7 +9,6 @@ namespace ET
 	{
 		protected override async void Run(Session session, G2C_SyncUnitPos message)
 		{
-			// await GamePlayComponent.Instance.isViewReadyTask;
 
 			Scene zoneScene = session.ZoneScene();
 			CurrentScenesComponent currentScenesComponent = zoneScene.GetComponent<CurrentScenesComponent>();
@@ -42,6 +41,7 @@ namespace ET
 			Vector3 targetPos = moveToUnit.Position - (moveToUnit.Position - unit.Position).normalized * (0.5f * config.attackRange);
 			ETTask<bool> moveToAsync = moveComponent.MoveToAsync(targetPos, 10);
 
+			await GamePlayComponent.Instance.isViewReadyTask;
 			CharacterControlComponent characterControlComponent = unit.GetComponent<CharacterControlComponent>();
 			characterControlComponent.PlayAnim(AnimDefine.Run);
 			await moveToAsync;
