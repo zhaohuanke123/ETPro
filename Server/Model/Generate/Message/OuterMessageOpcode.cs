@@ -104,5 +104,9 @@ namespace ET
 		 public const ushort G2C_BuyHero = 10109;
 		 public const ushort C2G_GetHeroList = 10110;
 		 public const ushort G2C_GetHeroList = 10111;
+		 public const ushort C2G_GetNextGalId = 10113;
+		 public const ushort G2C_GetNextGalId = 10114;
+		 public const ushort C2G_PassGal = 10115;
+		 public const ushort G2C_PassGal = 10116;
 	}
 }

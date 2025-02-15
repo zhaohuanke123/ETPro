@@ -1577,4 +1577,63 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(G2C_GetNextGalId))]
+	[Message(OuterOpcode.C2G_GetNextGalId)]
+	[ProtoContract]
+	public partial class C2G_GetNextGalId: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_GetNextGalId)]
+	[ProtoContract]
+	public partial class G2C_GetNextGalId: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int GalId { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_PassGal))]
+	[Message(OuterOpcode.C2G_PassGal)]
+	[ProtoContract]
+	public partial class C2G_PassGal: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int GalId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_PassGal)]
+	[ProtoContract]
+	public partial class G2C_PassGal: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int NextGalId { get; set; }
+
+	}
+
 }

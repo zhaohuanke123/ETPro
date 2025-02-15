@@ -1,4 +1,7 @@
-﻿namespace ET
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+namespace ET
 {
     [UIComponent]
 	public class UILobbyView : Entity,IAwake,IOnCreate,IOnEnable
@@ -10,5 +13,9 @@
         public UIButton StartMatchBtn;
         public UIItem PointItem;
         public UIButton BtnBag;
+
+        public List<UIButton> galBtns;
+        public int nextGalId;
+        public Transform galLevelTs;
     }
 }

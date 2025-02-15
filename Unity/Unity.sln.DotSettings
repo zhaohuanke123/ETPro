@@ -1003,4 +1003,5 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
 	<s:String x:Key="/Default/SnapshotsStore/CurrentStore/@EntryValue">C:\Users\USER-PC\AppData\Local\JetBrains\Shared\vAny\Sessions</s:String>
 	<s:Boolean x:Key="/Default/SymbolServers/RestoreDecompileSetting/@EntryValue">False</s:Boolean>
 	<s:Double x:Key="/Default/TimelineLayout/MethodsPanelHeight/@EntryValue">366</s:Double>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=btns/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=generater/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

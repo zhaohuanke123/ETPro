@@ -45,13 +45,13 @@
             self.Engine.AutoPlay = true;
             self.Engine.StageRoleMap.Clear();
             self.Engine.RoleExpressionMap.Clear();
+            self.Engine.OnPlayOver?.Invoke(value);
             await UIManagerComponent.Instance.CloseWindow<UIMessageWindow>();
             await UIManagerComponent.Instance.CloseWindow<UIBaseMessageWindow>();
             await UIManagerComponent.Instance.CloseWindow<UIStageView>();
             await UIManagerComponent.Instance.CloseWindow<UIBgView>();
             await UIManagerComponent.Instance.CloseWindow<UIGalGameHelper>();
             await UIManagerComponent.Instance.CloseWindow<UIMaskView>();
-            self.Engine.OnPlayOver?.Invoke(value);
             await ETTask.CompletedTask;
         }
     }

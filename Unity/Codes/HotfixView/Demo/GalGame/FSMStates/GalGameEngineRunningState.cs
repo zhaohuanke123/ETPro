@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
     [ObjectSystem]
-    public class GalGameEngineRunningStateAwakeSystem : AwakeSystem<GalGameEngineRunningState, FSMComponent>
+    public class GalGameEngineRunningStateAwakeSystem: AwakeSystem<GalGameEngineRunningState, FSMComponent>
     {
         public override void Awake(GalGameEngineRunningState self, FSMComponent fsm)
         {
@@ -9,8 +9,9 @@
             self.Engine = GalGameEngineComponent.Instance;
         }
     }
+
     [ObjectSystem]
-    public class GalGameEngineRunningStateAwakeSystem1 : AwakeSystem<GalGameEngineRunningState>
+    public class GalGameEngineRunningStateAwakeSystem1: AwakeSystem<GalGameEngineRunningState>
     {
         public override void Awake(GalGameEngineRunningState self)
         {
@@ -18,10 +19,11 @@
             self.Engine = GalGameEngineComponent.Instance;
         }
     }
+
     [FSMSystem]
-    [FriendClass(typeof(GalGameEngineComponent))]
-    [FriendClass(typeof(GalGameEngineRunningState))]
-    public class GalGameEngineRunningStateOnEnterSystem : FSMOnEnterSystem<GalGameEngineRunningState>
+    [FriendClass(typeof (GalGameEngineComponent))]
+    [FriendClass(typeof (GalGameEngineRunningState))]
+    public class GalGameEngineRunningStateOnEnterSystem: FSMOnEnterSystem<GalGameEngineRunningState>
     {
         public override async ETTask FSMOnEnter(GalGameEngineRunningState self)
         {
@@ -33,20 +35,21 @@
     }
 
     [FSMSystem]
-    public class GalGameEngineRunningStateOnExitSystem : FSMOnExitSystem<GalGameEngineRunningState>
+    public class GalGameEngineRunningStateOnExitSystem: FSMOnExitSystem<GalGameEngineRunningState>
     {
         public override async ETTask FSMOnExit(GalGameEngineRunningState self)
         {
             await self.Stop();
         }
     }
+
     /// <summary>
     /// 运行
     /// </summary>
-    [FriendClass(typeof(GalGameEngineComponent))]
-    [FriendClass(typeof(GalGameEngineRunningState))]
-    [FriendClass(typeof(I18NComponent))]
-    public static class GalGameEngineRunningStateSystem 
+    [FriendClass(typeof (GalGameEngineComponent))]
+    [FriendClass(typeof (GalGameEngineRunningState))]
+    [FriendClass(typeof (I18NComponent))]
+    public static class GalGameEngineRunningStateSystem
     {
         public static async ETTask MainRun(this GalGameEngineRunningState self)
         {
@@ -56,13 +59,14 @@
             {
                 await self.RunNextCommand();
             }
+
             self.isRunning = false;
         }
 
         public static async ETTask Stop(this GalGameEngineRunningState self)
         {
             self.stop = true;
-            GalGameEngineComponent.Instance.CancelToken?.Cancel();//广播出去，业务逻辑收到后快速处理完了就直接return
+            GalGameEngineComponent.Instance.CancelToken?.Cancel(); //广播出去，业务逻辑收到后快速处理完了就直接return
             GalGameEngineComponent.Instance.CancelToken = null;
             while (self.isRunning)
             {
@@ -77,6 +81,7 @@
                 self.Engine.PlayOver().Coroutine();
                 return;
             }
+
             GalGameEnginePara para = new GalGameEnginePara();
             para.Command = command.Command;
             //参数赋值
@@ -87,9 +92,9 @@
             para.Arg5 = command.Arg5;
             para.Arg6 = command.Arg6;
             //多语言处理
-            if(I18NComponent.Instance.curLangType==LangType.Chinese)
+            if (I18NComponent.Instance.curLangType == LangType.Chinese)
                 para.Text = command.Chinese;
-            else if(I18NComponent.Instance.curLangType==LangType.English)
+            else if (I18NComponent.Instance.curLangType == LangType.English)
                 para.Text = command.English;
             else
                 para.Text = command.Chinese;

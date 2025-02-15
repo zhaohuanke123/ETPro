@@ -99,6 +99,9 @@
     <Compile Include="..\..\Unity\Codes\Model\Module\Actor\IActorMessage.cs">
       <Link>Module\Actor\IActorMessage.cs</Link>
     </Compile>
+    <Compile Update="Gal\GalComponent.cs">
+      <Link>Bag\GalComponent.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Mono\Module\NetworkTCP\**\*.cs">

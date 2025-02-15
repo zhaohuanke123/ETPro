@@ -771,3 +771,32 @@ message G2C_GetHeroList // IResponse
     string Message = 92;
     repeated int32 HeroIds = 1;
 }
+
+//ResponseType G2C_GetNextGalId
+message C2G_GetNextGalId // IRequest
+{
+    int32 RpcId = 90;
+}
+
+message G2C_GetNextGalId // IResponse
+{
+	int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+	int32 GalId = 1;
+}
+
+//ResponseType G2C_PassGal
+message C2G_PassGal // IRequest
+{
+    int32 RpcId = 90;
+	int32 GalId = 1;
+}
+
+message G2C_PassGal // IResponse
+{
+	int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+	int32 NextGalId = 1;
+}

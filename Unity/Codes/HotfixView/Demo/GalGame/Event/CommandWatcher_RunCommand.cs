@@ -1,4 +1,4 @@
-﻿using  System.Linq;
+﻿using System.Linq;
 
 namespace ET
 {
@@ -6,8 +6,8 @@ namespace ET
     /// 等待一段时间
     /// </summary>
     [CommandWatcher("Wait")]
-    [FriendClass(typeof(GalGameEngineComponent))]
-    public class CommandWatcher_Wait : ICommandWatcher
+    [FriendClass(typeof (GalGameEngineComponent))]
+    public class CommandWatcher_Wait: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
@@ -19,7 +19,7 @@ namespace ET
                     {
                         if (GalGameEngineComponent.Instance.CancelToken == null)
                             GalGameEngineComponent.Instance.CancelToken = new ETCancellationToken();
-                        await TimerComponent.Instance.WaitAsync((long) (wait_time * 1000 / self.Speed),
+                        await TimerComponent.Instance.WaitAsync((long)(wait_time * 1000 / self.Speed),
                             self.CancelToken);
                     }
                 }
@@ -27,12 +27,11 @@ namespace ET
         }
     }
 
-
     /// <summary>
     /// 打开背景
     /// </summary>
     [CommandWatcher("Bg")]
-    public class CommandWatcher_Bg : ICommandWatcher
+    public class CommandWatcher_Bg: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
@@ -45,7 +44,7 @@ namespace ET
     /// 关闭背景
     /// </summary>
     [CommandWatcher("BgOff")]
-    public class CommandWatcher_BgOff : ICommandWatcher
+    public class CommandWatcher_BgOff: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
@@ -58,11 +57,11 @@ namespace ET
     /// 播放背景音乐
     /// </summary>
     [CommandWatcher("Bgm")]
-    public class CommandWatcher_Bgm : ICommandWatcher
+    public class CommandWatcher_Bgm: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
-            if(!string.IsNullOrEmpty(para.Voice))
+            if (!string.IsNullOrEmpty(para.Voice))
                 SoundComponent.Instance.PlayMusic(para.Voice);
             await CommandWatcherComponent.Instance.Run("Wait", self, para);
         }
@@ -72,7 +71,7 @@ namespace ET
     /// 停止播放背景音乐
     /// </summary>
     [CommandWatcher("StopBgm")]
-    public class CommandWatcher_StopBgm : ICommandWatcher
+    public class CommandWatcher_StopBgm: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
@@ -85,8 +84,8 @@ namespace ET
     /// 播放文本
     /// </summary>
     [CommandWatcher("ShowMessageWindow")]
-    [FriendClass(typeof(GalGameEngineComponent))]
-    public class CommandWatcher_ShowMessageWindow : ICommandWatcher
+    [FriendClass(typeof (GalGameEngineComponent))]
+    public class CommandWatcher_ShowMessageWindow: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
@@ -95,28 +94,45 @@ namespace ET
                 if (self.RoleExpressionMap.ContainsKey(para.Arg1)) //在场上
                 {
                     if (!string.IsNullOrEmpty(para.Arg3))
+                    {
                         self.StageRoleMap[para.Arg3] = para.Arg1;
+                    }
+
                     if (!string.IsNullOrEmpty(para.Arg2))
+                    {
                         self.RoleExpressionMap[para.Arg1] = para.Arg2;
+                    }
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(para.Arg3)) para.Arg3 = "default";
-                    if (string.IsNullOrEmpty(para.Arg2)) para.Arg2 = "default";
+                    if (string.IsNullOrEmpty(para.Arg3))
+                    {
+                        para.Arg3 = "default";
+                    }
+
+                    if (string.IsNullOrEmpty(para.Arg2))
+                    {
+                        para.Arg2 = "default";
+                    }
+
                     self.StageRoleMap[para.Arg3] = para.Arg1;
                     self.RoleExpressionMap[para.Arg1] = para.Arg2;
                 }
 
-                await UIManagerComponent.Instance.OpenWindow<UIStageView, GalGameEngineComponent>(
-                    UIStageView.PrefabPath, self);
+                await UIManagerComponent.Instance.OpenWindow<UIStageView, GalGameEngineComponent>(UIStageView.PrefabPath, self);
                 UIManagerComponent.Instance.MoveWindowToTop<UIMessageWindow>();
             }
 
             if (float.TryParse(para.Arg6, out var wait_time))
+            {
                 await self.ShowMessage(para.Text, para.Arg1, para.WindowType, para.PageCtrl, para.Voice,
-                    (long) (wait_time * 1000));
+                    (long)(wait_time * 1000));
+            }
             else
+            {
                 await self.ShowMessage(para.Text, para.Arg1, para.WindowType, para.PageCtrl, para.Voice);
+            }
+
             await CommandWatcherComponent.Instance.Run("Wait", self, para);
         }
     }
@@ -125,7 +141,7 @@ namespace ET
     /// 隐藏文本框
     /// </summary>
     [CommandWatcher("HideMessageWindow")]
-    public class CommandWatcher_HideMessageWindow : ICommandWatcher
+    public class CommandWatcher_HideMessageWindow: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
@@ -139,7 +155,7 @@ namespace ET
     /// 结束情景
     /// </summary>
     [CommandWatcher("EndScenario")]
-    public class CommandWatcher_EndScenario : ICommandWatcher
+    public class CommandWatcher_EndScenario: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
@@ -153,16 +169,22 @@ namespace ET
     /// 淡入
     /// </summary>
     [CommandWatcher("FadeIn")]
-    [FriendClass(typeof(GalGameEngineComponent))]
-    public class CommandWatcher_FadeIn : ICommandWatcher
+    [FriendClass(typeof (GalGameEngineComponent))]
+    public class CommandWatcher_FadeIn: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
             if (!float.TryParse(para.Arg6, out var wait_time))
+            {
                 wait_time = 1;
-            if(self.State!= GalGameEngineComponent.GalGameEngineState.FastForward)
-                UIManagerComponent.Instance.OpenWindow<UIMaskView,string,float,bool>(UIMaskView.PrefabPath,para.Arg1,wait_time,
-                    true,UILayerNames.TopLayer).Coroutine();
+            }
+
+            if (self.State != GalGameEngineComponent.GalGameEngineState.FastForward)
+            {
+                UIManagerComponent.Instance.OpenWindow<UIMaskView, string, float, bool>(UIMaskView.PrefabPath, para.Arg1, wait_time,
+                    true, UILayerNames.TopLayer).Coroutine();
+            }
+
             await CommandWatcherComponent.Instance.Run("Wait", self, para);
         }
     }
@@ -171,16 +193,22 @@ namespace ET
     /// 淡出
     /// </summary>
     [CommandWatcher("FadeOut")]
-    [FriendClass(typeof(GalGameEngineComponent))]
-    public class CommandWatcher_FadeOut : ICommandWatcher
+    [FriendClass(typeof (GalGameEngineComponent))]
+    public class CommandWatcher_FadeOut: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
             if (!float.TryParse(para.Arg6, out var wait_time))
+            {
                 wait_time = 1;
-            if(self.State!= GalGameEngineComponent.GalGameEngineState.FastForward)
-                UIManagerComponent.Instance.OpenWindow<UIMaskView,string,float,bool>(UIMaskView.PrefabPath,para.Arg1,wait_time,
-                    false,UILayerNames.TopLayer).Coroutine();
+            }
+
+            if (self.State != GalGameEngineComponent.GalGameEngineState.FastForward)
+            {
+                UIManagerComponent.Instance.OpenWindow<UIMaskView, string, float, bool>(UIMaskView.PrefabPath, para.Arg1, wait_time,
+                    false, UILayerNames.TopLayer).Coroutine();
+            }
+
             await CommandWatcherComponent.Instance.Run("Wait", self, para);
         }
     }
@@ -189,8 +217,8 @@ namespace ET
     /// 人物离场
     /// </summary>
     [CommandWatcher("CharacterOff")]
-    [FriendClass(typeof(GalGameEngineComponent))]
-    public class CommandWatcher_CharacterOff : ICommandWatcher
+    [FriendClass(typeof (GalGameEngineComponent))]
+    public class CommandWatcher_CharacterOff: ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
         {
@@ -215,8 +243,8 @@ namespace ET
                     }
                 }
 
-                await UIManagerComponent.Instance.OpenWindow<UIStageView, GalGameEngineComponent,GalGameEnginePara>(
-                    UIStageView.PrefabPath, self,para);
+                await UIManagerComponent.Instance.OpenWindow<UIStageView, GalGameEngineComponent, GalGameEnginePara>(UIStageView.PrefabPath, self,
+                    para);
                 await UIManagerComponent.Instance.CloseWindow<UIMessageWindow>();
             }
 
@@ -227,8 +255,8 @@ namespace ET
         /// 人物登场
         /// </summary>
         [CommandWatcher("CharacterOn")]
-        [FriendClass(typeof(GalGameEngineComponent))]
-        public class CommandWatcher_CharacterOn : ICommandWatcher
+        [FriendClass(typeof (GalGameEngineComponent))]
+        public class CommandWatcher_CharacterOn: ICommandWatcher
         {
             public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
             {
@@ -250,8 +278,7 @@ namespace ET
                     }
 
                     await UIManagerComponent.Instance
-                        .OpenWindow<UIStageView, GalGameEngineComponent, GalGameEnginePara>(
-                            UIStageView.PrefabPath, self, para);
+                            .OpenWindow<UIStageView, GalGameEngineComponent, GalGameEnginePara>(UIStageView.PrefabPath, self, para);
                     UIManagerComponent.Instance.MoveWindowToTop<UIMessageWindow>();
                 }
 

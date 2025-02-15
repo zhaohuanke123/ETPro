@@ -20,9 +20,11 @@ namespace ET
 
         //账号类型
         public int AccountType { get; set; }
-        
+
         public long BagId { get; set; }
+
+        public long HeroBagId { get; set; }
         
-         public long HeroBagId { get; set; }
+        public long GalId { get; set; }
     }
 }
