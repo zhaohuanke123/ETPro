@@ -800,3 +800,9 @@ message G2C_PassGal // IResponse
     string Message = 92;
 	int32 NextGalId = 1;
 }
+
+message G2C_UpdateItem // IMessage
+{
+	int32 ItemId = 1;	
+	int32 ItemCount = 2;	
+}

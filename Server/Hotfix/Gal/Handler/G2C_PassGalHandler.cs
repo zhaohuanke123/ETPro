@@ -9,6 +9,7 @@ namespace ET
             Player player = session.GetComponent<SessionPlayerComponent>().GetMyPlayer();
             GalComponent galComponent = player.GetComponent<GalComponent>();
             response.NextGalId = galComponent.PassGal();
+            
             reply();
             await ETTask.CompletedTask;
         }

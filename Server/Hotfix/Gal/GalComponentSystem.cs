@@ -2,45 +2,53 @@
 
 namespace ET
 {
-    [ObjectSystem]
-    public class GalComponentAwakeSystem: AwakeSystem<GalComponent>
-    {
-        public override void Awake(GalComponent self)
-        {
-        }
-    }
+	[ObjectSystem]
+	public class GalComponentAwakeSystem: AwakeSystem<GalComponent>
+	{
+		public override void Awake(GalComponent self)
+		{
+		}
+	}
 
-    [ObjectSystem]
-    public class GalComponentDestroySystem: DestroySystem<GalComponent>
-    {
-        public override void Destroy(GalComponent self)
-        {
-        }
-    }
+	[ObjectSystem]
+	public class GalComponentDestroySystem: DestroySystem<GalComponent>
+	{
+		public override void Destroy(GalComponent self)
+		{
+		}
+	}
 
-    [FriendClass(typeof (GalComponent))]
-    public static partial class GalComponentSystem
-    {
-        public static int GetNextGalId(this GalComponent self)
-        {
-            return self.nextGalId;
-        }
+	[FriendClass(typeof (GalComponent))]
+	public static partial class GalComponentSystem
+	{
+		public static int GetNextGalId(this GalComponent self)
+		{
+			return self.nextGalId;
+		}
 
-        public static int PassGal(this GalComponent self)
-        {
-            int galId = self.nextGalId + 1;
-            try
-            {
-                GalConfigCategory.Instance.Get(galId);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                galId = self.nextGalId;
-            }
+		public static int PassGal(this GalComponent self)
+		{
+			int galId = self.nextGalId + 1;
+			try
+			{
+				GalConfig galConfig = GalConfigCategory.Instance.Get(galId);
+				Player player = self.GetParent<Player>();
+				BagComponent bagComponent = player.GetComponent<BagComponent>();
+				bagComponent.AddItem(ItemDefine.PointId, galConfig.Count);
+				player.SendMessage(new G2C_UpdateItem()
+				{
+					ItemId = ItemDefine.PointId,
+					ItemCount = bagComponent.GetItemCount(ItemDefine.PointId)
+				});
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				galId = self.nextGalId;
+			}
 
-            self.nextGalId = galId;
-            return galId;
-        }
-    }
+			self.nextGalId = galId;
+			return galId;
+		}
+	}
 }

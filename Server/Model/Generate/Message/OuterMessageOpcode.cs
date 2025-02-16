@@ -108,5 +108,6 @@ namespace ET
 		 public const ushort G2C_GetNextGalId = 10114;
 		 public const ushort C2G_PassGal = 10115;
 		 public const ushort G2C_PassGal = 10116;
+		 public const ushort G2C_UpdateItem = 10117;
 	}
 }

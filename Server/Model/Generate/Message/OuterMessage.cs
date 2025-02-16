@@ -1636,4 +1636,16 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_UpdateItem)]
+	[ProtoContract]
+	public partial class G2C_UpdateItem: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public int ItemId { get; set; }
+
+		[ProtoMember(2)]
+		public int ItemCount { get; set; }
+
+	}
+
 }
