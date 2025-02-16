@@ -46,6 +46,12 @@ namespace ET
 				Console.WriteLine(e);
 				galId = self.nextGalId;
 			}
+			finally
+			{
+
+				DBComponent dbComponent = DBManagerComponent.Instance.GetZoneDB(self.DomainZone());
+				dbComponent.Save(self).Coroutine();
+			}
 
 			self.nextGalId = galId;
 			return galId;

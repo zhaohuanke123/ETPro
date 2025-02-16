@@ -55,34 +55,43 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
+    - {fileID: 21300000, guid: 2bc34113c93af874cbd938fc2864251f, type: 3}
     - {fileID: 21300000, guid: 89e4bede538e2f043b7fbeaa57103878, type: 3}
     - {fileID: 21300000, guid: 6a89d00680d679d48aa5ebabc3b39182, type: 3}
     - {fileID: 21300000, guid: 4926e940c6e9355478863c89ab29bf89, type: 3}
     - {fileID: 21300000, guid: c256512ad53b4934187c92c9254cba9c, type: 3}
     - {fileID: 21300000, guid: 2fd26d869bdc43840818af31943d0a8e, type: 3}
+    - {fileID: 21300000, guid: aac3208d3a285dd4a98074aa58eaef11, type: 3}
     - {fileID: 21300000, guid: 2c82a7cb011887d43bcf3a9f1f1be2e4, type: 3}
     - {fileID: 21300000, guid: 5eacea6e3c56a8f418e9cb70882c6eea, type: 3}
     - {fileID: 21300000, guid: 59e654a919245334881a18dcbffe7752, type: 3}
+    - {fileID: 21300000, guid: 308045761cda4a849886bf2b49b02ae3, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 4926e940c6e9355478863c89ab29bf89, type: 3}
+  - {fileID: 21300000, guid: 2bc34113c93af874cbd938fc2864251f, type: 3}
   - {fileID: 21300000, guid: 6a89d00680d679d48aa5ebabc3b39182, type: 3}
+  - {fileID: 21300000, guid: 308045761cda4a849886bf2b49b02ae3, type: 3}
   - {fileID: 21300000, guid: 2fd26d869bdc43840818af31943d0a8e, type: 3}
   - {fileID: 21300000, guid: 59e654a919245334881a18dcbffe7752, type: 3}
   - {fileID: 21300000, guid: c256512ad53b4934187c92c9254cba9c, type: 3}
   - {fileID: 21300000, guid: 2c82a7cb011887d43bcf3a9f1f1be2e4, type: 3}
+  - {fileID: 21300000, guid: aac3208d3a285dd4a98074aa58eaef11, type: 3}
   - {fileID: 21300000, guid: 5eacea6e3c56a8f418e9cb70882c6eea, type: 3}
   - {fileID: 21300000, guid: 89e4bede538e2f043b7fbeaa57103878, type: 3}
   m_PackedSpriteNamesToIndex:
   - SPR_FantasyWarrior_Gem07
+  - SPR_FantasyWarrior_Banner04
   - SPR_FantasyWarrior_Frame_Box05
+  - SPR_HUD_FantasyWarrior_Tracery_Diamond05
   - SPR_HUD_FantasyWarrior_Arrow02
   - SPR_HUD_FantasyWarrior_Tracery_Box02
   - SPR_FX_FantasyWarrior_Glow_Box01_Stepped
   - SPR_HUD_FantasyWarrior_Box_Small_Parchment01
+  - SPR_HUD_FantasyWarrior_Box_Medium_Gradient01
   - SPR_HUD_FantasyWarrior_Box_White01
   - SPR_FantasyWarrior_Box_Parchment01
   m_RenderDataMap: {}
