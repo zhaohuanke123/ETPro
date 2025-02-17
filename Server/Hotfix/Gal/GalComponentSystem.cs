@@ -29,6 +29,7 @@ namespace ET
 		public static int PassGal(this GalComponent self)
 		{
 			int galId = self.nextGalId + 1;
+			Log.Warning($"PassGal enter");
 			try
 			{
 				GalConfig galConfig = GalConfigCategory.Instance.Get(galId);
@@ -40,6 +41,7 @@ namespace ET
 					ItemId = ItemDefine.PointId,
 					ItemCount = bagComponent.GetItemCount(ItemDefine.PointId)
 				});
+				Log.Warning($"PassGal Add Point");
 			}
 			catch (Exception e)
 			{
