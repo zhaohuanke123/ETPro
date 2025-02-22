@@ -1,0 +1,18 @@
+Id	Command	Arg1	Arg2	Arg3	Arg4	Arg5	Arg6	WaitType	PageCtrl	Voice	WindowType	Chinese	English
+1	Bg	Images/CompeteHall	-	-	-	-	-	-	-	-	-	-	-
+2	FadeIn	1	-	-	-	-	-	-	-	-	-	-	-
+3	ShowMessageWindow	-	-	-	-	-	-	-	-	-	MessageWindowMiddle	【2024年6月10日 计算机学院竞赛大厅】	-
+4	-	-	-	-	-	-	-	-	-	-	MessageWindow	收到竞赛系统通知：\n<color=#2B579A>「第7届算法实践赛」</color>现在开始，初始积分100	-
+5	-	-	-	-	-	-	-	-	-	-	MessageWindow	规则说明：\n1. 每解出1题获得30积分\n2. 积分可兑换对战棋子（数组/图论/动态规划类型）	-
+6	-	-	-	-	-	-	-	-	-	-	MessageWindow	系统匹配到对手：2019级冠军队伍（当前段位：钻石Ⅲ）	-
+7	Input	-	-	-	-	-	-	-	-	-	MessageWindow	1.开始解题\t2.查看棋子商店	-
+8	-	-	-	-	-	-	-	-	-	-	MessageWindow	兑换「哈希表骑士」消耗50积分\n特性：快速查找（对战回合+1次操作机会）	-
+9	FadeOut	1	-	-	-	-	-	-	-	-	-	-	-
+10	Bg	Images/CodeBattle	-	-	-	-	-	-	-	-	-	-	-
+11	FadeIn	1	-	-	-	-	-	-	-	-	-	-	-
+12	ShowMessageWindow	-	-	-	-	-	-	-	-	-	MessageWindow	对战阶段：\n我方棋子：【哈希表骑士】LV1\n敌方棋子：【BFS先锋】LV2	-
+13	-	-	-	-	-	-	-	-	-	-	MessageWindow	剩余积分50，选择：\n1.继续解题\t2.升级现有棋子	-
+14	CharacterOn	Chess_HashTable	FadeIn	1	-	-	-	-	-	-	-	-	-
+15	FadeOut	1	-	-	-	-	-	-	-	-	-	-	-
+16	BgOff	-	-	-	-	-	-	-	-	-	-	-	-
+17	EndScenario	-	-	-	-	-	-	-	-	-	-	-	-

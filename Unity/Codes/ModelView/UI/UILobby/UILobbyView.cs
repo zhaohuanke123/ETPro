@@ -17,5 +17,6 @@ namespace ET
         public List<UIButton> galBtns;
         public int nextGalId;
         public Transform galLevelTs;
+        public UIButton ExercisesBtn;
     }
 }

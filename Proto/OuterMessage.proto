@@ -806,3 +806,18 @@ message G2C_UpdateItem // IMessage
 	int32 ItemId = 1;	
 	int32 ItemCount = 2;	
 }
+
+//ResponseType G2C_SumbitExec
+message C2G_SumbitExec // IRequest
+{
+	int32 RpcId = 90;
+	int32 ExecId = 1;
+}
+
+message G2C_SumbitExec // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
