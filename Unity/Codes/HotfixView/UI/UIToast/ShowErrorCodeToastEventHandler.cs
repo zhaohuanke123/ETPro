@@ -36,7 +36,7 @@ namespace ET
 					break;
 
 				case ErrorCode.ERR_AccountNameFormError:
-					text = "账号格式错误：\n账号必须包含至少一个大写字母、一个小写字母和一个数字，且长度在6到15个字符之间。";
+					text = "账号格式错误：至少包含一个大写、一个小写字母和一个数字，且长度6-15字符之间。";
 					break;
 
 				case ErrorCode.ERR_PasswordFormError:
