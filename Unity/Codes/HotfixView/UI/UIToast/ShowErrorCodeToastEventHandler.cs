@@ -63,6 +63,9 @@ namespace ET
 					text = "金币不足!";
 					break;
 
+				case ErrorCode.ERR_PointNotEnough:
+					text = "积分不足！,请去刷题获取";
+					break;
 				default:
 					text = $"未知错误: {a.ErrorCode}";
 					break;

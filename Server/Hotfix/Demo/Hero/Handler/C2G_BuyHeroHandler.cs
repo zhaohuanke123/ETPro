@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 
 namespace ET
 {
@@ -33,24 +34,39 @@ namespace ET
 						return;
 					}
 
-					int point = bagComponent.GetItemCount(ItemDefine.PointId);
-					// 检查积分是否足够
 					HeroConfig heroConfig = HeroConfigCategory.Instance.Get(request.HeroConfigId);
-					if (point < heroConfig.ItemCount)
+					ETTask<string> task = HttpService.GetAsync(
+					$"http://www.findkit.cn:8888/uoj8000/app_user_user_useMoney_API.html?username={request.account}&password={request.password}&money={heroConfig.ItemCount}");
+
+					string res = await task;
+					ResponseData data = StringResponseParser.Parse(res);
+					if (data.IsSuccess)
+					{
+						await heroComponent.AddHero(request.HeroConfigId);
+						response.HeroConfigId = request.HeroConfigId;
+					}
+					else
 					{
 						response.Error = ErrorCode.ERR_PointNotEnough;
-						reply();
-						return;
 					}
 
-					// 扣除积分
-					point -= heroConfig.ItemCount;
-					await bagComponent.SetItemCount(ItemDefine.PointId, point);
-					// 添加英雄
-					await heroComponent.AddHero(request.HeroConfigId);
-
-					response.HeroConfigId = request.HeroConfigId;
+					Log.Info($"请求一个OJ ：{data}");
 					reply();
+					// ResponseData responseData = StringResponseParser.Parse(httpGetResult);
+					// int point = bagComponent.GetItemCount(ItemDefine.PointId);
+					// // 检查积分是否足够
+					// HeroConfig heroConfig = HeroConfigCategory.Instance.Get(request.HeroConfigId);
+					// if (point < heroConfig.ItemCount)
+					// {
+					// 	response.Error = ErrorCode.ERR_PointNotEnough;
+					// 	reply();
+					// 	return;
+					// }
+					//
+					// // 扣除积分
+					// point -= heroConfig.ItemCount;
+					// await bagComponent.SetItemCount(ItemDefine.PointId, point);
+					// 添加英雄
 				}
 			}
 		}

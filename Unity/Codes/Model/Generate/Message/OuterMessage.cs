@@ -1529,6 +1529,12 @@ namespace ET
 		[ProtoMember(1)]
 		public int HeroConfigId { get; set; }
 
+		[ProtoMember(2)]
+		public string account { get; set; }
+
+		[ProtoMember(3)]
+		public string password { get; set; }
+
 	}
 
 	[Message(OuterOpcode.G2C_BuyHero)]

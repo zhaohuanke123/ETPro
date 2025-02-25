@@ -748,6 +748,8 @@ message C2G_BuyHero // IRequest
 {
     int32 RpcId = 90;
     int32 HeroConfigId = 1;
+	string account = 2;
+	string password = 3;
 }
 
 message G2C_BuyHero // IResponse

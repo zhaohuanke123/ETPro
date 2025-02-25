@@ -127,7 +127,9 @@ namespace ET
 
 			G2C_BuyHero g2CBuyHero = await self.ZoneScene().GetComponent<SessionComponent>().Session.Call(new C2G_BuyHero
 			{
-				HeroConfigId = heroInfo.ConfigId
+				HeroConfigId = heroInfo.ConfigId,
+				account = AccountInfoComponent.Instance.userName,
+				password = AccountInfoComponent.Instance.password,
 			}) as G2C_BuyHero;
 
 			if (g2CBuyHero.Error == ErrorCode.ERR_Success)
@@ -138,9 +140,9 @@ namespace ET
 			else
 			{
 				// 显示错误提示
-				await EventSystem.Instance.PublishAsync(new ShowToast
+				await EventSystem.Instance.PublishAsync(new ShowErrorToast()
 				{
-					Text = "购买失败"
+					ErrorCode = g2CBuyHero.Error
 				});
 			}
 		}

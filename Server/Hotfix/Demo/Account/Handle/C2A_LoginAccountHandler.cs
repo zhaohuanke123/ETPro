@@ -35,21 +35,21 @@ namespace ET.Account.Handle
                 return;
             }
 
-            if (!Regex.IsMatch(request.AccountName.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
-            {
-                response.Error = ErrorCode.ERR_AccountNameFormError;
-                reply();
-                session.DisConnect().Coroutine();
-                return;
-            }
-
-            if (!Regex.IsMatch(request.Password.Trim(), @"^[A-Za-z0-9]+$"))
-            {
-                response.Error = ErrorCode.ERR_PasswordFormError;
-                reply();
-                session.DisConnect().Coroutine();
-                return;
-            }
+            // if (!Regex.IsMatch(request.AccountName.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
+            // {
+            //     response.Error = ErrorCode.ERR_AccountNameFormError;
+            //     reply();
+            //     session.DisConnect().Coroutine();
+            //     return;
+            // }
+            //
+            // if (!Regex.IsMatch(request.Password.Trim(), @"^[A-Za-z0-9]+$"))
+            // {
+            //     response.Error = ErrorCode.ERR_PasswordFormError;
+            //     reply();
+            //     session.DisConnect().Coroutine();
+            //     return;
+            // }
 
             AccountInfo accountInfo = null;
             DBComponent dbComponent = DBManagerComponent.Instance.GetZoneDB(session.DomainZone());

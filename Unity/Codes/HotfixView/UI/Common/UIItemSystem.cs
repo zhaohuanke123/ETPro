@@ -11,14 +11,14 @@ namespace ET
 			ItemConfig config = ItemConfigCategory.Instance.Get(itemId);
 			self.icon = self.AddUIComponent<UIImage>("Icon");
 			self.icon.SetSpritePath(config.Icon).Coroutine();
-			self.tryAddBtn = self.AddUIComponent<UIButton>("TryAddBtn");
+			// self.tryAddBtn = self.AddUIComponent<UIButton>("TryAddBtn");
 			self.numText = self.AddUIComponent<UITextmesh>("numText");
 
 			self.itemId = itemId;
 			int itemCount = await ItemHelper.GetItemCount(self.ZoneScene(), itemId);
 			self.SetItemCount(itemCount);
 
-			self.tryAddBtn.SetOnClickAsync(self.TryAddItem);
+			// self.tryAddBtn.SetOnClickAsync(self.TryAddItem);
 		}
 	}
 

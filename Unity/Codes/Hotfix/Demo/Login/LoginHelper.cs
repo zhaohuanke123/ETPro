@@ -38,11 +38,11 @@ namespace ET
 			try
 			{
 				accountSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
-				password = MD5Helper.StringMD5(password);
+				string md5_password = MD5Helper.StringMD5(password);
 				a2CLoginAccount = (A2C_LoginAccount)await accountSession.Call(new C2A_LoginAccount()
 				{
 					AccountName = account,
-					Password = password
+					Password = md5_password
 				});
 			}
 			catch (Exception e)
@@ -61,6 +61,8 @@ namespace ET
 			zoneScene.GetComponent<SessionComponent>().Session.AddComponent<PingComponent>();
 
 			AccountInfoComponent accountInfoComponent = zoneScene.GetComponent<AccountInfoComponent>();
+			accountInfoComponent.userName = account;
+			accountInfoComponent.password = password;
 			accountInfoComponent.Token = a2CLoginAccount.Token;
 			accountInfoComponent.AccountId = a2CLoginAccount.AccountId;
 
@@ -70,10 +72,11 @@ namespace ET
 				Account = account
 			});
 
-			// string httpGetResult = await HttpManager.Instance.HttpGetResult($"http://www.findkit.cn:8888/uoj8000/app_user_user_showMoney_API.html?username=202125310129&password=202125310129");
+			// string httpGetResult = await HttpManager.Instance.HttpGetResult(
+			// $"http://www.findkit.cn:8888/uoj8000/app_user_user_showMoney_API.html?username={accountInfoComponent.userName}&password={accountInfoComponent.password}");
 			// Log.Warning(httpGetResult);
-			// Execise execise = JsonHelper.FromJson<Execise>(httpGetResult);
-			// Log.Warning(execise.ToString());
+			// ResponseData responseData = StringResponseParser.Parse(httpGetResult);
+			// Log.Warning(responseData.ToString());
 
 			return ErrorCode.ERR_Success;
 		}
@@ -157,11 +160,11 @@ namespace ET
 				return false;
 			}
 
-			if (!Regex.IsMatch(account.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
-			{
-				errorCode = ErrorCode.ERR_AccountNameFormError;
-				return false;
-			}
+			// if (!Regex.IsMatch(account.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
+			// {
+			// 	errorCode = ErrorCode.ERR_AccountNameFormError;
+			// 	return false;
+			// }
 
 			return true;
 		}

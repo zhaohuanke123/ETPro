@@ -54,6 +54,10 @@
       <Link>Demo\Unit\UnitType.cs</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Codes\Model\Execise.cs">
+      <Link>Execise.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Model\Module\Recast\**\*.cs">
       <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>

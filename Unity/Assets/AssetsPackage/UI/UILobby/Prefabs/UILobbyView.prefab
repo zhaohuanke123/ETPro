@@ -3443,37 +3443,42 @@ PrefabInstance:
     - target: {fileID: 1900089767363301340, guid: c50e0eede5c1ac2409ce25bb84988654,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1900089767363301340, guid: c50e0eede5c1ac2409ce25bb84988654,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1900089767363301340, guid: c50e0eede5c1ac2409ce25bb84988654,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 80.81
       objectReference: {fileID: 0}
     - target: {fileID: 1900089767363301340, guid: c50e0eede5c1ac2409ce25bb84988654,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 52.8
       objectReference: {fileID: 0}
     - target: {fileID: 1900089767363301340, guid: c50e0eede5c1ac2409ce25bb84988654,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 80.77485
       objectReference: {fileID: 0}
     - target: {fileID: 1900089767363301340, guid: c50e0eede5c1ac2409ce25bb84988654,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -40.509445
       objectReference: {fileID: 0}
     - target: {fileID: 2570598310525737065, guid: c50e0eede5c1ac2409ce25bb84988654,
         type: 3}
       propertyPath: m_Name
       value: Exercises
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570598310525737065, guid: c50e0eede5c1ac2409ce25bb84988654,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6855621785831796455, guid: c50e0eede5c1ac2409ce25bb84988654,
         type: 3}
@@ -4433,6 +4438,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 15.254
+      objectReference: {fileID: 0}
+    - target: {fileID: 8559487669030166542, guid: bfd5adc6e132e2943a119d91dec1eab3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfd5adc6e132e2943a119d91dec1eab3, type: 3}
