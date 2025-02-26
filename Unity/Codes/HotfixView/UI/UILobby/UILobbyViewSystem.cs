@@ -3,87 +3,89 @@ using UnityEngine;
 
 namespace ET
 {
-	[UISystem]
-	[FriendClass(typeof (UILobbyView))]
-	[FriendClassAttribute(typeof (ET.UITransform))]
-	public class UILobbyViewOnCreateSystem: OnCreateSystem<UILobbyView>
-	{
-		public override async void OnCreate(UILobbyView self)
-		{
-			self.EnterBtn = self.AddUIComponent<UIButton>("Panel/EnterMap");
-			self.EnterBtn.SetOnClick(self.OnEnterBtnClick);
-			self.ReturnLoginBtn = self.AddUIComponent<UIButton>("Panel/ReturnLogin");
-			self.ReturnLoginBtn.SetOnClickAsync(self.OnReturnLoginBtnClick);
-			// Panel/EnterChessMap
-			self.EnterChessMapBtn = self.AddUIComponent<UIButton>("Panel/EnterChessMap");
-			self.EnterChessMapBtn.SetOnClickAsync(self.OnEnterChessMapBtnClick);
+    [UISystem]
+    [FriendClass(typeof(UILobbyView))]
+    [FriendClassAttribute(typeof(ET.UITransform))]
+    [FriendClassAttribute(typeof(ET.AccountInfoComponent))]
+    public class UILobbyViewOnCreateSystem : OnCreateSystem<UILobbyView>
+    {
+        public override async void OnCreate(UILobbyView self)
+        {
+            self.EnterBtn = self.AddUIComponent<UIButton>("Panel/EnterMap");
+            self.EnterBtn.SetOnClick(self.OnEnterBtnClick);
+            self.ReturnLoginBtn = self.AddUIComponent<UIButton>("Panel/ReturnLogin");
+            self.ReturnLoginBtn.SetOnClickAsync(self.OnReturnLoginBtnClick);
+            // Panel/EnterChessMap
+            self.EnterChessMapBtn = self.AddUIComponent<UIButton>("Panel/EnterChessMap");
+            self.EnterChessMapBtn.SetOnClickAsync(self.OnEnterChessMapBtnClick);
 
-			// Panel/StartMatch
-			self.StartMatchBtn = self.AddUIComponent<UIButton>("Panel/StartMatch");
-			self.StartMatchBtn.SetOnClickAsync(self.OnStartMatchBtnClick);
+            // Panel/StartMatch
+            self.StartMatchBtn = self.AddUIComponent<UIButton>("Panel/StartMatch");
+            self.StartMatchBtn.SetOnClickAsync(self.OnStartMatchBtnClick);
 
-			self.BtnBag = self.AddUIComponent<UIButton>("Panel/BrnBag");
-			self.BtnBag.SetOnClickAsync(self.OnBtnBagClick);
+            self.BtnBag = self.AddUIComponent<UIButton>("Panel/BrnBag");
+            self.BtnBag.SetOnClickAsync(self.OnBtnBagClick);
 
-			// self.ExercisesBtn = self.AddUIComponent<UIButton>("Panel/Exercises");
-			// self.ExercisesBtn.SetOnClick(self.OnExercisesBtnClick);
+            // self.ExercisesBtn = self.AddUIComponent<UIButton>("Panel/Exercises");
+            // self.ExercisesBtn.SetOnClick(self.OnExercisesBtnClick);
 
-			self.PointItem = self.AddUIComponent<UIItem, int>("Panel/PointItem", ItemDefine.PointId);
+            self.PointItem = self.AddUIComponent<UIItem, int>("Panel/PointItem", ItemDefine.PointId);
 
-			ETTask<string> task = HttpManager.Instance.HttpGetResult(
-			$"http://www.findkit.cn:8888/uoj8000/app_user_user_showMoney_API.html?username={AccountInfoComponent.Instance.userName}&password={AccountInfoComponent.Instance.password}");
-			// ResponseData responseData = StringResponseParser.Parse(httpGetResult);
+            ETTask<string> task = HttpManager.Instance.HttpGetResult(
+            $"http://www.findkit.cn:8888/uoj8000/app_user_user_showMoney_API.html?username={AccountInfoComponent.Instance.userName}&password={AccountInfoComponent.Instance.password}");
+            // ResponseData responseData = StringResponseParser.Parse(httpGetResult);
 
-			const string path = "Panel/GalLevel";
-			GameObject go = self.GetGameObject();
-			Transform ts = go.transform.Find(path);
-			self.galLevelTs = ts;
-			int childCount = ts.childCount;
-			self.galBtns = new List<UIButton>(childCount);
-			for (int i = 0; i < childCount; i++)
-			{
-				int j = i;
-				UIButton uiButton = self.AddUIComponent<UIButton>($"{path}/Level_{i.ToString()}");
-				self.galBtns.Add(uiButton);
-				uiButton.SetOnClick(() =>
-				{
-					GalConfig config = GalConfigCategory.Instance.Get(j + 1);
-					string chapterName = config.ChapterName;
+            const string path = "Panel/GalLevel";
+            GameObject go = self.GetGameObject();
+            Transform ts = go.transform.Find(path);
+            self.galLevelTs = ts;
+            int childCount = ts.childCount;
+            self.galBtns = new List<UIButton>(childCount);
+            for (int i = 0; i < childCount; i++)
+            {
+                int j = i;
+                UIButton uiButton = self.AddUIComponent<UIButton>($"{path}/Level_{i.ToString()}");
+                self.galBtns.Add(uiButton);
+                uiButton.SetOnClick(() =>
+                {
+                    GalConfig config = GalConfigCategory.Instance.Get(j + 1);
+                    string chapterName = config.ChapterName;
 
-					GalGameEngineComponent.Instance.PlayChapterByName(chapterName, isOver => { OnPlayOver().Coroutine(); }).Coroutine();
-				});
+                    GalGameEngineComponent.Instance.PlayChapterByName(chapterName, isOver => { OnPlayOver().Coroutine(); }).Coroutine();
+                });
 
-				async ETTask OnPlayOver()
-				{
-					if (j + 1 == self.nextGalId)
-					{
-						self.nextGalId = await GalHelper.PassGal(self.ZoneScene());
-						self.RefreshGalBtns();
-					}
-				}
-			}
+                async ETTask OnPlayOver()
+                {
+                    if (j + 1 == self.nextGalId)
+                    {
+                        self.nextGalId = await GalHelper.PassGal(self.ZoneScene());
+                        self.RefreshGalBtns();
+                    }
+                }
+            }
 
-			ts.gameObject.SetActive(false);
-			int nextGalId = await GalHelper.GetNextGalId(self.ZoneScene());
-			self.nextGalId = nextGalId;
-			self.RefreshGalBtns();
+            ts.gameObject.SetActive(false);
+            int nextGalId = await GalHelper.GetNextGalId(self.ZoneScene());
+            self.nextGalId = nextGalId;
+            self.RefreshGalBtns();
 
-			string res = await task;
-			ResponseData responseData = StringResponseParser.Parse(res);
+            string res = await task;
+            ResponseData responseData = StringResponseParser.Parse(res);
 
-			if (responseData.IsSuccess)
-			{
-				self.PointItem.GetGameObject().SetActive(true);
-				self.SetPoint(responseData.Money);
-			}
-			else
-			{
-				self.PointItem.GetGameObject().SetActive(false);
-			}
-		}
-	}
+            if (responseData.IsSuccess)
+            {
+                self.PointItem.GetGameObject().SetActive(true);
+                self.SetPoint(responseData.Money);
+                AccountInfoComponent.Instance.isOjUser = true;
+            }
+            else
+            {
+                self.PointItem.GetGameObject().SetActive(false);
+            }
+        }
+    }
 
-	[FriendClass(typeof (UILobbyView))]
+    [FriendClass(typeof (UILobbyView))]
 	public static class UILobbyViewSystem
 	{
 		public static void OnEnterBtnClick(this UILobbyView self)

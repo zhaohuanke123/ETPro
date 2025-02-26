@@ -758,6 +758,7 @@ message G2C_BuyHero // IResponse
     int32 Error = 91;
     string Message = 92;
     int32 HeroConfigId = 1;
+	int32 PointCount = 2;
 }
 
 //ResponseType G2C_GetHeroList

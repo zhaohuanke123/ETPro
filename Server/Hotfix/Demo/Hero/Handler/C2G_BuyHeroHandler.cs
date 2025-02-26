@@ -44,6 +44,7 @@ namespace ET
 					{
 						await heroComponent.AddHero(request.HeroConfigId);
 						response.HeroConfigId = request.HeroConfigId;
+						response.PointCount = data.Money;
 					}
 					else
 					{

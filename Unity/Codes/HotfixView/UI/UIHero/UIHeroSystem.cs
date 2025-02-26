@@ -5,6 +5,7 @@ namespace ET
 {
 	[UISystem]
 	[FriendClass(typeof (UIHeroSystem))]
+	[FriendClassAttribute(typeof (ET.AccountInfoComponent))]
 	public class UIHeroOnCreateSystem: OnCreateSystem<UIHero>
 	{
 		public override void OnCreate(UIHero self)
@@ -19,26 +20,44 @@ namespace ET
 
 			self.BuyButton = self.AddUIComponent<UIButton>("Panel/BuyBtn");
 			self.BuyButton.SetOnClickAsync(self.OnBuyBtnClick);
+			self.pointNeedText = self.AddUIComponent<UITextmesh>("Panel/BuyBtn/PointNeed");
+			self.BuyButton.SetActive(false);
 
 			self.PreButton = self.AddUIComponent<UIButton>("Panel/PreBtn");
 			self.PreButton.SetOnClickAsync(self.OnPreBtnClick);
 			self.NextButton = self.AddUIComponent<UIButton>("Panel/NextBtn");
 			self.NextButton.SetOnClickAsync(self.OnNextBtnClick);
-			self.pointNeedText = self.AddUIComponent<UITextmesh>("Panel/PointNeed");
 			self.frameImage = self.AddUIComponent<UIImage>("Panel/HeroAwator/Frame");
 		}
 	}
 
+	[UISystem]
+	[FriendClass(typeof (UIHeroSystem))]
+	[FriendClassAttribute(typeof (ET.AccountInfoComponent))]
+	public class UIHeroOnEnableSystem: OnEnableSystem<UIHero>
+	{
+		public override void OnEnable(UIHero self)
+		{
+			Log.Info($"isOjUser : {AccountInfoComponent.Instance.isOjUser.ToString()}");
+			self.BuyButton.SetActive(AccountInfoComponent.Instance.isOjUser);
+			self.ShowCur();
+		}
+	}
+
 	[FriendClass(typeof (UIHero))]
+	[FriendClassAttribute(typeof (ET.AccountInfoComponent))]
 	public static class UIHeroSystem
 	{
 		public static void ShowCur(this UIHero self)
 		{
 			HeroInfo heroInfo = self.AllHeroes[self.CurIndex];
 			HeroConfig config = heroInfo.Config;
-			self.pointNeedText.SetText(config.ItemCount.ToString());
-			self.BuyButton.GetGameObject().SetActive(!heroInfo.IsOwned);
-			self.pointNeedText.GetGameObject().SetActive(!heroInfo.IsOwned);
+			if (AccountInfoComponent.Instance.isOjUser)
+			{
+				self.pointNeedText.SetText(config.ItemCount.ToString());
+				self.BuyButton.GetGameObject().SetActive(!heroInfo.IsOwned);
+				self.pointNeedText.GetGameObject().SetActive(!heroInfo.IsOwned);
+			}
 			self.Awator.SetColor(heroInfo.IsOwned? Color.white : Color.black);
 			self.Awator.SetSpritePath(config.Icon).Coroutine();
 			self.nameText.SetText(config.Name);
@@ -136,6 +155,11 @@ namespace ET
 			{
 				heroInfo.IsOwned = true;
 				self.ShowCur();
+				UILobbyView uiLobbyView = UIManagerComponent.Instance.GetWindow<UILobbyView>();
+				if (uiLobbyView != null)
+				{
+					uiLobbyView.SetPoint(g2CBuyHero.PointCount);
+				}
 			}
 			else
 			{

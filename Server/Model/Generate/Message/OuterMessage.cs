@@ -1553,6 +1553,9 @@ namespace ET
 		[ProtoMember(1)]
 		public int HeroConfigId { get; set; }
 
+		[ProtoMember(2)]
+		public int PointCount { get; set; }
+
 	}
 
 	[ResponseType(nameof(G2C_GetHeroList))]
