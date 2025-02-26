@@ -300,6 +300,9 @@
  <Reference Include="Unity.Plastic.Antlr3.Runtime">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Library/PackageCache/com.unity.collab-proxy@1.15.15/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
  </Reference>
+ <Reference Include="DOTweenEditor">
+ <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/Demigiant/DOTween/Editor/DOTweenEditor.dll</HintPath>
+ </Reference>
  <Reference Include="CommandLine">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/CommandLine.dll</HintPath>
  </Reference>
@@ -312,6 +315,9 @@
  <Reference Include="dnlib">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Packages/com.focus-creative-games.hybridclr_unity@2.4.2/Plugins/dnlib.dll</HintPath>
  </Reference>
+ <Reference Include="DOTween">
+ <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/Demigiant/DOTween/DOTween.dll</HintPath>
+ </Reference>
  <Reference Include="MonKey Commander">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/MonKey Commander/Editor/Libs/MonKey Commander.dll</HintPath>
  </Reference>
@@ -323,12 +329,6 @@
  </Reference>
  <Reference Include="AmazingAssets.TerrainToMesh">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Mono/Module/Map/AmazingAssets.TerrainToMesh.dll</HintPath>
- </Reference>
- <Reference Include="DOTweenEditor">
- <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/Demigiant/DOTween/Editor/DOTweenEditor.dll</HintPath>
- </Reference>
- <Reference Include="DOTween">
- <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/Demigiant/DOTween/DOTween.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>

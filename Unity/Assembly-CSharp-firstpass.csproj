@@ -53,13 +53,13 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics2D.cs" />
-     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleSprite.cs" />
-     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleAudio.cs" />
      <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
-     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics.cs" />
-     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUI.cs" />
-     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
      <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleEPOOutline.cs" />
+     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
+     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics.cs" />
+     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleSprite.cs" />
+     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUI.cs" />
+     <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleAudio.cs" />
      <None Include="Assets\Plugins\MonKey Commander\MonKey Core.xml" />
      <None Include="Assets\Plugins\Demigiant\DOTween\readme.txt" />
      <None Include="Assets\Plugins\MonKey Commander\MonKey Readme!.txt" />
@@ -297,14 +297,14 @@
  <Reference Include="dnlib">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Packages/com.focus-creative-games.hybridclr_unity@2.4.2/Plugins/dnlib.dll</HintPath>
  </Reference>
+ <Reference Include="DOTween">
+ <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/Demigiant/DOTween/DOTween.dll</HintPath>
+ </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="AmazingAssets.TerrainToMesh">
  <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Mono/Module/Map/AmazingAssets.TerrainToMesh.dll</HintPath>
- </Reference>
- <Reference Include="DOTween">
- <HintPath>D:/zhk02/Desktop/ETPro/Unity/Assets/Plugins/Demigiant/DOTween/DOTween.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>D:/Software/UntiyHub/Editor/2020.3.33f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

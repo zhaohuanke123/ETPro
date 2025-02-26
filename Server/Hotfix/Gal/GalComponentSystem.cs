@@ -33,14 +33,14 @@ namespace ET
 			try
 			{
 				GalConfig galConfig = GalConfigCategory.Instance.Get(galId);
-				Player player = self.GetParent<Player>();
-				BagComponent bagComponent = player.GetComponent<BagComponent>();
-				bagComponent.AddItem(ItemDefine.PointId, galConfig.Count);
-				player.SendMessage(new G2C_UpdateItem()
-				{
-					ItemId = ItemDefine.PointId,
-					ItemCount = bagComponent.GetItemCount(ItemDefine.PointId)
-				});
+				// Player player = self.GetParent<Player>();
+				// BagComponent bagComponent = player.GetComponent<BagComponent>();
+				// bagComponent.AddItem(ItemDefine.PointId, galConfig.Count);
+				// player.SendMessage(new G2C_UpdateItem()
+				// {
+				// 	ItemId = ItemDefine.PointId,
+				// 	ItemCount = bagComponent.GetItemCount(ItemDefine.PointId)
+				// });
 				Log.Warning($"PassGal Add Point");
 			}
 			catch (Exception e)
@@ -50,12 +50,11 @@ namespace ET
 			}
 			finally
 			{
-
+				self.nextGalId = galId;
 				DBComponent dbComponent = DBManagerComponent.Instance.GetZoneDB(self.DomainZone());
 				dbComponent.Save(self).Coroutine();
 			}
 
-			self.nextGalId = galId;
 			return galId;
 		}
 	}
