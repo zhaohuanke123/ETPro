@@ -76,6 +76,7 @@ namespace ET
                     BagComponent bagComponent = accountInfo.AddComponent<BagComponent>();
                     accountInfo.BagId = bagComponent.Id;
                     HeroComponent heroComponent = accountInfo.AddComponent<HeroComponent>();
+                    await heroComponent.AddHero(1000);
                     accountInfo.HeroBagId = heroComponent.Id;
                     GalComponent galComponent = accountInfo.AddComponent<GalComponent>();
                     accountInfo.GalId = galComponent.Id;

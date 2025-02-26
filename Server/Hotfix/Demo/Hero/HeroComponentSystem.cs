@@ -27,6 +27,7 @@ namespace ET
             DBComponent dbComponent = DBManagerComponent.Instance.GetZoneDB(self.DomainZone());
             await dbComponent.Save(self);
 
+            Log.Info($"获得了一个英雄 {configId}");
             return true;
         }
 
