@@ -1685,4 +1685,10 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_NotifyFirstGal)]
+	[ProtoContract]
+	public partial class G2C_NotifyFirstGal: Object, IMessage
+	{
+	}
+
 }

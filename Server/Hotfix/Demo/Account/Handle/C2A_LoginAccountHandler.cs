@@ -4,8 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace ET.Account.Handle
 {
-    [FriendClassAttribute(typeof (ET.SessionPlayerComponent))]
-    public class C2A_LoginAccountHandler: AMRpcHandler<C2A_LoginAccount, A2C_LoginAccount>
+    [FriendClassAttribute(typeof(ET.SessionPlayerComponent))]
+    [FriendClassAttribute(typeof(ET.GalComponent))]
+    public class C2A_LoginAccountHandler : AMRpcHandler<C2A_LoginAccount, A2C_LoginAccount>
     {
         protected override async ETTask Run(Session session, C2A_LoginAccount request, A2C_LoginAccount response, Action reply)
         {
@@ -210,6 +211,11 @@ namespace ET.Account.Handle
             //TODO 临时
 
             reply();
+
+            if (galComponent.nextGalId == 1)
+            {
+               session.Send(new G2C_NotifyFirstGal()); 
+            }
         }
     }
 }
