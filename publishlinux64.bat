@@ -5,5 +5,4 @@ set "destination=..\ETPub\Server\publish"
 
 xcopy "%source%\*" "%destination%\" /E /H /C /Y
 
-echo 文件已成功复制！
 pause
