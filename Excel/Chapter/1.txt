@@ -1,0 +1,11 @@
+1	Bg	UI/School/competition_hall	-	<size=60>📚 <color=#4169E1>【学科巅峰赛】系统启动</color> 📚</size>
+2	Bgm	Audio/BGM/classroom_beat	-	轻快电子音效+翻书声效
+3	FadeIn	-	-	渐变显示主界面
+4	-	-	MessageWindowMiddle	<color=#FF6B6B>📢 校长广播：</color>\n本周将举办<color=#FFD700>跨年级学术擂台赛</color>\n刷题积分可兑换<color=#32CD32>学科战神</color>！
+5	-	-	MessageWindow	🧠<color=#4B0082>【核心规则】</color>\n1套卷子=10积分=1次<color=#FF4500>英雄招募</color>\n<size=40>（年级越高英雄越强）</size>
+6	-	-	MessageWindow	💰<color=#008080>【智慧经济】</color>\n• 开局获得<color=#FF69B4>50智慧币</color>\n• 连胜奖励额外+3金币\n• 战败补偿+1金币
+7	-	-	MessageWindowMiddle	⚔️<color=#DC143C>【对战机制】</color>\n准备阶段：购买<color=#9370DB>数学骑士/物理法师</color>\n战斗阶段：<color=#00BFFF>自动解题对决</color>
+8	-	-	MessageWindow	❤️<color=#FF0000>【学分生命】</color>\n初始<color=#FF1493>50学分值</color>\n败方扣分=存活英雄×<color=#FF8C00>学科难度系数</color>
+9	-	-	MessageWindow	🎓<color=#2E8B57>【学霸羁绊】</color>\n3数学→解题速度+30%\n2文理组合→暴击率+15%\n<size=40>（查看《学科搭配指南》）</size>
+10	HideMessageWindow	-	-	关闭说明窗口
+11	EndScenario	-	-	场景结束

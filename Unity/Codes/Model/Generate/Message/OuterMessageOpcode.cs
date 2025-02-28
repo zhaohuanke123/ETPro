@@ -111,5 +111,6 @@ namespace ET
 		 public const ushort G2C_UpdateItem = 10117;
 		 public const ushort C2G_SumbitExec = 10118;
 		 public const ushort G2C_SumbitExec = 10119;
+		 public const ushort G2C_NotifyFirstGal = 10120;
 	}
 }

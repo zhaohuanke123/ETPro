@@ -824,3 +824,6 @@ message G2C_SumbitExec // IResponse
 	string Message = 92;
 }
 
+message G2C_NotifyFirstGal // IMessage
+{
+}
