@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Label Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c643ad9098db58e46931483eeb762a9e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: eb8bacd46357fb4418b3d529965e7b08, type: 2}
   m_sharedMaterial: {fileID: 665121912369152345, guid: c643ad9098db58e46931483eeb762a9e,
     type: 2}
   m_fontSharedMaterials: []
@@ -142,6 +142,6 @@ MonoBehaviour:
     materialCount: 2
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}

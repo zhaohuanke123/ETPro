@@ -86,7 +86,6 @@ GameObject:
   - component: {fileID: 7230205447532408051}
   - component: {fileID: 5281848569011432595}
   - component: {fileID: 3121189790592076990}
-  - component: {fileID: 4491703207262979881}
   m_Layer: 5
   m_Name: RawImage_Sheen_Slow
   m_TagString: Untagged
@@ -148,21 +147,6 @@ MonoBehaviour:
     y: 0
     width: 2
     height: 1
---- !u!114 &4491703207262979881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3518181096229781118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a03f23791668b464a96202c665f91b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rawImage: {fileID: 3121189790592076990}
-  speed: {x: -0.03, y: 0}
-  size: {x: 512, y: 128}
 --- !u!1 &4789114746128364529
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,7 +293,6 @@ GameObject:
   - component: {fileID: 6179642226506080711}
   - component: {fileID: 5265860022729272351}
   - component: {fileID: 4973018784783148802}
-  - component: {fileID: 132757898957000554}
   m_Layer: 5
   m_Name: RawImage_Sheen_Fast
   m_TagString: Untagged
@@ -371,21 +354,6 @@ MonoBehaviour:
     y: 0
     width: 2
     height: 1
---- !u!114 &132757898957000554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5879632142413807560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a03f23791668b464a96202c665f91b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rawImage: {fileID: 4973018784783148802}
-  speed: {x: -0.1, y: 0}
-  size: {x: 256, y: 64}
 --- !u!1 &6324480000724095460
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,15 +827,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7b3a50e852da2c40b98f9d4cf10e289, type: 3}
---- !u!1 &4431492346092866136 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7058686565070685003, guid: f7b3a50e852da2c40b98f9d4cf10e289,
-    type: 3}
-  m_PrefabInstance: {fileID: 6668332169014151443}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7444312666069189996 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4306899379183733887, guid: f7b3a50e852da2c40b98f9d4cf10e289,
+    type: 3}
+  m_PrefabInstance: {fileID: 6668332169014151443}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4431492346092866136 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7058686565070685003, guid: f7b3a50e852da2c40b98f9d4cf10e289,
     type: 3}
   m_PrefabInstance: {fileID: 6668332169014151443}
   m_PrefabAsset: {fileID: 0}

@@ -11,12 +11,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE2_0;NOT_UNITY;SERVER;</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE2_0;SERVER;NOT_UNITY</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\Unity\Codes\Hotfix\Bag\BagComponentSystem.cs">
@@ -24,6 +24,9 @@
     </Compile>
     <Compile Include="..\..\Unity\Codes\Hotfix\Chess\GamePlayComponentSystem.cs">
       <Link>Chess\System\GamePlayComponentSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Codes\Hotfix\Chess\Helper\CpMoveHelper.cs">
+      <Link>Chess\Helper\CpMoveHelper.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Codes\Hotfix\Chess\MapComponentSystem.cs">
       <Link>Chess\System\MapComponentSystem.cs</Link>

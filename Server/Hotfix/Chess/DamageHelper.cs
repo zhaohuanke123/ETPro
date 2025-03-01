@@ -3,52 +3,89 @@ using UnityEngine;
 
 namespace ET
 {
-	[FriendClassAttribute(typeof (ET.CpCombatComponent))]
-	public static class DamageHelper
-	{
-		public static async ETTask Damage(GamePlayComponent gamePlayComponent, Unit unit, Unit target, int damage, ChampionConfig config)
-		{
-			target.GetComponent<NumericComponent>().Set(NumericType.Hp, target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) - damage);
+    [FriendClassAttribute(typeof (ET.CpCombatComponent))]
+    [FriendClassAttribute(typeof (ET.GamePlayComponent))]
+    [FriendClassAttribute(typeof (ET.Player))]
+    public static class DamageHelper
+    {
+        public static int Damage(GamePlayComponent gamePlayComponent, Unit attacker, Unit target, int damage, ChampionConfig config)
+        {
+            int finalDamage = CalculateFinalDamage(gamePlayComponent, attacker, damage);
+            target.GetComponent<NumericComponent>().Set(NumericType.Hp, target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) - finalDamage);
+            return finalDamage;
+        }
 
-			int hp = target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp);
-			long attackTime = config.allAttacktime;
+        private static int CalculateFinalDamage(GamePlayComponent gamePlayComponent, Unit attacker, int baseDamage)
+        {
+            NumericComponent numericComponent = attacker.GetComponent<NumericComponent>();
 
-			G2C_AttackDamage message = new G2C_AttackDamage();
-			message.FromId = unit.Id;
-			message.ToId = target.Id;
-			message.Damage = damage;
-			message.AttackTime = attackTime;
-			message.HP = hp;
-			message.MaxHP = target.GetComponent<NumericComponent>().GetAsInt(NumericType.MaxHp);
-			gamePlayComponent.Broadcast(message);
+            // 设置基础伤害
+            numericComponent.Set(NumericType.ATKBase, baseDamage);
 
-			await TimerComponent.Instance.WaitAsync(attackTime);
+            // 应用羁绊加成
+            ApplyBonusDamage(gamePlayComponent, attacker);
 
-			if (config.attackProjectile != "")
-			{
-				float distance = Vector3.Distance(unit.Position, target.Position);
-				float time = distance / config.projSpeed * 1000;
-				await TimerComponent.Instance.WaitAsync((long)time);
-			}
-			if (hp <= 0)
-			{
-				gamePlayComponent.Broadcast(new G2C_UnitDead()
-				{
-					UnitId = target.Id
-				});
-				Log.Info($"{target.Id} is dead");
-				CpCombatComponent cpCombatComponent = unit.GetComponent<CpCombatComponent>();
-				cpCombatComponent.target = null;
-				await TimerComponent.Instance.WaitAsync(attackTime);
-			}
-			else
-			{
-				if (!unit.IsDisposed)
-				{
-					Log.Info($"{unit.Id} attack {target.Id} damage {damage}");
-					Log.Info($"{target.Id} hp is {hp}");
-				}
-			}
-		}
-	}
+            return numericComponent.GetAsInt(NumericType.ATK);
+        }
+
+        private static void ApplyBonusDamage(GamePlayComponent gamePlayComponent, Unit attacker)
+        {
+            // 获取单位所属阵营
+            if (!gamePlayComponent.unitStateDict.TryGetValue(attacker, out UnitState unitState))
+            {
+                return;
+            }
+
+            // 获取对应玩家
+            Player attackerPlayer = null;
+            foreach (var kv in gamePlayComponent.playerChampionDict)
+            {
+                if (kv.Key.camp == unitState.camp)
+                {
+                    attackerPlayer = kv.Key;
+                    break;
+                }
+            }
+
+            if (attackerPlayer == null)
+            {
+                return;
+            }
+
+            // 获取羁绊组件
+            ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.GetComponent<ChampionMapArrayComponent>();
+            BattleChampionBonusComponent battleChampionBonusComponent = championMapArrayComponent.GetComponent<BattleChampionBonusComponent>();
+
+            NumericComponent numericComponent = attacker.GetComponent<NumericComponent>();
+
+            // 重置所有加成值
+            numericComponent.SetNoEvent(NumericType.ATKAdd, 0);
+            numericComponent.SetNoEvent(NumericType.ATKPct, 0);
+            numericComponent.SetNoEvent(NumericType.ATKFinalAdd, 0);
+            numericComponent.SetNoEvent(NumericType.ATKFinalPct, 0);
+
+            // 获取激活的羁绊列表并应用加成
+            var activeBonusList = battleChampionBonusComponent.GetPlayerActiveBonus(attackerPlayer);
+            foreach (var bonus in activeBonusList)
+            {
+                // 根据羁绊配置应用不同类型的加成
+                if (bonus.damageAddBonus > 0)
+                {
+                    numericComponent.SetNoEvent(NumericType.ATKAdd, bonus.damageAddBonus);
+                }
+
+                if (bonus.damagePctBonus > 0)
+                {
+                    numericComponent.SetNoEvent(NumericType.ATKPct, bonus.damagePctBonus);
+                }
+
+                if (bonus.damageFinalAddBonus > 0)
+                {
+                    numericComponent.SetNoEvent(NumericType.ATKFinalAdd, bonus.damageFinalAddBonus);
+                }
+
+                numericComponent.Set(NumericType.ATKFinalPct, bonus.damageFinalPctBonus);
+            }
+        }
+    }
 }

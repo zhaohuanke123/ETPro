@@ -173,7 +173,7 @@ namespace ET
 			}
 
 			// 随机打乱并取前5个
-			self.availableChampionIdArray[player.Id] = selfAvailableChampions.OrderBy(x => Guid.NewGuid()).Take(5).ToList();
+			self.availableChampionIdArray[player.Id] = selfAvailableChampions.OrderBy(x => Guid.NewGuid()).Take(3).ToList();
 
 			// TODO 临时
 			// const int count = 5;

@@ -33,7 +33,7 @@ namespace ET
 
 			self.timeGo = self.GetGameObject().transform.Find("UITimer").gameObject;
 
-			const int count = 5;
+			const int count = 3;
 			self.cContainers = new UIChampionContainer[count];
 			for (int i = 0; i < self.cContainers.Length; i++)
 			{

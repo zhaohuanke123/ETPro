@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.App", "App\Server.App.csproj", "{12849E14-BB77-9916-7DD5-755D2FCE998C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Hotfix", "Hotfix\Server.Hotfix.csproj", "{031FA41A-C081-7CAD-97CE-7F2389776343}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Model", "Model\Server.Model.csproj", "{762F77E1-7FB6-3302-D773-DD12242C2A78}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12849E14-BB77-9916-7DD5-755D2FCE998C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12849E14-BB77-9916-7DD5-755D2FCE998C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12849E14-BB77-9916-7DD5-755D2FCE998C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12849E14-BB77-9916-7DD5-755D2FCE998C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{031FA41A-C081-7CAD-97CE-7F2389776343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{031FA41A-C081-7CAD-97CE-7F2389776343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{031FA41A-C081-7CAD-97CE-7F2389776343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{031FA41A-C081-7CAD-97CE-7F2389776343}.Release|Any CPU.Build.0 = Release|Any CPU
+		{762F77E1-7FB6-3302-D773-DD12242C2A78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762F77E1-7FB6-3302-D773-DD12242C2A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762F77E1-7FB6-3302-D773-DD12242C2A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762F77E1-7FB6-3302-D773-DD12242C2A78}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D08983E8-1018-4951-B99D-446C6785FC65}
+	EndGlobalSection
+EndGlobal

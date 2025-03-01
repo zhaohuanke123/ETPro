@@ -77,6 +77,8 @@ namespace ET
             }
         }
 
+        public ETTask ViewReadTask;
+
 #endif
     }
 }
