@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace ET.Account.Handle
 {
-    [FriendClassAttribute(typeof(ET.SessionPlayerComponent))]
-    [FriendClassAttribute(typeof(ET.GalComponent))]
-    public class C2A_LoginAccountHandler : AMRpcHandler<C2A_LoginAccount, A2C_LoginAccount>
+    [FriendClassAttribute(typeof (ET.SessionPlayerComponent))]
+    [FriendClassAttribute(typeof (ET.GalComponent))]
+    public class C2A_LoginAccountHandler: AMRpcHandler<C2A_LoginAccount, A2C_LoginAccount>
     {
         protected override async ETTask Run(Session session, C2A_LoginAccount request, A2C_LoginAccount response, Action reply)
         {
@@ -199,6 +199,7 @@ namespace ET.Account.Handle
             Scene scene = session.DomainScene();
             PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
             Player player = playerComponent.AddChild<Player, string>(request.AccountName);
+            player.accountId = accountInfo.Id;
             playerComponent.Add(player);
             player.Session = session;
             session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
@@ -212,7 +213,7 @@ namespace ET.Account.Handle
             {
                 heroComponent.AddHero(heroConfig.Id).Coroutine();
             }
-            
+
             player.AddComponent(galComponent);
 
             //TODO 临时
@@ -221,7 +222,7 @@ namespace ET.Account.Handle
 
             if (galComponent.nextGalId == 1)
             {
-               session.Send(new G2C_NotifyFirstGal()); 
+                session.Send(new G2C_NotifyFirstGal());
             }
         }
     }

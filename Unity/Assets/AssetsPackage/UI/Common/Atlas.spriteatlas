@@ -59,6 +59,7 @@ SpriteAtlas:
     - {fileID: 21300000, guid: 89e4bede538e2f043b7fbeaa57103878, type: 3}
     - {fileID: 21300000, guid: 6a89d00680d679d48aa5ebabc3b39182, type: 3}
     - {fileID: 21300000, guid: 4926e940c6e9355478863c89ab29bf89, type: 3}
+    - {fileID: 21300000, guid: cb3c071fa9a503046993643746acd688, type: 3}
     - {fileID: 21300000, guid: c256512ad53b4934187c92c9254cba9c, type: 3}
     - {fileID: 21300000, guid: 2fd26d869bdc43840818af31943d0a8e, type: 3}
     - {fileID: 21300000, guid: aac3208d3a285dd4a98074aa58eaef11, type: 3}
@@ -82,6 +83,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: aac3208d3a285dd4a98074aa58eaef11, type: 3}
   - {fileID: 21300000, guid: 5eacea6e3c56a8f418e9cb70882c6eea, type: 3}
   - {fileID: 21300000, guid: 89e4bede538e2f043b7fbeaa57103878, type: 3}
+  - {fileID: 21300000, guid: cb3c071fa9a503046993643746acd688, type: 3}
   m_PackedSpriteNamesToIndex:
   - SPR_FantasyWarrior_Gem07
   - SPR_FantasyWarrior_Banner04
@@ -94,6 +96,7 @@ SpriteAtlas:
   - SPR_HUD_FantasyWarrior_Box_Medium_Gradient01
   - SPR_HUD_FantasyWarrior_Box_White01
   - SPR_FantasyWarrior_Box_Parchment01
+  - SPR_FantasyWarrior_Greeble_Curlicue13_Down
   m_RenderDataMap: {}
   m_Tag: Atlas
   m_IsVariant: 0

@@ -12,6 +12,7 @@ namespace ET
 		public Camp camp;
 
 		public string Account { get; set; }
+		public long accountId { get; set; }
 
 		[BsonIgnore]
 		public long UnitId { get; set; }
