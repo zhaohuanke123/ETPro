@@ -46,6 +46,10 @@
       <Link>Chess\MapComponent.cs</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Codes\Model\ConfigGlobal.cs">
+      <Link>ConfigGlobal.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Model\Core\**\*.cs"> 
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>

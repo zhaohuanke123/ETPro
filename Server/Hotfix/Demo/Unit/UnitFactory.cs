@@ -157,7 +157,8 @@ namespace ET
 			}
 		}
 
-		public static Unit CreateChampionUnit(UnitComponent unitComponent, ChampionInfo championInfo)
+		public static Unit CreateChampionUnit(UnitComponent unitComponent, GamePlayComponent gamePlayComponent, Player player,
+		ChampionInfo championInfo)
 		{
 			Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), championInfo.Config.unitId);
 			unit.AddComponent<MoveComponent>();
@@ -166,11 +167,33 @@ namespace ET
 			int lv = championInfo.GetComponent<NumericComponent>().GetAsInt(NumericType.Lv);
 			ChampionConfig config = championInfo.Config;
 
+			// 1 基础属性
+			numericComponent.AddAll(config.attrNames, config.attrValues);
+
+			// lv 升级得到的被动属性
+			int[] psSkills = config.psSkills;
+			for (int i = 0; i < lv - 1; i++)
+			{
+				int skillId = psSkills[i];
+				PassiveSkillConfig passiveSkillConfig = PassiveSkillConfigCategory.Instance.Get(skillId);
+				numericComponent.AddAll(passiveSkillConfig.attrNames, passiveSkillConfig.attrValues);
+			}
+
+			// 羁绊加成
+			ChampionMapArrayComponent championMapArrayComponent = gamePlayComponent.GetComponent<ChampionMapArrayComponent>();
+			BattleChampionBonusComponent battleChampionBonusComponent = championMapArrayComponent.GetComponent<BattleChampionBonusComponent>();
+
+			// 获取激活的羁绊列表并应用加成
+			var activeBonusList = battleChampionBonusComponent.GetPlayerActiveBonus(player);
+			foreach (var bonus in activeBonusList)
+			{
+				numericComponent.AddAll(bonus.attrNames, bonus.attrValues);
+			}
+
 			numericComponent.Set(NumericType.Lv, lv);
+			numericComponent.Set(NumericType.Power, 0);
 			numericComponent.Set(NumericType.Speed, 7f);
-			numericComponent.Set(NumericType.MaxHp, config.health + 10 * (lv - 1));
 			numericComponent.Set(NumericType.Hp, numericComponent.GetAsInt(NumericType.MaxHp));
-			numericComponent.Set(NumericType.ATK, config.damage + 2 * (lv - 1));
 			unit.Position = new Vector3(0, 0, 0);
 			return unit;
 		}

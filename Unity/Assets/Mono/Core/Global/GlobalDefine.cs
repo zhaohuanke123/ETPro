@@ -4,42 +4,44 @@ using UnityEngine;
 
 namespace ET
 {
-    public static class GlobalDefine
-    {
-        public static bool ILRuntimeMode = true;
+	public static class GlobalDefine
+	{
 
-        public static bool DevelopMode = true;
+		public static bool ILRuntimeMode = true;
 
-        /// <summary>
-        /// 固定间隔的目标FPS
-        /// </summary>
-        public const int FixedUpdateTargetFPS = 24;
+		public static bool DevelopMode = true;
 
-        public const float FixedUpdateTargetDTTime_Float = 1f / FixedUpdateTargetFPS;
+		/// <summary>
+		/// 固定间隔的目标FPS
+		/// </summary>
+		public const int FixedUpdateTargetFPS = 24;
 
-        public const long FixedUpdateTargetDTTime_Long = (long) (FixedUpdateTargetDTTime_Float * 1000);
+		public const float FixedUpdateTargetDTTime_Float = 1f / FixedUpdateTargetFPS;
 
-        private static string s_LoginAddress;
+		public const long FixedUpdateTargetDTTime_Long = (long)(FixedUpdateTargetDTTime_Float * 1000);
 
-        public static ILog ILog;
+		private static string s_LoginAddress;
 
-        public static Options Options = new Options();
+		public static ILog ILog;
 
-        public static string GetLoginAddress()
-        {
-            if (GlobalDefine.DevelopMode)
-            {
-                return "127.0.0.1:10002";
-            }
-            else
-            {
-                return s_LoginAddress;
-            }
-        }
+		public static Options Options = new Options();
 
-        public static void SetLoginAddress(string loginAddress)
-        {
-            s_LoginAddress = loginAddress;
-        }
-    }
+		public static string GetLoginAddress()
+		{
+			if (GlobalDefine.DevelopMode)
+			{
+				return "127.0.0.1:10002";
+			}
+			else
+			{
+				return s_LoginAddress;
+			}
+		}
+
+		public static void SetLoginAddress(string loginAddress)
+		{
+			s_LoginAddress = loginAddress;
+		}
+
+	}
 }

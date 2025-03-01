@@ -630,6 +630,7 @@ namespace ET
                     {
                         return $"[{value}]";
                     }
+                    value.Trim();
                     var list = value.Split(",");
                     value = "";
                     for (int i = 0; i < list.Length; i++)

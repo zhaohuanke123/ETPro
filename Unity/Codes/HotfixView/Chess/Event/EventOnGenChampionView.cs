@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ET
 {
@@ -31,15 +30,7 @@ namespace ET
 			// showView.AddComponent<CpAnimatorComponent>();
 
 			int lv = infoPb.Lv;
-			float newScale = 1;
-			if (lv == 2)
-			{
-				newScale = 1.5f;
-			}
-			else if (lv == 3)
-			{
-				newScale = 2f;
-			}
+			float newScale = ConfigGlobal.lvScaleList[lv];
 
 			characterControlComponent.SetScale(newScale);
 			// go.transform.localScale = new Vector3(newScale, newScale, newScale);

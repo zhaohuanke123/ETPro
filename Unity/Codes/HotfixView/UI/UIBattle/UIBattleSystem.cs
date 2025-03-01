@@ -33,15 +33,13 @@ namespace ET
 
 			self.timeGo = self.GetGameObject().transform.Find("UITimer").gameObject;
 
-			const int count = 3;
-			self.cContainers = new UIChampionContainer[count];
+			self.cContainers = new UIChampionContainer[ConfigGlobal.ShopCanBuyCount];
 			for (int i = 0; i < self.cContainers.Length; i++)
 			{
 				self.cContainers[i] = self.AddUIComponent<UIChampionContainer, int>($"Shop/Layout/CC{i}", i);
 			}
 
-			const int bonusCount = 6;
-			self.bonusList = new UIBonus[bonusCount];
+			self.bonusList = new UIBonus[ConfigGlobal.MaxBonusCount];
 			for (int i = 0; i < self.bonusList.Length; i++)
 			{
 				self.bonusList[i] = self.AddUIComponent<UIBonus, int>($"BonusContainer/UIBonus_{i}", i);

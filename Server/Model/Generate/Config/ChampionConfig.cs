@@ -125,6 +125,21 @@ namespace ET
 		/// <summary>移动范围</summary>
 		[ProtoMember(15)]
 		public int moveRange { get; set; }
+		/// <summary>基础属性列表</summary>
+		[ProtoMember(16)]
+		public string[] attrNames { get; set; }
+		/// <summary>基础属性数值</summary>
+		[ProtoMember(17)]
+		public int[] attrValues { get; set; }
+		/// <summary>普通攻击</summary>
+		[ProtoMember(18)]
+		public int normId { get; set; }
+		/// <summary>大招</summary>
+		[ProtoMember(19)]
+		public int superId { get; set; }
+		/// <summary>被动技能列表</summary>
+		[ProtoMember(20)]
+		public int[] psSkills { get; set; }
 
 	}
 }

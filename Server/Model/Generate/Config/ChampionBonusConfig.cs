@@ -101,18 +101,12 @@ namespace ET
 		/// <summary>效果预制件</summary>
 		[ProtoMember(7)]
 		public string effectPrefab { get; set; }
-		/// <summary>增加x点固定伤害</summary>
+		/// <summary>属性列表</summary>
 		[ProtoMember(8)]
-		public int damageAddBonus { get; set; }
-		/// <summary>增加%伤害</summary>
+		public string[] attrNames { get; set; }
+		/// <summary>属性数值</summary>
 		[ProtoMember(9)]
-		public int damagePctBonus { get; set; }
-		/// <summary>最终增加x点伤害</summary>
-		[ProtoMember(10)]
-		public int damageFinalAddBonus { get; set; }
-		/// <summary>最终增加%伤害</summary>
-		[ProtoMember(11)]
-		public int damageFinalPctBonus { get; set; }
+		public int[] attrValues { get; set; }
 
 	}
 }
