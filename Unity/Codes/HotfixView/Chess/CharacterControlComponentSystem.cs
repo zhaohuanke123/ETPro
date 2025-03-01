@@ -74,6 +74,15 @@ namespace ET
 			self.rotateTransform.rotation = rotation;
 		}
 
+		public static void SetScale(this CharacterControlComponent self, Vector3 scale)
+		{
+			self.rotateTransform.localScale = scale;
+		}
+
+		public static void SetScale(this CharacterControlComponent self, float scale)
+		{
+			self.rotateTransform.localScale = new Vector3(scale, scale, scale);
+		}
 		public static void PlayAnim(this CharacterControlComponent self, string animName, float fadeTime = 0f)
 		{
 			self.Init();
