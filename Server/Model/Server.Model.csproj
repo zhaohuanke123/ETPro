@@ -46,6 +46,10 @@
       <Link>Chess\MapComponent.cs</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Codes\Model\Chess\SkillType.cs">
+      <Link>Chess\SkillType.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Model\ConfigGlobal.cs">
       <Link>ConfigGlobal.cs</Link>
     </Compile>

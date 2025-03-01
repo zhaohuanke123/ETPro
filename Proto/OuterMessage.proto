@@ -605,16 +605,16 @@ message G2C_OneCpBattleEnd // IMessage
 message G2C_AttackDamage // IMessage
 {
 	int64 FromId = 1;
-	int64 ToId = 2;
-	int32 Damage = 3;
-	int32 HP = 4;
-	int32 MaxHP = 5;
-	int64 AttackTime = 6;
+	repeated int64 ToIds = 2;
+ 	repeated int32 Damages = 3;
+ 	repeated int32 HPs = 4;
+ 	repeated int32 MaxHPs = 5;
+ 	int64 AttackTime = 6;
 }
 
 message G2C_UnitDead // IMessage
 {
-	int64 UnitId = 1;
+	repeated int64 UnitIds = 1;
 }
 
 //ResponseType G2C_StartMatch

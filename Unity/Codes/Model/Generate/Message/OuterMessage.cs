@@ -1240,16 +1240,16 @@ namespace ET
 		public long FromId { get; set; }
 
 		[ProtoMember(2)]
-		public long ToId { get; set; }
+		public List<long> ToIds = new List<long>();
 
 		[ProtoMember(3)]
-		public int Damage { get; set; }
+		public List<int> Damages = new List<int>();
 
 		[ProtoMember(4)]
-		public int HP { get; set; }
+		public List<int> HPs = new List<int>();
 
 		[ProtoMember(5)]
-		public int MaxHP { get; set; }
+		public List<int> MaxHPs = new List<int>();
 
 		[ProtoMember(6)]
 		public long AttackTime { get; set; }
@@ -1261,7 +1261,7 @@ namespace ET
 	public partial class G2C_UnitDead: Object, IMessage
 	{
 		[ProtoMember(1)]
-		public long UnitId { get; set; }
+		public List<long> UnitIds = new List<long>();
 
 	}
 

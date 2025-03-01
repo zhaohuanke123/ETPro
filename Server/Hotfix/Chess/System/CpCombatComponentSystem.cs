@@ -31,7 +31,7 @@ namespace ET
 	[FriendClass(typeof (CpCombatComponent))]
 	[FriendClass(typeof (GamePlayComponent))]
 	[FriendClass(typeof (Player))]
-	public static partial class CpCombatComponentSystem
+	public static class CpCombatComponentSystem
 	{
 		public static async ETTask CombatLoop(this CpCombatComponent self, GamePlayComponent gamePlayComponent, Unit selfUnit, ChampionInfo info,
 		List<Unit> targets)
@@ -41,11 +41,9 @@ namespace ET
 			Log.Info($"{selfUnit.Id} 回合");
 
 			// 有攻击目标
-			if (self.target != null)
+			if (self.targetList.Count > 0)
 			{
-				Log.Info($"{selfUnit.Id} 攻击 {self.target.Id}");
-				await self.Attack(gamePlayComponent, self.GetParent<Unit>().GetComponent<NumericComponent>().GetAsInt(NumericType.ATK), config);
-				self.target = null;
+				await self.Attack(gamePlayComponent, config);
 			} // 没有攻击目标，移动到最近的目标
 			else if (nearestTarget != null)
 			{
@@ -73,6 +71,8 @@ namespace ET
 		{
 			Unit selfUnit = self.GetParent<Unit>();
 			Unit nearestTarget = null;
+			self.targetList.Clear();
+
 			foreach (Unit unit in targets)
 			{
 				if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
@@ -80,12 +80,10 @@ namespace ET
 					continue;
 				}
 
-				if (self.target == null)
+				float distance = Vector3.Distance(selfUnit.Position, unit.Position);
+				if (distance <= config.attackRange)
 				{
-					if (Vector3.Distance(selfUnit.Position, unit.Position) <= config.attackRange)
-					{
-						self.target = unit;
-					}
+					self.targetList.Add(unit);
 				}
 
 				if (nearestTarget == null)
@@ -94,68 +92,108 @@ namespace ET
 					continue;
 				}
 
-				if (Vector3.Distance(selfUnit.Position, unit.Position) < Vector3.Distance(selfUnit.Position, nearestTarget.Position))
+				if (distance < Vector3.Distance(selfUnit.Position, nearestTarget.Position))
 				{
 					nearestTarget = unit;
 				}
 			}
 
-			if (self.target != null)
-			{
-				self.target = nearestTarget;
-			}
-
 			return nearestTarget;
 		}
 
-		public static async ETTask Attack(this CpCombatComponent self, GamePlayComponent gamePlayComponent, int baseDamage, ChampionConfig config)
+		public static async ETTask Attack(this CpCombatComponent self, GamePlayComponent gamePlayComponent, ChampionConfig config)
 		{
 			Unit attacker = self.GetParent<Unit>();
 
-			Unit target = self.target;
-			int finalDamage = DamageHelper.Damage(attacker, target);
+			int skillId = attacker.GetSkillIdAndHandlerPower(config);
+			ActiveSkillConfig skillConfig = ActiveSkillConfigCategory.Instance.Get(skillId);
+			SkillType type = (SkillType)skillConfig.SkillType;
 
-			NumericComponent targetNumericComponent = target.GetComponent<NumericComponent>();
-			int hp = targetNumericComponent.GetAsInt(NumericType.Hp);
-			long attackTime = config.allAttacktime;
-
+			//  攻击 或者 治疗
 			G2C_AttackDamage message = new G2C_AttackDamage();
-			message.FromId = attacker.Id;
-			message.ToId = target.Id;
-			message.Damage = finalDamage;
-			message.AttackTime = attackTime;
-			message.HP = hp;
-			message.MaxHP = targetNumericComponent.GetAsInt(NumericType.MaxHp);
-			gamePlayComponent.Broadcast(message);
-
-			await TimerComponent.Instance.WaitAsync(attackTime);
-
-			if (config.attackProjectile != "")
+			long attackTime = skillConfig.allAttacktime;
+			if (type == SkillType.Attack)
 			{
-				float distance = Vector3.Distance(attacker.Position, target.Position);
-				float time = distance / config.projSpeed * 1000;
-				await TimerComponent.Instance.WaitAsync((long)time);
-			}
+				message.FromId = attacker.Id;
 
-			if (hp <= 0)
-			{
-				gamePlayComponent.Broadcast(new G2C_UnitDead()
+				for (int i = 0; i < Mathf.Min(skillConfig.targetNum, self.targetList.Count); i++)
 				{
-					UnitId = target.Id
-				});
-				Log.Info($"{target.Id} is dead");
-				CpCombatComponent cpCombatComponent = attacker.GetComponent<CpCombatComponent>();
-				cpCombatComponent.target = null;
+					Unit target = self.targetList[i];
+					NumericComponent targetNumericComponent = target.GetComponent<NumericComponent>();
+					int finalDamage = DamageHelper.Damage(attacker, target);
+
+					targetNumericComponent.Add(NumericType.Hp, -finalDamage);
+					targetNumericComponent.Add(NumericType.Power, ConfigGlobal.AddPowerBeHit);
+
+					int hp = targetNumericComponent.GetAsInt(NumericType.Hp);
+					message.Damages.Add(finalDamage);
+					message.ToIds.Add(target.Id);
+					message.HPs.Add(hp);
+					message.MaxHPs.Add(targetNumericComponent.GetAsInt(NumericType.MaxHp));
+
+					Log.Info($" {attacker.Id}, target: {target.Id}, damage: {finalDamage} targeHp : {hp}");
+				}
+
+				message.AttackTime = attackTime;
+				gamePlayComponent.Broadcast(message);
+
+				Log.Info($"攻击时间 {attackTime}");
 				await TimerComponent.Instance.WaitAsync(attackTime);
+
+				if (skillConfig.projectileEffect != "")
+				{
+					float distance = Vector3.Distance(attacker.Position, self.targetList[0].Position);
+					float time = distance / skillConfig.projSpeed * 1000;
+					await TimerComponent.Instance.WaitAsync((long)time + 500);
+				}
+
+				// gamePlayComponent.Broadcast(new G2C_UnitDead()
+				// {
+				// 	UnitId = target.Id
+				// });
+				//
+				// Log.Info($"{target.Id} is dead");
+				//
+				// CpCombatComponent cpCombatComponent = attacker.GetComponent<CpCombatComponent>();
+				// cpCombatComponent.nearesrTarget = null;
+				// await TimerComponent.Instance.WaitAsync(attackTime);
 			}
 			else
 			{
-				if (!attacker.IsDisposed)
-				{
-					Log.Info($"{attacker.Id} attack {target.Id} damage {finalDamage}");
-					Log.Info($"{target.Id} hp is {hp}");
-				}
+
 			}
+		}
+
+		private static int GetSkillIdAndHandlerPower(this Unit self, ChampionConfig config)
+		{
+			NumericComponent numericComponent = self.GetComponent<NumericComponent>();
+			int power = numericComponent.GetAsInt(NumericType.Power);
+			int skillId = 0;
+			if (power >= ConfigGlobal.MaxPower)
+			{
+				skillId = config.superId;
+				power -= ConfigGlobal.MaxPower;
+				Log.Info($"发动大招技能 {skillId}");
+			}
+			else
+			{
+				skillId = config.normId;
+				power += ConfigGlobal.AddPower;
+				Log.Info($"发动技能 {skillId}");
+			}
+			numericComponent.Set(NumericType.Speed, power);
+
+			return skillId;
+		}
+
+		public static bool IsDead(this CpCombatComponent self)
+		{
+			return self.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0;
+		}
+
+		private static bool IsDead(this Unit self)
+		{
+			return self.GetComponent<CpCombatComponent>().GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0;
 		}
 	}
 }
