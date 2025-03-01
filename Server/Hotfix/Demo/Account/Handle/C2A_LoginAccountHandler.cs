@@ -206,6 +206,13 @@ namespace ET.Account.Handle
 
             player.AddComponent(bagComponent);
             player.AddComponent(heroComponent);
+
+            var heroConfigs = HeroConfigCategory.Instance.GetAllList();
+            foreach (var heroConfig in heroConfigs)
+            {
+                heroComponent.AddHero(heroConfig.Id).Coroutine();
+            }
+            
             player.AddComponent(galComponent);
 
             //TODO 临时
