@@ -11,7 +11,9 @@ namespace ET
         public static int Damage(GamePlayComponent gamePlayComponent, Unit attacker, Unit target, int damage, ChampionConfig config)
         {
             int finalDamage = CalculateFinalDamage(gamePlayComponent, attacker, damage);
-            target.GetComponent<NumericComponent>().Set(NumericType.Hp, target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) - finalDamage);
+            target.GetComponent<NumericComponent>()
+                    .Set(NumericType.Hp, target.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) - finalDamage);
+            Log.Info($"attacker: {attacker.Id}, target: {target.Id}, damage: {finalDamage}");
             return finalDamage;
         }
 
@@ -71,21 +73,27 @@ namespace ET
                 // 根据羁绊配置应用不同类型的加成
                 if (bonus.damageAddBonus > 0)
                 {
-                    numericComponent.SetNoEvent(NumericType.ATKAdd, bonus.damageAddBonus);
+                    numericComponent.SetNoEvent(NumericType.ATKAdd, numericComponent.GetAsInt(NumericType.ATKAdd) + bonus.damageAddBonus);
                 }
 
                 if (bonus.damagePctBonus > 0)
                 {
-                    numericComponent.SetNoEvent(NumericType.ATKPct, bonus.damagePctBonus);
+                    numericComponent.SetNoEvent(NumericType.ATKPct, numericComponent.GetAsInt(NumericType.ATKPct) + bonus.damagePctBonus);
                 }
 
                 if (bonus.damageFinalAddBonus > 0)
                 {
-                    numericComponent.SetNoEvent(NumericType.ATKFinalAdd, bonus.damageFinalAddBonus);
+                    numericComponent.SetNoEvent(NumericType.ATKFinalAdd,
+                        numericComponent.GetAsInt(NumericType.ATKFinalAdd) + bonus.damageFinalAddBonus);
                 }
 
-                numericComponent.Set(NumericType.ATKFinalPct, bonus.damageFinalPctBonus);
+                numericComponent.Set(NumericType.ATKFinalPct, numericComponent.GetAsInt(NumericType.ATKFinalPct) + bonus.damageFinalPctBonus);
             }
+
+            Log.Info($"add : {numericComponent.GetAsInt(NumericType.ATKAdd)}");
+            Log.Info($"pct : {numericComponent.GetAsInt(NumericType.ATKPct)}");
+            Log.Info($"finalAdd : {numericComponent.GetAsInt(NumericType.ATKFinalAdd)}");
+            Log.Info($"finalPct : {numericComponent.GetAsInt(NumericType.ATKFinalPct)}");
         }
     }
 }
