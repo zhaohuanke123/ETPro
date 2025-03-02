@@ -12,7 +12,7 @@
             if (!controlComponent.IsDisposed)
             {
                 await TimerComponent.Instance.WaitAsync((long)(controlComponent.GetAnimTime(anim) * 1000) - attackTime);
-                controlComponent.PlayAnim(AnimDefine.Idle, 0.1f);
+                controlComponent.PlayAnim(AnimDefine.Idle, 0f);
             }
         }
     }
