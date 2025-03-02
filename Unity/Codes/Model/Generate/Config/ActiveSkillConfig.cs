@@ -109,6 +109,9 @@ namespace ET
 		/// <summary>击中物体特效</summary>
 		[ProtoMember(10)]
 		public string hitEffect { get; set; }
+		/// <summary>是否大招</summary>
+		[ProtoMember(11)]
+		public int isSuper { get; set; }
 
 	}
 }

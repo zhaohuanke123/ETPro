@@ -7,10 +7,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6769080293948501564, guid: 3224149799c586a4e9f1d567b967cfb4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6769502167368565430, guid: 3224149799c586a4e9f1d567b967cfb4,
         type: 3}
       propertyPath: m_Name
-      value: Projectile 13
+      value: Projectile 13 arrawG
       objectReference: {fileID: 0}
     - target: {fileID: 6771801048207970520, guid: 3224149799c586a4e9f1d567b967cfb4,
         type: 3}

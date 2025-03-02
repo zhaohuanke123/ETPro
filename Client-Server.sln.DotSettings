@@ -379,6 +379,11 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
 	<s:Int64 x:Key="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue">79</s:Int64>
 	<s:Boolean x:Key="/Default/Environment/Hierarchy/NuGetOptions/GlobalEnabled/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/Hierarchy/NuGetOptions/IncludePrerelease/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=5BA7786C51844D4888F000853EE97D6F/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=5BA7786C51844D4888F000853EE97D6F/AbsolutePath/@EntryValue">C:\Users\zhaohuanke\Downloads\et-code7.DotSettings</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File5BA7786C51844D4888F000853EE97D6F/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File5BA7786C51844D4888F000853EE97D6F/IsOn/@EntryValue">False</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File5BA7786C51844D4888F000853EE97D6F/RelativePriority/@EntryValue">1</s:Double>
 	<s:String x:Key="/Default/Environment/InlayHints/CppParameterNameHintsOptions2/ShowParameterNameHints/@EntryValue">Never</s:String>
 	<s:String x:Key="/Default/Environment/InlayHints/CSharpParameterNameHintsOptions/ShowParameterNameHints/@EntryValue">Never</s:String>
 	<s:Boolean x:Key="/Default/Environment/InlayHints/GeneralInlayHintsOptions/EnableInlayHints/@EntryValue">False</s:Boolean>

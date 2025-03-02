@@ -38,6 +38,10 @@
       <Link>Chess\ChampionInfo.cs</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Codes\Model\Chess\DamageType.cs">
+      <Link>Chess\DamageType.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Codes\Model\Chess\GamePlayComponent.cs">
       <Link>Chess\GamePlayComponent.cs</Link>
     </Compile>

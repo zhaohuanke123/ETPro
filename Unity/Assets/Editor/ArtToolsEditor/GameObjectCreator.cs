@@ -132,6 +132,13 @@ public class UnityPlayableControllerEditor: Editor
 			Path = "Dead",
 			isLoop = false,
 			IsApplyRootMotion = false
+		},
+		new AniClipLoadData()
+		{
+			Name = "SAttack",
+			Path = "SAttack",
+			isLoop = false,
+			IsApplyRootMotion = false
 		}
 	};
 

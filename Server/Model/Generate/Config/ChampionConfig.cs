@@ -85,60 +85,38 @@ namespace ET
 		/// <summary>英雄预制件</summary>
 		[ProtoMember(2)]
 		public string prefab { get; set; }
-		/// <summary>攻击投射物</summary>
-		[ProtoMember(3)]
-		public string attackProjectile { get; set; }
-		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
-		/// <summary>飞行速度</summary>
-		[ProtoMember(4)]
-		public float projSpeed { get; set; }
 		/// <summary>英雄名称</summary>
-		[ProtoMember(5)]
+		[ProtoMember(3)]
 		public string uiname { get; set; }
 		/// <summary>消耗</summary>
-		[ProtoMember(6)]
+		[ProtoMember(4)]
 		public int cost { get; set; }
 		/// <summary>主羁绊类型</summary>
-		[ProtoMember(7)]
+		[ProtoMember(5)]
 		public int type1Id { get; set; }
 		/// <summary>副羁绊类型</summary>
-		[ProtoMember(8)]
+		[ProtoMember(6)]
 		public int type2Id { get; set; }
-		/// <summary>血量</summary>
-		[ProtoMember(9)]
-		public int health { get; set; }
-		/// <summary>攻击力</summary>
-		[ProtoMember(10)]
-		public int damage { get; set; }
-		/// <summary>攻击范围</summary>
-		[ProtoMember(11)]
-		public int attackRange { get; set; }
 		/// <summary>UnitId</summary>
-		[ProtoMember(12)]
+		[ProtoMember(7)]
 		public int unitId { get; set; }
-		/// <summary>攻击动画时间（ms）</summary>
-		[ProtoMember(13)]
-		public long attacktime { get; set; }
-		/// <summary>攻击总动画时间（ms）</summary>
-		[ProtoMember(14)]
-		public long allAttacktime { get; set; }
 		/// <summary>移动范围</summary>
-		[ProtoMember(15)]
+		[ProtoMember(8)]
 		public int moveRange { get; set; }
 		/// <summary>基础属性列表</summary>
-		[ProtoMember(16)]
+		[ProtoMember(9)]
 		public string[] attrNames { get; set; }
 		/// <summary>基础属性数值</summary>
-		[ProtoMember(17)]
+		[ProtoMember(10)]
 		public int[] attrValues { get; set; }
 		/// <summary>普通攻击</summary>
-		[ProtoMember(18)]
+		[ProtoMember(11)]
 		public int normId { get; set; }
 		/// <summary>大招</summary>
-		[ProtoMember(19)]
+		[ProtoMember(12)]
 		public int superId { get; set; }
 		/// <summary>被动技能列表</summary>
-		[ProtoMember(20)]
+		[ProtoMember(13)]
 		public int[] psSkills { get; set; }
 
 	}

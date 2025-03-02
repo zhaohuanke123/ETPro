@@ -350,6 +350,10 @@ MonoBehaviour:
     Path: Dead
     isLoop: 0
     IsApplyRootMotion: 0
+  - Name: SAttack
+    Path: SAttack
+    isLoop: 0
+    IsApplyRootMotion: 0
   animator: {fileID: 9137597220020825671}
   fadeTime: 0.5
   offsetTime: 0

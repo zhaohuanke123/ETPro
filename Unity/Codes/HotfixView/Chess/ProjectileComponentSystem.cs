@@ -25,7 +25,7 @@ namespace ET
 	}
 
 	[FriendClass(typeof (ProjectileComponent))]
-	[FriendClassAttribute(typeof (ET.CharacterControlComponent))]
+	[FriendClass(typeof (CharacterControlComponent))]
 	public static class ProjectileComponentSystem
 	{
 		public static async ETTask StartTrack(this ProjectileComponent self)

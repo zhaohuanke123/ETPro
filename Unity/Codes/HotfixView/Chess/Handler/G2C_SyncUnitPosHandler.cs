@@ -27,7 +27,7 @@ namespace ET
             }
 
             MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
-            Log.Warning("收到同步位置消息:{0}", unit.Position);
+            Log.Warning("收到同步位置消息:{0}", unit);
 
             long messageMoveToUnitId = message.MoveToUnitId;
             Unit moveToUnit = unitComponent.Get(messageMoveToUnitId);
@@ -37,8 +37,10 @@ namespace ET
                 Log.Error("收到同步位置消息, moveToUnit为空");
                 return;
             }
+            
             ChampionConfig config = ChampionConfigCategory.Instance.Get(message.ChampionConfigId);
-            Vector3 targetPos = CpMoveHelper.GetTargetPos(unit, moveToUnit, config);
+            ActiveSkillConfig activeSkillConfig = ActiveSkillConfigCategory.Instance.Get(message.SkillId);
+            Vector3 targetPos = CpMoveHelper.GetTargetPos(unit, moveToUnit, activeSkillConfig.attackRange, config.moveRange);
             ETTask<bool> moveToAsync = moveComponent.MoveToAsync(targetPos, 10);
 
             await unit.ViewReadTask;

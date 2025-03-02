@@ -568,6 +568,7 @@ message G2C_SyncUnitPos // IMessage
 	float ForwardZ = 7;
 	long MoveToUnitId = 8;
 	int32 ChampionConfigId = 9;
+	int32 SkillId = 10;
 }
 
 message G2C_SyncTimer // IMessage
@@ -610,6 +611,19 @@ message G2C_AttackDamage // IMessage
  	repeated int32 HPs = 4;
  	repeated int32 MaxHPs = 5;
  	int64 AttackTime = 6;
+	int32 SkillId = 7;
+	repeated int32 DamageTypes = 8;
+}
+
+message G2C_AttackHeal // IMessage
+{
+	int64 FromId = 1;
+	repeated int64 ToIds = 2;
+ 	repeated int32 Damages = 3;
+ 	repeated int32 HPs = 4;
+ 	repeated int32 MaxHPs = 5;
+ 	int64 AttackTime = 6;
+	int32 SkillId = 7;
 }
 
 message G2C_UnitDead // IMessage

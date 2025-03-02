@@ -23,3 +23,5 @@ MonoBehaviour:
     clip: {fileID: 7400000, guid: 2fa64cd562b6cb44080e5ace53fd9674, type: 3}
   - path: Dead
     clip: {fileID: 7400000, guid: e61aed06a85e06b48a5a0434cce3fb82, type: 3}
+  - path: SAttack
+    clip: {fileID: 7400000, guid: d195d26fd19d3514e827e5ee91e1e26f, type: 3}

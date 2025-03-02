@@ -9,6 +9,7 @@ namespace ET
 		public const string Dead = "Dead";
 		public const string BeHit = "BeHit";
 		public const string Attack = "Attack";
+		public const string SAttack = "SAttack";
 	}
 
 	[ChildOf]
@@ -22,5 +23,6 @@ namespace ET
 		public Transform hitPointTs;
 		public UnityPlayableController playableControllerData;
 		public PlayableController playableController;
+		public string curAnimName;
 	}
 }

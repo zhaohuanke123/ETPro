@@ -61,7 +61,7 @@ namespace ET
 #if SERVER
 		[BsonIgnore]
 		public Dictionary<Player, List<Unit>> playerChampionDict;
-
+		
 		[BsonIgnore]
 		public Dictionary<long, bool> playerReadyDict;
 

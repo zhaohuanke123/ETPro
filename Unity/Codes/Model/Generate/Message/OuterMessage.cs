@@ -1179,6 +1179,9 @@ namespace ET
 		[ProtoMember(9)]
 		public int ChampionConfigId { get; set; }
 
+		[ProtoMember(10)]
+		public int SkillId { get; set; }
+
 	}
 
 	[Message(OuterOpcode.G2C_SyncTimer)]
@@ -1253,6 +1256,39 @@ namespace ET
 
 		[ProtoMember(6)]
 		public long AttackTime { get; set; }
+
+		[ProtoMember(7)]
+		public int SkillId { get; set; }
+
+		[ProtoMember(8)]
+		public List<int> DamageTypes = new List<int>();
+
+	}
+
+	[Message(OuterOpcode.G2C_AttackHeal)]
+	[ProtoContract]
+	public partial class G2C_AttackHeal: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long FromId { get; set; }
+
+		[ProtoMember(2)]
+		public List<long> ToIds = new List<long>();
+
+		[ProtoMember(3)]
+		public List<int> Damages = new List<int>();
+
+		[ProtoMember(4)]
+		public List<int> HPs = new List<int>();
+
+		[ProtoMember(5)]
+		public List<int> MaxHPs = new List<int>();
+
+		[ProtoMember(6)]
+		public long AttackTime { get; set; }
+
+		[ProtoMember(7)]
+		public int SkillId { get; set; }
 
 	}
 
