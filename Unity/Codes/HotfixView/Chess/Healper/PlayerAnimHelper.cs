@@ -5,14 +5,14 @@
         public static async ETTask PlayAttack(CharacterControlComponent controlComponent, long attackTime, int isSuper)
         {
             string anim = isSuper == 1? AnimDefine.SAttack : AnimDefine.Attack;
-            controlComponent.PlayAnim(anim);
+            controlComponent.PlayAnim(anim, 0.1f);
 
             await TimerComponent.Instance.WaitAsync(attackTime);
 
             if (!controlComponent.IsDisposed)
             {
                 await TimerComponent.Instance.WaitAsync((long)(controlComponent.GetAnimTime(anim) * 1000) - attackTime);
-                controlComponent.PlayAnim(AnimDefine.Idle, 0.1f);
+                controlComponent.PlayAnim(AnimDefine.Idle, 0.2f);
             }
         }
     }

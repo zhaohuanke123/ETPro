@@ -384,12 +384,12 @@ namespace ET
                         self.currentGameStage = GameStage.GameOver;
                     }
 
-                    shopComponent.AddPlayerGold(player, 2 + killCount);
+                    shopComponent.AddPlayerGold(player, 3 + killCount);
                 }
                 else
                 {
                     message.Result = 1;
-                    shopComponent.AddPlayerGold(player, 2 + leaveCount + killCount);
+                    shopComponent.AddPlayerGold(player, 3 + leaveCount + killCount);
                 }
 
                 player.SendMessage(message);
