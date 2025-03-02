@@ -81,6 +81,12 @@ namespace ET
 		public LinkedList<Unit> combatQueue;
 
 		[BsonIgnore]
+		public int player1KillCount;
+		
+		[BsonIgnore]
+		public int player2KillCount;
+
+		[BsonIgnore]
 		public Dictionary<Unit, UnitState> unitStateDict;
 #else
 		public static GamePlayComponent Instance;

@@ -28,7 +28,7 @@ namespace ET
 
 #if SERVER
     [ObjectSystem]
-    [FriendClassAttribute(typeof (ET.Player))]
+    [FriendClass(typeof (Player))]
     public class GamePlayFixedUpdateSystem: FixedUpdateSystem<GamePlayComponent>
     {
         public override void FixedUpdate(GamePlayComponent self)
@@ -97,7 +97,7 @@ namespace ET
     }
 
     [ObjectSystem]
-    [FriendClass(typeof (ET.Player))]
+    [FriendClass(typeof (Player))]
     public class GamePlayDestroySystem: DestroySystem<GamePlayComponent>
     {
         public override void Destroy(GamePlayComponent self)
@@ -117,8 +117,8 @@ namespace ET
 
     [FriendClass(typeof (GamePlayComponent))]
 #if SERVER
-    [FriendClass(typeof (ET.Player))]
-    [FriendClassAttribute(typeof (ET.ChampionMapArrayComponent))]
+    [FriendClass(typeof (Player))]
+    [FriendClass(typeof (ChampionMapArrayComponent))]
 #endif
     public static class GamePlayComponentSystemSystem
     {
@@ -174,6 +174,8 @@ namespace ET
         public static void StartNewBattle(this GamePlayComponent self)
         {
             self.ResetCombatGame();
+            self.player1KillCount = 0;
+            self.player2KillCount = 0;
 
             // 决定先手方
             if (self.lastWinnerCamp == Camp.None)
@@ -268,6 +270,7 @@ namespace ET
             List<Unit> unit2 = self.player2Units;
             var player1ChampionInfos = self.player1ChampionInfos;
             var player2ChampionInfos = self.player2ChampionInfos;
+
             UnitComponent unitComponent = self.GetComponent<UnitComponent>();
             for (int i = unit1.Count - 1; i >= 0; i--)
             {
@@ -275,6 +278,7 @@ namespace ET
                 NumericComponent numericComponent = unit.GetComponent<NumericComponent>();
                 if (numericComponent == null || numericComponent.GetAsInt(NumericType.Hp) <= 0)
                 {
+                    self.player1KillCount++;
                     Log.Info($"{unit1[i].Id} 死亡");
 
                     unitComponent.Remove(unit1[i].Id);
@@ -289,6 +293,7 @@ namespace ET
                 NumericComponent numericComponent = unit.GetComponent<NumericComponent>();
                 if (numericComponent == null || numericComponent.GetAsInt(NumericType.Hp) <= 0)
                 {
+                    self.player2KillCount++;
                     Log.Info($"{unit2[i].Id} 死亡");
                     unit2.RemoveAt(i);
                     player2ChampionInfos.RemoveAt(i);
@@ -356,6 +361,8 @@ namespace ET
             {
                 Player player = kv.Key;
                 List<Unit> units = kv.Value;
+                int leaveCount = self.GetOpponentUnits(player).Count;
+                int killCount = player.camp == Camp.Player1? self.player1KillCount : self.player2KillCount;
 
                 if (units.Count == 0)
                 {
@@ -365,7 +372,7 @@ namespace ET
 
                     NumericComponent numericComponent = player.GetComponent<NumericComponent>();
                     int hp = numericComponent.GetAsInt(NumericType.Hp);
-                    hp -= 3 * self.GetOpponentUnits(player).Count;
+                    hp -= 3 * leaveCount;
                     hp = hp < 0? 0 : hp;
 
                     numericComponent.Set(NumericType.Hp, hp);
@@ -376,11 +383,13 @@ namespace ET
                     {
                         self.currentGameStage = GameStage.GameOver;
                     }
+
+                    shopComponent.AddPlayerGold(player, 2 + killCount);
                 }
                 else
                 {
                     message.Result = 1;
-                    shopComponent.AddPlayerGold(player, 5);
+                    shopComponent.AddPlayerGold(player, 2 + leaveCount + killCount);
                 }
 
                 player.SendMessage(message);

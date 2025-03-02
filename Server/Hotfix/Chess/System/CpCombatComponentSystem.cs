@@ -170,7 +170,7 @@ namespace ET
                     float distance = Vector3.Distance(attacker.Position, self.targetList[0].Position);
                     float time = distance / skillConfig.projSpeed * 1000;
                     Log.Info($"飞行时间 {attackTime}");
-                    await TimerComponent.Instance.WaitAsync((long)time + 200);
+                    await TimerComponent.Instance.WaitAsync((long)time / 2 +700);
                 }
             }
             else
