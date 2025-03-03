@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace ET
 {
-    public class G2C_AttackBuffHandler: AMHandler<G2C_AttackBuff>
+    [FriendClassAttribute(typeof(ET.CharacterControlComponent))]
+    public class G2C_AttackBuffHandler : AMHandler<G2C_AttackBuff>
     {
         protected override async void Run(Session session, G2C_AttackBuff message)
         {
@@ -23,8 +24,8 @@ namespace ET
 
             CharacterControlComponent beHitController = unit.GetComponent<CharacterControlComponent>();
             // 血条
-            HealBarComponent healBarComponent = beHitController.GetComponent<HealBarComponent>();
-            healBarComponent.SetHpRatio(1.0f * hp / maxHp);
+            HealBarComponent healBarComponent = beHitController.hpBar;
+            healBarComponent.SetRatio(1.0f * hp / maxHp);
             if (hp <= 0)
             {
                 healBarComponent.SetVisible(false);

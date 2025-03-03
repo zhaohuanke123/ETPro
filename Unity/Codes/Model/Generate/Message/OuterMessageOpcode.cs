@@ -81,7 +81,10 @@ namespace ET
 		 public const ushort G2C_OneCpBattleEnd = 10080;
 		 public const ushort G2C_AttackDamage = 10081;
 		 public const ushort G2C_AttackHeal = 10121;
+		 public const ushort G2C_SyncPower = 10127;
 		 public const ushort G2C_AttackBuff = 10122;
+		 public const ushort G2C_AddBuff = 10123;
+		 public const ushort G2C_RemoveBuff = 10124;
 		 public const ushort G2C_UnitDead = 10088;
 		 public const ushort C2G_StartMatch = 10082;
 		 public const ushort G2C_StartMatch = 10083;

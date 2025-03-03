@@ -95,8 +95,8 @@ namespace ET
             }
 
             // 血条
-            HealBarComponent healBarComponent = beHitController.GetComponent<HealBarComponent>();
-            healBarComponent.SetHpRatio(1.0f * hp / maxHp);
+            HealBarComponent healBarComponent = beHitController.hpBar;
+            healBarComponent.SetRatio(1.0f * hp / maxHp);
             if (hp <= 0)
             {
                 healBarComponent.SetVisible(false);

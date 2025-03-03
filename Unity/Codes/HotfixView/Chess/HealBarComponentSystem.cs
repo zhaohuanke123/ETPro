@@ -12,7 +12,7 @@ namespace ET
             self.hpFill = transform.Find("HP/Fill").GetComponent<Image>();
             // self.Lv
             // self.Name
-            self.SetHpRatio(1f, true);
+            self.SetRatio(1f, true);
             // Camera camera = Camera.main;
             // Canvas canvas = transform.GetComponent<Canvas>();
             // canvas.worldCamera = camera;
@@ -30,7 +30,7 @@ namespace ET
     [FriendClass(typeof (HealBarComponent))]
     public static class HealBarComponentSystem
     {
-        public static void SetHpRatio(this HealBarComponent self, float hpRatio, bool isInit = false)
+        public static void SetRatio(this HealBarComponent self, float hpRatio, bool isInit = false)
         {
             if (isInit)
             {

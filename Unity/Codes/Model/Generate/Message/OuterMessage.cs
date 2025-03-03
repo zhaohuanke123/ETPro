@@ -1292,6 +1292,18 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_SyncPower)]
+	[ProtoContract]
+	public partial class G2C_SyncPower: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long ToId { get; set; }
+
+		[ProtoMember(2)]
+		public int Power { get; set; }
+
+	}
+
 	[Message(OuterOpcode.G2C_AttackBuff)]
 	[ProtoContract]
 	public partial class G2C_AttackBuff: Object, IMessage
@@ -1313,6 +1325,30 @@ namespace ET
 
 		[ProtoMember(6)]
 		public int BuffId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_AddBuff)]
+	[ProtoContract]
+	public partial class G2C_AddBuff: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long ToId { get; set; }
+
+		[ProtoMember(2)]
+		public long BuffId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_RemoveBuff)]
+	[ProtoContract]
+	public partial class G2C_RemoveBuff: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long ToId { get; set; }
+
+		[ProtoMember(2)]
+		public long BuffId { get; set; }
 
 	}
 

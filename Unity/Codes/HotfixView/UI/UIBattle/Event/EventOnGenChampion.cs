@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace ET
 {
-    [FriendClassAttribute(typeof(ET.ChessBattleViewComponent))]
-    public class EventOnGenChampion : AEventAsync<EventType.GenChampions>
+    [FriendClassAttribute(typeof (ET.ChessBattleViewComponent))]
+    [FriendClassAttribute(typeof (ET.CharacterControlComponent))]
+    public class EventOnGenChampion: AEventAsync<EventType.GenChampions>
     {
         protected override async ETTask Run(EventType.GenChampions args)
         {
@@ -19,11 +20,11 @@ namespace ET
                 // Scene currentScene = args.zoneScene.CurrentScene();
                 int index = infoPb.GridPositionX;
                 GameObjectComponent gameObjectComponent = ChessBattleViewComponent.Instance.AddChild<GameObjectComponent, GameObject, Action>(go,
-                () =>
-                {
-                    GameObjectPoolComponent.Instance.RecycleGameObject(go);
-                    ChessBattleViewComponent.Instance.ownChampionInventoryArray[infoPb.GridPositionX] = null;
-                });
+                    () =>
+                    {
+                        GameObjectPoolComponent.Instance.RecycleGameObject(go);
+                        ChessBattleViewComponent.Instance.ownChampionInventoryArray[infoPb.GridPositionX] = null;
+                    });
                 ChessBattleViewComponent.Instance.Replace(gameObjectComponent, index);
 
                 // Unit unit = args.unit;
@@ -33,8 +34,10 @@ namespace ET
                 ChampionControllerComponent championControllerComponent =
                         gameObjectComponent.AddComponent<ChampionControllerComponent, GameObjectComponent>(gameObjectComponent);
                 CharacterControlComponent characterControlComponent = gameObjectComponent.AddComponent<CharacterControlComponent, GameObject>(go);
-                HealBarComponent healBarComponent = characterControlComponent.GetComponent<HealBarComponent>();
+                HealBarComponent healBarComponent = characterControlComponent.hpBar;
                 healBarComponent.SetVisible(false);
+
+                characterControlComponent.pwBar.SetVisible(false);
 
                 championControllerComponent.Init(index);
                 championControllerComponent.SetLevel(infoPb.Lv);

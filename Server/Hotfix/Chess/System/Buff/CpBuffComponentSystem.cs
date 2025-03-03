@@ -23,7 +23,7 @@ namespace ET
     [FriendClassAttribute(typeof (ET.CpBuff))]
     public static class CpBuffComponentSystem
     {
-        public static void AddBuff(this CpBuffComponent self, Unit target, int buffId)
+        public static void AddBuff(this CpBuffComponent self, GamePlayComponent gamePlayComponent, Unit target, int buffId)
         {
             if (target == null)
             {
@@ -39,11 +39,11 @@ namespace ET
             bool res = self.CpBuffMap.TryAdd(buffId, buff);
             if (res)
             {
-                buff.OnAddBuff(target);
+                buff.OnAddBuff(gamePlayComponent, target);
             }
         }
 
-        public static void RemoveBuff(this CpBuffComponent self, Unit target, CpBuff buff)
+        public static void RemoveBuff(this CpBuffComponent self, GamePlayComponent gamePlayComponent, Unit target, CpBuff buff)
         {
             if (target == null)
             {
@@ -55,7 +55,7 @@ namespace ET
                 throw new ArgumentException("target is isDisposed");
             }
 
-            buff.OnRemoveBuff(target);
+            buff.OnRemoveBuff(gamePlayComponent, target);
             self.CpBuffMap.Remove(buff.ConfigId);
         }
 
@@ -70,7 +70,7 @@ namespace ET
 
                 if (buff.time <= 0)
                 {
-                    self.RemoveBuff(self.GetParent<Unit>(), buff);
+                    self.RemoveBuff(gamePlayComponent, self.GetParent<Unit>(), buff);
                 }
             }
         }

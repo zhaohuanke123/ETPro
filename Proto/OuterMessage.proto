@@ -626,6 +626,12 @@ message G2C_AttackHeal // IMessage
 	int32 SkillId = 7;
 }
 
+message G2C_SyncPower // IMessage
+{
+	int64 ToId = 1;
+	int32 Power = 2;
+}
+
 message G2C_AttackBuff // IMessage
 {
 	int64 FromId = 1;
@@ -634,6 +640,18 @@ message G2C_AttackBuff // IMessage
  	int32 HP = 4;
  	int32 MaxHP = 5;
 	int32 BuffId = 6;
+}
+
+message G2C_AddBuff // IMessage
+{
+	int64 ToId = 1;
+	int64 BuffId = 2;
+}
+
+message G2C_RemoveBuff // IMessage
+{
+	int64 ToId = 1;
+	int64 BuffId = 2;
 }
 
 message G2C_UnitDead // IMessage

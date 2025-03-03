@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-	[ComponentOf(typeof (CharacterControlComponent))]
+	[ChildOf()]
 	public class HealBarComponent: Entity, IAwake<Transform>, IDestroy
 	{
 		public CanvasGroup canvasGroup;

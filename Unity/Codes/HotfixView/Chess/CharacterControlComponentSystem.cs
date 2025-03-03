@@ -9,7 +9,8 @@ namespace ET
         {
             self.transform = gameObject.transform;
             self.rotateTransform = gameObject.transform.Find("Model");
-            self.AddComponent<HealBarComponent, Transform>(gameObject.transform.Find("HealthBar"));
+            self.hpBar = self.AddChild<HealBarComponent, Transform>(gameObject.transform.Find("HealthBar"));
+            self.pwBar = self.AddChild<HealBarComponent, Transform>(gameObject.transform.Find("PowerBar"));
 
             ReferenceCollector referenceCollector = gameObject.GetComponent<ReferenceCollector>();
             self.attackPointTs = referenceCollector.Get<GameObject>("attackPoint").transform;
@@ -88,7 +89,7 @@ namespace ET
             {
                 return;
             }
-            
+
             self.curAnimName = animName;
             self.Init();
             self.playableController.Play(animName, fadeTime);
@@ -98,6 +99,25 @@ namespace ET
         {
             self.Init();
             return self.playableController.GetAnimTime(animName);
+        }
+
+        public static async ETTask SetControlled(this CharacterControlComponent self, bool isControlled)
+        {
+            if (!isControlled)
+            {
+                if (self.beControlledGo == null)
+                {
+                    return;
+                }
+
+                GameObjectPoolComponent.Instance.RecycleGameObject(self.beControlledGo);
+                self.beControlledGo = null;
+            }
+            else
+            {
+                GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync("GameAssets/Chess/Effects/icecube.prefab");
+                self.beControlledGo = go;
+            }
         }
     }
 }

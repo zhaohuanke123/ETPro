@@ -118,6 +118,9 @@ namespace ET
 		/// <summary>目标 1、0</summary>
 		[ProtoMember(13)]
 		public int target { get; set; }
+		/// <summary>特效</summary>
+		[ProtoMember(14)]
+		public string effect { get; set; }
 
 	}
 }

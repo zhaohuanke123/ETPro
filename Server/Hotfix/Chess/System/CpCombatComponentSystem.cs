@@ -93,7 +93,7 @@ namespace ET
         {
             Unit attacker = self.GetParent<Unit>();
 
-            int skillId = attacker.GetSkillIdAndHandlerPower(config);
+            int skillId = attacker.GetSkillIdAndHandlerPower(gamePlayComponent, config);
             ActiveSkillConfig skillConfig = ActiveSkillConfigCategory.Instance.Get(skillId);
             SkillType type = (SkillType)skillConfig.SkillType;
             List<Unit> targets = null;
@@ -182,17 +182,28 @@ namespace ET
             for (var i = 0; i < skillConfig.addBuffs.Length; i++)
             {
                 int buffId = skillConfig.addBuffs[i];
-                foreach (Unit target in targets)
+                BuffConfig buffConfig = BuffConfigCategory.Instance.Get(buffId);
+                CpBuffType buffConfigTarget = (CpBuffType)buffConfig.target;
+                if (buffConfigTarget == CpBuffType.Self)
                 {
-                    CpBuffComponent cpBuffComponent = target.GetComponent<CpBuffComponent>();
-                    cpBuffComponent.AddBuff(target, buffId);
+                    Unit unit = self.GetParent<Unit>();
+                    CpBuffComponent cpBuffComponent = unit.GetComponent<CpBuffComponent>();
+                    cpBuffComponent.AddBuff(gamePlayComponent, unit, buffId);
+                }
+                else
+                {
+                    foreach (Unit target in targets)
+                    {
+                        CpBuffComponent cpBuffComponent = target.GetComponent<CpBuffComponent>();
+                        cpBuffComponent.AddBuff(gamePlayComponent, target, buffId);
+                    }
                 }
             }
 
             await ETTask.CompletedTask;
         }
 
-        private static int GetSkillIdAndHandlerPower(this Unit self, ChampionConfig config)
+        private static int GetSkillIdAndHandlerPower(this Unit self, GamePlayComponent gamePlayComponent, ChampionConfig config)
         {
             NumericComponent numericComponent = self.GetComponent<NumericComponent>();
             int power = numericComponent.GetAsInt(NumericType.Power);
@@ -211,6 +222,10 @@ namespace ET
             }
 
             numericComponent.Set(NumericType.Power, power);
+            G2C_SyncPower message = new G2C_SyncPower();
+            message.Power = power;
+            message.ToId = self.Id;
+            gamePlayComponent.Broadcast(message);
 
             return skillId;
         }

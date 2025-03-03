@@ -23,7 +23,7 @@ namespace ET
     [FriendClass(typeof (CpBuff))]
     public static class CpBuffSystem
     {
-        public static void OnAddBuff(this CpBuff self, Unit target)
+        public static void OnAddBuff(this CpBuff self, GamePlayComponent gamePlayComponent, Unit target)
         {
             NumericComponent numericComponent = target.GetComponent<NumericComponent>();
 
@@ -36,10 +36,14 @@ namespace ET
             }
             else if (buffType == BuffType.Control)
             {
+                G2C_AddBuff message = new G2C_AddBuff();
+                message.ToId = target.Id;
+                message.BuffId = self.ConfigId;
+                gamePlayComponent.Broadcast(message);
             }
         }
 
-        public static void OnRemoveBuff(this CpBuff self, Unit target)
+        public static void OnRemoveBuff(this CpBuff self, GamePlayComponent gamePlayComponent, Unit target)
         {
             NumericComponent numericComponent = target.GetComponent<NumericComponent>();
 
@@ -48,6 +52,13 @@ namespace ET
             if (buffType == BuffType.Attr)
             {
                 numericComponent.SubAll(config.attrNames, config.attrValues);
+            }
+            else if (buffType == BuffType.Control)
+            {
+                G2C_RemoveBuff message = new G2C_RemoveBuff();
+                message.ToId = target.Id;
+                message.BuffId = self.ConfigId;
+                gamePlayComponent.Broadcast(message);
             }
         }
 

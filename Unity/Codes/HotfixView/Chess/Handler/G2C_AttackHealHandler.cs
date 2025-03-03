@@ -71,8 +71,8 @@ namespace ET
             HealEffectGo.transform.position = beHitController.transform.position;
 
             // 血条
-            HealBarComponent healBarComponent = beHitController.GetComponent<HealBarComponent>();
-            healBarComponent.SetHpRatio(1.0f * hp / maxHp, true);
+            HealBarComponent healBarComponent = beHitController.hpBar;
+            healBarComponent.SetRatio(1.0f * hp / maxHp, true);
 
             // 飘字
             FloatTextComponent floatTextComponent = currentScene.AddChild<FloatTextComponent, GameObject>(floatTextGo);

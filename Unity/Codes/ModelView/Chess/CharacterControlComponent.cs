@@ -12,8 +12,7 @@ namespace ET
 		public const string SAttack = "SAttack";
 	}
 
-	[ChildOf]
-	[ComponentOf]
+	[ComponentOf()]
 	public class CharacterControlComponent: Entity, IAwake<GameObject>, IDestroy, IUpdate
 	{
 		public bool isInit = false;
@@ -24,5 +23,8 @@ namespace ET
 		public UnityPlayableController playableControllerData;
 		public PlayableController playableController;
 		public string curAnimName;
+		public GameObject beControlledGo;
+		public HealBarComponent hpBar;
+		public HealBarComponent pwBar;
 	}
 }
