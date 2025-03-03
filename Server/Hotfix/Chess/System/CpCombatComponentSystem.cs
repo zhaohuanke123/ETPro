@@ -178,24 +178,27 @@ namespace ET
 
             Log.Info("技能结束");
 
-            Log.Info("开始加BUff");
-            for (var i = 0; i < skillConfig.addBuffs.Length; i++)
+            if (skillConfig.addBuffs != null)
             {
-                int buffId = skillConfig.addBuffs[i];
-                BuffConfig buffConfig = BuffConfigCategory.Instance.Get(buffId);
-                CpBuffType buffConfigTarget = (CpBuffType)buffConfig.target;
-                if (buffConfigTarget == CpBuffType.Self)
+                Log.Info("开始加BUff");
+                for (var i = 0; i < skillConfig.addBuffs.Length; i++)
                 {
-                    Unit unit = self.GetParent<Unit>();
-                    CpBuffComponent cpBuffComponent = unit.GetComponent<CpBuffComponent>();
-                    cpBuffComponent.AddBuff(gamePlayComponent, unit, buffId);
-                }
-                else
-                {
-                    foreach (Unit target in targets)
+                    int buffId = skillConfig.addBuffs[i];
+                    BuffConfig buffConfig = BuffConfigCategory.Instance.Get(buffId);
+                    CpBuffType buffConfigTarget = (CpBuffType)buffConfig.target;
+                    if (buffConfigTarget == CpBuffType.Self)
                     {
-                        CpBuffComponent cpBuffComponent = target.GetComponent<CpBuffComponent>();
-                        cpBuffComponent.AddBuff(gamePlayComponent, target, buffId);
+                        Unit unit = self.GetParent<Unit>();
+                        CpBuffComponent cpBuffComponent = unit.GetComponent<CpBuffComponent>();
+                        cpBuffComponent.AddBuff(gamePlayComponent, unit, buffId);
+                    }
+                    else
+                    {
+                        foreach (Unit target in targets)
+                        {
+                            CpBuffComponent cpBuffComponent = target.GetComponent<CpBuffComponent>();
+                            cpBuffComponent.AddBuff(gamePlayComponent, target, buffId);
+                        }
                     }
                 }
             }

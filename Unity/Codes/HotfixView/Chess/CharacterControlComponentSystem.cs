@@ -40,6 +40,12 @@ namespace ET
     {
         public override void Destroy(CharacterControlComponent self)
         {
+            if (self.beControlledGo != null)
+            {
+                GameObjectPoolComponent.Instance.RecycleGameObject(self.beControlledGo);
+                self.beControlledGo = null;
+            }
+
             self.playableController.OnDestroy();
         }
     }
@@ -117,6 +123,7 @@ namespace ET
             {
                 GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync("GameAssets/Chess/Effects/icecube.prefab");
                 self.beControlledGo = go;
+                go.transform.position = self.transform.position;
             }
         }
     }

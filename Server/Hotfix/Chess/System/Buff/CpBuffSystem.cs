@@ -25,6 +25,7 @@ namespace ET
     {
         public static void OnAddBuff(this CpBuff self, GamePlayComponent gamePlayComponent, Unit target)
         {
+            Log.Info($"添加Buff {target.Id}, cofigId : {self.ConfigId}");
             NumericComponent numericComponent = target.GetComponent<NumericComponent>();
 
             BuffConfig config = self.Config;
@@ -66,6 +67,7 @@ namespace ET
         {
             BuffConfig config = self.Config;
             BuffType buffType = self.BuffType;
+            Log.Info($"BuffTick {target.Id} :buffId: {self.ConfigId}");
 
             if (buffType == BuffType.Damage)
             {

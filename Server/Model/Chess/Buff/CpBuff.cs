@@ -4,12 +4,12 @@ namespace ET
 {
     public enum BuffType
     {
-       Attr,
-       Control,
-       Damage,
+        Attr = 1,
+        Control,
+        Damage,
     }
-    
-    [ChildOf(typeof(CpBuffComponent))]
+
+    [ChildOf(typeof (CpBuffComponent))]
     public class CpBuff: Entity, IAwake<int>, IDestroy
     {
         public int ConfigId;

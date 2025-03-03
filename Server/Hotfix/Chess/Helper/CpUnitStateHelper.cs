@@ -12,7 +12,7 @@ namespace ET
                 throw new ArgumentException($"错误的 Unit {self.Id}");
             }
 
-            return cpBuffComponent.HasBuff(1006) || cpBuffComponent.HasBuff(1007);
+            return !(cpBuffComponent.HasBuff(1006) || cpBuffComponent.HasBuff(1007));
         }
     }
 }

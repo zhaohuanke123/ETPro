@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace ET
 {
-    [FriendClassAttribute(typeof(ET.Unit))]
-    [FriendClassAttribute(typeof(ET.CharacterControlComponent))]
-    public class EventOnGenChampionView : AEventAsync<EventType.GenChampionView>
+    [FriendClassAttribute(typeof (ET.Unit))]
+    [FriendClassAttribute(typeof (ET.CharacterControlComponent))]
+    public class EventOnGenChampionView: AEventAsync<EventType.GenChampionView>
     {
         protected override async ETTask Run(EventType.GenChampionView args)
         {
@@ -20,10 +20,7 @@ namespace ET
             ChampionConfig config = ChampionConfigCategory.Instance.Get(infoPb.ConfigId);
             GameObject go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(config.prefab);
             GameObjectComponent showView = ChessBattleViewComponent.Instance.AddChild<GameObjectComponent, GameObject, Action>(go,
-            () =>
-            {
-                GameObjectPoolComponent.Instance.RecycleGameObject(go);
-            });
+                () => { GameObjectPoolComponent.Instance.RecycleGameObject(go); });
 
             unit.AddComponent(showView);
             CharacterControlComponent characterControlComponent = unit.AddComponent<CharacterControlComponent, GameObject>(go);
@@ -39,6 +36,8 @@ namespace ET
 
             HealBarComponent healBarComponent = characterControlComponent.hpBar;
             healBarComponent.SetVisible(true);
+            characterControlComponent.pwBar.SetVisible(true);
+            characterControlComponent.pwBar.SetRatio(0);
 
             await ETTask.CompletedTask;
         }

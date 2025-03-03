@@ -269,7 +269,7 @@ namespace ET
             await ETTask.CompletedTask;
         }
 
-        public static async ETTask OnRoundEnd(this GamePlayComponent self)
+        public static async ETTask<bool> OnRoundEnd(this GamePlayComponent self)
         {
             void CheckBuff(List<Unit> units)
             {
@@ -289,7 +289,10 @@ namespace ET
                 Log.Info("战斗结束");
                 await TimerComponent.Instance.WaitAsync(1000);
                 self.CalAndSendResult();
+                return true;
             }
+
+            return false;
         }
 
         public static bool CheckBattleEnd(this GamePlayComponent self)
@@ -366,7 +369,11 @@ namespace ET
                 await self.ProcessCombatUnits(secondUnits, secondInfos, secondUnits, firstUnits);
                 Log.Info("回合结束 =================================================");
 
-                await self.OnRoundEnd();
+                bool res = await self.OnRoundEnd();
+                if (res)
+                {
+                    return;
+                }
             }
         }
 

@@ -87,6 +87,10 @@ namespace ET
             {
                 self.tmp.color = Color.green;
             }
+            else if (damageType == DamageType.BuffDamage)
+            {
+                self.tmp.color = Color.yellow;
+            }
 
             self.MoveTimer = TimerComponent.Instance.NewFrameTimer(TimerType.FloatTextMoveTimer, self);
             self.UpdateTime = TimeHelper.ClientNow();
