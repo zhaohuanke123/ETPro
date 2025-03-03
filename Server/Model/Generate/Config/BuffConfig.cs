@@ -106,6 +106,18 @@ namespace ET
 		/// <summary>优先级（数字越小越优先，相同则Id最小优先）</summary>
 		[ProtoMember(9)]
 		public int Priority { get; set; }
+		/// <summary>基础属性列表</summary>
+		[ProtoMember(10)]
+		public string[] attrNames { get; set; }
+		/// <summary>基础属性数值</summary>
+		[ProtoMember(11)]
+		public int[] attrValues { get; set; }
+		/// <summary>持续回合</summary>
+		[ProtoMember(12)]
+		public int duration { get; set; }
+		/// <summary>目标 1、0</summary>
+		[ProtoMember(13)]
+		public int target { get; set; }
 
 	}
 }

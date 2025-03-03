@@ -1292,6 +1292,30 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_AttackBuff)]
+	[ProtoContract]
+	public partial class G2C_AttackBuff: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public long FromId { get; set; }
+
+		[ProtoMember(2)]
+		public long ToId { get; set; }
+
+		[ProtoMember(3)]
+		public int Damage { get; set; }
+
+		[ProtoMember(4)]
+		public int HP { get; set; }
+
+		[ProtoMember(5)]
+		public int MaxHP { get; set; }
+
+		[ProtoMember(6)]
+		public int BuffId { get; set; }
+
+	}
+
 	[Message(OuterOpcode.G2C_UnitDead)]
 	[ProtoContract]
 	public partial class G2C_UnitDead: Object, IMessage

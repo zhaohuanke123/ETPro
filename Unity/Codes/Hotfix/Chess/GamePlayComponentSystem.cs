@@ -264,41 +264,60 @@ namespace ET
             }
         }
 
+        public static async ETTask OnRoundBegin(this GamePlayComponent self)
+        {
+            await ETTask.CompletedTask;
+        }
+
+        public static async ETTask OnRoundEnd(this GamePlayComponent self)
+        {
+            void CheckBuff(List<Unit> units)
+            {
+                for (int i = 0; i < units.Count; i++)
+                {
+                    Unit unit = units[i];
+                    CpBuffComponent cpBuffComponent = unit.GetComponent<CpBuffComponent>();
+                    cpBuffComponent.Tick(self);
+                }
+            }
+
+            CheckBuff(self.player1Units);
+            CheckBuff(self.player2Units);
+
+            if (self.CheckBattleEnd())
+            {
+                Log.Info("战斗结束");
+                await TimerComponent.Instance.WaitAsync(1000);
+                self.CalAndSendResult();
+            }
+        }
+
         public static bool CheckBattleEnd(this GamePlayComponent self)
         {
             List<Unit> unit1 = self.player1Units;
             List<Unit> unit2 = self.player2Units;
-            var player1ChampionInfos = self.player1ChampionInfos;
-            var player2ChampionInfos = self.player2ChampionInfos;
-
             UnitComponent unitComponent = self.GetComponent<UnitComponent>();
-            for (int i = unit1.Count - 1; i >= 0; i--)
-            {
-                Unit unit = unit1[i];
-                NumericComponent numericComponent = unit.GetComponent<NumericComponent>();
-                if (numericComponent == null || numericComponent.GetAsInt(NumericType.Hp) <= 0)
-                {
-                    self.player1KillCount++;
-                    Log.Info($"{unit1[i].Id} 死亡");
 
-                    unitComponent.Remove(unit1[i].Id);
-                    unit1.RemoveAt(i);
-                    player1ChampionInfos.RemoveAt(i);
+            void CheckDead(List<Unit> units, List<ChampionInfo> playerChampionInfos, ref int killCount)
+            {
+                for (int i = units.Count - 1; i >= 0; i--)
+                {
+                    Unit unit = units[i];
+                    NumericComponent numericComponent = unit.GetComponent<NumericComponent>();
+                    if (numericComponent == null || numericComponent.GetAsInt(NumericType.Hp) <= 0)
+                    {
+                        killCount++;
+                        Log.Info($"{unit.Id} 死亡");
+
+                        unitComponent.Remove(unit.Id);
+                        units.RemoveAt(i);
+                        playerChampionInfos.RemoveAt(i);
+                    }
                 }
             }
 
-            for (int i = unit2.Count - 1; i >= 0; i--)
-            {
-                Unit unit = unit2[i];
-                NumericComponent numericComponent = unit.GetComponent<NumericComponent>();
-                if (numericComponent == null || numericComponent.GetAsInt(NumericType.Hp) <= 0)
-                {
-                    self.player2KillCount++;
-                    Log.Info($"{unit2[i].Id} 死亡");
-                    unit2.RemoveAt(i);
-                    player2ChampionInfos.RemoveAt(i);
-                }
-            }
+            CheckDead(self.player1Units, self.player1ChampionInfos, ref self.player2KillCount);
+            CheckDead(self.player2Units, self.player2ChampionInfos, ref self.player1KillCount);
 
             return unit1.Count == 0 || unit2.Count == 0;
         }
@@ -311,6 +330,11 @@ namespace ET
             {
                 Unit unit = units[i];
                 if (unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0)
+                {
+                    continue;
+                }
+
+                if (!unit.CanAction())
                 {
                     continue;
                 }
@@ -330,14 +354,7 @@ namespace ET
 
             while (true)
             {
-                if (self.CheckBattleEnd())
-                {
-                    Log.Info("战斗结束");
-                    await TimerComponent.Instance.WaitAsync(1000);
-                    self.CalAndSendResult();
-                    return;
-                }
-
+                await self.OnRoundBegin();
                 Log.Info("回合开始 ================================================");
                 // 根据firstAttackCamp决定战斗顺序
                 var firstUnits = self.firstAttackCamp == Camp.Player1? unit1 : unit2;
@@ -348,6 +365,8 @@ namespace ET
                 await self.ProcessCombatUnits(firstUnits, firstInfos, firstUnits, secondUnits);
                 await self.ProcessCombatUnits(secondUnits, secondInfos, secondUnits, firstUnits);
                 Log.Info("回合结束 =================================================");
+
+                await self.OnRoundEnd();
             }
         }
 

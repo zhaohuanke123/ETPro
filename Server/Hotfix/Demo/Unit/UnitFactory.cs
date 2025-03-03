@@ -163,6 +163,7 @@ namespace ET
 			Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), championInfo.Config.unitId);
 			unit.AddComponent<MoveComponent>();
 			unit.AddComponent<CpCombatComponent>();
+			unit.AddComponent<CpBuffComponent>();
 			NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
 			int lv = championInfo.GetComponent<NumericComponent>().GetAsInt(NumericType.Lv);
 			ChampionConfig config = championInfo.Config;

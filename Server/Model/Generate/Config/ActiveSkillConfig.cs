@@ -113,6 +113,9 @@ namespace ET
 		/// <summary>是否大招</summary>
 		[ProtoMember(11)]
 		public int isSuper { get; set; }
+		/// <summary>加buff</summary>
+		[ProtoMember(12)]
+		public int[] addBuffs { get; set; }
 
 	}
 }

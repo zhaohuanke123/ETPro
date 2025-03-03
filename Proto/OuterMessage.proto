@@ -626,6 +626,16 @@ message G2C_AttackHeal // IMessage
 	int32 SkillId = 7;
 }
 
+message G2C_AttackBuff // IMessage
+{
+	int64 FromId = 1;
+	int64 ToId = 2;
+ 	int32 Damage = 3;
+ 	int32 HP = 4;
+ 	int32 MaxHP = 5;
+	int32 BuffId = 6;
+}
+
 message G2C_UnitDead // IMessage
 {
 	repeated int64 UnitIds = 1;

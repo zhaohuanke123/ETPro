@@ -5,5 +5,6 @@
         Critical,
         Normal,
         Heal,
+        BuffDamage
     }
 }

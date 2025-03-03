@@ -64,6 +64,15 @@ namespace ET
             }
         }
 
+        public static void SubAll(this NumericComponent self, string[] nts, int[] values)
+        {
+            for (int i = 0; i < nts.Length; i++)
+            {
+                int type = self.GetType(nts[i]);
+                self.Set(type, self.GetAsInt(type) - values[i]);
+            }
+        }
+
         public static void AddNoEvent(this NumericComponent self, int numericType, int numericValue)
         {
             self.SetNoEvent(numericType, self.GetAsInt(numericType) + numericValue);
