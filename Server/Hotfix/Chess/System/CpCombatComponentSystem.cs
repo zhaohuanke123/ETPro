@@ -156,7 +156,7 @@ namespace ET
 
                     if (numericComponent == null || numericComponent.GetAsInt(NumericType.Hp) <= 0)
                     {
-                        return;
+                        continue;
                     }
 
                     int finalDamage = DamageHelper.DamageHeal(attacker, target);
