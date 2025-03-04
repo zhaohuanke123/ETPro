@@ -68,7 +68,7 @@ namespace ET
                 Unit target = self.GetParent<Unit>();
                 buff.DurationTick(gamePlayComponent, target);
 
-                if (buff.time <= 0)
+                if (buff.time < 0)
                 {
                     self.RemoveBuff(gamePlayComponent, self.GetParent<Unit>(), buff);
                 }

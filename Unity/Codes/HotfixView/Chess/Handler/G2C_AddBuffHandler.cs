@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [MessageHandler]
     public class G2C_AddBuffHandler: AMHandler<G2C_AddBuff>
     {
         protected override void Run(Session session, G2C_AddBuff message)

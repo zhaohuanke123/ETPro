@@ -26,5 +26,6 @@ namespace ET
 		public GameObject beControlledGo;
 		public HealBarComponent hpBar;
 		public HealBarComponent pwBar;
+		public ETTask<GameObject> taks;
 	}
 }
