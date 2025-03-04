@@ -81,6 +81,18 @@ namespace ET
                     map.Add("CRIBase",CRIBase);
                     map.Add("CRIDamage",CRIDamage);
                     map.Add("CRIDamageBase",CRIDamageBase);
+                    map.Add("NorDef",NorDef);
+                    map.Add("NorDefBase",NorDefBase);
+                    map.Add("NorDefAdd",NorDefAdd);
+                    map.Add("NorDefPct",NorDefPct);
+                    map.Add("NorDefFinalAdd",NorDefFinalAdd);
+                    map.Add("NorDefFinalPct",NorDefFinalPct);
+                    map.Add("MagDef",MagDef);
+                    map.Add("MagDefBase",MagDefBase);
+                    map.Add("MagDefAdd",MagDefAdd);
+                    map.Add("MagDefPct",MagDefPct);
+                    map.Add("MagDefFinalAdd",MagDefFinalAdd);
+                    map.Add("MagDefFinalPct",MagDefFinalPct);
                 }
                 return map;
             }
@@ -208,14 +220,40 @@ namespace ET
 		/// <summary> 能量Base </summary>
 		public const int PowerBase = 1012 * 10 + 1;
 
-		/// <summary>  </summary>
+		/// <summary> 暴击率 </summary>
 		public const int CRI = 1013;
-		/// <summary> Base </summary>
+		/// <summary> 暴击率Base </summary>
 		public const int CRIBase = 1013 * 10 + 1;
 
-		/// <summary>  </summary>
+		/// <summary> 暴击效果 </summary>
 		public const int CRIDamage = 1014;
-		/// <summary> Base </summary>
+		/// <summary> 暴击效果Base </summary>
 		public const int CRIDamageBase = 1014 * 10 + 1;
+
+		/// <summary> 物抗 </summary>
+		public const int NorDef = 1015;
+		/// <summary> 物抗Base </summary>
+		public const int NorDefBase = 1015 * 10 + 1;
+		/// <summary> 物抗Add </summary>
+		public const int NorDefAdd = 1015 * 10 + 2;
+		/// <summary> 物抗Pct </summary>
+		public const int NorDefPct = 1015 * 10 + 3;
+		/// <summary> 物抗FinalAdd </summary>
+		public const int NorDefFinalAdd = 1015 * 10 + 4;
+		/// <summary> 物抗FinalPct </summary>
+		public const int NorDefFinalPct = 1015 * 10 + 5;
+
+		/// <summary> 法抗 </summary>
+		public const int MagDef = 1016;
+		/// <summary> 法抗Base </summary>
+		public const int MagDefBase = 1016 * 10 + 1;
+		/// <summary> 法抗Add </summary>
+		public const int MagDefAdd = 1016 * 10 + 2;
+		/// <summary> 法抗Pct </summary>
+		public const int MagDefPct = 1016 * 10 + 3;
+		/// <summary> 法抗FinalAdd </summary>
+		public const int MagDefFinalAdd = 1016 * 10 + 4;
+		/// <summary> 法抗FinalPct </summary>
+		public const int MagDefFinalPct = 1016 * 10 + 5;
     }
 }

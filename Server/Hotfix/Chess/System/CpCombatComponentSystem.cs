@@ -106,13 +106,15 @@ namespace ET
                 G2C_AttackDamage message = new G2C_AttackDamage();
                 message.SkillId = skillId;
                 message.FromId = attacker.Id;
+                message.DamageType = skillConfig.damageType;
 
                 for (int i = 0; i < Mathf.Min(skillConfig.targetNum, self.targetList.Count); i++)
                 {
                     Unit target = self.targetList[i];
                     targets.Add(target);
                     NumericComponent targetNumericComponent = target.GetComponent<NumericComponent>();
-                    int finalDamage = DamageHelper.Damage(attacker, target, out bool isCritical);
+                    int finalDamage = DamageHelper.Damage(attacker, target, skillConfig.damageType, out bool isCritical);
+                    finalDamage *= skillConfig.multiplyValue;
 
                     targetNumericComponent.Add(NumericType.Hp, -finalDamage);
                     targetNumericComponent.Add(NumericType.Power, ConfigGlobal.AddPowerBeHit);
@@ -122,7 +124,7 @@ namespace ET
                     message.ToIds.Add(target.Id);
                     message.HPs.Add(hp);
                     message.MaxHPs.Add(targetNumericComponent.GetAsInt(NumericType.MaxHp));
-                    message.DamageTypes.Add((int)(isCritical? DamageType.Critical : DamageType.Normal));
+                    message.IsCrits.Add(isCritical);
 
                     Log.Info($" {attacker.Id}, target: {target.Id}, damage: {finalDamage} targeHp : {hp}");
                 }
@@ -157,7 +159,8 @@ namespace ET
                         return;
                     }
 
-                    int finalDamage = DamageHelper.Damage(attacker, target, out bool isCritical);
+                    int finalDamage = DamageHelper.DamageHeal(attacker, target);
+                    finalDamage *= skillConfig.multiplyValue;
                     message.Damages.Add(finalDamage);
                     message.ToIds.Add(target.Id);
 

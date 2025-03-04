@@ -39,7 +39,7 @@ namespace ET
             // 受机或者死亡
             if (hp <= 0)
             {
-                beHitController.PlayAnim(AnimDefine.Dead, 0.5f);
+                beHitController.PlayAnim(AnimDefine.Dead, 0.1f);
                 await TimerComponent.Instance.WaitAsync((long)(beHitController.GetAnimTime(AnimDefine.Dead) * 1000));
 
                 unitComponent.Remove(unit.Id);

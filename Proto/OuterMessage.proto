@@ -612,7 +612,8 @@ message G2C_AttackDamage // IMessage
  	repeated int32 MaxHPs = 5;
  	int64 AttackTime = 6;
 	int32 SkillId = 7;
-	repeated int32 DamageTypes = 8;
+	int32 DamageType = 8;
+	repeated bool IsCrits = 9;
 }
 
 message G2C_AttackHeal // IMessage

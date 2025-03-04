@@ -1261,7 +1261,10 @@ namespace ET
 		public int SkillId { get; set; }
 
 		[ProtoMember(8)]
-		public List<int> DamageTypes = new List<int>();
+		public int DamageType { get; set; }
+
+		[ProtoMember(9)]
+		public List<bool> IsCrits = new List<bool>();
 
 	}
 

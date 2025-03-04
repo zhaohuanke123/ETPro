@@ -115,6 +115,9 @@ namespace ET
 		/// <summary>加buff</summary>
 		[ProtoMember(12)]
 		public int[] addBuffs { get; set; }
+		/// <summary>伤害类型 1 物理 2 法术 3 治疗</summary>
+		[ProtoMember(13)]
+		public int damageType { get; set; }
 
 	}
 }

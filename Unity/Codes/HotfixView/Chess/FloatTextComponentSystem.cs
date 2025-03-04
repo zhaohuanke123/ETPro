@@ -68,29 +68,45 @@ namespace ET
             }
         }
 
-        public static void Init(this FloatTextComponent self, Vector3 startPosition, float v, DamageType damageType)
+        public static void Init(this FloatTextComponent self, Vector3 startPosition, float v, DamageType damageType, bool isCrit = false)
         {
             self.transform.position = startPosition;
             self.tmp.text = Mathf.Round(v).ToString();
             self.moveDirection = new Vector3(Random.Range(-0.5f, 0.5f), 1, Random.Range(-0.5f, 0.5f)).normalized;
             self.canvasGroup.alpha = 1;
 
-            if (damageType == DamageType.Normal)
+            Color color;
+            string colorStr = "";
+
+            if (damageType == DamageType.Heal)
             {
-                self.tmp.color = Color.white;
+                // 治疗类型无视暴击判断
+                colorStr = "#98FB98";
             }
-            else if (damageType == DamageType.Critical)
+            else if (damageType == DamageType.Normal)
             {
-                self.tmp.color = Color.red;
+                colorStr = isCrit? "#FF4500" : "#FFFFFF";
             }
-            else if (damageType == DamageType.Heal)
+            else if (damageType == DamageType.Magic)
             {
-                self.tmp.color = Color.green;
+                colorStr = isCrit? "#9370DB" : "#6495ED";
             }
             else if (damageType == DamageType.BuffDamage)
             {
-                self.tmp.color = Color.yellow;
+                colorStr = "#FFA500";
             }
+            else
+            {
+                Debug.LogWarning($"未知伤害类型：{damageType}");
+            }
+            
+            if (!ColorUtility.TryParseHtmlString(colorStr, out color))
+            {
+                Debug.LogError($"颜色解析失败：{colorStr}");
+                color = Color.magenta; // 用醒目颜色提示错误
+            }
+
+            self.tmp.color = color;
 
             self.MoveTimer = TimerComponent.Instance.NewFrameTimer(TimerType.FloatTextMoveTimer, self);
             self.UpdateTime = TimeHelper.ClientNow();

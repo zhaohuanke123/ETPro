@@ -131,6 +131,10 @@ namespace ET
 			// 	
 			// 	go.transform.position = self.transform.position;
 			// }
+			if (self.IsDisposed)
+			{
+				return;
+			}
 			self.beControlledGo.SetActive(isControlled);
 			await ETTask.CompletedTask;
 		}
