@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1254, y: -606}
+  m_AnchoredPosition: {x: 1426, y: -606}
   m_SizeDelta: {x: 177.6615, y: 64.3303}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4165447158539369078
@@ -987,7 +987,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 644.56, y: 59.561996}
+  m_AnchoredPosition: {x: 644.56, y: 59.56201}
   m_SizeDelta: {x: 1384.7, y: 119.1234}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1975413002709457903
@@ -2776,6 +2776,11 @@ PrefabInstance:
       propertyPath: m_textInfo.characterCount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4188295303193715923, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -46.322998
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af, type: 3}
 --- !u!224 &2211235849399440275 stripped
@@ -2805,6 +2810,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UIBonus_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5362107445720775409, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.4000015
       objectReference: {fileID: 0}
     - target: {fileID: 5959406680717838495, guid: d6fa038dfa5f01b479ab9d0408bae19e,
         type: 3}
@@ -2910,6 +2920,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7444312666069189996, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.6504993
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6fa038dfa5f01b479ab9d0408bae19e, type: 3}
@@ -3120,6 +3135,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.characterCount
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4188295303193715923, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -46.322998
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af, type: 3}
@@ -3637,6 +3657,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIBonus_4
       objectReference: {fileID: 0}
+    - target: {fileID: 5362107445720775409, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.4000015
+      objectReference: {fileID: 0}
     - target: {fileID: 5959406680717838495, guid: d6fa038dfa5f01b479ab9d0408bae19e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3741,6 +3766,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7444312666069189996, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.6504993
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6fa038dfa5f01b479ab9d0408bae19e, type: 3}
@@ -3880,7 +3910,7 @@ PrefabInstance:
     - target: {fileID: 3545161633635618890, guid: 4e7627cd2d8b7994982441d6fda33e1c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1.8
+      value: -1.7999992
       objectReference: {fileID: 0}
     - target: {fileID: 3545161633635618890, guid: 4e7627cd2d8b7994982441d6fda33e1c,
         type: 3}
@@ -4277,6 +4307,11 @@ PrefabInstance:
       propertyPath: m_textInfo.characterCount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4188295303193715923, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -46.322998
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af, type: 3}
 --- !u!224 &6270993068686103232 stripped
@@ -4482,6 +4517,11 @@ PrefabInstance:
       propertyPath: m_textInfo.characterCount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4188295303193715923, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -46.322998
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af, type: 3}
 --- !u!224 &5542813964339998426 stripped
@@ -4511,6 +4551,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UIBonus_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5362107445720775409, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.4000015
       objectReference: {fileID: 0}
     - target: {fileID: 5959406680717838495, guid: d6fa038dfa5f01b479ab9d0408bae19e,
         type: 3}
@@ -4617,6 +4662,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7444312666069189996, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.6504993
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6fa038dfa5f01b479ab9d0408bae19e, type: 3}
 --- !u!224 &439410775498216275 stripped
@@ -4646,6 +4696,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UIBonus_5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5362107445720775409, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.4000015
       objectReference: {fileID: 0}
     - target: {fileID: 5959406680717838495, guid: d6fa038dfa5f01b479ab9d0408bae19e,
         type: 3}
@@ -4751,6 +4806,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7444312666069189996, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.6504993
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6fa038dfa5f01b479ab9d0408bae19e, type: 3}
@@ -4927,6 +4987,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIBonus_2
       objectReference: {fileID: 0}
+    - target: {fileID: 5362107445720775409, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.4000015
+      objectReference: {fileID: 0}
     - target: {fileID: 5959406680717838495, guid: d6fa038dfa5f01b479ab9d0408bae19e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5031,6 +5096,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7444312666069189996, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.6504993
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6fa038dfa5f01b479ab9d0408bae19e, type: 3}
@@ -5335,7 +5405,7 @@ PrefabInstance:
     - target: {fileID: 2211235849639154911, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 124.631996
+      value: 124.63199
       objectReference: {fileID: 0}
     - target: {fileID: 2211235849639154911, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af,
         type: 3}
@@ -5397,6 +5467,11 @@ PrefabInstance:
       propertyPath: m_textInfo.characterCount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4188295303193715923, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -46.322998
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7c7a3b5cdba6f44cab660ba9b0ee6af, type: 3}
 --- !u!224 &8735843469964005622 stripped
@@ -5426,6 +5501,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UIBonus_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5362107445720775409, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.4000015
       objectReference: {fileID: 0}
     - target: {fileID: 5959406680717838495, guid: d6fa038dfa5f01b479ab9d0408bae19e,
         type: 3}
@@ -5531,6 +5611,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7444312666069189996, guid: d6fa038dfa5f01b479ab9d0408bae19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.6504993
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6fa038dfa5f01b479ab9d0408bae19e, type: 3}
