@@ -5,24 +5,16 @@
     [FriendClass(typeof (Player))]
     public static class DamageHelper
     {
-        public static int Damage(Unit attacker, Unit target, int damageType, out bool isCritical)
+        public static int Damage(Unit attacker,
+         Unit target, int damageType, out bool isCritical)
         {
             NumericComponent numericComponent = target.GetComponent<NumericComponent>();
             int def = 1;
             if (damageType == 1)
-            {
                 def = numericComponent.GetAsInt(NumericType.NorDef);
-            }
             else
-            {
                 def = numericComponent.GetAsInt(NumericType.MagDef);
-            }
-
-            Log.Info($"Def : {def}");
-
-            int finalDamage = CalculateFinalDamage(attacker, target, def, out isCritical);
-
-            return finalDamage;
+            return CalculateFinalDamage(attacker, target, def, out isCritical);
         }
 
         public static int DamageHeal(Unit attacker, Unit target)
@@ -32,7 +24,8 @@
             return atk;
         }
 
-        private static int CalculateFinalDamage(Unit attacker, Unit target, int def, out bool isCritical)
+        private static int CalculateFinalDamage(Unit attacker,
+         Unit target, int def, out bool isCritical)
         {
             NumericComponent numericComponent = attacker.GetComponent<NumericComponent>();
             float CRI = numericComponent.GetAsFloat(NumericType.CRI);
@@ -42,10 +35,7 @@
             int damage = (int)(atk * (1 - 1.0f * (def) / (def + 100)));
             isCritical = IsCRT(CRI);
             if (isCritical)
-            {
                 damage = (int)((1 + 1.0f * CRIDamage / 100) * damage);
-                Log.Info("IsCritical ed ||  damage : " + damage);
-            }
 
             return damage;
         }
